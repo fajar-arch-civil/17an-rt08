@@ -513,37 +513,60 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
   cekInput.addEventListener('keydown',function(e){if(e.key==='Enter')cekBayar();});
 
   // ===== Form data-driven (blok & lomba dari sheet) =====
-  var LOMBA=[];
-  var selBlok=document.getElementById('selBlok'),selJenis=document.getElementById('selJenis'),selLomba=document.getElementById('selLomba');
-  var anakFields=document.getElementById('anakFields'),hidKelompok=document.getElementById('hidKelompok');
-  var inpWali=document.querySelector('#anakFields [name=wali]'),inpUsia=document.querySelector('#anakFields [name=usia]');
-  function muatOpsi(){
-    fetch(API+'?aksi=lomba',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-      if(!d||!d.ok)return; LOMBA=d.lomba||[];
-      (d.blok||[]).forEach(function(b){var o=document.createElement('option');o.value=b.blok;o.textContent=b.blok+(b.nama?' — '+b.nama:'');selBlok.appendChild(o);});
-      if(!(d.blok||[]).length){var o2=document.createElement('option');o2.disabled=true;o2.textContent='(Isi tab DaftarKK dulu)';selBlok.appendChild(o2);}
-    }).catch(function(){});
-  }
-  muatOpsi();
-  selJenis.addEventListener('change',function(){
-    var jenis=selJenis.value, isAnak=(jenis==='Lomba Anak');
-    selLomba.innerHTML='<option value="" disabled selected>— Pilih lomba —</option>';
-    var list=LOMBA.filter(function(x){return x.jenis===jenis;});
-    if(isAnak){
-      var grup={};list.forEach(function(x){var g=x.kelompok||'Lainnya';(grup[g]=grup[g]||[]).push(x);});
-      Object.keys(grup).forEach(function(g){var og=document.createElement('optgroup');og.label='Usia '+g;grup[g].forEach(function(x){var o=document.createElement('option');o.value=x.nama;o.setAttribute('data-kelompok',x.kelompok||'');og.appendChild(o);});selLomba.appendChild(og);});
-    } else {
-      list.forEach(function(x){var o=document.createElement('option');o.value=x.nama;o.setAttribute('data-kelompok','');selLomba.appendChild(o);});
-    }
-    if(!list.length){var oe=document.createElement('option');oe.disabled=true;oe.textContent='(Belum ada lomba di MasterLomba)';selLomba.appendChild(oe);}
-    anakFields.style.display=isAnak?'block':'none';
-    if(inpWali)inpWali.required=isAnak; if(inpUsia)inpUsia.required=isAnak;
-    hidKelompok.value='';
+var LOMBA=[],ALAMAT={};
+var selBlok=document.getElementById('selBlok'),selJenis=document.getElementById('selJenis'),selLomba=document.getElementById('selLomba');
+var anakFields=document.getElementById('anakFields'),hidKelompok=document.getElementById('hidKelompok');
+var inpWali=document.querySelector('#anakFields [name=wali]'),inpUsia=document.querySelector('#anakFields [name=usia]');
+
+// --- Alamat 2 tahap: sisipkan dropdown "Blok" sebelum dropdown nomor ---
+var selBlokGrup=document.createElement('select');
+selBlokGrup.required=true;selBlokGrup.id='selBlokGrup';selBlokGrup.style.marginBottom='10px';
+selBlokGrup.innerHTML='<option value="" disabled selected>— Pilih blok —</option>';
+selBlok.parentNode.insertBefore(selBlokGrup,selBlok);
+selBlok.innerHTML='<option value="" disabled selected>— Pilih blok dulu —</option>';
+
+function muatOpsi(){
+  fetch(API+'?aksi=lomba',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    if(!d||!d.ok)return; LOMBA=d.lomba||[]; ALAMAT={};
+    (d.blok||[]).forEach(function(b){
+      var full=String(b.blok), m=full.match(/^(.*?)\s*-\s*(.+)$/);
+      var grup=m?m[1].trim():full, nomor=m?m[2].trim():full;
+      (ALAMAT[grup]=ALAMAT[grup]||[]).push({value:full,nomor:nomor,nama:b.nama||''});
+    });
+    var grups=Object.keys(ALAMAT);
+    selBlokGrup.innerHTML='<option value="" disabled selected>— Pilih blok —</option>';
+    if(!grups.length){var o2=document.createElement('option');o2.disabled=true;o2.textContent='(Isi tab DaftarKK dulu)';selBlokGrup.appendChild(o2);return;}
+    grups.sort(function(a,b){return a.localeCompare(b,undefined,{numeric:true});});
+    grups.forEach(function(g){var o=document.createElement('option');o.value=g;o.textContent=g+' ('+ALAMAT[g].length+' rumah)';selBlokGrup.appendChild(o);});
+  }).catch(function(){});
+}
+muatOpsi();
+selBlokGrup.addEventListener('change',function(){
+  selBlok.innerHTML='<option value="" disabled selected>— Pilih nomor rumah —</option>';
+  var list=(ALAMAT[selBlokGrup.value]||[]).slice();
+  list.sort(function(a,b){return String(a.nomor).localeCompare(String(b.nomor),undefined,{numeric:true});});
+  list.forEach(function(it){var o=document.createElement('option');o.value=it.value;o.textContent=it.nomor+(it.nama?' — '+it.nama:'');selBlok.appendChild(o);});
+});
+
+selJenis.addEventListener('change',function(){
+  var jenis=selJenis.value, isAnak=(jenis==='Lomba Anak');
+  selLomba.innerHTML='<option value="" disabled selected>— Pilih lomba —</option>';
+  var list=LOMBA.filter(function(x){return x.jenis===jenis;});
+  list.forEach(function(x){
+    var o=document.createElement('option');o.value=x.nama;
+    o.textContent=x.nama+(isAnak&&x.kelompok?' · Usia '+x.kelompok:'');
+    o.setAttribute('data-kelompok',isAnak?(x.kelompok||''):'');
+    selLomba.appendChild(o);
   });
-  selLomba.addEventListener('change',function(){
-    var op=selLomba.options[selLomba.selectedIndex];
-    hidKelompok.value=op?(op.getAttribute('data-kelompok')||''):'';
-  });
+  if(!list.length){var oe=document.createElement('option');oe.disabled=true;oe.textContent='(Belum ada lomba di MasterLomba)';selLomba.appendChild(oe);}
+  anakFields.style.display=isAnak?'block':'none';
+  if(inpWali)inpWali.required=isAnak; if(inpUsia)inpUsia.required=isAnak;
+  hidKelompok.value='';
+});
+selLomba.addEventListener('change',function(){
+  var op=selLomba.options[selLomba.selectedIndex];
+  hidKelompok.value=op?(op.getAttribute('data-kelompok')||''):'';
+});
 
   var form=document.getElementById('formDaftar'),okMsg=document.getElementById('okMsg'),dupMsg=document.getElementById('dupMsg'),btn=document.getElementById('btnKirim'),btnAsli=btn.innerHTML;
   form.addEventListener('submit',function(e){
