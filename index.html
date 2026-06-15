@@ -207,38 +207,24 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
 
 .toast.info{background:linear-gradient(135deg,#3a2226,#5a2a30)}
 /* ===== /TEMA ===== */
-  /* ===== Futuristik Step 1 — Orb menyala + glow elegan ===== */
+ /* ===== Futuristik Step 1 (halus) — kedalaman latar tipis ===== */
 .bg-base::after{
-  content:"";position:absolute;top:-14%;left:50%;transform:translateX(-50%);
-  width:min(760px,94vw);height:min(760px,94vw);border-radius:50%;
+  content:"";position:absolute;top:-16%;left:50%;transform:translateX(-50%);
+  width:min(640px,86vw);height:min(640px,86vw);border-radius:50%;
   pointer-events:none;z-index:0;
-  background:radial-gradient(circle at 50% 42%,rgba(255,72,82,.40),rgba(255,46,58,.16) 44%,transparent 70%);
-  filter:blur(50px);opacity:.85;animation:orbA 16s ease-in-out infinite;
+  background:radial-gradient(circle at 50% 42%,rgba(255,70,80,.14),transparent 66%);
+  filter:blur(72px);opacity:.45;animation:orbA 24s ease-in-out infinite;
 }
-.bg-base::before{
-  content:"";position:absolute;bottom:-12%;right:-8%;
-  width:min(440px,72vw);height:min(440px,72vw);border-radius:50%;
-  pointer-events:none;z-index:0;
-  background:radial-gradient(circle,rgba(179,18,29,.46),transparent 68%);
-  filter:blur(58px);opacity:.55;animation:orbB 20s ease-in-out infinite;
-}
-@keyframes orbA{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(28px)}}
-@keyframes orbB{0%,100%{transform:translateY(0)}50%{transform:translateY(-24px)}}
+@keyframes orbA{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(16px)}}
 
-/* glow halus pada elemen kunci (tetap tajam & terbaca) */
-.hero h1{text-shadow:0 4px 36px rgba(255,59,70,.32)}
-.count .n{text-shadow:0 0 18px rgba(255,59,70,.5)}
-.kpi .val{text-shadow:0 0 15px rgba(255,59,70,.32)}
+/* glow sangat tipis, hanya di angka countdown (untuk kedalaman, bukan mencolok) */
+.count .n{text-shadow:0 0 9px rgba(255,59,70,.22)}
 
-/* kartu: terangkat + tepi menyala lembut saat disentuh */
-.card,.fincard,.run{transition:transform .35s ease,box-shadow .35s ease}
-.card:hover,.fincard:hover,.run:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(255,46,58,.16),inset 0 0 0 1px rgba(255,59,70,.32)}
+/* kartu: hanya terangkat lembut, bayangan netral (tanpa tepi menyala) */
+.card,.fincard,.run{transition:transform .3s ease,box-shadow .3s ease}
+.card:hover,.fincard:hover,.run:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
 
-/* tombol utama: cahaya stabil (tidak berkedip) */
-.cta-btn.primary,.submit{box-shadow:0 10px 30px rgba(255,46,58,.32),0 0 20px rgba(255,59,70,.22)}
-.cta-btn.primary:hover,.submit:hover{box-shadow:0 14px 42px rgba(255,46,58,.46),0 0 30px rgba(255,59,70,.36)}
-
-@media (prefers-reduced-motion:reduce){.bg-base::after,.bg-base::before{animation:none}}
+@media (prefers-reduced-motion:reduce){.bg-base::after{animation:none}}
 </style>
 </head>
 <body>
