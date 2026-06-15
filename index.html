@@ -581,6 +581,9 @@ function muatOpsi(){
     if(!d||!d.ok)return; LOMBA=d.lomba||[]; ALAMAT={};
     (d.blok||[]).forEach(function(b){
       var full=String(b.blok), m=full.match(/^(.*?)\s*-\s*(.+)$/);
+      (d.blok||[]).forEach(function(b){
+  if(!String(b.nama||'').trim())return; // ⬅️ lewati rumah kosong
+  var full=String(b.blok), m=full.match(/^(.*?)\s*-\s*(.+)$/);
       var grup=m?m[1].trim():full, nomor=m?m[2].trim():full;
       (ALAMAT[grup]=ALAMAT[grup]||[]).push({value:full,nomor:nomor,nama:b.nama||''});
     });
@@ -648,6 +651,27 @@ selLomba.addEventListener('change',function(){
     anakFields.style.display='none';hidKelompok.value='';
     okMsg.style.display='none';dupMsg.style.display='none';form.style.display='block';btn.disabled=false;btn.innerHTML=btnAsli;
   });
+  /* ===== Rekap iuran: ringkas (buka-tutup + cari + scroll) ===== */
+(function(){
+  var rekapBody=document.getElementById('rekapBody'); if(!rekapBody)return;
+  var tbl=rekapBody.closest('table'); if(!tbl)return; var host=tbl.parentNode;
+  var det=document.createElement('details'); det.className='glass'; det.style.cssText='padding:14px 16px;margin-top:8px';
+  var sum=document.createElement('summary'); sum.style.cssText='cursor:pointer;font-weight:600'; sum.textContent='🔍 Lihat & cari status iuran semua warga';
+  var cari=document.createElement('input'); cari.type='search'; cari.placeholder='Ketik blok atau nama KK…'; cari.style.cssText='width:100%;margin:12px 0';
+  var wrap=document.createElement('div'); wrap.style.cssText='max-height:360px;overflow:auto;border-radius:12px';
+  host.insertBefore(det,tbl); det.appendChild(sum); det.appendChild(cari); wrap.appendChild(tbl); det.appendChild(wrap);
+  function filter(){
+    var q=(cari.value||'').trim().toLowerCase();
+    [].forEach.call(rekapBody.rows,function(tr){
+      if(tr.cells.length<2){tr.style.display='';return;}
+      var base=(tr.cells[1].textContent||'').split('(')[0].trim();
+      var kosong=(base===''||base==='-');
+      tr.style.display=kosong?'none':((q===''||tr.textContent.toLowerCase().indexOf(q)>-1)?'':'none');
+    });
+  }
+  new MutationObserver(filter).observe(rekapBody,{childList:true});
+  cari.addEventListener('input',filter); filter();
+})();
 </script>
 </body>
 </html>
