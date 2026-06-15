@@ -232,6 +232,13 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
 .cta-btn.primary:hover,.submit:hover,.topnav a.cta:hover,.cekbar button:hover{
   box-shadow:0 7px 20px rgba(255,46,58,.18) !important;
 }
+  /* navigasi mulus saat klik menu/tombol */
+html{scroll-behavior:smooth}
+
+/* animasi masuk antar-bagian: lembut & elegan */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.show{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -343,7 +350,7 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
 
     <!-- STATISTIK -->
     <section class="sec" id="statistik">
-      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-bar"></span></div><div><h2>Statistik Pendaftar</h2><small>Jumlah peserta per cabang — otomatis, tanpa menampilkan nama.</small></div></div>
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-bar"></span></div><div><h2>Peserta yang Sudah Daftar</h2><small>Jumlah peserta per cabang — otomatis, tanpa menampilkan nama.</small></div></div>
       <div class="card glass reveal">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:13px;color:rgba(255,255,255,.8)">Total pendaftar:</span><b id="statTotal" style="color:var(--gold);font-size:18px">—</b></div>
         <div id="statBox"></div>
@@ -352,7 +359,7 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
 
     <!-- JADWAL -->
     <section class="sec" id="jadwal">
-      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:calendar-month"></span></div><div><h2>Jadwal & Rundown</h2><small>Gambaran besar acara — jam detail menyusul.</small></div></div>
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:calendar-month"></span></div><div><h2>Jadwal & Susunan Acara</h2><small>Gambaran besar acara — jam detail menyusul.</small></div></div>
       <div class="card glass reveal" style="margin-bottom:14px"><ul class="overview">
         <li><span class="dt">Tiap Minggu Juli</span><span>Lomba olahraga warga, pagi–sore</span></li>
         <li><span class="dt">Minggu, 16 Agt</span><span>Lomba khusus ibu-ibu</span></li>
@@ -369,7 +376,7 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
 
     <!-- KEUANGAN -->
     <section class="sec" id="keuangan">
-      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-box"></span></div><div><h2>Laporan Keuangan Live</h2><small>Transparan — diperbarui otomatis oleh panitia.</small></div></div>
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-box"></span></div><div><h2>Laporan Keuangan (Diperbarui Otomatis)</h2><small>Transparan — diperbarui otomatis oleh panitia.</small></div></div>
       <div class="card glass reveal">
         <div class="statusbar"><span class="dot" id="fdot"></span><span id="fstatus">Memuat data…</span><button class="btn-mini" id="frefresh"><span class="iconify" data-icon="mdi:refresh"></span> Muat ulang</button></div>
         <div class="kpi">
@@ -414,7 +421,26 @@ h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',
         <tr><td>Rekap & Laporan</td><td>1–5 Agustus</td><td>Laporan terbuka ke warga</td></tr>
       </table></div>
     </section>
+<section class="sec reveal" id="info">
+  <div class="sec-h"><div class="ic">💬</div><div><h2>Sambutan &amp; Info Acara</h2><p>Sedikit pengantar dari panitia, plus jawaban pertanyaan yang sering ditanyakan.</p></div></div>
 
+  <div class="glass" style="padding:22px;margin-bottom:18px">
+    <p style="margin:0 0 10px">Assalamualaikum dan salam sejahtera untuk Bapak, Ibu, serta seluruh warga RT 08. 🇮🇩</p>
+    <p style="margin:0 0 10px">Menyambut HUT ke-81 Kemerdekaan Republik Indonesia, mari kita rayakan bersama dengan gembira dan penuh kebersamaan. Acara ini dari kita, oleh kita, dan untuk kita semua.</p>
+    <p style="margin:0">Yuk ramaikan: daftar lombanya, hadir di lapangan, dan jaga kekompakan warga. Sampai jumpa di lapangan. Merdeka!</p>
+    <p style="margin:14px 0 0;font-weight:600">— Panitia 17 Agustus &amp; Karang Taruna RT 08</p>
+  </div>
+
+  <details class="glass" style="padding:16px 18px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">📅 Kapan acaranya?</summary><p style="margin:10px 0 0">Lomba mulai tiap akhir pekan di bulan Juli. Puncak siang: Senin, 17 Agustus 2026 (upacara &amp; lomba anak). Malam puncak: Sabtu, 22 Agustus 2026 (makan bersama, pentas seni, &amp; pembagian hadiah dewasa).</p></details>
+
+  <details class="glass" style="padding:16px 18px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">📍 Di mana lokasinya?</summary><p style="margin:10px 0 0">Di Lapangan RT 08 (belakang masjid).</p></details>
+
+  <details class="glass" style="padding:16px 18px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">💰 Berapa iurannya?</summary><p style="margin:10px 0 0">Rp50.000 per KK. Dikelola terbuka dan dilaporkan ke warga lewat halaman ini.</p></details>
+
+  <details class="glass" style="padding:16px 18px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">📝 Bagaimana cara ikut lomba?</summary><p style="margin:10px 0 0">Isi formulir "Daftar Lomba" di halaman ini: pilih blok &amp; nomor rumah, lalu pilih lombanya. Gratis untuk seluruh warga RT 08.</p></details>
+
+  <details class="glass" style="padding:16px 18px"><summary style="cursor:pointer;font-weight:600">👨‍👩‍👧 Anak boleh ikut berapa lomba?</summary><p style="margin:10px 0 0">Boleh ikut beberapa lomba, asalkan jadwalnya tidak bentrok dan anak sanggup mengikutinya.</p></details>
+</section>
     <footer>Karang Taruna RT 08 / RW 12 — Taman Kirana Surya · HUT RI ke-81 Tahun 2026<br><b style="color:var(--gold)">Sampai ketemu di lapangan, ya. Dirgahayu Indonesia! <span class="iconify" data-icon="twemoji:flag-indonesia"></span></b></footer>
   </div>
 
