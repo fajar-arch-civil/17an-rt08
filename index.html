@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d4111d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="17an RT 08">
+<title>17-an RT 08 — HUT RI ke-81 (2026)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+  :root{--gold:#ffd166;--merah:#ff4d5e;--hijau:#3ddc84;--biru:#5aa9ff;--ink:#1a0a13;--ease:cubic-bezier(.22,1,.36,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Poppins',system-ui,sans-serif;color:#fff;line-height:1.55;overflow-x:hidden;background:#15060f;min-height:100vh}
+  .hide{display:none}
+  .bg-base{position:fixed;inset:0;z-index:-3;background:#15060f}
+  .flag-bg{position:fixed;inset:0;z-index:-2;overflow:hidden}
+  .flag-bg .band{position:absolute;inset:0;background:linear-gradient(180deg,#d4111d 0 50%,#f6f6f6 50% 100%)}
+  .flag-bg .sheen{position:absolute;inset:0;background:linear-gradient(118deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 32%,rgba(0,0,0,.14) 100%)}
+  .overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,6,18,.74),rgba(40,8,18,.8))}
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.24;z-index:0;pointer-events:none}
+  .b1{width:320px;height:320px;background:#ff2e4d;top:-90px;left:-70px}
+  .b2{width:300px;height:300px;background:#1f6feb;bottom:-70px;right:-60px}
+
+  .topnav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(18,8,24,.72);border-bottom:1px solid rgba(255,255,255,.12)}
+  .topnav .in{max-width:860px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:10px 12px}
+  .topnav .in::-webkit-scrollbar{height:0}
+  .topnav a{flex:0 0 auto;color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:999px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);white-space:nowrap;transition:all .3s var(--ease)}
+  .topnav a:hover{background:rgba(255,255,255,.18);transform:translateY(-2px)}
+  .topnav a.cta{background:linear-gradient(135deg,var(--merah),var(--gold));color:var(--ink);border-color:transparent}
+  .topnav a .iconify{margin-right:4px;color:var(--gold)}
+  .topnav a.cta .iconify{color:var(--ink)}
+
+  .wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 16px 70px}
+  .iconify{vertical-align:-.125em}
+  .glass{background:rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.18);border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.32)}
+
+  .hero{text-align:center;padding:40px 22px 22px;position:relative;z-index:1}
+  .badge{display:inline-block;padding:7px 16px;border-radius:999px;font-size:12.5px;font-weight:600;margin-bottom:16px}
+  .badge .iconify{margin-right:5px}
+  .hero h1{font-size:32px;font-weight:800;line-height:1.16;text-shadow:0 4px 20px rgba(0,0,0,.6)}
+  .hero h1 span{color:var(--gold)}
+  .hero .sub{margin-top:12px;opacity:.97;font-weight:600;font-size:15px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+  .hero .sub2{margin-top:4px;opacity:.88;font-weight:500;font-size:13.5px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+  .hero .tagline{margin-top:14px;font-size:14.5px;color:var(--gold);max-width:540px;margin:14px auto 0;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .chips .glass{padding:8px 14px;font-size:13px;font-weight:500;border-radius:13px;transition:transform .3s var(--ease)}
+  .chips .glass:hover{transform:translateY(-3px)}
+  .chips .iconify{color:var(--gold);margin-right:4px}
+
+  a.src{display:block;text-decoration:none;color:inherit}
+  .carousel{position:relative;margin-top:22px;border-radius:20px;overflow:hidden}
+  .track{display:flex;transition:transform .7s cubic-bezier(.76,0,.24,1)}
+  .slide{flex:0 0 100%;position:relative}
+  .photo{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#7a0c16,#10203f);overflow:hidden}
+  .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .cap{position:absolute;left:0;right:0;bottom:0;padding:30px 16px 13px;font-size:14px;font-weight:600;background:linear-gradient(transparent,rgba(0,0,0,.78));pointer-events:none}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;background:rgba(0,0,0,.42);color:#fff;display:grid;place-items:center;z-index:2;transition:all .3s var(--ease)}
+  .nav:hover{background:rgba(0,0,0,.66);transform:translateY(-50%) scale(1.1)}
+  .nav.prev{left:10px}.nav.next{right:10px}
+  .dots{position:absolute;bottom:10px;left:0;right:0;display:flex;gap:7px;justify-content:center;z-index:2}
+  .dots b{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:all .4s var(--ease)}
+  .dots b.on{background:var(--gold);width:22px;border-radius:5px}
+
+  .sec{margin-top:38px;scroll-margin-top:70px}
+  .sec-h{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .sec-h .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:0 0 auto}
+  .sec-h .ic .iconify{font-size:24px;color:var(--gold)}
+  .sec-h h2{font-size:21px;font-weight:700}
+  .sec-h small{display:block;font-size:12.5px;color:rgba(255,255,255,.72);font-weight:500}
+
+  /* FORM */
+  .form .fld{margin-bottom:14px}
+  .form label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+  .form label .req{color:var(--merah)}
+  .form input,.form select,.form textarea{width:100%;padding:12px 14px;border-radius:12px;font:inherit;font-size:15px;background:rgba(255,255,255,.95);color:#1a0a13;border:1px solid rgba(255,255,255,.3);outline:none}
+  .form input:focus,.form select:focus,.form textarea:focus{box-shadow:0 0 0 3px rgba(255,209,102,.5)}
+  .form textarea{min-height:70px;resize:vertical}
+  .form .two{display:grid;gap:14px}@media(min-width:560px){.form .two{grid-template-columns:1fr 1fr}}
+  .submit{display:block;width:auto;min-width:240px;max-width:100%;margin:18px auto 0;padding:14px 38px;border:none;border-radius:999px;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--merah),var(--gold));color:var(--ink);box-shadow:0 8px 24px rgba(255,77,94,.4);transition:all .3s var(--ease)}
+  .submit:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,77,94,.5)}
+  .submit .iconify{margin-right:6px}
+  .ok-msg{display:none;text-align:center;padding:22px 16px}
+  .ok-msg .iconify{font-size:54px;color:var(--hijau)}
+  .ok-msg h3{font-size:19px;font-weight:700;margin:8px 0 4px}
+  .ok-msg p{font-size:13.5px;color:rgba(255,255,255,.8)}
+  .ok-msg button{margin-top:14px;padding:10px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+
+  .tabwrap{display:flex;align-items:center;gap:8px}
+  .tnav{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;display:grid;place-items:center;transition:all .3s var(--ease)}
+  .tnav:hover{background:rgba(255,255,255,.2);transform:scale(1.1)}
+  .tabs{flex:1 1 auto;display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scroll-behavior:smooth}
+  .tabs::-webkit-scrollbar{height:0}
+  .tab{flex:0 0 auto;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;transition:all .35s var(--ease)}
+  .tab .iconify{margin-right:4px}.tab:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+  .tab.active{background:linear-gradient(135deg,var(--merah),var(--gold));border-color:transparent;color:var(--ink);box-shadow:0 6px 18px rgba(255,77,94,.4);transform:translateY(-2px) scale(1.05)}
+  .panel{display:none;margin-top:14px}.panel.active{display:block;animation:fade .5s var(--ease)}
+  @keyframes fade{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .card{padding:16px 18px}.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:3px 11px;border-radius:999px;margin-bottom:10px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22)}
+  .lomba{list-style:none}.lomba li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px;transition:all .35s var(--ease)}
+  .lomba li:last-child{border-bottom:none}.lomba li:hover{padding-left:10px;color:var(--gold)}
+  .lomba small{display:block;color:rgba(255,255,255,.66);font-size:12.5px;margin-top:2px}
+
+  .grid2{display:grid;gap:14px}@media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+  .run{padding:16px 18px}.run h3{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--gold)}.run h3 .iconify{margin-right:5px}
+  .run .row{display:flex;gap:12px;padding:7px 0;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .run .row:last-child{border-bottom:none}.run .t{flex:0 0 58px;font-weight:700}.run .d{color:rgba(255,255,255,.88)}
+  .overview{padding:8px 4px 0;list-style:none}
+  .overview li{display:flex;gap:10px;font-size:13.5px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+  .overview li:last-child{border-bottom:none}.overview .dt{flex:0 0 128px;font-weight:600;color:var(--gold)}
+
+  /* KEUANGAN */
+  .statusbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.8);margin-bottom:14px}
+  .dot{width:9px;height:9px;border-radius:50%;background:#888;flex:0 0 auto}
+  .dot.on{background:var(--hijau);box-shadow:0 0 8px var(--hijau)}.dot.err{background:var(--merah)}
+  .btn-mini{margin-left:auto;padding:6px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .3s var(--ease)}
+  .btn-mini:hover{background:rgba(255,255,255,.2)}
+  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(min-width:640px){.kpi{grid-template-columns:repeat(4,1fr)}}
+  .kpi .box{padding:16px;text-align:center}
+  .kpi .lbl{font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  .kpi .val{font-size:20px;font-weight:800;margin-top:6px;word-break:break-word}
+  .kpi .masuk{color:var(--hijau)}.kpi .keluar{color:var(--merah)}.kpi .saldo{color:var(--gold)}
+  .bar{height:16px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12);display:flex;margin:16px 0 6px}
+  .bar .pm{background:linear-gradient(90deg,#2ea043,#3ddc84)}.bar .pk{background:linear-gradient(90deg,#ff4d5e,#ff8a5b)}
+  .barleg{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.8)}
+  .fin-cols{display:grid;gap:14px;margin-top:16px}@media(min-width:720px){.fin-cols{grid-template-columns:1fr 1fr}}
+  .fincard{padding:14px 16px}
+  .fincard h3{font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .fincard h3.m{color:var(--hijau)}.fincard h3.k{color:var(--merah)}
+  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th,.tbl td{padding:8px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12);vertical-align:top}
+  .tbl th{color:var(--gold);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}
+  .tbl td.tgl{white-space:nowrap;color:rgba(255,255,255,.8);width:74px}
+  .tbl td.num{text-align:right;font-weight:700;white-space:nowrap}
+  .tbl .empty{text-align:center;color:rgba(255,255,255,.6);padding:18px}
+
+  .mini{width:100%;border-collapse:collapse;font-size:13px}
+  .mini th,.mini td{padding:9px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12)}
+  .mini th{color:var(--gold);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px}
+  footer{text-align:center;margin-top:48px;color:rgba(255,255,255,.72);font-size:12.5px;line-height:1.7}
+  .reveal{opacity:0;transform:translateY(26px)}.reveal.show{opacity:1;transform:none;transition:all .7s var(--ease)}
+  @media(max-width:480px){.hero h1{font-size:25px}.sec-h h2{font-size:19px}.kpi .val{font-size:17px}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
+  @media print{.bg-base,.flag-bg,.overlay,.blob,.nav,.dots,.tnav,.topnav,.btn-mini{display:none!important}
+    body{background:#fff!important;color:#000!important}
+    .glass,.card,.run,.fincard{background:#fff!important;border:1px solid #bbb!important;box-shadow:none!important;backdrop-filter:none!important}
+    .panel{display:block!important}.track{flex-direction:column;transform:none!important}}
+</style>
+</head>
+<body>
+  <div class="bg-base"></div>
+  <div class="flag-bg"><div class="band"></div><div class="sheen"></div></div>
+  <div class="overlay"></div>
+  <div class="blob b1"></div><div class="blob b2"></div>
+
+  <nav class="topnav"><div class="in">
+    <a href="#beranda"><span class="iconify" data-icon="mdi:home-variant"></span>Beranda</a>
+    <a href="#daftar" class="cta"><span class="iconify" data-icon="mdi:account-plus"></span>Daftar</a>
+    <a href="#lomba"><span class="iconify" data-icon="mdi:medal"></span>Lomba</a>
+    <a href="#jadwal"><span class="iconify" data-icon="mdi:calendar-month"></span>Jadwal</a>
+    <a href="#keuangan"><span class="iconify" data-icon="mdi:chart-box"></span>Keuangan</a>
+  </div></nav>
+
+  <header class="hero" id="beranda">
+    <div class="badge glass"><span class="iconify" data-icon="twemoji:flag-indonesia"></span> KARANG TARUNA RT 08 RW 12 · TAMAN KIRANA SURYA</div>
+    <h1>Mari Meriahkan Kembali <span>Acara 17-an di RT 08!</span></h1>
+    <div class="sub">Peringatan HUT Kemerdekaan RI Ke-81 · Tahun 2026</div>
+    <div class="sub2">Desa Pasanggrahan, Kec. Solear, Kab. Tangerang — Banten</div>
+    <div class="tagline">Yuk turun ke lapangan, kumpul bareng tetangga, dan bikin Agustusan tahun ini lebih seru dari biasanya.</div>
+    <div class="chips">
+      <div class="glass"><span class="iconify" data-icon="mdi:map-marker"></span>Lapangan RT 08 (belakang masjid)</div>
+      <div class="glass"><span class="iconify" data-icon="mdi:cash-multiple"></span>Iuran Rp50.000 / KK</div>
+      <div class="glass"><span class="iconify" data-icon="mdi:trophy"></span>Malam Puncak: Sabtu, 22 Agt 2026</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="carousel reveal">
+      <div class="track" id="track">
+        <div class="slide"><a class="src" href="https://lazismujepara.id/wp-content/uploads/2025/08/anak-anak-membawa-bendera-merah-putih-di-desa-pesisir-pulau-_150817072511-484.jpg" target="_blank" rel="noopener"><div class="photo"><img loading="lazy" alt="" src="https://lazismujepara.id/wp-content/uploads/2025/08/anak-anak-membawa-bendera-merah-putih-di-desa-pesisir-pulau-_150817072511-484.jpg" onerror="this.remove()"></div></a><div class="cap">Kibarkan Merah Putih, nyalakan lagi semangat kemerdekaan.</div></div>
+        <div class="slide"><a class="src" href="https://storage.googleapis.com/palma/mandau/I-FTaUi_CRjYGa7KDdGw.jpeg" target="_blank" rel="noopener"><div class="photo"><img loading="lazy" alt="" src="https://storage.googleapis.com/palma/mandau/I-FTaUi_CRjYGa7KDdGw.jpeg" onerror="this.remove()"></div></a><div class="cap">Tujuh belasan — waktunya warga kumpul dan seru-seruan bareng.</div></div>
+        <div class="slide"><a class="src" href="https://banyuwangikab.go.id/media/berita/original/5c03fecf39bc7bdf3c17530478f926d2.jpg" target="_blank" rel="noopener"><div class="photo"><img loading="lazy" alt="" src="https://banyuwangikab.go.id/media/berita/original/5c03fecf39bc7bdf3c17530478f926d2.jpg" onerror="this.remove()"></div></a><div class="cap">Acara warga, dari kita untuk kita semua.</div></div>
+      </div>
+      <button class="nav prev" aria-label="Sebelumnya">‹</button>
+      <button class="nav next" aria-label="Berikutnya">›</button>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <!-- ===== FORM (di awal) ===== -->
+    <section class="sec" id="daftar" style="margin-top:26px">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:account-plus"></span></div>
+        <div><h2>Daftar Lomba & Pentas Seni</h2><small>Yuk daftar dulu — cuma sebentar, gampang kok!</small></div></div>
+      <div class="card glass reveal">
+        <form class="form" id="formDaftar" action="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec" method="POST" target="sink">
+          <div class="fld"><label>Nama Lengkap <span class="req">*</span></label><input name="nama" required placeholder="Contoh: Budi Santoso"></div>
+          <div class="two">
+            <div class="fld"><label>Blok / Alamat <span class="req">*</span></label><input name="alamat" required placeholder="Blok C2 No. 5"></div>
+            <div class="fld"><label>No. HP / WA <span class="req">*</span></label><input name="hp" required inputmode="numeric" placeholder="08xxxxxxxxxx"></div>
+          </div>
+          <div class="two">
+            <div class="fld"><label>Ikut Lomba Apa? <span class="req">*</span></label>
+              <select name="jenis" id="selJenis" required><option value="" disabled selected>— Pilih —</option><option>Lomba Olahraga</option><option>Lomba Anak</option><option>Pentas Seni</option></select></div>
+            <div class="fld"><label>Kategori / Cabang <span class="req">*</span></label>
+              <select name="kategori" id="selKat" required><option value="" disabled selected>— Pilih jenis dulu —</option></select></div>
+          </div>
+          <div class="fld"><label>Catatan (opsional)</label><textarea name="catatan" placeholder="Contoh: usia anak 7 tahun, atau nama tim"></textarea></div>
+          <button type="submit" class="submit"><span class="iconify" data-icon="mdi:send"></span>Kirim Pendaftaran</button>
+        </form>
+        <div class="ok-msg" id="okMsg"><span class="iconify" data-icon="mdi:check-circle"></span><h3>Pendaftaran Terkirim!</h3><p>Terima kasih sudah mendaftar. Sampai jumpa di lapangan! 🇮🇩</p><button id="daftarLagi">Daftar lagi</button></div>
+      </div>
+      <iframe name="sink" class="hide" id="sink"></iframe>
+    </section>
+
+    <!-- ===== LOMBA ===== -->
+    <section class="sec" id="lomba">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:medal"></span></div>
+        <div><h2>Kategori Lomba</h2><small>Geser pakai tombol ‹ › atau ketuk tabnya.</small></div></div>
+      <div class="tabwrap reveal">
+        <button class="tnav tprev" aria-label="Sebelumnya">‹</button>
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-t="p1"><span class="iconify" data-icon="mdi:volleyball"></span>Olahraga</button>
+          <button class="tab" data-t="p2"><span class="iconify" data-icon="mdi:baby-face-outline"></span>Balita 2–5</button>
+          <button class="tab" data-t="p3"><span class="iconify" data-icon="mdi:school-outline"></span>Anak 6–9</button>
+          <button class="tab" data-t="p4"><span class="iconify" data-icon="mdi:medal-outline"></span>Anak 9–12</button>
+          <button class="tab" data-t="p5"><span class="iconify" data-icon="mdi:human-female"></span>Ibu-ibu</button>
+          <button class="tab" data-t="p6"><span class="iconify" data-icon="mdi:human-male"></span>Bapak-bapak</button>
+          <button class="tab" data-t="p7"><span class="iconify" data-icon="mdi:microphone-variant"></span>Pentas Seni</button>
+        </div>
+        <button class="tnav tnext" aria-label="Berikutnya">›</button>
+      </div>
+      <div id="p1" class="panel active"><div class="card glass"><span class="tag">Bapak & ibu · remaja boleh mengisi tim · utama: Voli</span><ul class="lomba"><li><b>Bola Voli — Bapak-bapak</b><small>Cabang utama</small></li><li><b>Bola Voli — Ibu-ibu</b><small>Cabang utama</small></li><li><b>Futsal / Sepak Bola Mini</b><small>Alternatif · bapak & remaja</small></li><li><b>Tenis Meja</b><small>Alternatif</small></li></ul></div></div>
+      <div id="p2" class="panel"><div class="card glass"><span class="tag">Usia 2–5 th · didampingi orang tua</span><ul class="lomba"><li><b>Memindahkan Bendera Kecil</b></li><li><b>Memindahkan Bola Sesuai Warna</b></li><li><b>Merangkak Ceria</b></li><li><b>Menyusun Menara Balok</b></li><li><b>Memasukkan Bola ke Keranjang</b></li></ul></div></div>
+      <div id="p3" class="panel"><div class="card glass"><span class="tag">Usia 6–9 th</span><ul class="lomba"><li><b>Makan Kerupuk Gantung</b></li><li><b>Balap Kelereng Pakai Sendok</b></li><li><b>Memasukkan Pensil ke Botol</b></li><li><b>Estafet Air Pakai Gelas</b></li><li><b>Balap Karung Pakai Helm</b></li><li><b>Lomba Mewarnai Tematik</b></li></ul></div></div>
+      <div id="p4" class="panel"><div class="card glass"><span class="tag">Usia 9–12 th · 10 th+ ke lomba fisik</span><ul class="lomba"><li><b>Tarik Tambang Anak</b></li><li><b>Balap Bakiak</b></li><li><b>Estafet Tepung</b></li><li><b>Panjat Pinang Mini</b></li><li><b>Cerdas Cermat (LCC)</b></li><li><b>Sepak Bola Sarung</b></li><li><b>Egrang Bambu</b></li></ul></div></div>
+      <div id="p5" class="panel"><div class="card glass"><span class="tag">Ibu-ibu</span><ul class="lomba"><li><b>Estafet Tepung / Air</b></li><li><b>Sedotan: Pindahkan Karet/Kacang</b></li><li><b>Benang ke Jarum</b></li><li><b>Fashion Show Daster/Kebaya</b></li><li><b>Senam Poco-poco / Joget Balon</b></li></ul></div></div>
+      <div id="p6" class="panel"><div class="card glass"><span class="tag">Bapak-bapak · umumnya malam hari</span><ul class="lomba"><li><b>Gaple/Domino atau Catur</b></li><li><b>Karaoke Lagu Nasional & Dangdut</b></li><li><b>Tebak Gaya / Tebak Kata</b></li><li><b>Futsal Sarung (malam)</b></li><li><b>Rebutan Kursi</b></li></ul></div></div>
+      <div id="p7" class="panel"><div class="card glass"><span class="tag">Dinilai langsung di malam puncak</span><ul class="lomba"><li><b>Nyanyi Solo/Duet Lagu Kemerdekaan</b></li><li><b>Tari Kreasi / Tradisional</b></li><li><b>Fashion Show Merah Putih</b></li><li><b>Baca Puisi Kemerdekaan</b></li></ul></div></div>
+    </section>
+
+    <!-- ===== JADWAL ===== -->
+    <section class="sec" id="jadwal">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:calendar-month"></span></div>
+        <div><h2>Jadwal & Rundown</h2><small>Gambaran besar acara — jam detail menyusul.</small></div></div>
+      <div class="card glass reveal" style="margin-bottom:14px"><ul class="overview">
+        <li><span class="dt">Tiap Minggu Juli</span><span>Lomba olahraga warga (Voli, Futsal, Tenis Meja), pagi–sore</span></li>
+        <li><span class="dt">Minggu, 16 Agt</span><span>Lomba khusus ibu-ibu, pagi–sore</span></li>
+        <li><span class="dt">Senin, 17 Agt</span><span>Puncak Siang: upacara + aneka lomba anak</span></li>
+        <li><span class="dt">Sabtu, 22 Agt</span><span>Malam Puncak: bagi hadiah (sore) + makan & pentas seni (malam)</span></li>
+      </ul></div>
+      <div class="grid2">
+        <div class="run glass reveal"><h3><span class="iconify" data-icon="mdi:flag-variant"></span>17 Agustus (pagi–sore)</h3>
+          <div class="row"><span class="t">06.30</span><span class="d">Kumpul & persiapan</span></div><div class="row"><span class="t">07.00</span><span class="d">Upacara & teks Proklamasi</span></div><div class="row"><span class="t">08.00</span><span class="d">Senam & pembukaan lomba</span></div><div class="row"><span class="t">08.30</span><span class="d">Aneka lomba anak</span></div><div class="row"><span class="t">11.30</span><span class="d">ISHOMA</span></div><div class="row"><span class="t">13.00</span><span class="d">Lomba lanjutan & final</span></div><div class="row"><span class="t">15.30</span><span class="d">Pembagian hadiah lomba anak</span></div><div class="row"><span class="t">16.30</span><span class="d">Acara siang selesai</span></div></div>
+        <div class="run glass reveal"><h3><span class="iconify" data-icon="mdi:trophy"></span>Malam Puncak (Sabtu, 22 Agt)</h3>
+          <div class="row"><span class="t">16.00</span><span class="d">Pembagian hadiah pemenang (sore)</span></div><div class="row"><span class="t">19.00</span><span class="d">Pembukaan & Indonesia Raya</span></div><div class="row"><span class="t">19.30</span><span class="d">Sambutan & doa bersama</span></div><div class="row"><span class="t">20.00</span><span class="d">Makan bersama</span></div><div class="row"><span class="t">20.45</span><span class="d">Pentas seni (dinilai langsung)</span></div><div class="row"><span class="t">22.00</span><span class="d">Pengumuman juara & ramah tamah</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===== KEUANGAN ===== -->
+    <section class="sec" id="keuangan">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-box"></span></div>
+        <div><h2>Laporan Keuangan Live</h2><small>Transparan — diperbarui otomatis oleh panitia.</small></div></div>
+      <div class="card glass reveal">
+        <div class="statusbar"><span class="dot" id="fdot"></span><span id="fstatus">Memuat data…</span><button class="btn-mini" id="frefresh"><span class="iconify" data-icon="mdi:refresh"></span> Muat ulang</button></div>
+        <div class="kpi">
+          <div class="box glass"><div class="lbl">Pemasukan</div><div class="val masuk" id="kMasuk">—</div></div>
+          <div class="box glass"><div class="lbl">Pengeluaran</div><div class="val keluar" id="kKeluar">—</div></div>
+          <div class="box glass"><div class="lbl">Sisa Saldo</div><div class="val saldo" id="kSaldo">—</div></div>
+          <div class="box glass"><div class="lbl">KK Bayar Iuran</div><div class="val" id="kKK">—</div></div>
+        </div>
+        <div class="bar"><div class="pm" id="barM" style="width:50%"></div><div class="pk" id="barK" style="width:50%"></div></div>
+        <div class="barleg"><span>● Masuk</span><span>Keluar ●</span></div>
+        <div class="fin-cols">
+          <div class="fincard glass"><h3 class="m"><span class="iconify" data-icon="mdi:arrow-down-bold-circle"></span> Pemasukan</h3>
+            <table class="tbl"><thead><tr><th>Tgl</th><th>Keterangan</th><th class="num">Jumlah</th></tr></thead><tbody id="tbMasuk"></tbody></table></div>
+          <div class="fincard glass"><h3 class="k"><span class="iconify" data-icon="mdi:arrow-up-bold-circle"></span> Pengeluaran</h3>
+            <table class="tbl"><thead><tr><th>Tgl</th><th>Keterangan</th><th class="num">Jumlah</th></tr></thead><tbody id="tbKeluar"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== IURAN ===== -->
+    <section class="sec">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:cash-multiple"></span></div>
+        <div><h2>Jadwal Iuran</h2><small>Rp50.000 / KK · dikelola terbuka & dilaporkan ke warga.</small></div></div>
+      <div class="card glass reveal"><table class="mini">
+        <tr><th>Tahap</th><th>Waktu</th><th>Keterangan</th></tr>
+        <tr><td>Sosialisasi</td><td>Minggu ke-3 Juni</td><td>Pengumuman acara & iuran</td></tr>
+        <tr><td>Iuran Tahap 1</td><td>1–15 Juli</td><td>Pengumpulan per KK</td></tr>
+        <tr><td>Iuran Tahap 2</td><td>16–31 Juli</td><td>Pelunasan + donasi/sponsor</td></tr>
+        <tr><td>Rekap & Laporan</td><td>1–5 Agustus</td><td>Laporan terbuka ke warga</td></tr>
+      </table></div>
+    </section>
+
+    <footer>Karang Taruna RT 08 / RW 12 — Taman Kirana Surya · HUT RI ke-81 Tahun 2026<br><b style="color:var(--gold)">Sampai ketemu di lapangan, ya. Dirgahayu Indonesia! <span class="iconify" data-icon="twemoji:flag-indonesia"></span></b></footer>
+  </div>
+
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<script>
+  var API="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec";
+  var BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+  // Tab lomba
+  (function(){var tabs=[].slice.call(document.querySelectorAll('.tab')),panels=[].slice.call(document.querySelectorAll('.panel')),cur=0;
+    function set(i){cur=(i+tabs.length)%tabs.length;tabs.forEach(function(t,k){t.classList.toggle('active',k===cur);});panels.forEach(function(p,k){p.classList.toggle('active',k===cur);});tabs[cur].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
+    tabs.forEach(function(t,k){t.addEventListener('click',function(){set(k);});});
+    document.querySelector('.tprev').addEventListener('click',function(){set(cur-1);});document.querySelector('.tnext').addEventListener('click',function(){set(cur+1);});})();
+
+  // Carousel
+  (function(){var track=document.getElementById('track'),n=track.children.length,dots=document.getElementById('dots'),i=0,timer;
+    for(var k=0;k<n;k++){(function(k){var b=document.createElement('b');b.addEventListener('click',function(){go(k);});dots.appendChild(b);})(k);}
+    function render(){track.style.transform='translateX('+(-i*100)+'%)';[].slice.call(dots.children).forEach(function(d,k){d.classList.toggle('on',k===i);});}
+    function go(k){i=(k+n)%n;render();reset();}function reset(){clearInterval(timer);timer=setInterval(function(){go(i+1);},4800);}
+    document.querySelector('.nav.next').addEventListener('click',function(){go(i+1);});document.querySelector('.nav.prev').addEventListener('click',function(){go(i-1);});
+    var c=document.querySelector('.carousel');c.addEventListener('mouseenter',function(){clearInterval(timer);});c.addEventListener('mouseleave',reset);render();reset();})();
+
+  // Reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  // ===== Format tanggal (anti-berantakan) =====
+  function fmtTgl(v){
+    if(v===null||v===undefined||v==='') return '';
+    if(typeof v==='string'){
+      var m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);            // dd/MM/yyyy dari Apps Script
+      if(m) return (+m[1])+' '+BLN[(+m[2])-1]+' '+m[3];
+    }
+    var d=new Date(v);                                            // tangani Date panjang / ISO
+    if(!isNaN(d.getTime())) return d.getDate()+' '+BLN[d.getMonth()]+' '+d.getFullYear();
+    return String(v);
+  }
+
+  // ===== Keuangan =====
+  var rp=function(n){try{return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0);}catch(e){return 'Rp'+(n||0);}};
+  function jam(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+  function isiTabel(tbody,arr){tbody.innerHTML='';
+    if(!arr||!arr.length){tbody.innerHTML='<tr><td class="empty" colspan="3">Belum ada data.</td></tr>';return;}
+    arr.slice().reverse().forEach(function(t){var tr=document.createElement('tr');
+      tr.innerHTML='<td class="tgl">'+fmtTgl(t.tanggal)+'</td><td>'+(t.keterangan||t.kategori||'-')+'</td><td class="num">'+rp(t.jumlah)+'</td>';tbody.appendChild(tr);});}
+  var fdot=document.getElementById('fdot'),fstatus=document.getElementById('fstatus');
+  function muatKeuangan(){
+    fetch(API,{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+      if(!d||!d.ok) throw new Error('data');
+      document.getElementById('kMasuk').textContent=rp(d.totalPemasukan);
+      document.getElementById('kKeluar').textContent=rp(d.totalPengeluaran);
+      document.getElementById('kSaldo').textContent=rp(d.saldo);
+      document.getElementById('kKK').textContent=(d.jumlahKKBayar||0)+' KK';
+      var tot=(d.totalPemasukan||0)+(d.totalPengeluaran||0),pm=tot>0?Math.round((d.totalPemasukan||0)/tot*100):50;
+      document.getElementById('barM').style.width=pm+'%';document.getElementById('barK').style.width=(100-pm)+'%';
+      isiTabel(document.getElementById('tbMasuk'),d.pemasukan);isiTabel(document.getElementById('tbKeluar'),d.pengeluaran);
+      fdot.className='dot on';fstatus.textContent='Terhubung · diperbarui '+jam();
+    }).catch(function(){fdot.className='dot err';fstatus.textContent='Sedang menyambung ulang… (data terakhir tetap tampil)';});
+  }
+  document.getElementById('frefresh').addEventListener('click',muatKeuangan);muatKeuangan();setInterval(muatKeuangan,20000);
+
+  // ===== Form =====
+  var KAT={'Lomba Olahraga':['Bola Voli','Futsal / Sepak Bola Mini','Tenis Meja'],
+    'Lomba Anak':['Lomba Balita (2–5 th)','Lomba Anak (6–9 th)','Lomba Anak (9–12 th)'],
+    'Pentas Seni':['Nyanyi Solo / Duet','Tari Kreasi / Tradisional','Baca Puisi','Fashion Show Merah Putih']};
+  var selJenis=document.getElementById('selJenis'),selKat=document.getElementById('selKat');
+  selJenis.addEventListener('change',function(){var list=KAT[selJenis.value]||[];selKat.innerHTML='<option value="" disabled selected>— Pilih —</option>';list.forEach(function(k){var o=document.createElement('option');o.textContent=k;selKat.appendChild(o);});});
+  var form=document.getElementById('formDaftar'),okMsg=document.getElementById('okMsg');
+  form.addEventListener('submit',function(){setTimeout(function(){form.style.display='none';okMsg.style.display='block';okMsg.scrollIntoView({behavior:'smooth',block:'center'});},400);});
+  document.getElementById('daftarLagi').addEventListener('click',function(){form.reset();selKat.innerHTML='<option value="" disabled selected>— Pilih jenis dulu —</option>';okMsg.style.display='none';form.style.display='block';});
+</script>
+</body>
+</html>
