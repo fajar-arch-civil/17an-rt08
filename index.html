@@ -517,12 +517,42 @@ footer{border-top:1px solid var(--line);margin-top:64px;padding-top:28px}
     tabs.forEach(function(t,k){t.addEventListener('click',function(){set(k);});});
     document.querySelector('.tprev').addEventListener('click',function(){set(cur-1);});document.querySelector('.tnext').addEventListener('click',function(){set(cur+1);});})();
 
-  (function(){var track=document.getElementById('track');if(!track)return;var n=track.children.length,dots=document.getElementById('dots'),i=0,timer;
-    for(var k=0;k<n;k++){(function(k){var b=document.createElement('b');b.addEventListener('click',function(){go(k);});dots.appendChild(b);})(k);}
-    function render(){track.style.transform='translateX('+(-i*100)+'%)';[].slice.call(dots.children).forEach(function(d,k){d.classList.toggle('on',k===i);});}
-    function go(k){i=(k+n)%n;render();reset();}function reset(){clearInterval(timer);timer=setInterval(function(){go(i+1);},4800);}
-    document.querySelector('.nav.next').addEventListener('click',function(){go(i+1);});document.querySelector('.nav.prev').addEventListener('click',function(){go(i-1);});
-    var c=document.querySelector('.carousel');c.addEventListener('mouseenter',function(){clearInterval(timer);});c.addEventListener('mouseleave',reset);render();reset();})();
+  /* ===== Carousel foto dari folder Google Drive (fallback ke foto bawaan) ===== */
+(function(){
+  var track=document.getElementById('track'); if(!track) return;
+  var dots=document.getElementById('dots'), i=0, timer, n=0;
+  function buildSlides(items){
+    track.innerHTML='';
+    items.forEach(function(it){
+      var s=document.createElement('div'); s.className='slide';
+      var ph=document.createElement('div'); ph.className='photo';
+      ph.style.backgroundImage="url('"+it.url+"')";
+      ph.style.backgroundSize='cover'; ph.style.backgroundPosition='center';
+      s.appendChild(ph); track.appendChild(s);
+    });
+  }
+  function render(){
+    track.style.transform='translateX('+(-i*100)+'%)';
+    [].slice.call(dots.children).forEach(function(d,k){ d.classList.toggle('on',k===i); });
+  }
+  function go(k){ i=(k+n)%n; render(); reset(); }
+  function reset(){ clearInterval(timer); timer=setInterval(function(){ go(i+1); },4800); }
+  function init(){
+    n=track.children.length; if(!n) return;
+    dots.innerHTML='';
+    for(var k=0;k<n;k++){ (function(k){ var b=document.createElement('b'); b.addEventListener('click',function(){ go(k); }); dots.appendChild(b); })(k); }
+    render(); reset();
+  }
+  var bn=document.querySelector('.nav.next'), bp=document.querySelector('.nav.prev');
+  if(bn) bn.addEventListener('click',function(){ go(i+1); });
+  if(bp) bp.addEventListener('click',function(){ go(i-1); });
+  var c=document.querySelector('.carousel');
+  if(c){ c.addEventListener('mouseenter',function(){ clearInterval(timer); }); c.addEventListener('mouseleave',reset); }
+  fetch(API+'?aksi=galeri',{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+    if(d && d.ok && d.galeri && d.galeri.length){ buildSlides(d.galeri); }
+    init();
+  }).catch(function(){ init(); });
+})();
 
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
