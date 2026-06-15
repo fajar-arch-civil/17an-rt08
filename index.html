@@ -242,6 +242,24 @@ html{scroll-behavior:smooth}
   /* === FAILSAFE: konten selalu tampil walau JS bermasalah === */
 .reveal{animation:revealIn .8s cubic-bezier(.22,1,.36,1) both !important}
 @keyframes revealIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  /* ===== POLISH LAYER v1 — tampilan lebih "editorial", kurangi kesan generik ===== */
+:root{--line:rgba(255,255,255,.08);--panel:rgba(255,255,255,.03)}
+/* 1) Hierarki judul lebih tegas */
+.hero h1{font-size:clamp(28px,7vw,44px);letter-spacing:-1px;line-height:1.1}
+.sec-h h2{letter-spacing:-.4px}
+/* 2) Subjudul jadi label kecil berspasi (rasa editorial) */
+.sec-h small{text-transform:uppercase;letter-spacing:1.4px;font-size:11px;font-weight:600;opacity:.62}
+/* 3) Ritme jarak antar-bagian lebih lega & konsisten */
+.sec{margin-top:56px;scroll-margin-top:78px}
+.sec-h{margin-bottom:22px}
+/* 4) Permukaan: kurangi efek "glass" berlebih → panel gelap + garis rambut */
+.glass{background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.card,.run,.fincard{border:1px solid var(--line)}
+.tbl th,.tbl td{border-bottom:1px solid var(--line)}
+/* 5) Tombol sekunder lebih bersih & tegas (bukan gradient di mana-mana) */
+.cta-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2)}
+.cta-btn.ghost:hover{border-color:var(--merah);background:rgba(255,46,58,.08)}
 </style>
 </head>
 <body>
