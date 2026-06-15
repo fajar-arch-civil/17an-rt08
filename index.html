@@ -793,6 +793,90 @@ selLomba.addEventListener('change',function(){
   new MutationObserver(update).observe(anchor,{childList:true,subtree:true,characterData:true});
   update();
 })();
+/* ===== Validasi & bantuan form pendaftaran ===== */
+(function(){
+  var form=document.getElementById('formDaftar'); if(!form) return;
+  form.setAttribute('novalidate','novalidate');
+
+  var nama=form.querySelector('[name=nama]');
+  var hp=form.querySelector('[name=hp]');
+  var selBlokGrup=document.getElementById('selBlokGrup');
+  var selBlok=document.getElementById('selBlok');
+  var selJenis=document.getElementById('selJenis');
+  var selLomba=document.getElementById('selLomba');
+  var anakFields=document.getElementById('anakFields');
+  var wali=anakFields?anakFields.querySelector('[name=wali]'):null;
+  var usia=anakFields?anakFields.querySelector('[name=usia]'):null;
+
+  // pesan error inline di bawah field
+  function setErr(field,msg){
+    if(!field) return;
+    var box=field.__errBox;
+    if(!box){
+      box=document.createElement('div');
+      box.className='fielderr';
+      box.style.cssText='color:#ff8088;font-size:13px;line-height:1.4;margin:2px 0 10px';
+      field.insertAdjacentElement('afterend',box);
+      field.__errBox=box;
+    }
+    if(msg){ box.textContent=msg; box.style.display='block'; field.style.borderColor='#ff6b73'; }
+    else { box.style.display='none'; field.style.borderColor=''; }
+  }
+
+  // HP: keyboard angka di HP + rapikan otomatis jadi 0812-3456-7890
+  if(hp){
+    hp.setAttribute('inputmode','numeric');
+    hp.setAttribute('autocomplete','tel');
+    hp.addEventListener('input',function(){
+      var v=hp.value.replace(/\D/g,'');
+      if(v.indexOf('62')===0 && v.length>=2) v='0'+v.slice(2);
+      v=v.slice(0,13);
+      hp.value=v.replace(/(\d{4})(?=\d)/g,'$1-');
+    });
+  }
+
+  // hapus tanda error begitu warga membetulkan
+  [nama,hp,selBlokGrup,selBlok,selJenis,selLomba,wali,usia].forEach(function(f){
+    if(!f) return;
+    f.addEventListener(f.tagName==='SELECT'?'change':'input',function(){ setErr(f,''); });
+  });
+
+  // cek saat kirim (jalan lebih dulu sebelum proses pendaftaran)
+  form.addEventListener('submit',function(e){
+    var firstBad=null;
+    function check(field,bad,msg){
+      if(!field) return;
+      if(bad){ setErr(field,msg); if(!firstBad) firstBad=field; }
+      else setErr(field,'');
+    }
+    check(nama,(nama.value||'').trim().length<2,'Nama peserta belum diisi (minimal 2 huruf).');
+    check(selBlokGrup,!selBlokGrup.value,'Pilih blok dulu ya.');
+    check(selBlok,!selBlok.value,'Pilih nomor rumahmu.');
+    check(selJenis,!selJenis.value,'Pilih jenis lombanya.');
+    check(selLomba,!selLomba.value,'Pilih lomba yang mau diikuti.');
+
+    var hpd=hp?(hp.value||'').replace(/\D/g,''):'';
+    if(hp){
+      if(!hpd) check(hp,true,'Nomor HP/WA belum diisi (buat dihubungi panitia).');
+      else if(hpd.length<10||hpd.length>13||hpd.charAt(0)!=='0') check(hp,true,'Nomor HP kurang tepat — pakai format 08xx (10–13 angka).');
+      else setErr(hp,'');
+    }
+
+    if(anakFields && anakFields.style.display!=='none'){
+      check(usia,!(usia&&(usia.value||'').trim()),'Isi usia anak.');
+      check(wali,!(wali&&(wali.value||'').trim()),'Isi nama orang tua/wali.');
+    }
+
+    if(firstBad){
+      e.preventDefault(); e.stopImmediatePropagation();
+      firstBad.scrollIntoView({behavior:'smooth',block:'center'});
+      try{ firstBad.focus({preventScroll:true}); }catch(_){ firstBad.focus(); }
+      if(typeof showToast==='function') showToast('warn','Ada isian yang belum lengkap — cek bagian bertanda merah ya.');
+      return;
+    }
+    hp && (hp.value=hpd); // simpan nomor versi bersih (tanpa strip) ke sheet
+  }, true);
+})();
 </script>
 </body>
 </html>
