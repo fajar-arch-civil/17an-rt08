@@ -271,6 +271,19 @@ html{scroll-behavior:smooth}
 /* c) Tab aktif tetap merah, tapi rata (tanpa membesar berlebihan) */
 .tab.active{transform:none}
   .fic{color:var(--merah);margin-right:8px;vertical-align:-3px}
+  /* ===== POLISH v3 — Tipografi & ritme editorial (anti-generik) ===== */
+/* Judul section: lebih besar, kerning rapat, khas majalah */
+.sec-h{position:relative;border-bottom:none;padding-bottom:0;margin-bottom:30px;align-items:center}
+.sec-h h2{font-size:25px;font-weight:700;letter-spacing:-.8px;line-height:1.12}
+.sec-h small{text-transform:none;font-size:13px;letter-spacing:0;color:rgba(255,255,255,.62);font-weight:500;margin-top:4px}
+/* Tanda khas: garis aksen merah pendek (bukan garis penuh selebar layar) */
+.sec-h::after{content:"";position:absolute;left:0;bottom:-12px;width:46px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--merah),rgba(255,46,58,0))}
+/* Sudut elemen lebih 'didesain', kurangi kesan serba-bulat default */
+.glass{border-radius:16px}
+.card,.run,.fincard{border-radius:14px}
+/* Hero headline lebih percaya diri */
+.hero h1{font-size:38px;letter-spacing:-1.2px;line-height:1.08}
+@media(max-width:480px){.hero h1{font-size:28px}.sec-h h2{font-size:21px}}
 </style>
 </head>
 <body>
