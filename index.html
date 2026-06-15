@@ -28,14 +28,20 @@
   .wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 16px 70px}
   .iconify{vertical-align:-.125em}
   .glass{background:rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.32)}
-  .hero{text-align:center;padding:40px 22px 22px;position:relative;z-index:1}
+  .hero{text-align:center;padding:42px 22px 24px;position:relative;z-index:1}
   .badge{display:inline-block;padding:7px 16px;border-radius:999px;font-size:12.5px;font-weight:600;margin-bottom:16px}
   .badge .iconify{margin-right:5px}
   .hero h1{font-size:32px;font-weight:800;line-height:1.16;text-shadow:0 4px 20px rgba(0,0,0,.6)}.hero h1 span{color:var(--gold)}
   .hero .sub{margin-top:12px;opacity:.97;font-weight:600;font-size:15px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
   .hero .sub2{margin-top:4px;opacity:.88;font-weight:500;font-size:13.5px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
   .hero .tagline{margin-top:14px;font-size:14.5px;color:var(--gold);max-width:540px;margin:14px auto 0;text-shadow:0 2px 10px rgba(0,0,0,.6)}
-  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .cta-btn{display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;font-weight:700;font-size:14.5px;text-decoration:none;transition:all .3s var(--ease)}
+  .cta-btn .iconify{font-size:18px}
+  .cta-btn.primary{background:linear-gradient(135deg,var(--merah),var(--gold));color:var(--ink);box-shadow:0 8px 24px rgba(255,77,94,.4)}
+  .cta-btn.ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.26)}
+  .cta-btn:hover{transform:translateY(-3px)}
+  .chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:20px}
   .chips .glass{padding:8px 14px;font-size:13px;font-weight:500;border-radius:13px}.chips .iconify{color:var(--gold);margin-right:4px}
   a.src{display:block;text-decoration:none;color:inherit}
   .carousel{position:relative;margin-top:22px;border-radius:20px;overflow:hidden}
@@ -48,6 +54,10 @@
   .dots{position:absolute;bottom:10px;left:0;right:0;display:flex;gap:7px;justify-content:center;z-index:2}
   .dots b{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:all .4s var(--ease)}
   .dots b.on{background:var(--gold);width:22px;border-radius:5px}
+  .count{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .count .u{min-width:74px;padding:14px 10px;text-align:center;border-radius:16px}
+  .count .n{font-size:30px;font-weight:800;color:var(--gold);line-height:1}
+  .count .l{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.8);margin-top:6px}
   .sec{margin-top:38px;scroll-margin-top:70px}
   .sec-h{display:flex;align-items:center;gap:12px;margin-bottom:16px}
   .sec-h .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:0 0 auto}
@@ -107,21 +117,48 @@
   .cekbar{display:flex;gap:8px}
   .cekbar input{flex:1;padding:11px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.95);color:#1a0a13;font:inherit;font-size:15px;outline:none}
   .cekbar button{flex:0 0 auto;padding:11px 22px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--biru),#2f7be0);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+  .prog{height:14px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden;margin:12px 0 6px}
+  .prog>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#2ea043,#3ddc84);transition:width .6s var(--ease)}
+  .prog.warn>i{background:linear-gradient(90deg,#e0a73a,#ffd166)}
+  .lunas-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:999px;font-weight:700;font-size:13px}
+  .lunas-badge.ok{background:rgba(61,220,132,.2);color:#7ef0a8;border:1px solid rgba(61,220,132,.5)}
+  .lunas-badge.no{background:rgba(255,209,102,.18);color:#ffd980;border:1px solid rgba(255,209,102,.5)}
   .cektot{display:flex;justify-content:space-between;font-weight:700;padding:10px 8px;border-top:2px solid rgba(255,255,255,.2);margin-top:4px}.cektot .v{color:var(--hijau)}
   .cek-empty{padding:14px 8px;color:rgba(255,255,255,.78);font-size:13.5px;text-align:center}
+  .stat-row{display:flex;align-items:center;gap:10px;padding:7px 0}
+  .stat-l{flex:0 0 42%;font-size:13px}.stat-bar{flex:1;height:12px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+  .stat-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--merah),var(--gold));border-radius:999px;transition:width .6s var(--ease)}
+  .stat-n{flex:0 0 auto;font-weight:700;color:var(--gold);min-width:24px;text-align:right}
+  .pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin:3px 4px 0 0;background:rgba(255,255,255,.12)}
+  .pill.ok{background:rgba(61,220,132,.2);color:#7ef0a8}.pill.mid{background:rgba(255,209,102,.18);color:#ffd980}.pill.no{background:rgba(255,77,94,.18);color:#ffb3bb}
+  .stat-badge{padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700}
+  .stat-badge.ok{background:rgba(61,220,132,.2);color:#7ef0a8}.stat-badge.mid{background:rgba(255,209,102,.18);color:#ffd980}.stat-badge.no{background:rgba(255,77,94,.18);color:#ffb3bb}
   .mini{width:100%;border-collapse:collapse;font-size:13px}
   .mini th,.mini td{padding:9px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12)}
   .mini th{color:var(--gold);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px}
+  .fab{position:fixed;right:18px;bottom:18px;z-index:30;width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;color:var(--ink);display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.4);text-decoration:none;transition:all .4s var(--ease)}
+  #fab{background:linear-gradient(135deg,var(--merah),var(--gold));opacity:0;visibility:hidden;transform:translateY(20px) scale(.8)}
+  #fab.show{opacity:1;visibility:visible;transform:none}
+  .fab.wa{left:18px;right:auto;background:linear-gradient(135deg,#25d366,#0e8a4f);color:#fff}
+  .fab:hover{transform:translateY(-3px) scale(1.06)}.fab .iconify{font-size:26px}
+  .toast{position:fixed;left:50%;top:16px;transform:translateX(-50%) translateY(-160%);z-index:50;max-width:92%;width:390px;display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.45);transition:transform .5s var(--ease);font-size:13.8px}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast.ok{background:linear-gradient(135deg,#1b7a3e,#2ea043);color:#fff}
+  .toast.warn{background:linear-gradient(135deg,#b9770a,#e0a73a);color:#fff}
+  .toast.info{background:linear-gradient(135deg,#1f5fbf,#3b82f6);color:#fff}
+  .toast .msg{flex:1}.toast .x{flex:0 0 auto;background:rgba(255,255,255,.25);border:none;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:17px;line-height:1}
   footer{text-align:center;margin-top:48px;color:rgba(255,255,255,.72);font-size:12.5px;line-height:1.7}
   .reveal{opacity:0;transform:translateY(26px)}.reveal.show{opacity:1;transform:none;transition:all .7s var(--ease)}
-  @media(max-width:480px){.hero h1{font-size:25px}.sec-h h2{font-size:19px}.kpi .val{font-size:17px}}
+  @media(max-width:480px){.hero h1{font-size:25px}.sec-h h2{font-size:19px}.kpi .val{font-size:17px}.count .n{font-size:24px}.count .u{min-width:64px}}
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
-  @media print{.bg-base,.flag-bg,.overlay,.blob,.nav,.dots,.tnav,.topnav,.btn-mini{display:none!important}body{background:#fff!important;color:#000!important}.glass,.card,.run,.fincard{background:#fff!important;border:1px solid #bbb!important;box-shadow:none!important;backdrop-filter:none!important}.panel{display:block!important}.track{flex-direction:column;transform:none!important}}
+  @media print{.bg-base,.flag-bg,.overlay,.blob,.nav,.dots,.tnav,.topnav,.btn-mini,.fab,.toast,.cta-row{display:none!important}body{background:#fff!important;color:#000!important}.glass,.card,.run,.fincard{background:#fff!important;border:1px solid #bbb!important;box-shadow:none!important;backdrop-filter:none!important}.panel{display:block!important}.track{flex-direction:column;transform:none!important}}
 </style>
 </head>
 <body>
   <div class="bg-base"></div><div class="flag-bg"><div class="band"></div><div class="sheen"></div></div><div class="overlay"></div>
   <div class="blob b1"></div><div class="blob b2"></div>
+
+  <div class="toast" id="toast"><div class="msg" id="toastMsg"></div><button class="x" id="toastX" aria-label="Tutup">×</button></div>
 
   <nav class="topnav"><div class="in">
     <a href="#beranda"><span class="iconify" data-icon="mdi:home-variant"></span>Beranda</a>
@@ -129,6 +166,7 @@
     <a href="#lomba"><span class="iconify" data-icon="mdi:medal"></span>Lomba</a>
     <a href="#jadwal"><span class="iconify" data-icon="mdi:calendar-month"></span>Jadwal</a>
     <a href="#keuangan"><span class="iconify" data-icon="mdi:chart-box"></span>Keuangan</a>
+    <a href="#rekap"><span class="iconify" data-icon="mdi:clipboard-list"></span>Rekap</a>
   </div></nav>
 
   <header class="hero" id="beranda">
@@ -137,6 +175,11 @@
     <div class="sub">Peringatan HUT Kemerdekaan RI Ke-81 · Tahun 2026</div>
     <div class="sub2">Desa Pasanggrahan, Kec. Solear, Kab. Tangerang — Banten</div>
     <div class="tagline">Yuk turun ke lapangan, kumpul bareng tetangga, dan bikin Agustusan tahun ini lebih seru dari biasanya.</div>
+    <div class="cta-row">
+      <a href="#daftar" class="cta-btn primary"><span class="iconify" data-icon="mdi:account-plus"></span>Daftar Sekarang</a>
+      <a href="#keuangan" class="cta-btn ghost"><span class="iconify" data-icon="mdi:wallet"></span>Cek Iuran</a>
+      <a href="#lomba" class="cta-btn ghost"><span class="iconify" data-icon="mdi:medal"></span>Lihat Lomba</a>
+    </div>
     <div class="chips">
       <div class="glass"><span class="iconify" data-icon="mdi:map-marker"></span>Lapangan RT 08 (belakang masjid)</div>
       <div class="glass"><span class="iconify" data-icon="mdi:cash-multiple"></span>Iuran Rp50.000 / KK</div>
@@ -151,8 +194,21 @@
       <div class="slide"><a class="src" href="https://banyuwangikab.go.id/media/berita/original/5c03fecf39bc7bdf3c17530478f926d2.jpg" target="_blank" rel="noopener"><div class="photo"><img loading="lazy" alt="" src="https://banyuwangikab.go.id/media/berita/original/5c03fecf39bc7bdf3c17530478f926d2.jpg" onerror="this.remove()"></div></a><div class="cap">Acara warga, dari kita untuk kita semua.</div></div>
     </div><button class="nav prev" aria-label="Sebelumnya">‹</button><button class="nav next" aria-label="Berikutnya">›</button><div class="dots" id="dots"></div></div>
 
+    <!-- COUNTDOWN -->
+    <section class="sec" id="countdown" style="margin-top:24px">
+      <div class="card glass reveal" style="text-align:center">
+        <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:.5px"><span class="iconify" data-icon="mdi:calendar-clock" style="color:var(--gold);margin-right:5px"></span>MENGHITUNG MUNDUR MENUJU 17 AGUSTUS 2026</div>
+        <div class="count" id="countBox">
+          <div class="u glass"><div class="n" id="cD">0</div><div class="l">Hari</div></div>
+          <div class="u glass"><div class="n" id="cH">0</div><div class="l">Jam</div></div>
+          <div class="u glass"><div class="n" id="cM">0</div><div class="l">Menit</div></div>
+          <div class="u glass"><div class="n" id="cS">0</div><div class="l">Detik</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- FORM -->
-    <section class="sec" id="daftar" style="margin-top:26px">
+    <section class="sec" id="daftar">
       <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:account-plus"></span></div>
         <div><h2>Daftar Lomba & Pentas Seni</h2><small>Yuk daftar dulu — cuma sebentar, gampang kok!</small></div></div>
       <div class="card glass reveal">
@@ -197,6 +253,15 @@
       <div id="p7" class="panel"><div class="card glass"><span class="tag">Dinilai langsung di malam puncak</span><ul class="lomba"><li><b>Nyanyi Solo/Duet</b></li><li><b>Tari Kreasi / Tradisional</b></li><li><b>Fashion Show Merah Putih</b></li><li><b>Baca Puisi Kemerdekaan</b></li></ul></div></div>
     </section>
 
+    <!-- STATISTIK -->
+    <section class="sec" id="statistik">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-bar"></span></div><div><h2>Statistik Pendaftar</h2><small>Jumlah peserta per cabang — otomatis, tanpa menampilkan nama.</small></div></div>
+      <div class="card glass reveal">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:13px;color:rgba(255,255,255,.8)">Total pendaftar:</span><b id="statTotal" style="color:var(--gold);font-size:18px">—</b></div>
+        <div id="statBox"></div>
+      </div>
+    </section>
+
     <!-- JADWAL -->
     <section class="sec" id="jadwal">
       <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:calendar-month"></span></div><div><h2>Jadwal & Rundown</h2><small>Gambaran besar acara — jam detail menyusul.</small></div></div>
@@ -232,13 +297,21 @@
           <div class="fincard glass"><h3 class="k"><span class="iconify" data-icon="mdi:arrow-up-bold-circle"></span> Pengeluaran</h3><table class="tbl"><thead><tr><th>Tgl</th><th>Keterangan</th><th class="num">Jumlah</th></tr></thead><tbody id="tbKeluar"></tbody></table></div>
         </div>
       </div>
-
-      <!-- CEK PEMBAYARAN -->
       <div class="card glass reveal" style="margin-top:14px">
         <div class="cek-h3"><span class="iconify" data-icon="mdi:account-search"></span>Cek Pembayaran Iuran Saya</div>
-        <div class="cek-sub">Ketik blok/alamatmu (mis. <b>C2</b>) untuk melihat riwayat pembayaranmu — terbuka untuk semua warga.</div>
+        <div class="cek-sub">Ketik blok/alamatmu (mis. <b>C2</b>) untuk melihat status iuranmu — target <b>Rp50.000/KK</b>.</div>
         <div class="cekbar"><input id="cekInput" placeholder="Ketik blok, contoh: C2" inputmode="text"><button id="cekBtn">Cek</button></div>
         <div id="cekHasil"></div>
+      </div>
+    </section>
+
+    <!-- REKAP IURAN -->
+    <section class="sec" id="rekap">
+      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:clipboard-list"></span></div><div><h2>Rekap Iuran Warga</h2><small>Status iuran per KK — transparan untuk semua.</small></div></div>
+      <div class="card glass reveal">
+        <div id="rekapSum" style="margin-bottom:6px"></div>
+        <div class="cek-sub" id="rekapInfo" style="margin-bottom:10px"></div>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Blok/Alamat</th><th>Nama KK</th><th>Status</th><th class="num">Terbayar</th></tr></thead><tbody id="rekapBody"><tr><td class="empty" colspan="4">Memuat…</td></tr></tbody></table></div>
       </div>
     </section>
 
@@ -257,11 +330,42 @@
     <footer>Karang Taruna RT 08 / RW 12 — Taman Kirana Surya · HUT RI ke-81 Tahun 2026<br><b style="color:var(--gold)">Sampai ketemu di lapangan, ya. Dirgahayu Indonesia! <span class="iconify" data-icon="twemoji:flag-indonesia"></span></b></footer>
   </div>
 
+  <a class="fab wa" id="waBtn" href="#" target="_blank" rel="noopener" aria-label="Hubungi Panitia (WhatsApp)"><span class="iconify" data-icon="mdi:whatsapp"></span></a>
+  <button class="fab" id="fab" aria-label="Kembali ke atas"><span class="iconify" data-icon="mdi:arrow-up"></span></button>
+
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 <script>
   var API="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec";
+  var WA_PANITIA="6285215079010"; //
+  var TARGET=50000;
   var BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   function norm(s){return String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,' ');}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  // WhatsApp panitia
+  document.getElementById('waBtn').href="https://wa.me/"+WA_PANITIA+"?text="+encodeURIComponent("Halo Panitia 17-an RT 08, saya mau bertanya: ");
+
+  // Toast
+  var toastEl=document.getElementById('toast'),toastMsg=document.getElementById('toastMsg');
+  function showToast(type,html,ms){toastEl.className='toast '+type+' show';toastMsg.innerHTML=html;clearTimeout(toastEl._tm);toastEl._tm=setTimeout(function(){toastEl.classList.remove('show');},ms||8000);}
+  document.getElementById('toastX').addEventListener('click',function(){toastEl.classList.remove('show');});
+
+  // FAB kembali ke atas
+  var fab=document.getElementById('fab');
+  window.addEventListener('scroll',function(){ if(window.scrollY>420)fab.classList.add('show'); else fab.classList.remove('show'); });
+  fab.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+
+  // Hitung mundur ke 17 Agustus 2026
+  var TARGET_DATE=new Date('2026-08-17T00:00:00+07:00').getTime(), countTimer;
+  function tickCount(){
+    var d=TARGET_DATE-Date.now();
+    if(d<=0){ document.getElementById('countBox').innerHTML='<div class="u glass" style="min-width:auto;padding:16px 26px"><div class="n">🇮🇩</div><div class="l">Dirgahayu RI ke-81!</div></div>'; clearInterval(countTimer); return; }
+    document.getElementById('cD').textContent=Math.floor(d/86400000);
+    document.getElementById('cH').textContent=Math.floor(d%86400000/3600000);
+    document.getElementById('cM').textContent=Math.floor(d%3600000/60000);
+    document.getElementById('cS').textContent=Math.floor(d%60000/1000);
+  }
+  countTimer=setInterval(tickCount,1000);tickCount();
 
   // Tab lomba
   (function(){var tabs=[].slice.call(document.querySelectorAll('.tab')),panels=[].slice.call(document.querySelectorAll('.panel')),cur=0;
@@ -286,12 +390,12 @@
     if(typeof v==='string'){var m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return (+m[1])+' '+BLN[(+m[2])-1]+' '+m[3];}
     var d=new Date(v);if(!isNaN(d.getTime()))return d.getDate()+' '+BLN[d.getMonth()]+' '+d.getFullYear();return String(v);}
 
-  // ===== Keuangan =====
+  // Keuangan
   var dataKeuangan=null;
   var rp=function(n){try{return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0);}catch(e){return 'Rp'+(n||0);}};
   function jam(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
   function isiTabel(tbody,arr){tbody.innerHTML='';if(!arr||!arr.length){tbody.innerHTML='<tr><td class="empty" colspan="3">Belum ada data.</td></tr>';return;}
-    arr.slice().reverse().forEach(function(t){var tr=document.createElement('tr');tr.innerHTML='<td class="tgl">'+fmtTgl(t.tanggal)+'</td><td>'+(t.keterangan||t.kategori||'-')+'</td><td class="num">'+rp(t.jumlah)+'</td>';tbody.appendChild(tr);});}
+    arr.slice().reverse().forEach(function(t){var tr=document.createElement('tr');tr.innerHTML='<td class="tgl">'+fmtTgl(t.tanggal)+'</td><td>'+esc(t.keterangan||t.kategori||'-')+'</td><td class="num">'+rp(t.jumlah)+'</td>';tbody.appendChild(tr);});}
   var fdot=document.getElementById('fdot'),fstatus=document.getElementById('fstatus');
   function muatKeuangan(){
     fetch(API,{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
@@ -302,58 +406,4 @@
       document.getElementById('kKK').textContent=(d.jumlahKKBayar||0)+' KK';
       var tot=(d.totalPemasukan||0)+(d.totalPengeluaran||0),pm=tot>0?Math.round((d.totalPemasukan||0)/tot*100):50;
       document.getElementById('barM').style.width=pm+'%';document.getElementById('barK').style.width=(100-pm)+'%';
-      isiTabel(document.getElementById('tbMasuk'),d.pemasukan);isiTabel(document.getElementById('tbKeluar'),d.pengeluaran);
-      fdot.className='dot on';fstatus.textContent='Terhubung · diperbarui '+jam();
-    }).catch(function(){fdot.className='dot err';fstatus.textContent='Sedang menyambung ulang… (data terakhir tetap tampil)';});
-  }
-  document.getElementById('frefresh').addEventListener('click',muatKeuangan);muatKeuangan();setInterval(muatKeuangan,20000);
-
-  // ===== Cek pembayaran by alamat =====
-  var cekInput=document.getElementById('cekInput'),cekHasil=document.getElementById('cekHasil');
-  function cekBayar(){
-    var q=norm(cekInput.value);
-    if(!q){cekHasil.innerHTML='<div class="cek-empty">Ketik dulu blok/alamatmu ya.</div>';return;}
-    if(!dataKeuangan){cekHasil.innerHTML='<div class="cek-empty">Data sedang dimuat, coba lagi sebentar…</div>';return;}
-    var rows=(dataKeuangan.pemasukan||[]).filter(function(t){
-      var blok=norm(t.blok),ket=norm(t.keterangan);
-      return (blok&&(blok===q||blok.indexOf(q)>-1))||(ket&&ket.indexOf(q)>-1);
-    });
-    if(!rows.length){cekHasil.innerHTML='<div class="cek-empty">Belum ada catatan pembayaran untuk "<b>'+cekInput.value+'</b>". Kalau merasa sudah bayar, hubungi panitia ya.</div>';return;}
-    var total=0,html='<table class="tbl" style="margin-top:12px"><thead><tr><th>Tgl</th><th>Keterangan</th><th class="num">Jumlah</th></tr></thead><tbody>';
-    rows.forEach(function(t){total+=t.jumlah||0;html+='<tr><td class="tgl">'+fmtTgl(t.tanggal)+'</td><td>'+(t.keterangan||t.kategori||'-')+'</td><td class="num">'+rp(t.jumlah)+'</td></tr>';});
-    html+='</tbody></table><div class="cektot"><span>Total dibayar</span><span class="v">'+rp(total)+'</span></div>';
-    cekHasil.innerHTML=html;
-  }
-  document.getElementById('cekBtn').addEventListener('click',cekBayar);
-  cekInput.addEventListener('keydown',function(e){if(e.key==='Enter')cekBayar();});
-
-  // ===== Form: kategori ikut jenis =====
-  var KAT={'Lomba Olahraga':['Bola Voli','Futsal / Sepak Bola Mini','Tenis Meja'],
-    'Lomba Anak':['Lomba Balita (2–5 th)','Lomba Anak (6–9 th)','Lomba Anak (9–12 th)'],
-    'Pentas Seni':['Nyanyi Solo / Duet','Tari Kreasi / Tradisional','Baca Puisi','Fashion Show Merah Putih']};
-  var selJenis=document.getElementById('selJenis'),selKat=document.getElementById('selKat');
-  selJenis.addEventListener('change',function(){var list=KAT[selJenis.value]||[];selKat.innerHTML='<option value="" disabled selected>— Pilih —</option>';list.forEach(function(k){var o=document.createElement('option');o.textContent=k;selKat.appendChild(o);});});
-
-  // ===== Form: cek duplikat dulu, lalu kirim =====
-  var form=document.getElementById('formDaftar'),okMsg=document.getElementById('okMsg'),dupMsg=document.getElementById('dupMsg'),btn=document.getElementById('btnKirim');
-  var btnAsli=btn.innerHTML;
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    dupMsg.style.display='none';
-    btn.disabled=true;btn.innerHTML='Memeriksa…';
-    var qs=new URLSearchParams({aksi:'cekDaftar',nama:form.nama.value,jenis:form.jenis.value,kategori:form.kategori.value,alamat:form.alamat.value});
-    fetch(API+'?'+qs.toString(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-      if(d&&d.terdaftar){
-        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        btn.disabled=false;btn.innerHTML=btnAsli;
-      }else{ kirim(); }
-    }).catch(function(){ kirim(); });   // kalau cek gagal, jangan blok warga
-    function kirim(){ form.submit(); setTimeout(function(){ form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';okMsg.scrollIntoView({behavior:'smooth',block:'center'}); },350); }
-  });
-  document.getElementById('daftarLagi').addEventListener('click',function(){
-    form.reset();selKat.innerHTML='<option value="" disabled selected>— Pilih jenis dulu —</option>';
-    okMsg.style.display='none';dupMsg.style.display='none';form.style.display='block';btn.disabled=false;btn.innerHTML=btnAsli;
-  });
-</script>
-</body>
-</html>
+      isiTabel(document.getElementById('tbMasuk'),d.pemasuk
