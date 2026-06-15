@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#d4111d">
 <title>17-an RT 08 — HUT RI ke-81 (2026)</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
   :root{--gold:#ffd166;--merah:#ff4d5e;--hijau:#3ddc84;--biru:#5aa9ff;--ink:#1a0a13;--ease:cubic-bezier(.22,1,.36,1)}
   *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
   body{font-family:'Poppins',system-ui,sans-serif;color:#fff;line-height:1.55;overflow-x:hidden;background:#15060f;min-height:100vh}
@@ -152,6 +152,61 @@
   @media(max-width:480px){.hero h1{font-size:25px}.sec-h h2{font-size:19px}.kpi .val{font-size:17px}.count .n{font-size:24px}.count .u{min-width:64px}}
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
   @media print{.bg-base,.flag-bg,.overlay,.blob,.nav,.dots,.tnav,.topnav,.btn-mini,.fab,.toast,.cta-row{display:none!important}body{background:#fff!important;color:#000!important}.glass,.card,.run,.fincard{background:#fff!important;border:1px solid #bbb!important;box-shadow:none!important;backdrop-filter:none!important}.panel{display:block!important}.track{flex-direction:column;transform:none!important}}
+  /* ===== TEMA: Elegant Dark Futuristic — Merah (override) ===== */
+:root{
+  --merah:#ff2e3a;--gold:#ff8088;--biru:#ff4d57;--hijau:#27e0a0;--ink:#fff;--glow:#ff3b46;
+}
+body{background:#0b0607;color:#f3f3f5}
+.bg-base{background:
+  radial-gradient(900px 520px at 12% -6%,rgba(255,46,58,.18),transparent 60%),
+  radial-gradient(820px 480px at 102% 8%,rgba(120,10,20,.30),transparent 55%),#0b0607}
+.flag-bg .band{background:radial-gradient(720px 380px at 50% 0%,rgba(255,59,70,.10),transparent 70%)}
+.flag-bg .sheen{opacity:.45;
+  background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px) 0 0/100% 46px,
+             linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px) 0 0/46px 100%;
+  -webkit-mask-image:radial-gradient(circle at 50% 18%,#000,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 18%,#000,transparent 78%)}
+.overlay{background:linear-gradient(180deg,rgba(8,4,5,.42),rgba(8,4,5,.88))}
+.blob{filter:blur(90px);opacity:.42;animation:floaty 15s var(--ease) infinite alternate}
+.b1{background:#ff2e3a}.b2{background:#7a0b14;animation-delay:-7s}
+@keyframes floaty{from{transform:translate(0,0)}to{transform:translate(46px,34px)}}
+
+h1,.hero h1,.sec-h h2,.count .n,.kpi .val{font-family:'Space Grotesk','Poppins',sans-serif;letter-spacing:-.5px}
+.hero h1 span{color:var(--merah);text-shadow:0 0 26px rgba(255,46,58,.55)}
+.count .n{color:var(--merah);text-shadow:0 0 18px rgba(255,46,58,.45)}
+.badge{background:rgba(255,46,58,.14);border:1px solid rgba(255,46,58,.4);color:#ffb3b8}
+.tag{background:rgba(255,46,58,.14);border:1px solid rgba(255,46,58,.3);color:#ffb3b8}
+
+.glass{background:rgba(255,255,255,.038);border:1px solid rgba(255,80,90,.16);
+  box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05)}
+.topnav{background:rgba(11,6,7,.66);border-bottom:1px solid rgba(255,80,90,.14)}
+.topnav a{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.topnav a:hover{background:rgba(255,46,58,.16);border-color:rgba(255,46,58,.5)}
+
+.sec-h .ic{background:linear-gradient(135deg,rgba(255,46,58,.22),rgba(120,10,20,.30));
+  border:1px solid rgba(255,80,90,.3);box-shadow:0 0 20px rgba(255,46,58,.22)}
+.photo{background:linear-gradient(135deg,#7a0c16,#1a0608)}
+
+.topnav a.cta,.cta-btn.primary,.submit,.tab.active,.cekbar button,#fab{
+  background:linear-gradient(135deg,#ff3b46,#b3121d);color:#fff;box-shadow:0 8px 26px rgba(255,46,58,.5)}
+.cta-btn.primary:hover,.submit:hover{box-shadow:0 16px 44px rgba(255,46,58,.7)}
+.cta-btn.ghost{background:rgba(255,255,255,.05);border:1px solid rgba(255,80,90,.35);color:#fff}
+
+.form input,.form select,.form textarea,.cekbar input{
+  background:rgba(255,255,255,.05)!important;color:#f3f3f5!important;border:1px solid rgba(255,255,255,.14)!important}
+.form input::placeholder,.form textarea::placeholder,.cekbar input::placeholder{color:rgba(255,255,255,.4)}
+.form input:focus,.form select:focus,.form textarea:focus{
+  box-shadow:0 0 0 3px rgba(255,46,58,.35)!important;border-color:rgba(255,46,58,.6)!important}
+.form select option{background:#160c0e;color:#f3f3f5}
+
+.tab{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.tab:hover{background:rgba(255,46,58,.14)}
+
+.card,.run,.fincard{transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s var(--ease)}
+.card:hover,.run:hover,.fincard:hover{transform:translateY(-3px);border-color:rgba(255,46,58,.4);box-shadow:0 14px 44px rgba(255,46,58,.18)}
+
+.toast.info{background:linear-gradient(135deg,#3a2226,#5a2a30)}
+/* ===== /TEMA ===== */
 </style>
 </head>
 <body>
