@@ -705,7 +705,7 @@ selLomba.addEventListener('change',function(){
   new MutationObserver(filter).observe(rekapBody,{childList:true});
   cari.addEventListener('input',filter); filter();
 })();
-/* ===== Bar Progres Pelunasan Iuran (otomatis dari data rekap) ===== */
+/* ===== Bar Progres Pelunasan Iuran (hitung ulang, alamat kosong dieliminasi) ===== */
 (function(){
   var anchor=document.getElementById('rekapSum'); if(!anchor)return;
   var box=document.createElement('div');
@@ -723,14 +723,20 @@ selLomba.addEventListener('change',function(){
   anchor.parentNode.insertBefore(box,anchor);
   function update(){
     if(typeof dataKeuangan==='undefined'||!dataKeuangan||!dataKeuangan.rekapIuran)return;
-    var s=dataKeuangan.rekapIuran.ringkasan||{};
-    var total=s.totalKK||0,lunas=s.lunas||0,seb=s.sebagian||0,belum=s.belum||0;
+    var r=dataKeuangan.rekapIuran;
+    var fill=document.getElementById('piFill'),pctEl=document.getElementById('piPct'),infoEl=document.getElementById('piInfo');
+    // hitung ulang: hanya KK terisi (nama tidak kosong / bukan "-")
+    var list=(r.daftar||[]).filter(function(k){var n=String(k.nama||'').trim();return n!==''&&n!=='-';});
+    if(!r.pakaiRoster||!list.length){
+      fill.style.width='0';pctEl.textContent='—';
+      infoEl.innerHTML='Isi tab "DaftarKK" (alamat berisi nama KK) agar progres seluruh warga tampil.';
+      return;
+    }
+    var total=list.length,lunas=0,seb=0,belum=0;
+    list.forEach(function(k){var st=k.status;if(st==='Lunas')lunas++;else if(st==='Sebagian')seb++;else belum++;});
     var pct=total>0?Math.round(lunas/total*100):0;
-    document.getElementById('piFill').style.width=pct+'%';
-    document.getElementById('piPct').textContent=total>0?pct+'%':'—';
-    document.getElementById('piInfo').innerHTML=total>0
-      ?('<b style="color:#27e0a0">'+lunas+'</b> dari <b>'+total+'</b> KK sudah lunas · Sebagian: '+seb+' · Belum: '+belum)
-      :'Isi tab "DaftarKK" untuk menampilkan progres seluruh warga.';
+    fill.style.width=pct+'%';pctEl.textContent=pct+'%';
+    infoEl.innerHTML='<b style="color:#27e0a0">'+lunas+'</b> dari <b>'+total+'</b> KK sudah lunas · Sebagian: '+seb+' · Belum: '+belum;
   }
   new MutationObserver(update).observe(anchor,{childList:true,subtree:true,characterData:true});
   update();
