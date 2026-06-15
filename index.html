@@ -242,68 +242,44 @@ html{scroll-behavior:smooth}
   /* === FAILSAFE: konten selalu tampil walau JS bermasalah === */
 .reveal{animation:revealIn .8s cubic-bezier(.22,1,.36,1) both !important}
 @keyframes revealIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  /* ===== POLISH LAYER v1 — tampilan lebih "editorial", kurangi kesan generik ===== */
+  /* ===== POLISH (final — konsolidasi v1–v5) ===== */
 :root{--line:rgba(255,255,255,.08);--panel:rgba(255,255,255,.03)}
-/* 1) Hierarki judul lebih tegas */
-.hero h1{font-size:clamp(28px,7vw,44px);letter-spacing:-1px;line-height:1.1}
-.sec-h h2{letter-spacing:-.4px}
-/* 2) Subjudul jadi label kecil berspasi (rasa editorial) */
-.sec-h small{text-transform:uppercase;letter-spacing:1.4px;font-size:11px;font-weight:600;opacity:.62}
-/* 3) Ritme jarak antar-bagian lebih lega & konsisten */
-.sec{margin-top:56px;scroll-margin-top:78px}
-.sec-h{margin-bottom:22px}
-/* 4) Permukaan: kurangi efek "glass" berlebih → panel gelap + garis rambut */
-.glass{background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.45)}
-.card,.run,.fincard{border:1px solid var(--line)}
-.tbl th,.tbl td{border-bottom:1px solid var(--line)}
-/* 5) Tombol sekunder lebih bersih & tegas (bukan gradient di mana-mana) */
-.cta-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2)}
-.cta-btn.ghost:hover{border-color:var(--merah);background:rgba(255,46,58,.08)}
-  /* ===== POLISH LAYER v2 — buang ciri khas AI (acuan impeccable) ===== */
-/* a) Kotak-ikon identik tiap judul = tell utama → jadikan ikon polos + garis aksen */
-.sec-h{gap:11px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+
+/* Section header: editorial, ikon polos + garis aksen merah */
+.sec{margin-top:62px;scroll-margin-top:78px}
+.sec-h{position:relative;display:flex;align-items:center;gap:11px;border-bottom:none;padding-bottom:0;margin-bottom:34px}
+.sec-h h2{font-size:25px;font-weight:700;letter-spacing:-.8px;line-height:1.12}
+.sec-h small{text-transform:none;font-size:13px;letter-spacing:0;font-weight:500;margin-top:4px;color:rgba(255,255,255,.68);opacity:.62}
 .sec-h .ic{background:none!important;border:none!important;box-shadow:none!important;width:auto;height:auto}
 .sec-h .ic .iconify{font-size:28px;color:var(--merah)}
-/* b) Kurangi glow/gradient teks → aksen merah solid yang percaya diri */
+.sec-h::after{content:"";position:absolute;left:0;bottom:-12px;width:46px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--merah),rgba(255,46,58,0))}
+@media(min-width:560px){.sec-h::after{width:54px}}
+
+/* Hero & teks: aksen merah solid, tanpa glow */
+.hero h1{font-size:38px;letter-spacing:-1.2px;line-height:1.08}
 .hero h1 span{color:var(--merah)!important;text-shadow:none!important}
 .count .n{text-shadow:none!important}
-/* c) Tab aktif tetap merah, tapi rata (tanpa membesar berlebihan) */
 .tab.active{transform:none}
-  .fic{color:var(--merah);margin-right:8px;vertical-align:-3px}
-  /* ===== POLISH v3 — Tipografi & ritme editorial (anti-generik) ===== */
-/* Judul section: lebih besar, kerning rapat, khas majalah */
-.sec-h{position:relative;border-bottom:none;padding-bottom:0;margin-bottom:30px;align-items:center}
-.sec-h h2{font-size:25px;font-weight:700;letter-spacing:-.8px;line-height:1.12}
-.sec-h small{text-transform:none;font-size:13px;letter-spacing:0;color:rgba(255,255,255,.62);font-weight:500;margin-top:4px}
-/* Tanda khas: garis aksen merah pendek (bukan garis penuh selebar layar) */
-.sec-h::after{content:"";position:absolute;left:0;bottom:-12px;width:46px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--merah),rgba(255,46,58,0))}
-/* Sudut elemen lebih 'didesain', kurangi kesan serba-bulat default */
-.glass{border-radius:16px}
-.card,.run,.fincard{border-radius:14px}
-/* Hero headline lebih percaya diri */
-.hero h1{font-size:38px;letter-spacing:-1.2px;line-height:1.08}
-@media(max-width:480px){.hero h1{font-size:28px}.sec-h h2{font-size:21px}}
-/* ===== POLISH v4 — Ritme & nafas antar-section ===== */
-/* Jarak antar-section lebih lega & berirama */
-.sec{margin-top:62px}
-.wrap{padding-bottom:90px}
-.sec-h{margin-bottom:34px}
-/* Garis aksen judul proporsional di layar lebar */
-@media(min-width:560px){.sec-h::after{width:54px}}
-/* Kartu terasa 'hidup' & berkedalaman saat disentuh (elegan, tidak norak) */
-.card,.run,.fincard{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+
+/* Permukaan: panel halus + garis rambut, sudut 'didesain' */
+.glass{background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.45);border-radius:16px}
+.card,.run,.fincard{border:1px solid var(--line);border-radius:14px;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .card:hover,.run:hover,.fincard:hover{transform:translateY(-3px);box-shadow:0 18px 44px -18px rgba(0,0,0,.6)}
-/* ===== POLISH v5 — Signature moment + finishing ===== */
-/* Signature: angka '81' raksasa bergaris (HUT ke-81) di belakang hero */
-.hero{position:relative;overflow:hidden}
-.hero::before{content:"81";position:absolute;top:-26px;right:-6px;z-index:0;font-family:'Space Grotesk',sans-serif;font-size:190px;font-weight:700;line-height:1;letter-spacing:-10px;color:transparent;-webkit-text-stroke:2px rgba(255,46,58,.12);pointer-events:none}
-.hero>*{position:relative;z-index:1}
-@media(max-width:480px){.hero::before{font-size:118px;top:-12px;-webkit-text-stroke-width:1.5px}}
-/* Footer terasa 'selesai' dengan garis penutup halus */
+.tbl th,.tbl td{border-bottom:1px solid var(--line)}
+
+/* Tombol sekunder bersih */
+.cta-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2)}
+.cta-btn.ghost:hover{border-color:var(--merah);background:rgba(255,46,58,.08)}
+
+/* Ikon flat inline + layout */
+.fic{color:var(--merah);margin-right:8px;vertical-align:-3px}
+.wrap{padding-bottom:90px}
+
+/* Footer 'selesai' + kontras nyaman dibaca */
 footer{border-top:1px solid var(--line);margin-top:64px;padding-top:28px}
-/* Kontras teks redup sedikit dinaikkan — nyaman dibaca semua umur */
-.sec-h small{color:rgba(255,255,255,.68)}
+
+/* Mobile */
+@media(max-width:480px){.hero h1{font-size:28px}.sec-h h2{font-size:21px}}
 </style>
 </head>
 <body>
