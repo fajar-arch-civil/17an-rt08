@@ -353,7 +353,7 @@ html{scroll-behavior:smooth}
   <button type="submit" class="submit" id="btnKirim"><span class="iconify" data-icon="mdi:send"></span>Kirim Pendaftaran</button>
   <iframe name="sink" style="display:none" title="sink"></iframe>
 </form>
-        <div class="ok-msg" id="okMsg"><span class="iconify" data-icon="mdi:check-circle"></span><h3>Pendaftaran Terdaftar! <span class="iconify" data-icon="mdi:check-circle" style="vertical-align:-3px;margin-right:5px"></span></h3><p>Data kamu sudah masuk ke panitia. Sampai jumpa di lapangan! 🇮🇩</p><button id="daftarLagi">Daftar lagi</button></div>
+        <div class="ok-msg" id="okMsg"><span class="iconify" data-icon="mdi:check-circle"></span><h3>Pendaftaran Terdaftar! <span class="iconify" data-icon="mdi:check-circle" style="vertical-align:-3px;margin-right:5px"></span></h3><p>Data kamu sudah masuk ke panitia. Sampai jumpa di lapangan! <span class="iconify" data-icon="circle-flags:id" style="margin:0 4px;vertical-align:-2px"></span></p><button id="daftarLagi">Daftar lagi</button></div>
       </div>
       <iframe name="sink" class="hide" id="sink"></iframe>
     </section>
@@ -457,7 +457,7 @@ html{scroll-behavior:smooth}
   <div class="sec-h"><div class="ic"><span class="iconify" data-icon="mdi:bullhorn" style="color:var(--merah);font-size:26px;margin-right:11px;vertical-align:-5px"></span></div><div><h2>Sambutan &amp; Info Acara</h2><p>Sedikit pengantar dari panitia, plus jawaban pertanyaan yang sering ditanyakan.</p></div></div>
 
   <div class="glass" style="padding:22px;margin-bottom:18px">
-    <p style="margin:0 0 10px">Assalamualaikum dan salam sejahtera untuk Bapak, Ibu, serta seluruh warga RT 08. 🇮🇩</p>
+    <p style="margin:0 0 10px">Assalamualaikum dan salam sejahtera untuk Bapak, Ibu, serta seluruh warga RT 08. <span class="iconify" data-icon="circle-flags:id" style="margin:0 4px;vertical-align:-2px"></span></p>
     <p style="margin:0 0 10px">Menyambut HUT ke-81 Kemerdekaan Republik Indonesia, mari kita rayakan bersama dengan gembira dan penuh kebersamaan. Acara ini dari kita, oleh kita, dan untuk kita semua.</p>
     <p style="margin:0">Yuk ramaikan: daftar lombanya, hadir di lapangan, dan jaga kekompakan warga. Sampai jumpa di lapangan. Merdeka!</p>
     <p style="margin:14px 0 0;font-weight:600">— Panitia 17 Agustus &amp; Karang Taruna RT 08</p>
@@ -501,7 +501,7 @@ html{scroll-behavior:smooth}
   var TARGET_DATE=new Date('2026-08-17T00:00:00+07:00').getTime(), countTimer;
   function tickCount(){
     var d=TARGET_DATE-Date.now();
-    if(d<=0){ document.getElementById('countBox').innerHTML='<div class="u glass" style="min-width:auto;padding:16px 26px"><div class="n">🇮🇩</div><div class="l">Dirgahayu RI ke-81!</div></div>'; clearInterval(countTimer); return; }
+    if(d<=0){ document.getElementById('countBox').innerHTML='<div class="u glass" style="min-width:auto;padding:16px 26px"><div class="n"><span class="iconify" data-icon="circle-flags:id" style="margin:0 4px;vertical-align:-2px"></span></div><div class="l">Dirgahayu RI ke-81!</div></div>'; clearInterval(countTimer); return; }
     document.getElementById('cD').textContent=Math.floor(d/86400000);
     document.getElementById('cH').textContent=Math.floor(d%86400000/3600000);
     document.getElementById('cM').textContent=Math.floor(d%3600000/60000);
@@ -589,7 +589,7 @@ html{scroll-behavior:smooth}
     rows.forEach(function(t){html+='<tr><td class="tgl">'+fmtTgl(t.tanggal)+'</td><td>'+esc(t.keterangan||t.kategori||'-')+'</td><td class="num">'+rp(t.jumlah)+'</td></tr>';});
     html+='</tbody></table><div class="cektot"><span>Total dibayar</span><span class="v">'+rp(total)+'</span></div>';
     cekHasil.innerHTML=html;
-    if(lunas)showToast('ok','<span class="iconify" data-icon="mdi:party-popper" style="vertical-align:-3px;margin-right:6px"></span> <b>Iuran kamu LUNAS!</b> Terima kasih sudah membayar'+(lebih>0?' (kelebihan '+rp(lebih)+' tercatat sebagai donasi)':'')+'. 🇮🇩');
+    if(lunas)showToast('ok','<span class="iconify" data-icon="mdi:party-popper" style="vertical-align:-3px;margin-right:6px"></span> <b>Iuran kamu LUNAS!</b> Terima kasih sudah membayar'+(lebih>0?' (kelebihan '+rp(lebih)+' tercatat sebagai donasi)':'')+'. <span class="iconify" data-icon="circle-flags:id" style="margin:0 4px;vertical-align:-2px"></span>');
     else showToast('warn','<span class="iconify" data-icon="mdi:arm-flex" style="vertical-align:-3px;margin-right:6px"></span> <b>Belum lunas.</b> Sudah '+rp(total)+', kurang <b>'+rp(sisa)+'</b> lagi dari target '+rp(TARGET)+'.');
   }
   document.getElementById('cekBtn').addEventListener('click',cekBayar);
