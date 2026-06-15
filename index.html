@@ -284,6 +284,16 @@ html{scroll-behavior:smooth}
 /* Hero headline lebih percaya diri */
 .hero h1{font-size:38px;letter-spacing:-1.2px;line-height:1.08}
 @media(max-width:480px){.hero h1{font-size:28px}.sec-h h2{font-size:21px}}
+/* ===== POLISH v4 — Ritme & nafas antar-section ===== */
+/* Jarak antar-section lebih lega & berirama */
+.sec{margin-top:62px}
+.wrap{padding-bottom:90px}
+.sec-h{margin-bottom:34px}
+/* Garis aksen judul proporsional di layar lebar */
+@media(min-width:560px){.sec-h::after{width:54px}}
+/* Kartu terasa 'hidup' & berkedalaman saat disentuh (elegan, tidak norak) */
+.card,.run,.fincard{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.card:hover,.run:hover,.fincard:hover{transform:translateY(-3px);box-shadow:0 18px 44px -18px rgba(0,0,0,.6)}
 </style>
 </head>
 <body>
