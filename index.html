@@ -213,19 +213,27 @@
         <div><h2>Daftar Lomba & Pentas Seni</h2><small>Yuk daftar dulu — cuma sebentar, gampang kok!</small></div></div>
       <div class="card glass reveal">
         <div class="alert-dup" id="dupMsg"><span class="iconify" data-icon="mdi:alert-circle"></span><b>Data sudah terdaftar!</b> Nama, kategori lomba, dan alamat ini sudah ada di daftar. Tidak perlu mendaftar dua kali ya. Kalau mau ikut lomba lain, ganti pilihan kategorinya.</div>
-        <form class="form" id="formDaftar" action="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec" method="POST" target="sink">
-          <div class="fld"><label>Nama Lengkap <span class="req">*</span></label><input name="nama" required placeholder="Contoh: Budi Santoso"></div>
-          <div class="two">
-            <div class="fld"><label>Blok / Alamat <span class="req">*</span></label><input name="alamat" required placeholder="Blok C2 No. 5"></div>
-            <div class="fld"><label>No. HP / WA <span class="req">*</span></label><input name="hp" required inputmode="numeric" placeholder="08xxxxxxxxxx"></div>
-          </div>
-          <div class="two">
-            <div class="fld"><label>Ikut Lomba Apa? <span class="req">*</span></label><select name="jenis" id="selJenis" required><option value="" disabled selected>— Pilih —</option><option>Lomba Olahraga</option><option>Lomba Anak</option><option>Pentas Seni</option></select></div>
-            <div class="fld"><label>Kategori / Cabang <span class="req">*</span></label><select name="kategori" id="selKat" required><option value="" disabled selected>— Pilih jenis dulu —</option></select></div>
-          </div>
-          <div class="fld"><label>Catatan (opsional)</label><textarea name="catatan" placeholder="Contoh: usia anak 7 tahun, atau nama tim"></textarea></div>
-          <button type="submit" class="submit" id="btnKirim"><span class="iconify" data-icon="mdi:send"></span>Kirim Pendaftaran</button>
-        </form>
+       <form class="form" id="formDaftar" action="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec" method="post" target="sink" autocomplete="off">
+  <div class="fld"><label>Nama Peserta <span class="req">*</span></label><input name="nama" required placeholder="Contoh: Budi Santoso"></div>
+  <div class="two">
+    <div class="fld"><label>Blok / Alamat <span class="req">*</span></label><select name="blok" id="selBlok" required><option value="" disabled selected>— Pilih alamat —</option></select></div>
+    <div class="fld"><label>No. HP / WA <span class="req">*</span></label><input name="hp" required inputmode="numeric" placeholder="08xxxxxxxxxx"></div>
+  </div>
+  <div class="two">
+    <div class="fld"><label>Ikut Lomba Apa? <span class="req">*</span></label><select name="jenis" id="selJenis" required><option value="" disabled selected>— Pilih —</option><option>Lomba Olahraga</option><option>Lomba Anak</option><option>Pentas Seni</option></select></div>
+    <div class="fld"><label>Cabang / Lomba <span class="req">*</span></label><select name="lomba" id="selLomba" required><option value="" disabled selected>— Pilih jenis dulu —</option></select></div>
+  </div>
+  <div id="anakFields" style="display:none">
+    <div class="two">
+      <div class="fld"><label>Nama Orang Tua / Wali <span class="req">*</span></label><input name="wali" placeholder="Nama ortu/wali"></div>
+      <div class="fld"><label>Usia Anak (tahun) <span class="req">*</span></label><input name="usia" inputmode="numeric" placeholder="mis. 7"></div>
+    </div>
+  </div>
+  <input type="hidden" name="kelompok" id="hidKelompok">
+  <div class="fld"><label>Catatan (opsional)</label><textarea name="catatan" placeholder="Catatan tambahan"></textarea></div>
+  <button type="submit" class="submit" id="btnKirim"><span class="iconify" data-icon="mdi:send"></span>Kirim Pendaftaran</button>
+  <iframe name="sink" style="display:none" title="sink"></iframe>
+</form>
         <div class="ok-msg" id="okMsg"><span class="iconify" data-icon="mdi:check-circle"></span><h3>Pendaftaran Terdaftar! ✅</h3><p>Data kamu sudah masuk ke panitia. Sampai jumpa di lapangan! 🇮🇩</p><button id="daftarLagi">Daftar lagi</button></div>
       </div>
       <iframe name="sink" class="hide" id="sink"></iframe>
@@ -336,26 +344,22 @@
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 <script>
   var API="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec";
-  var WA_PANITIA="6285215079010"; // 
+  var WA_PANITIA="6281234567890"; // ⬅️ GANTI nomor WA panitia (format 62)
   var TARGET=50000;
   var BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   function norm(s){return String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,' ');}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
-  // WhatsApp panitia
   document.getElementById('waBtn').href="https://wa.me/"+WA_PANITIA+"?text="+encodeURIComponent("Halo Panitia 17-an RT 08, saya mau bertanya: ");
 
-  // Toast
   var toastEl=document.getElementById('toast'),toastMsg=document.getElementById('toastMsg');
   function showToast(type,html,ms){toastEl.className='toast '+type+' show';toastMsg.innerHTML=html;clearTimeout(toastEl._tm);toastEl._tm=setTimeout(function(){toastEl.classList.remove('show');},ms||8000);}
   document.getElementById('toastX').addEventListener('click',function(){toastEl.classList.remove('show');});
 
-  // FAB kembali ke atas
   var fab=document.getElementById('fab');
   window.addEventListener('scroll',function(){ if(window.scrollY>420)fab.classList.add('show'); else fab.classList.remove('show'); });
   fab.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
 
-  // Hitung mundur ke 17 Agustus 2026
   var TARGET_DATE=new Date('2026-08-17T00:00:00+07:00').getTime(), countTimer;
   function tickCount(){
     var d=TARGET_DATE-Date.now();
@@ -367,30 +371,25 @@
   }
   countTimer=setInterval(tickCount,1000);tickCount();
 
-  // Tab lomba
   (function(){var tabs=[].slice.call(document.querySelectorAll('.tab')),panels=[].slice.call(document.querySelectorAll('.panel')),cur=0;
     function set(i){cur=(i+tabs.length)%tabs.length;tabs.forEach(function(t,k){t.classList.toggle('active',k===cur);});panels.forEach(function(p,k){p.classList.toggle('active',k===cur);});tabs[cur].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
     tabs.forEach(function(t,k){t.addEventListener('click',function(){set(k);});});
     document.querySelector('.tprev').addEventListener('click',function(){set(cur-1);});document.querySelector('.tnext').addEventListener('click',function(){set(cur+1);});})();
 
-  // Carousel
-  (function(){var track=document.getElementById('track'),n=track.children.length,dots=document.getElementById('dots'),i=0,timer;
+  (function(){var track=document.getElementById('track');if(!track)return;var n=track.children.length,dots=document.getElementById('dots'),i=0,timer;
     for(var k=0;k<n;k++){(function(k){var b=document.createElement('b');b.addEventListener('click',function(){go(k);});dots.appendChild(b);})(k);}
     function render(){track.style.transform='translateX('+(-i*100)+'%)';[].slice.call(dots.children).forEach(function(d,k){d.classList.toggle('on',k===i);});}
     function go(k){i=(k+n)%n;render();reset();}function reset(){clearInterval(timer);timer=setInterval(function(){go(i+1);},4800);}
     document.querySelector('.nav.next').addEventListener('click',function(){go(i+1);});document.querySelector('.nav.prev').addEventListener('click',function(){go(i-1);});
     var c=document.querySelector('.carousel');c.addEventListener('mouseenter',function(){clearInterval(timer);});c.addEventListener('mouseleave',reset);render();reset();})();
 
-  // Reveal saat scroll
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 
-  // Tanggal rapi
   function fmtTgl(v){if(v===null||v===undefined||v==='')return '';
     if(typeof v==='string'){var m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return (+m[1])+' '+BLN[(+m[2])-1]+' '+m[3];}
     var d=new Date(v);if(!isNaN(d.getTime()))return d.getDate()+' '+BLN[d.getMonth()]+' '+d.getFullYear();return String(v);}
 
-  // ===== Keuangan (live) =====
   var dataKeuangan=null;
   var rp=function(n){try{return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0);}catch(e){return 'Rp'+(n||0);}};
   function jam(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
@@ -408,18 +407,16 @@
       document.getElementById('barM').style.width=pm+'%';document.getElementById('barK').style.width=(100-pm)+'%';
       isiTabel(document.getElementById('tbMasuk'),d.pemasukan);
       isiTabel(document.getElementById('tbKeluar'),d.pengeluaran);
-      renderStatistik(d.statistik);
-      renderRekap(d.rekapIuran);
+      renderStatistik(d.statistik);renderRekap(d.rekapIuran);
       fdot.className='dot on';fstatus.textContent='Terhubung · diperbarui '+jam();
     }).catch(function(){fdot.className='dot err';fstatus.textContent='Sedang menyambung ulang… (data terakhir tetap tampil)';});
   }
   document.getElementById('frefresh').addEventListener('click',muatKeuangan);
   muatKeuangan();setInterval(muatKeuangan,20000);
 
-  // ===== Statistik pendaftar =====
   function renderStatistik(s){
     var wrap=document.getElementById('statBox'),tot=document.getElementById('statTotal');
-    if(!s){return;} tot.textContent=s.total||0;
+    if(!s)return; tot.textContent=s.total||0;
     if(!s.total){wrap.innerHTML='<div class="cek-empty">Belum ada pendaftar. Jadilah yang pertama! 🎉</div>';return;}
     var max=1;s.perKategori.forEach(function(x){if(x.jumlah>max)max=x.jumlah;});
     var html='';s.perKategori.forEach(function(x){var pct=Math.round(x.jumlah/max*100);
@@ -427,27 +424,25 @@
     wrap.innerHTML=html;
   }
 
-  // ===== Rekap iuran semua KK =====
   function renderRekap(r){
     var sumEl=document.getElementById('rekapSum'),info=document.getElementById('rekapInfo'),body=document.getElementById('rekapBody');
-    if(!r){return;}
-    var s=r.ringkasan||{};
+    if(!r)return; var s=r.ringkasan||{};
     sumEl.innerHTML='<span class="pill ok">Lunas: '+(s.lunas||0)+'</span><span class="pill mid">Sebagian: '+(s.sebagian||0)+'</span><span class="pill no">Belum: '+(s.belum||0)+'</span><span class="pill">Total: '+(s.totalKK||0)+' KK</span>';
     info.textContent=r.pakaiRoster?'Status seluruh KK berdasarkan sheet "DaftarKK".':'Menampilkan KK yang sudah membayar. Isi sheet "DaftarKK" untuk menampilkan yang belum bayar juga.';
     if(!r.daftar||!r.daftar.length){body.innerHTML='<tr><td class="empty" colspan="4">Belum ada data iuran.</td></tr>';return;}
     var html='';r.daftar.forEach(function(k){var b=k.status==='Lunas'?'ok':(k.status==='Sebagian'?'mid':'no');
-      html+='<tr><td>'+esc(k.blok)+'</td><td>'+esc(k.nama||'-')+'</td><td><span class="stat-badge '+b+'">'+k.status+'</span></td><td class="num">'+rp(k.total)+'</td></tr>';});
+      var nm=esc(k.nama||'-')+(k.keterangan?' <span style="opacity:.6;font-size:11px">('+esc(k.keterangan)+')</span>':'');
+      html+='<tr><td>'+esc(k.blok)+'</td><td>'+nm+'</td><td><span class="stat-badge '+b+'">'+k.status+'</span></td><td class="num">'+rp(k.total)+'</td></tr>';});
     body.innerHTML=html;
   }
 
-  // ===== Cek pembayaran + status lunas/sisa =====
   var cekInput=document.getElementById('cekInput'),cekHasil=document.getElementById('cekHasil');
   function cekBayar(){
     var q=norm(cekInput.value),label=esc(cekInput.value);
     if(!q){cekHasil.innerHTML='<div class="cek-empty">Ketik dulu blok/alamatmu ya.</div>';showToast('info','✍️ <b>Isi dulu</b> blok/alamatmu, lalu tekan Cek.');return;}
     if(!dataKeuangan){cekHasil.innerHTML='<div class="cek-empty">Data sedang dimuat, coba lagi sebentar…</div>';return;}
-    var rows=(dataKeuangan.pemasukan||[]).filter(function(t){var blok=norm(t.blok),ket=norm(t.keterangan);return (blok&&(blok===q||blok.indexOf(q)>-1))||(ket&&ket.indexOf(q)>-1);});
-    if(!rows.length){cekHasil.innerHTML='<div class="cek-empty">Belum ada catatan pembayaran untuk "<b>'+label+'</b>". Kalau merasa sudah bayar, hubungi panitia ya.</div>';showToast('warn','😕 <b>Belum ada catatan</b> untuk "'+label+'".');return;}
+    var rows=(dataKeuangan.pemasukan||[]).filter(function(t){return norm(t.kategori)==='iuran kk' && norm(t.blok)===q;});
+    if(!rows.length){cekHasil.innerHTML='<div class="cek-empty">Belum ada catatan iuran untuk "<b>'+label+'</b>". Kalau merasa sudah bayar, hubungi panitia ya.</div>';showToast('warn','😕 <b>Belum ada catatan</b> untuk "'+label+'".');return;}
     var total=0;rows.forEach(function(t){total+=t.jumlah||0;});
     var lunas=total>=TARGET,sisa=Math.max(0,TARGET-total),lebih=Math.max(0,total-TARGET),pct=Math.min(100,Math.round(total/TARGET*100));
     var badge=lunas?'<span class="lunas-badge ok">✅ LUNAS</span>':'<span class="lunas-badge no">⏳ Belum Lunas</span>';
@@ -462,26 +457,66 @@
   document.getElementById('cekBtn').addEventListener('click',cekBayar);
   cekInput.addEventListener('keydown',function(e){if(e.key==='Enter')cekBayar();});
 
-  // ===== Form: kategori mengikuti jenis =====
-  var KAT={'Lomba Olahraga':['Bola Voli','Futsal / Sepak Bola Mini','Tenis Meja'],
-    'Lomba Anak':['Lomba Balita (2–5 th)','Lomba Anak (6–9 th)','Lomba Anak (9–12 th)'],
-    'Pentas Seni':['Nyanyi Solo / Duet','Tari Kreasi / Tradisional','Baca Puisi','Fashion Show Merah Putih']};
-  var selJenis=document.getElementById('selJenis'),selKat=document.getElementById('selKat');
-  selJenis.addEventListener('change',function(){var list=KAT[selJenis.value]||[];selKat.innerHTML='<option value="" disabled selected>— Pilih —</option>';list.forEach(function(k){var o=document.createElement('option');o.textContent=k;selKat.appendChild(o);});});
+  // ===== Form data-driven (blok & lomba dari sheet) =====
+  var LOMBA=[];
+  var selBlok=document.getElementById('selBlok'),selJenis=document.getElementById('selJenis'),selLomba=document.getElementById('selLomba');
+  var anakFields=document.getElementById('anakFields'),hidKelompok=document.getElementById('hidKelompok');
+  var inpWali=document.querySelector('#anakFields [name=wali]'),inpUsia=document.querySelector('#anakFields [name=usia]');
+  function muatOpsi(){
+    fetch(API+'?aksi=lomba',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+      if(!d||!d.ok)return; LOMBA=d.lomba||[];
+      (d.blok||[]).forEach(function(b){var o=document.createElement('option');o.value=b.blok;o.textContent=b.blok+(b.nama?' — '+b.nama:'');selBlok.appendChild(o);});
+      if(!(d.blok||[]).length){var o2=document.createElement('option');o2.disabled=true;o2.textContent='(Isi tab DaftarKK dulu)';selBlok.appendChild(o2);}
+    }).catch(function(){});
+  }
+  muatOpsi();
+  selJenis.addEventListener('change',function(){
+    var jenis=selJenis.value, isAnak=(jenis==='Lomba Anak');
+    selLomba.innerHTML='<option value="" disabled selected>— Pilih lomba —</option>';
+    var list=LOMBA.filter(function(x){return x.jenis===jenis;});
+    if(isAnak){
+      var grup={};list.forEach(function(x){var g=x.kelompok||'Lainnya';(grup[g]=grup[g]||[]).push(x);});
+      Object.keys(grup).forEach(function(g){var og=document.createElement('optgroup');og.label='Usia '+g;grup[g].forEach(function(x){var o=document.createElement('option');o.value=x.nama;o.setAttribute('data-kelompok',x.kelompok||'');og.appendChild(o);});selLomba.appendChild(og);});
+    } else {
+      list.forEach(function(x){var o=document.createElement('option');o.value=x.nama;o.setAttribute('data-kelompok','');selLomba.appendChild(o);});
+    }
+    if(!list.length){var oe=document.createElement('option');oe.disabled=true;oe.textContent='(Belum ada lomba di MasterLomba)';selLomba.appendChild(oe);}
+    anakFields.style.display=isAnak?'block':'none';
+    if(inpWali)inpWali.required=isAnak; if(inpUsia)inpUsia.required=isAnak;
+    hidKelompok.value='';
+  });
+  selLomba.addEventListener('change',function(){
+    var op=selLomba.options[selLomba.selectedIndex];
+    hidKelompok.value=op?(op.getAttribute('data-kelompok')||''):'';
+  });
 
-  // ===== Form: cek duplikat dulu, lalu kirim =====
   var form=document.getElementById('formDaftar'),okMsg=document.getElementById('okMsg'),dupMsg=document.getElementById('dupMsg'),btn=document.getElementById('btnKirim'),btnAsli=btn.innerHTML;
   form.addEventListener('submit',function(e){
     e.preventDefault();dupMsg.style.display='none';btn.disabled=true;btn.innerHTML='Memeriksa…';
-    var qs=new URLSearchParams({aksi:'cekDaftar',nama:form.nama.value,jenis:form.jenis.value,kategori:form.kategori.value,alamat:form.alamat.value});
+    var nama=form.nama.value.trim(),blok=form.blok.value,lomba=form.lomba.value;
+    var qs=new URLSearchParams({aksi:'cekDaftar',nama:nama,blok:blok,lomba:lomba});
     fetch(API+'?'+qs.toString(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-      if(d&&d.terdaftar){dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});showToast('warn','⚠️ <b>Sudah terdaftar!</b> Nama + kategori + alamat ini sudah ada. Tidak perlu daftar dua kali ya.');btn.disabled=false;btn.innerHTML=btnAsli;}
-      else{kirim();}
+      if(d&&d.terdaftar){
+        dupMsg.textContent='⚠️ Peserta ini sudah terdaftar di lomba "'+lomba+'" untuk alamat '+blok+'. Tidak perlu daftar dua kali. Kalau mau ikut lomba lain, cukup ganti pilihan lombanya.';
+        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
+        showToast('warn','⚠️ <b>Sudah terdaftar</b> di lomba ini. Pilih lomba lain ya.');
+        btn.disabled=false;btn.innerHTML=btnAsli;return;
+      }
+      var jml=(d&&d.jumlahLomba)||0;
+      if(jml>=3){
+        var ok=window.confirm('Peserta ini sudah terdaftar di '+jml+' lomba. Menambah lagi boleh, tapi pastikan jadwalnya tidak bentrok & peserta sanggup. Lanjutkan pendaftaran?');
+        if(!ok){btn.disabled=false;btn.innerHTML=btnAsli;return;}
+      }
+      kirim();
     }).catch(function(){kirim();});
-    function kirim(){form.submit();setTimeout(function(){form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';okMsg.scrollIntoView({behavior:'smooth',block:'center'});showToast('ok','🎉 <b>Pendaftaran berhasil!</b> Data kamu sudah masuk ke panitia. Sampai jumpa di lapangan!');},350);}
+    function kirim(){
+      form.submit();
+      setTimeout(function(){form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';okMsg.scrollIntoView({behavior:'smooth',block:'center'});showToast('ok','🎉 <b>Pendaftaran berhasil!</b> Data peserta sudah masuk ke panitia. Sampai jumpa di lapangan!');},350);
+    }
   });
   document.getElementById('daftarLagi').addEventListener('click',function(){
-    form.reset();selKat.innerHTML='<option value="" disabled selected>— Pilih jenis dulu —</option>';
+    form.reset();selLomba.innerHTML='<option value="" disabled selected>— Pilih jenis dulu —</option>';
+    anakFields.style.display='none';hidKelompok.value='';
     okMsg.style.display='none';dupMsg.style.display='none';form.style.display='block';btn.disabled=false;btn.innerHTML=btnAsli;
   });
 </script>
