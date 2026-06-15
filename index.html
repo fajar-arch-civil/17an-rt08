@@ -580,10 +580,8 @@ function muatOpsi(){
   fetch(API+'?aksi=lomba',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
     if(!d||!d.ok)return; LOMBA=d.lomba||[]; ALAMAT={};
     (d.blok||[]).forEach(function(b){
+      if(!String(b.nama||'').trim())return; // lewati rumah kosong (KK kosong)
       var full=String(b.blok), m=full.match(/^(.*?)\s*-\s*(.+)$/);
-      (d.blok||[]).forEach(function(b){
-  if(!String(b.nama||'').trim())return; // ⬅️ lewati rumah kosong
-  var full=String(b.blok), m=full.match(/^(.*?)\s*-\s*(.+)$/);
       var grup=m?m[1].trim():full, nomor=m?m[2].trim():full;
       (ALAMAT[grup]=ALAMAT[grup]||[]).push({value:full,nomor:nomor,nama:b.nama||''});
     });
