@@ -294,6 +294,16 @@ html{scroll-behavior:smooth}
 /* Kartu terasa 'hidup' & berkedalaman saat disentuh (elegan, tidak norak) */
 .card,.run,.fincard{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .card:hover,.run:hover,.fincard:hover{transform:translateY(-3px);box-shadow:0 18px 44px -18px rgba(0,0,0,.6)}
+/* ===== POLISH v5 — Signature moment + finishing ===== */
+/* Signature: angka '81' raksasa bergaris (HUT ke-81) di belakang hero */
+.hero{position:relative;overflow:hidden}
+.hero::before{content:"81";position:absolute;top:-26px;right:-6px;z-index:0;font-family:'Space Grotesk',sans-serif;font-size:190px;font-weight:700;line-height:1;letter-spacing:-10px;color:transparent;-webkit-text-stroke:2px rgba(255,46,58,.12);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+@media(max-width:480px){.hero::before{font-size:118px;top:-12px;-webkit-text-stroke-width:1.5px}}
+/* Footer terasa 'selesai' dengan garis penutup halus */
+footer{border-top:1px solid var(--line);margin-top:64px;padding-top:28px}
+/* Kontras teks redup sedikit dinaikkan — nyaman dibaca semua umur */
+.sec-h small{color:rgba(255,255,255,.68)}
 </style>
 </head>
 <body>
