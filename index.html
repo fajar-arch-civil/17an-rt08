@@ -260,6 +260,16 @@ html{scroll-behavior:smooth}
 /* 5) Tombol sekunder lebih bersih & tegas (bukan gradient di mana-mana) */
 .cta-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2)}
 .cta-btn.ghost:hover{border-color:var(--merah);background:rgba(255,46,58,.08)}
+  /* ===== POLISH LAYER v2 — buang ciri khas AI (acuan impeccable) ===== */
+/* a) Kotak-ikon identik tiap judul = tell utama → jadikan ikon polos + garis aksen */
+.sec-h{gap:11px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.sec-h .ic{background:none!important;border:none!important;box-shadow:none!important;width:auto;height:auto}
+.sec-h .ic .iconify{font-size:28px;color:var(--merah)}
+/* b) Kurangi glow/gradient teks → aksen merah solid yang percaya diri */
+.hero h1 span{color:var(--merah)!important;text-shadow:none!important}
+.count .n{text-shadow:none!important}
+/* c) Tab aktif tetap merah, tapi rata (tanpa membesar berlebihan) */
+.tab.active{transform:none}
 </style>
 </head>
 <body>
