@@ -1491,6 +1491,22 @@ form.addEventListener('submit',function(e){
   },4000);
   try{ if(window.dataKeuangan&&dataKeuangan.rekapIuran) paint(dataKeuangan.rekapIuran); }catch(e){}
 })();
+/* Hapus strip "keunggulan" di hero — fokus ke aksi & hasil nyata */
+(function(){
+  function kill(){ var m=document.getElementById('heroMisi'); if(m){ m.remove(); return true; } return false; }
+  if(!kill()){ var n=0, iv=setInterval(function(){ if(kill()||++n>40) clearInterval(iv); }, 120); }
+})();
+/* Panah alur tetap tampil saat mode HP (mengarah ke bawah, ukuran kecil) */
+(function(){
+  if(document.getElementById('alurArrMobile'))return;
+  var s=document.createElement('style'); s.id='alurArrMobile';
+  s.textContent=`@media(max-width:679px){
+    .alur-grid{gap:30px}
+    .alur-step:not(:last-child) .arr{display:grid;place-items:center;position:absolute;left:50%;bottom:-28px;transform:translateX(-50%) rotate(90deg);width:26px;height:26px;border-radius:50%;background:rgba(255,46,58,.16);border:1px solid rgba(255,46,58,.42);z-index:4}
+    .alur-step:not(:last-child) .arr .iconify{font-size:14px;color:#ff5a64}
+  }`;
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>
