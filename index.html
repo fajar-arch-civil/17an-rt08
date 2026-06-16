@@ -1647,6 +1647,58 @@ form.addEventListener('submit',function(e){
   }
   render(); setInterval(render,3600000);
 })();
+/* ===== Mode Ramah Baca — A− / A+ (zoom proporsial, tersimpan) ===== */
+(function(){
+  if(document.getElementById('rbBar'))return;
+  var KEY='rbZoom', STEPS=[100,115,130], i=0;
+  try{ var sv=parseInt(localStorage.getItem(KEY)||'100',10); var k=STEPS.indexOf(sv); if(k>=0)i=k; }catch(e){}
+
+  var css=document.createElement('style'); css.id='rbBarStyle';
+  css.textContent=`
+  #rbBar{position:fixed;left:14px;bottom:14px;z-index:58;display:flex;align-items:stretch;gap:2px;padding:5px;border-radius:999px;
+    background:rgba(20,8,10,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 26px rgba(0,0,0,.4);font-family:inherit;
+    opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+  #rbBar.rb-show{opacity:1;transform:none}
+  #rbBar button{appearance:none;border:none;background:transparent;color:#fff;cursor:pointer;border-radius:999px;
+    display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;
+    transition:background .2s,transform .12s,color .2s}
+  #rbBar button:hover{background:rgba(255,255,255,.1)}
+  #rbBar button:active{transform:scale(.9)}
+  #rbBar .rb-step{width:34px;height:34px;font-weight:800}
+  #rbBar .rb-mini{font-size:13px}
+  #rbBar .rb-plus{font-size:18px}
+  #rbBar .rb-lbl{min-width:42px;height:34px;padding:0 8px;gap:1px}
+  #rbBar .rb-lbl b{font-size:13px;font-weight:800;color:#fff}
+  #rbBar.rb-active .rb-lbl b{color:#ff8088}
+  #rbBar .rb-lbl span{font-size:7.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+  #rbBar button.rb-off{opacity:.3;pointer-events:none}
+  @media(max-width:520px){#rbBar{left:10px;bottom:10px}}
+  @media print{#rbBar{display:none!important}}`;
+  document.head.appendChild(css);
+
+  var bar=document.createElement('div'); bar.id='rbBar'; bar.setAttribute('role','group'); bar.setAttribute('aria-label','Ukuran teks ramah baca');
+  bar.innerHTML='<button class="rb-step rb-mini" id="rbDown" title="Perkecil teks" aria-label="Perkecil teks">A&minus;</button>'
+    +'<button class="rb-lbl" id="rbReset" title="Atur ulang ukuran" aria-label="Atur ulang ukuran"><b id="rbVal">Aa</b><span>baca</span></button>'
+    +'<button class="rb-step rb-plus" id="rbUp" title="Perbesar teks" aria-label="Perbesar teks">A+</button>';
+  document.body.appendChild(bar);
+  requestAnimationFrame(function(){ bar.classList.add('rb-show'); });
+
+  function apply(){
+    var z=STEPS[i];
+    document.documentElement.style.zoom = String(z/100);
+    var val=document.getElementById('rbVal'); if(val) val.textContent = z===100?'Aa':(z+'%');
+    bar.classList.toggle('rb-active', z!==100);
+    var d=document.getElementById('rbDown'), u=document.getElementById('rbUp');
+    if(d) d.classList.toggle('rb-off', i<=0);
+    if(u) u.classList.toggle('rb-off', i>=STEPS.length-1);
+    try{ localStorage.setItem(KEY, String(z)); }catch(e){}
+  }
+  document.getElementById('rbDown').onclick=function(){ if(i>0){i--;apply();} };
+  document.getElementById('rbUp').onclick=function(){ if(i<STEPS.length-1){i++;apply();} };
+  document.getElementById('rbReset').onclick=function(){ i=0; apply(); };
+  apply();
+})();
 </script>
 </body>
 </html>
