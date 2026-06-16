@@ -659,17 +659,22 @@ function renderPeserta(rows){
     tb.innerHTML='<tr><td colspan="5" class="empty">'+(activeFilter?'Tidak ada peserta untuk kategori ini.':'Belum ada peserta terdaftar.')+'</td></tr>';
     return;
   }
-  tb.innerHTML=filtered.map(function(r,i){
-    var jenis=r.jenis||'';
-    var badgeCls=jenis==='Lomba Olahraga'?'cnt':jenis==='Lomba Anak'?'no':'ok';
-    return'<tr>'
-      +'<td style="color:rgba(255,255,255,.5);font-size:12px">'+(i+1)+'</td>'
-      +'<td style="font-weight:600">'+esc(r.nama||'—')+'</td>'
-      +'<td style="font-size:12.5px;color:rgba(255,255,255,.75)">'+esc(r.blok||r.alamat||'—')+'</td>'
-      +'<td><span class="stat-badge '+badgeCls+'">'+esc(r.lomba||r.cabang||jenis||'—')+'</span></td>'
-      +'<td><span class="stat-badge ok">Terdaftar</span></td>'
-      +'</tr>';
-  }).join('');
+  tb.innerHTML = filtered.map(function(r, i) {
+  var jenis  = getF(r, ['Jenis','jenis','Kategori','kategori','Jenis Lomba']) || '';
+  var badgeCls = jenis.toLowerCase().indexOf('olahraga') > -1 ? 'cnt'
+               : jenis.toLowerCase().indexOf('anak') > -1 ? 'no' : 'ok';
+  var nama   = getF(r, ['Nama','nama','Nama Peserta','nama peserta','NAMA']) || '—';
+  var blok   = getF(r, ['Blok','blok','Blok/Alamat','Alamat','alamat']) || '—';
+  var lomba  = getF(r, ['Lomba','lomba','Cabang','cabang','Cabang Lomba',
+                         'nama lomba','Nama Lomba']) || jenis || '—';
+  return '<tr>'
+    + '<td>' + (i + 1) + '</td>'
+    + '<td>' + esc(nama)  + '</td>'
+    + '<td>' + esc(blok)  + '</td>'
+    + '<td><span class="stat-badge ' + badgeCls + '">' + esc(lomba) + '</span></td>'
+    + '<td><span class="stat-badge ok">Terdaftar</span></td>'
+    + '</tr>';
+}).join('');
   var info=document.getElementById('pesInfo');
   if(info)info.textContent='Menampilkan '+filtered.length+' dari '+rows.length+' peserta';
 }
