@@ -1507,6 +1507,86 @@ form.addEventListener('submit',function(e){
   }`;
   document.head.appendChild(s);
 })();
+/* ===== Lini Masa Acara — rundown interaktif (sorot tahap berjalan + hitung mundur) ===== */
+(function(){
+  var host=document.getElementById('jadwal');
+  if(!host||document.getElementById('liniMasa'))return;
+  var hdr=host.querySelector('.sec-h');
+
+  var css=document.createElement('style');
+  css.textContent=`
+  #liniMasa{margin:16px 0 8px}
+  .lm-track{display:grid;gap:13px;position:relative}
+  @media(min-width:760px){.lm-track{grid-template-columns:repeat(3,1fr);gap:15px}}
+  .lm-stage{position:relative;padding:15px 16px 17px;border-radius:14px;background:rgba(255,255,255,.038);
+    border:1px solid rgba(255,255,255,.09);transition:border-color .25s,background .25s,transform .2s}
+  @media(hover:hover){.lm-stage:hover{transform:translateY(-2px)}}
+  .lm-top{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .lm-num{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto;
+    font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:14px;color:#ff8088;
+    background:rgba(255,46,58,.12);border:1px solid rgba(255,46,58,.3)}
+  .lm-date{font-size:11px;font-weight:700;letter-spacing:.4px;color:rgba(255,255,255,.58);text-transform:uppercase}
+  .lm-stage h4{font-size:14.5px;font-weight:700;margin:0 0 5px}
+  .lm-stage p{font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.72);margin:0}
+  .lm-foot{display:flex;align-items:center;gap:8px;margin-top:11px;flex-wrap:wrap}
+  .lm-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.6px;
+    text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .b-now{background:var(--merah);color:#fff;box-shadow:0 2px 12px rgba(255,46,58,.4)}
+  .b-next{background:transparent;border:1px solid rgba(255,128,136,.55);color:#ffb3b8}
+  .b-done{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.55)}
+  .lm-days{font-size:11.5px;color:rgba(255,255,255,.6)}
+  .lm-days b{color:#ff8088;font-weight:800}
+  .lm-stage.is-active{background:rgba(255,46,58,.085);border-color:rgba(255,46,58,.5);
+    box-shadow:0 0 0 1px rgba(255,46,58,.22),0 12px 32px rgba(255,46,58,.12)}
+  .lm-stage.is-active .lm-num{color:#fff;background:var(--merah);border-color:transparent}
+  .lm-stage.is-done{opacity:.6}
+  .lm-note{font-size:11px;color:rgba(255,255,255,.45);margin:11px 2px 0}`;
+  document.head.appendChild(css);
+
+  var STAGES=[
+    {n:1,date:'Juli – pertengahan Agustus',title:'Lomba Olahraga & Warga',
+     desc:'Tiap akhir pekan (pagi–sore) di Lapangan RT 08. Voli jadi cabang utama; ada futsal & tenis meja. Usia 10 tahun ke atas diarahkan ke sini.',
+     start:'2026-07-04',end:'2026-08-16',firm:false},
+    {n:2,date:'Senin, 17 Agustus',title:'Puncak HUT ke-81',
+     desc:'Upacara, lalu lomba anak (3 kelompok usia: balita, 6–9, 9–12 th). Hadiah anak dibagikan sore hari.',
+     start:'2026-08-17',end:'2026-08-17',firm:true},
+    {n:3,date:'Sabtu, 22 Agustus',title:'Malam Puncak',
+     desc:'Makan bersama, pentas seni yang dinilai langsung, lalu pengumuman & hadiah dewasa. Merdeka!',
+     start:'2026-08-22',end:'2026-08-22',firm:true}
+  ];
+
+  var wrap=document.createElement('div'); wrap.id='liniMasa';
+  var track=document.createElement('div'); track.className='lm-track'; wrap.appendChild(track);
+  var note=document.createElement('div'); note.className='lm-note';
+  note.textContent='Tanggal pasti tiap lomba olahraga diumumkan panitia mendekati hari-H.';
+  wrap.appendChild(note);
+
+  function D(s){return new Date(s+'T00:00:00+07:00').getTime();}
+  function render(){
+    track.innerHTML=''; var now=Date.now(), hi=-1;
+    for(var i=0;i<STAGES.length;i++){ if(now<=D(STAGES[i].end)){hi=i;break;} }
+    STAGES.forEach(function(s,i){
+      var el=document.createElement('div'); el.className='lm-stage';
+      var started=now>=D(s.start), ended=now>D(s.end);
+      if(i===hi) el.className+=' is-active'; else if(ended) el.className+=' is-done';
+      var foot='';
+      if(i===hi) foot = started ? '<span class="lm-badge b-now">Sedang berlangsung</span>'
+                                : '<span class="lm-badge b-next">Berikutnya</span>';
+      else if(ended) foot='<span class="lm-badge b-done">Selesai</span>';
+      if(s.firm && now<D(s.start)){
+        var hari=Math.ceil((D(s.start)-now)/86400000);
+        foot+='<span class="lm-days"><b>'+hari+'</b> hari lagi</span>';
+      }
+      el.innerHTML='<div class="lm-top"><span class="lm-num">'+s.n+'</span>'+
+        '<span class="lm-date">'+s.date+'</span></div>'+
+        '<h4>'+s.title+'</h4><p>'+s.desc+'</p>'+
+        (foot?'<div class="lm-foot">'+foot+'</div>':'');
+      track.appendChild(el);
+    });
+  }
+  render(); setInterval(render,3600000);
+  if(hdr) hdr.insertAdjacentElement('afterend',wrap); else host.insertBefore(wrap,host.firstChild);
+})();
 </script>
 </body>
 </html>
