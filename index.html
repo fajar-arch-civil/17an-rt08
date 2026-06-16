@@ -559,7 +559,6 @@ footer { margin-top: 44px; padding-top: 18px; font-size: 12px; }
 <!-- Navigasi atas (desktop) -->
 <nav class="topnav">
   <div class="in">
-    <a href="#" class="brand">17-an RT 08 &middot; HUT RI ke-81</a>
     <a href="#">Beranda</a>
     <a href="#daftar">Daftar</a>
     <a href="#jadwal">Jadwal</a>
@@ -955,17 +954,54 @@ function renderRekap(rows){
   var tb=document.getElementById('rekapBody');
   var sum=document.getElementById('rekapSum'),info=document.getElementById('rekapInfo');
   if(!tb)return;
-  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="4" class="empty">Belum ada data.</td></tr>';return;}
-  var lunas=rows.filter(function(r){return norm(r.status)==='lunas';}).length;
-  if(sum)sum.innerHTML='<div class="cektot"><span>Total KK</span><span class="v">'+rows.length+'</span></div>'
+
+  // DEBUG — buka F12 > Console untuk lihat nama kolom aktual dari API
+  console.log('[rekap] jumlah baris:',rows?rows.length:'null');
+  if(rows&&rows[0])console.log('[rekap] contoh baris pertama:',JSON.stringify(rows[0]));
+
+  if(!rows||!rows.length){
+    tb.innerHTML='<tr><td colspan="4" class="empty">Belum ada data rekap KK.</td></tr>';
+    return;
+  }
+
+  // Ambil nilai field dengan toleran terhadap berbagai nama kolom
+  function getF(r,candidates){
+    for(var i=0;i<candidates.length;i++){
+      if(r[candidates[i]]!=null&&r[candidates[i]]!=='')return r[candidates[i]];
+    }
+    // Fallback: cari yang cocok case-insensitive
+    for(var i=0;i<candidates.length;i++){
+      var kl=candidates[i].toLowerCase().replace(/[\s_\-\/]/g,'');
+      for(var key in r){
+        if(key.toLowerCase().replace(/[\s_\-\/]/g,'')==kl&&r[key]!=null&&r[key]!=='')return r[key];
+      }
+    }
+    return null;
+  }
+
+  var lunas=rows.filter(function(r){
+    var st=String(getF(r,['status','Status','STATUS','sts'])||'');
+    return norm(st)==='lunas';
+  }).length;
+
+  if(sum)sum.innerHTML=
+    '<div class="cektot"><span>Total KK</span><span class="v">'+rows.length+'</span></div>'
     +'<div class="cektot"><span>Lunas</span><span class="v" style="color:var(--hijau)">'+lunas+'</span></div>'
-    +'<div class="cektot"><span>Belum Lunas</span><span class="v" style="color:var(--merah)">'+(rows.length-lunas)+'</span></div>';
-  if(info)info.textContent='Data diperbarui otomatis dari Google Sheets panitia.';
+    +'<div class="cektot"><span>Belum</span><span class="v" style="color:var(--merah)">'+(rows.length-lunas)+'</span></div>';
+  if(info)info.textContent='Data otomatis dari Google Sheets. '+rows.length+' KK terdaftar.';
+
   tb.innerHTML=rows.map(function(r){
-    var ok=norm(r.status)==='lunas';
-    return'<tr><td>'+esc(r.blok||r.alamat||'—')+'</td><td>'+esc(r.nama||r.namaKK||'—')+'</td>'
+    var alamat=getF(r,['blok','alamat','Blok','Alamat','Blok/Alamat','blok_alamat','BLOK','lokasi'])||'—';
+    var nama  =getF(r,['nama','namaKK','nama_kk','Nama KK','Nama','NAMA','namaKk','kepalaKeluarga'])||'—';
+    var status=String(getF(r,['status','Status','STATUS'])||'');
+    var bayar =getF(r,['terbayar','jumlah','nominal','Terbayar','Jumlah','Nominal','dibayar','Dibayar','bayar'])||0;
+    var ok=norm(status)==='lunas';
+    return'<tr>'
+      +'<td>'+esc(alamat)+'</td>'
+      +'<td>'+esc(nama)+'</td>'
       +'<td><span class="stat-badge '+(ok?'ok':'no')+'">'+(ok?'Lunas':'Belum')+'</span></td>'
-      +'<td>'+esc(rp(r.terbayar||r.jumlah||0))+'</td></tr>';
+      +'<td>'+esc(rp(bayar))+'</td>'
+      +'</tr>';
   }).join('');
 }
 
@@ -1293,27 +1329,6 @@ document.getElementById('daftarLagi').addEventListener('click',function(){
   anchor.parentNode.insertBefore(sec,anchor);
 })();
 
-// ===== DALAM ANGKA =====
-(function(){
-  var anchor=document.getElementById('alurIkut')||document.getElementById('daftar');
-  if(!anchor||document.getElementById('dalamAngka'))return;
-  var st=document.createElement('style');
-  st.textContent='.angka-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px}'
-    +'.angka-card{text-align:center;padding:18px 12px;border-radius:18px;border:1px solid var(--line);background:var(--panel)}'
-    +'.angka-n{font-family:"Space Grotesk","Poppins",sans-serif;font-size:32px;font-weight:800;line-height:1;color:var(--merah)}'
-    +'.angka-l{font-size:12px;color:rgba(255,255,255,.72);margin-top:5px;font-weight:500}';
-  document.head.appendChild(st);
-  var sec=document.createElement('section');sec.id='dalamAngka';sec.className='sec reveal';
-  sec.innerHTML='<div class="sec-h"><span class="ic"><span class="iconify" data-icon="solar:chart-2-bold"></span></span>'
-    +'<div><h2>17-an dalam Angka</h2><small>Gambaran cepat acara tahun ini</small></div></div>'
-    +'<div class="angka-grid">'
-    +'<div class="angka-card"><div class="angka-n">81</div><div class="angka-l">Tahun Kemerdekaan</div></div>'
-    +'<div class="angka-card"><div class="angka-n">~217</div><div class="angka-l">KK Warga RT 08</div></div>'
-    +'<div class="angka-card"><div class="angka-n">7+</div><div class="angka-l">Cabang Lomba</div></div>'
-    +'<div class="angka-card"><div class="angka-n">2</div><div class="angka-l">Hari Puncak Acara</div></div>'
-    +'</div>';
-  anchor.parentNode.insertBefore(sec,anchor);
-})();
 
 // ===== ALUR ARR MOBILE =====
 (function(){
