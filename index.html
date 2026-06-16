@@ -914,6 +914,7 @@ function muatKeuangan(){
   fetch(API+'?aksi=keuangan&v='+Date.now(),{cache:'no-store'})
     .then(function(r){return r.json();})
     .then(function(d){
+      console.log('[API keuangan]',JSON.stringify(d).slice(0,800));
       dataKeuangan=d;
       var masuk=Number(d.totalMasuk)||0,keluar=Number(d.totalKeluar)||0,saldo=masuk-keluar;
       var kkL=Number(d.kkLunas)||0,kkT=Number(d.kkTotal)||217;
