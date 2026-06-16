@@ -1237,6 +1237,116 @@ form.addEventListener('submit',function(e){
     </div>`;
   hero.appendChild(box);
 })();
+/* ===== Cuaca terkini lokasi acara — pengganti garis angin (modern + interaktif) ===== */
+(function(){
+  if(document.getElementById('cuacaBox'))return;
+  var wl=document.querySelector('.windline'), hero=document.querySelector('.hero');
+  var parent,ref;
+  if(wl){ parent=wl.parentNode; ref=wl; }
+  else if(hero){ var h=hero.querySelector('h1'); parent=hero; ref=h?h.nextSibling:hero.firstChild; }
+  if(!parent)return;
+
+  var css=document.createElement('style');
+  css.textContent=`
+  .windline{display:none!important}
+  #cuacaBox{max-width:340px;margin:14px auto 2px;position:relative;z-index:3}
+  .cuaca-head{display:flex;align-items:center;gap:11px;width:100%;cursor:pointer;font-family:inherit;text-align:left;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,80,90,.20);border-radius:16px;padding:10px 13px;color:#fff;
+    transition:border-color .2s,background .2s}
+  @media(hover:hover){.cuaca-head:hover{border-color:rgba(255,80,90,.45);background:rgba(255,46,58,.09)}}
+  .cuaca-ic .iconify{font-size:34px;color:#ffd27a;filter:drop-shadow(0 2px 8px rgba(255,170,60,.35))}
+  .cuaca-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+  .cuaca-temp{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-1px;white-space:nowrap}
+  .cuaca-unit{font-size:13px;color:#ff8088;margin-left:1px;cursor:pointer;border-bottom:1px dotted rgba(255,128,136,.6)}
+  .cuaca-meta{display:flex;flex-direction:column;min-width:0}
+  .cuaca-cond{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cuaca-loc{font-size:10.5px;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cuaca-caret .iconify{font-size:18px;color:rgba(255,255,255,.55);transition:transform .3s}
+  #cuacaBox.open .cuaca-caret .iconify{transform:rotate(180deg)}
+  .cuaca-detail{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s var(--ease,ease),opacity .3s}
+  #cuacaBox.open .cuaca-detail{max-height:180px;opacity:1}
+  .cuaca-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;padding:11px 15px 4px}
+  .cuaca-grid>div{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.78)}
+  .cuaca-grid .iconify{font-size:15px;color:#ff8088}
+  .cuaca-grid b{color:#fff;font-weight:700;margin-left:auto}
+  .cuaca-foot{padding:5px 15px 11px;font-size:10.5px;color:rgba(255,255,255,.5)}`;
+  document.head.appendChild(css);
+
+  var box=document.createElement('div');
+  box.id='cuacaBox'; box.className='reveal';
+  box.innerHTML=`
+    <div class="cuaca-head" role="button" tabindex="0" aria-expanded="false">
+      <span class="cuaca-ic"><span class="iconify" data-icon="mdi:weather-cloudy"></span></span>
+      <span class="cuaca-main">
+        <span class="cuaca-temp"><span id="cTemp">–</span>°<span class="cuaca-unit" id="cUnit" title="Ganti °C / °F">C</span></span>
+        <span class="cuaca-meta"><span class="cuaca-cond" id="cCond">Memuat cuaca…</span><span class="cuaca-loc">Pasanggrahan, Kab. Tangerang</span></span>
+      </span>
+      <span class="cuaca-caret"><span class="iconify" data-icon="mdi:chevron-down"></span></span>
+    </div>
+    <div class="cuaca-detail">
+      <div class="cuaca-grid">
+        <div><span class="iconify" data-icon="mdi:weather-pouring"></span> Presipitasi <b id="cPrec">–</b></div>
+        <div><span class="iconify" data-icon="mdi:water-percent"></span> Kelembapan <b id="cHum">–</b></div>
+        <div><span class="iconify" data-icon="mdi:weather-windy"></span> Angin <b id="cWind">–</b></div>
+        <div><span class="iconify" data-icon="mdi:thermometer"></span> Terasa <b id="cFeel">–</b></div>
+      </div>
+      <div class="cuaca-foot" id="cFoot">Memuat data cuaca lokasi acara…</div>
+    </div>`;
+  parent.insertBefore(box,ref);
+
+  var head=box.querySelector('.cuaca-head');
+  function toggle(){ var o=box.classList.toggle('open'); head.setAttribute('aria-expanded',o?'true':'false'); }
+  head.addEventListener('click',function(e){ if(e.target.id==='cUnit')return; toggle(); });
+  head.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} });
+
+  var HARI=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  function wmo(c,day){ c=+c;
+    if(c===0||c===1) return {i: day?'mdi:weather-sunny':'mdi:weather-night', t:'Cerah'};
+    if(c===2) return {i: day?'mdi:weather-partly-cloudy':'mdi:weather-night-partly-cloudy', t:'Cerah Berawan'};
+    if(c===3) return {i:'mdi:weather-cloudy', t:'Berawan'};
+    if(c===45||c===48) return {i:'mdi:weather-fog', t:'Berkabut'};
+    if(c>=51&&c<=57) return {i:'mdi:weather-partly-rainy', t:'Gerimis'};
+    if(c>=61&&c<=67) return {i:'mdi:weather-rainy', t:'Hujan'};
+    if(c>=71&&c<=77) return {i:'mdi:weather-snowy', t:'Bersalju'};
+    if(c>=80&&c<=82) return {i:'mdi:weather-pouring', t:'Hujan Lebat'};
+    if(c>=95) return {i:'mdi:weather-lightning-rainy', t:'Badai Petir'};
+    return {i:'mdi:weather-cloudy', t:'Berawan'};
+  }
+  var tempC=null,feelC=null,unitF=false;
+  function paintTemp(){ if(tempC===null)return;
+    document.getElementById('cTemp').textContent = unitF?Math.round(tempC*9/5+32):Math.round(tempC);
+    document.getElementById('cUnit').textContent = unitF?'F':'C';
+    document.getElementById('cFeel').textContent = (unitF?Math.round(feelC*9/5+32):Math.round(feelC))+'°'+(unitF?'F':'C');
+  }
+  document.getElementById('cUnit').addEventListener('click',function(e){ e.stopPropagation(); unitF=!unitF; paintTemp(); });
+
+  var LAT=-6.34, LON=106.50;
+  var url='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON
+    +'&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m'
+    +'&hourly=precipitation_probability&forecast_days=1&timezone=Asia%2FJakarta';
+  function load(){
+    fetch(url,{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+      var c=d.current; if(!c)throw 0;
+      tempC=c.temperature_2m; feelC=c.apparent_temperature; paintTemp();
+      var w=wmo(c.weather_code, c.is_day!==0);
+      document.querySelector('.cuaca-ic .iconify').setAttribute('data-icon',w.i);
+      document.getElementById('cCond').textContent=w.t;
+      document.getElementById('cHum').textContent=Math.round(c.relative_humidity_2m)+'%';
+      document.getElementById('cWind').textContent=Math.round(c.wind_speed_10m)+' km/j';
+      var pp='—'; try{ var hh=c.time.slice(0,13),
+        idx=d.hourly.time.findIndex(function(x){return x.slice(0,13)===hh;});
+        if(idx>=0 && d.hourly.precipitation_probability[idx]!=null) pp=d.hourly.precipitation_probability[idx]+'%'; }catch(e){}
+      document.getElementById('cPrec').textContent=pp;
+      var dt=new Date(c.time), lbl=isNaN(dt.getTime())?'':(HARI[dt.getDay()]+' '+('0'+dt.getHours()).slice(-2)+'.'+('0'+dt.getMinutes()).slice(-2));
+      document.getElementById('cFoot').textContent=(lbl?lbl+' · ':'')+'Cuaca di lokasi acara (Pasanggrahan)';
+      if(window.Iconify&&Iconify.scan)Iconify.scan(box);
+    }).catch(function(){
+      document.getElementById('cCond').textContent='Cuaca tak tersedia';
+      document.getElementById('cFoot').textContent='Gagal memuat data cuaca. Coba muat ulang halaman.';
+    });
+  }
+  load(); setInterval(load,600000); /* perbarui tiap 10 menit */
+})();
 </script>
 </body>
 </html>
