@@ -977,6 +977,43 @@ selLomba.addEventListener('change',function(){
   ['g-tl','g-tr','g-bl','g-br'].forEach(function(c){ var s=document.createElement('span'); s.className=c; g.appendChild(s); });
   hero.appendChild(g);
 })();
+/* ===== Bar progres scroll ===== */
+(function(){
+  var bar=document.createElement('div');
+  bar.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;z-index:9999;background:linear-gradient(90deg,#ff2e3a,#ff8088);box-shadow:0 0 10px rgba(255,46,58,.6);transition:width .08s linear;pointer-events:none';
+  document.body.appendChild(bar);
+  function upd(){
+    var h=document.documentElement,b=document.body;
+    var st=h.scrollTop||b.scrollTop;
+    var sh=(h.scrollHeight||b.scrollHeight)-h.clientHeight;
+    bar.style.width=(sh>0?(st/sh*100):0)+'%';
+  }
+  window.addEventListener('scroll',upd,{passive:true});
+  window.addEventListener('resize',upd);
+  upd();
+})();
+
+/* ===== Scrollspy: menu navbar mengikuti section aktif ===== */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.topnav a[href^="#"]'));
+  if(!links.length)return;
+  var map={};
+  links.forEach(function(a){
+    var id=a.getAttribute('href').slice(1);
+    var sec=id&&document.getElementById(id);
+    if(sec)map[id]=a;
+  });
+  if(!Object.keys(map).length)return;
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){a.classList.remove('navon')});
+        if(map[e.target.id])map[e.target.id].classList.add('navon');
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+  Object.keys(map).forEach(function(id){obs.observe(document.getElementById(id))});
+})();
 </script>
 </body>
 </html>
