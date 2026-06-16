@@ -1699,6 +1699,13 @@ form.addEventListener('submit',function(e){
   document.getElementById('rbReset').onclick=function(){ i=0; apply(); };
   apply();
 })();
+/* ===== Geser pil ramah-baca biar tak menimpa CTA WhatsApp ===== */
+(function(){
+  if(document.getElementById('rbPosFix'))return;
+  var s=document.createElement('style'); s.id='rbPosFix';
+  s.textContent='#rbBar{left:18px!important;right:auto!important;bottom:80px!important;z-index:40!important}';
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>
