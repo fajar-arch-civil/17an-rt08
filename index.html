@@ -791,88 +791,58 @@ selLomba.addEventListener('change',function(){
   var op=selLomba.options[selLomba.selectedIndex];
   hidKelompok.value=op?(op.getAttribute('data-kelompok')||''):'';
 });
-
-  var form=document.getElementById('formDaftar'),okMsg=document.getElementById('okMsg'),dupMsg=document.getElementById('dupMsg'),btn=document.getElementById('btnKirim'),btnAsli=btn.innerHTML;
-  form.addEventListener('submit',function(e){
-    e.preventDefault();dupMsg.style.display='none';btn.disabled=true;btn.innerHTML='Memeriksa…';
-    var nama=form.nama.value.trim(),blok=form.blok.value,lomba=form.lomba.value;
-    var qs=new URLSearchParams({aksi:'cekDaftar',nama:nama,blok:blok,lomba:lomba});
-    fetch(API+'?'+qs.toString(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-      if(d&&d.terdaftar){
-        dupMsg.textContent='<span class="iconify" data-icon="mdi:alert" style="vertical-align:-3px;margin-right:6px"></span> Peserta ini sudah terdaftar di lomba "'+lomba+'" untuk alamat '+blok+'. Tidak perlu daftar dua kali. Kalau mau ikut lomba lain, cukup ganti pilihan lombanya.';
-        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        showToast('warn','<span class="iconify" data-icon="mdi:alert" style="vertical-align:-3px;margin-right:6px"></span> <b>Sudah terdaftar</b> di lomba ini. Pilih lomba lain ya.');
-        btn.disabled=false;btn.innerHTML=btnAsli;return;
-      }
-      var jml=(d&&d.jumlahLomba)||0;
-      if(jml>=3){
-        var ok=window.confirm('Peserta ini sudah terdaftar di '+jml+' lomba. Menambah lagi boleh, tapi pastikan jadwalnya tidak bentrok & peserta sanggup. Lanjutkan pendaftaran?');
-        if(!ok){btn.disabled=false;btn.innerHTML=btnAsli;return;}
-      }
-      kirim();
-    }).catch(function(){kirim();});
-    function kirim(){
-  btn.innerHTML='Menyimpan…';
-  var fd=new FormData(form), qs=new URLSearchParams();
-  fd.forEach(function(v,k){qs.append(k,v);});
-  qs.append('aksi','daftar'); qs.append('_t',Date.now());
-  fetch(API+'?'+qs.toString(),{cache:'no-store'})
-    .then(function(r){return r.json();})
-    .then(function(res){
-      if(res&&res.ok){
-        form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';
-        okMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        showToast('ok',' Pendaftaran berhasil! Data peserta sudah masuk ke panitia. Sampai jumpa di lapangan!');
-      } else if(res&&res.error==='BELUM_BAYAR'){
+var form=document.getElementById('formDaftar'),okMsg=document.getElementById('okMsg'),dupMsg=document.getElementById('dupMsg'),btn=document.getElementById('btnKirim'),btnAsli=btn.innerHTML;
+form.addEventListener('submit',function(e){
+  e.preventDefault();dupMsg.style.display='none';btn.disabled=true;btn.innerHTML='Memeriksa…';
+  var nama=form.nama.value.trim(),blok=form.blok.value,lomba=form.lomba.value;
+  var qs=new URLSearchParams({aksi:'cekDaftar',nama:nama,blok:blok,lomba:lomba});
+  fetch(API+'?'+qs.toString(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    if(d&&d.terdaftar){
+      dupMsg.textContent=' Peserta ini sudah terdaftar di lomba "'+lomba+'" untuk alamat '+blok+'. Tidak perlu daftar dua kali. Kalau mau ikut lomba lain, cukup ganti pilihan lombanya.';
+      dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
+      showToast('warn',' Sudah terdaftar di lomba ini. Pilih lomba lain ya.');
+      btn.disabled=false;btn.innerHTML=btnAsli;return;
+    }
+    var jml=(d&&d.jumlahLomba)||0;
+    if(jml>=3){
+      var ok=window.confirm('Peserta ini sudah terdaftar di '+jml+' lomba. Menambah lagi boleh, tapi pastikan jadwalnya tidak bentrok & peserta sanggup. Lanjutkan pendaftaran?');
+      if(!ok){btn.disabled=false;btn.innerHTML=btnAsli;return;}
+    }
+    kirim();
+  }).catch(function(){kirim();});
+  function kirim(){
+    btn.innerHTML='Menyimpan…';
+    var fd=new FormData(form), qs2=new URLSearchParams();
+    fd.forEach(function(v,k){qs2.append(k,v);});
+    qs2.append('aksi','daftar'); qs2.append('_t',Date.now());
+    fetch(API+'?'+qs2.toString(),{cache:'no-store'})
+      .then(function(r){return r.json();})
+      .then(function(res){
+        if(res&&res.ok){
+          form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';
+          okMsg.scrollIntoView({behavior:'smooth',block:'center'});
+          showToast('ok',' Pendaftaran berhasil! Data peserta sudah masuk ke panitia. Sampai jumpa di lapangan!');
+        } else if(res&&res.error==='BELUM_BAYAR'){
+          btn.disabled=false;btn.innerHTML=btnAsli;
+          dupMsg.innerHTML=' <b>Pendaftaran ditolak.</b> Iuran KK untuk alamat <b>'+esc(form.blok.value)+'</b> belum tercatat oleh panitia. Silakan bayar/konfirmasi ke panitia dulu ya.';
+          dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
+          showToast('warn',' Belum bisa daftar: iuran KK ini belum tercatat.');
+        } else if(res&&res.error==='SUDAH_TERDAFTAR'){
+          btn.disabled=false;btn.innerHTML=btnAsli;
+          dupMsg.textContent=' Peserta ini sudah terdaftar di lomba tersebut untuk alamat itu.';
+          dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
+          showToast('warn',' Sudah terdaftar di lomba ini.');
+        } else {
+          btn.disabled=false;btn.innerHTML=btnAsli;
+          showToast('warn',' Gagal menyimpan. Coba lagi sebentar ya.');
+        }
+      })
+      .catch(function(){
         btn.disabled=false;btn.innerHTML=btnAsli;
-        dupMsg.innerHTML=' <b>Pendaftaran ditolak.</b> Iuran KK untuk alamat <b>'+esc(form.blok.value)+'</b> belum tercatat oleh panitia. Silakan bayar/konfirmasi ke panitia dulu ya.';
-        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        showToast('warn',' Belum bisa daftar: iuran KK ini belum tercatat.');
-      } else if(res&&res.error==='SUDAH_TERDAFTAR'){
-        btn.disabled=false;btn.innerHTML=btnAsli;
-        dupMsg.textContent=' Peserta ini sudah terdaftar di lomba tersebut untuk alamat itu.';
-        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        showToast('warn',' Sudah terdaftar di lomba ini.');
-      } else {
-        btn.disabled=false;btn.innerHTML=btnAsli;
-        showToast('warn',' Gagal menyimpan. Coba lagi sebentar ya.');
-      }
-    })
-    .catch(function(){
-      btn.disabled=false;btn.innerHTML=btnAsli;
-      showToast('warn',' Koneksi bermasalah, coba lagi ya.');
-    });
-}
-  btn.innerHTML='Menyimpan…';
-  var fd=new FormData(form), qs=new URLSearchParams();
-  fd.forEach(function(v,k){qs.append(k,v);});
-  qs.append('aksi','daftar'); qs.append('_t',Date.now());
-  fetch(API+'?'+qs.toString(),{cache:'no-store'})
-    .then(function(r){return r.json();})
-    .then(function(res){
-      if(res&&res.ok){
-        form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';
-        okMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        showToast('ok',' Pendaftaran berhasil! Data peserta sudah masuk ke panitia. Sampai jumpa di lapangan!');
-      } else if(res&&res.error==='BELUM_BAYAR'){
-        btn.disabled=false;btn.innerHTML=btnAsli;
-        showToast('warn',' Pendaftaran ditolak: iuran KK alamat ini belum tercatat panitia. Hubungi panitia ya.');
-      } else if(res&&res.error==='SUDAH_TERDAFTAR'){
-        btn.disabled=false;btn.innerHTML=btnAsli;
-        dupMsg.textContent=' Peserta ini sudah terdaftar di lomba ini untuk alamat tersebut.';
-        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
-        showToast('warn',' Sudah terdaftar di lomba ini.');
-      } else {
-        btn.disabled=false;btn.innerHTML=btnAsli;
-        showToast('warn',' Gagal menyimpan. Coba lagi sebentar ya.');
-      }
-    })
-    .catch(function(){
-      btn.disabled=false;btn.innerHTML=btnAsli;
-      showToast('warn',' Koneksi bermasalah, coba lagi ya.');
-    });
-}
-  });
+        showToast('warn',' Koneksi bermasalah, coba lagi ya.');
+      });
+  }
+});
   document.getElementById('daftarLagi').addEventListener('click',function(){
     form.reset();selLomba.innerHTML='<option value="" disabled selected>— Pilih jenis dulu —</option>';
     anakFields.style.display='none';hidKelompok.value='';
