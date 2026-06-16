@@ -525,7 +525,7 @@ html,body{overflow-x:clip;max-width:100%}
           <div class="box glass"><div class="lbl">Pemasukan</div><div class="val masuk" id="kMasuk">—</div></div>
           <div class="box glass"><div class="lbl">Pengeluaran</div><div class="val keluar" id="kKeluar">—</div></div>
           <div class="box glass"><div class="lbl">Sisa Saldo</div><div class="val saldo" id="kSaldo">—</div></div>
-          <div class="box glass"><div class="lbl">KK Bayar Iuran</div><div class="val" id="kKK">—</div></div>
+          <div class="box glass"><div class="lbl">KK Lunas</div><div class="val" id="kKK">—</div></div>
         </div>
         <div class="bar"><div class="pm" id="barM" style="width:50%"></div><div class="pk" id="barK" style="width:50%"></div></div>
         <div class="barleg"><span>● Masuk</span><span>Keluar ●</span></div>
@@ -680,7 +680,7 @@ html,body{overflow-x:clip;max-width:100%}
       document.getElementById('kMasuk').textContent=rp(d.totalPemasukan);
       document.getElementById('kKeluar').textContent=rp(d.totalPengeluaran);
       document.getElementById('kSaldo').textContent=rp(d.saldo);
-      document.getElementById('kKK').textContent=(d.jumlahKKBayar||0)+' KK';
+      document.getElementById('kKK').textContent=(((d.rekapIuran||{}).ringkasan||{}).lunas||0)+' KK';
       var tot=(d.totalPemasukan||0)+(d.totalPengeluaran||0),pm=tot>0?Math.round((d.totalPemasukan||0)/tot*100):50;
       document.getElementById('barM').style.width=pm+'%';document.getElementById('barK').style.width=(100-pm)+'%';
       isiTabel(document.getElementById('tbMasuk'),d.pemasukan);
@@ -1025,6 +1025,53 @@ selLomba.addEventListener('change',function(){
     });
   },{rootMargin:'-45% 0px -50% 0px',threshold:0});
   Object.keys(map).forEach(function(id){obs.observe(document.getElementById(id))});
+})();
+/* ===== Gerbang pendaftaran: KK wajib sudah bayar iuran (min. sebagian) ===== */
+(function(){
+  var form=document.getElementById('formDaftar');
+  var sel=document.getElementById('selBlok');
+  var grp=document.getElementById('selBlokGrup');
+  var btn=document.getElementById('btnKirim');
+  if(!form||!sel||!btn)return;
+  var TGT=(typeof TARGET!=='undefined')?TARGET:50000;
+
+  var box=document.createElement('div');
+  box.id='iuranGate';
+  box.style.cssText='display:none;margin:4px 0 14px;padding:11px 14px;border-radius:12px;font-size:13.5px;line-height:1.5;border:1px solid';
+  btn.parentNode.insertBefore(box,btn);
+
+  function n(s){return String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,' ');}
+  function status(){
+    if(typeof dataKeuangan==='undefined'||!dataKeuangan||!dataKeuangan.pemasukan)return 'loading';
+    var q=n(sel.value),total=0;
+    dataKeuangan.pemasukan.forEach(function(t){if(n(t.kategori)==='iuran kk'&&n(t.blok)===q)total+=t.jumlah||0;});
+    if(total<=0)return 'belum';
+    if(total>=TGT)return 'lunas';
+    return 'sebagian';
+  }
+  function lock(){btn.disabled=true;btn.style.opacity='.55';btn.style.cursor='not-allowed';}
+  function unlock(){btn.disabled=false;btn.style.opacity='';btn.style.cursor='';}
+  function paint(k,html){box.style.display='block';box.innerHTML=html;
+    var c={ok:['rgba(61,220,132,.5)','rgba(61,220,132,.12)','#9bf0bd'],warn:['rgba(255,77,94,.55)','rgba(255,77,94,.12)','#ffb3bb'],info:['rgba(255,209,102,.5)','rgba(255,209,102,.1)','#ffd980']}[k];
+    box.style.borderColor=c[0];box.style.background=c[1];box.style.color=c[2];}
+  function gate(){
+    if(!sel.value){box.style.display='none';lock();return false;}
+    var st=status();
+    if(st==='loading'){paint('info','⏳ Memeriksa status iuran… tunggu sebentar, lalu pilih ulang alamatmu.');lock();return false;}
+    if(st==='belum'){paint('warn','⛔ <b>KK alamat ini belum membayar iuran sama sekali.</b> Pendaftaran lomba dibuka setelah iuran (minimal sebagian) tercatat panitia. Silakan hubungi panitia untuk konfirmasi pembayaran.');lock();return false;}
+    paint('ok','✅ <b>'+(st==='lunas'?'Iuran LUNAS':'Sudah bayar sebagian')+'.</b> Silakan lanjut isi & kirim pendaftaran.');unlock();return true;
+  }
+  sel.addEventListener('change',gate);
+  if(grp)grp.addEventListener('change',gate);
+  var dl=document.getElementById('daftarLagi');
+  if(dl)dl.addEventListener('click',function(){setTimeout(gate,60);});
+  gate();
+  var t=0,iv=setInterval(function(){t++;if(typeof dataKeuangan!=='undefined'&&dataKeuangan&&dataKeuangan.pemasukan)gate();if(t>40)clearInterval(iv);},1500);
+  form.addEventListener('submit',function(e){
+    if(!gate()){e.preventDefault();e.stopImmediatePropagation();
+      box.scrollIntoView({behavior:'smooth',block:'center'});
+      if(typeof showToast==='function')showToast('warn','Pendaftaran dikunci: iuran KK alamat ini belum tercatat. Hubungi panitia ya.');}
+  },true);
 })();
 </script>
 </body>
