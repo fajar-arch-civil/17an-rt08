@@ -331,6 +331,18 @@ details summary{font-size:15.5px;padding:6px 0;cursor:pointer}
 .g-br{bottom:-1px;right:-1px;border-bottom-width:3px;border-right-width:3px;border-bottom-right-radius:14px;border-color:#f3f3f3}
 /* ===== Kunci geser horizontal (hilangkan ruang kosong di kanan, mobile) ===== */
 html,body{overflow-x:clip;max-width:100%}
+/* ===== Variasi antar-section: nomor "bab" outline (kesan editorial, didesain) ===== */
+.wrap{counter-reset:sekat}
+.sec-h{counter-increment:sekat}
+.sec-h::before{
+  content:counter(sekat,decimal-leading-zero);
+  flex:0 0 auto;align-self:center;
+  font-family:'Space Grotesk','Poppins',sans-serif;font-weight:800;
+  font-size:34px;line-height:1;letter-spacing:-1px;
+  color:transparent;-webkit-text-stroke:1.2px rgba(255,46,58,.5);
+  margin-right:2px;
+}
+@media(max-width:480px){.sec-h::before{font-size:26px}}
 </style>
 <title>17-an RT 08 · HUT RI ke-81 Tahun 2026</title>
 <meta name="description" content="Info lengkap Agustusan RT 08 Taman Kirana Surya: daftar lomba online, jadwal acara, cek iuran, & laporan keuangan transparan. Yuk meriahkan HUT RI ke-81!">
