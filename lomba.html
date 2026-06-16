@@ -102,6 +102,7 @@ footer{text-align:center;margin-top:48px;color:rgba(255,255,255,.72);font-size:1
 </style>
 </head>
 <body>
+  <a href="#main" class="skip-link">Langsung ke konten utama</a>
 <div class="bg-base"></div>
 <div class="flag-bg"><div class="band"></div><div class="sheen"></div></div>
 <div class="overlay"></div>
@@ -184,6 +185,99 @@ footer{text-align:center;margin-top:48px;color:rgba(255,255,255,.72);font-size:1
 .katc .katn{font-size:12.5px;color:rgba(255,255,255,.62);margin:6px 0 12px}
 .katc ul{list-style:none;display:flex;flex-wrap:wrap;gap:7px}
 .katc li{font-size:12.5px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+/* ===== MOBILE-FIRST REDESIGN (referensi dark-app) ===== */
+@media(max-width:720px){
+  .topnav{display:none!important} /* hide menu atas di HP */
+  body{padding-bottom:92px} /* ruang untuk bottom bar */
+  #fab{display:none!important} /* hapus tombol scroll-to-top redundan */
+}
+
+/* Header atas ringkas (HP) */
+@media(max-width:720px){
+  .hero{padding:28px 18px 20px}
+  .hero h1{font-size:26px}
+  .hero .sub,.hero .sub2{font-size:14px}
+  .hero .tagline{font-size:13px}
+  .cta-row{margin-top:18px}
+  .cta-btn{padding:12px 20px;font-size:14px}
+}
+
+/* Kartu & section: rounded besar, spacing lega */
+.glass,.card,.run,.fincard,.kpi .box,.cabang{
+  border-radius:18px!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.48)!important;
+}
+@media(max-width:560px){
+  .glass,.card,.run,.fincard{border-radius:16px!important}
+}
+
+/* KPI grid: 2 kolom di HP, ikon + angka besar */
+@media(max-width:720px){
+  .kpi{grid-template-columns:1fr 1fr!important;gap:10px}
+  .kpi .box{padding:14px 12px}
+  .kpi .val{font-size:22px}
+  .kpi .lbl{font-size:10.5px}
+}
+
+/* Section spacing: lega tapi tidak boros ruang */
+@media(max-width:720px){
+  .sec{margin-top:32px}
+  .sec-h h2{font-size:19px}
+  .wrap{padding:0 14px 90px}
+}
+
+/* Cuaca: kartu kecil 1 baris (ikon + suhu + kondisi) */
+#cuacaBox{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:14px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  margin:12px 0 0;font-size:13px;
+}
+#cuacaBox .iconify{font-size:24px;color:var(--gold);flex:0 0 auto}
+#cuacaBox .ctemp{font-weight:700;font-size:18px;color:var(--merah);flex:0 0 auto}
+#cuacaBox .ccond{flex:1;color:rgba(255,255,255,.72)}
+@media(max-width:480px){
+  #cuacaBox{font-size:12px;padding:9px 12px}
+  #cuacaBox .iconify{font-size:20px}
+  #cuacaBox .ctemp{font-size:16px}
+}
+
+/* Baris daftar (transaksi, peserta): ikon depan + nilai kanan */
+.tbl{font-size:13.5px}
+.tbl th{font-size:11px;padding:10px 9px}
+.tbl td{padding:11px 9px}
+@media(max-width:560px){
+  .tbl{font-size:13px}
+  .tbl th{font-size:10px;padding:9px 7px}
+  .tbl td{padding:10px 7px}
+}
+
+/* Aksesibilitas: skip-link tidak tabrakan */
+.skip-link{
+  position:absolute;left:-9999px;top:10px;z-index:999;
+  background:var(--merah);color:#fff;padding:8px 16px;
+  border-radius:8px;font-weight:600;text-decoration:none;
+}
+.skip-link:focus{left:10px;outline:3px solid #ff8088}
+
+/* Form: lebih besar di HP (anti zoom) */
+@media(max-width:720px){
+  .form input,.form select,.form textarea,.cekbar input{font-size:16px;padding:13px 14px}
+  .cekbar button{padding:13px 18px;font-size:15px}
+}
+
+/* Countdown: kompak di HP */
+@media(max-width:560px){
+  .count{gap:8px}
+  .count .u{min-width:68px;padding:12px 8px}
+  .count .n{font-size:26px}
+  .count .l{font-size:10px}
+}
+
+/* Bottom bar overlap fix */
+@media(max-width:720px){
+  footer{padding-bottom:20px}
+}
 </style>
 
 <section id="kategori" class="sec reveal">
