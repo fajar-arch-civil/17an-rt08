@@ -300,6 +300,19 @@ details summary{font-size:15.5px;padding:6px 0;cursor:pointer}
 .ok-msg{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
 .ok-msg>.iconify{font-size:54px;color:var(--hijau)}          /* hanya centang utama yang besar */
 .ok-msg h3 .iconify,.ok-msg p .iconify{font-size:1em!important;vertical-align:-2px}  /* ikon di dalam teks ikut ukuran teks */
+/* ===== Umbul-umbul Merah-Putih (identitas Agustusan) ===== */
+.bunting{display:flex;justify-content:center;align-items:flex-start;height:20px;overflow:hidden;position:relative;z-index:5;pointer-events:none}
+.bunting::before{content:"";position:absolute;top:1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent)}
+.bunting i{flex:0 0 auto;width:17px;height:17px;margin:0 .5px;clip-path:polygon(0 0,100% 0,50% 100%);box-shadow:0 2px 4px rgba(0,0,0,.35)}
+.bunting i:nth-child(odd){background:#d4111d}
+.bunting i:nth-child(even){background:#f3f3f3}
+@media(max-width:480px){.bunting i{width:14px;height:14px}}
+/* Coretan kuas di kata sorot judul hero */
+.hero h1 span{
+  padding-bottom:8px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 14'%3E%3Cpath d='M4 9 C 70 2 150 2 210 7 S 280 11 296 6' fill='none' stroke='%23ff2e3a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:left bottom;background-size:100% 9px;
+}
 </style>
 </head>
 <body>
@@ -880,6 +893,15 @@ selLomba.addEventListener('change',function(){
     }
     hp && (hp.value=hpd); // simpan nomor versi bersih (tanpa strip) ke sheet
   }, true);
+})();
+/* Umbul-umbul merah-putih di bawah menu */
+(function(){
+  if(document.querySelector('.bunting')) return;
+  var b=document.createElement('div'); b.className='bunting'; b.setAttribute('aria-hidden','true');
+  for(var i=0;i<64;i++){ b.appendChild(document.createElement('i')); }
+  var nav=document.querySelector('.topnav');
+  if(nav && nav.parentNode){ nav.parentNode.insertBefore(b, nav.nextSibling); }
+  else { document.body.insertBefore(b, document.body.firstChild); }
 })();
 </script>
 </body>
