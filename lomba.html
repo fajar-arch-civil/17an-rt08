@@ -151,6 +151,227 @@ footer{text-align:center;margin-top:56px;padding-top:24px;border-top:1px solid v
 @media(max-width:480px){.hero h1{font-size:24px}.sec-h h2{font-size:19px}.cat-grid{grid-template-columns:1fr 1fr}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ff6b73;outline-offset:2px;border-radius:6px}
+/* ============================================================
+   REDESIGN: Dark Finance / Mobile-first UI
+   Tempel di paling bawah <style>
+   ============================================================ */
+
+/* === KARTU: lebih gelap, kontras tinggi === */
+.glass {
+  background: rgba(18,8,10,.75);
+  border: 1px solid rgba(255,255,255,.07);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+}
+
+/* === KPI CARDS: left-aligned finance style === */
+.kpi .box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 14px;
+  border-radius: 16px;
+  gap: 0;
+}
+.kpi .lbl {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 6px;
+  line-height: 1;
+}
+.kpi .val {
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 800;
+  word-break: break-word;
+}
+@media(max-width:480px){ .kpi .val { font-size: 16px; } }
+
+/* === TABEL KEUANGAN: list-row style === */
+.tbl { border: none; }
+.tbl th {
+  padding: 8px 8px 7px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: rgba(255,255,255,.38);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.tbl td {
+  padding: 11px 8px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  vertical-align: middle;
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl td.tgl { font-size: 11px; color: rgba(255,255,255,.45); width: 54px; }
+.tbl td.num { font-weight: 800; font-size: 13px; white-space: nowrap; }
+.fincard { padding: 14px 16px; border-radius: 16px; }
+.fincard h3 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+
+/* === MINI TABLE (rekap, jadwal iuran) === */
+.mini th {
+  font-size: 10px;
+  letter-spacing: .5px;
+  color: rgba(255,255,255,.38);
+  padding: 8px 10px 7px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.mini td {
+  padding: 10px 10px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.mini tr:last-child td { border-bottom: none; }
+
+/* === SECTION HEADER: bersih di mobile === */
+@media(max-width:720px) {
+  .sec-h::before { display: none; }
+  .sec-h { gap: 10px; margin-bottom: 22px; }
+  .sec-h h2 { font-size: 19px; letter-spacing: -.5px; }
+  .sec { margin-top: 46px; }
+}
+
+/* === HERO: compact di mobile === */
+@media(max-width:560px) {
+  .hero { padding: 24px 14px 14px; }
+  .hero h1 { font-size: 25px; letter-spacing: -.8px; }
+  .hero .sub2 { display: none; }
+  .hero .tagline { font-size: 13px; margin-top: 9px; }
+  .chips .glass { padding: 7px 10px; font-size: 12px; }
+  .chips { gap: 6px; }
+}
+@media(max-width:400px) {
+  .cta-row { flex-direction: column; align-items: stretch; }
+  .cta-btn { justify-content: center; padding: 14px 20px; }
+}
+
+/* === HITUNG MUNDUR: compact === */
+@media(max-width:520px) {
+  .count { gap: 7px; }
+  .count .u { min-width: 64px; padding: 11px 8px; border-radius: 14px; }
+  .count .n { font-size: 24px; }
+  .count .l { font-size: 10px; }
+}
+
+/* === JADWAL RUN CARD === */
+@media(max-width:520px) {
+  .run { padding: 14px 13px; border-radius: 16px; }
+  .run .row { font-size: 13px; padding: 7px 0; gap: 8px; }
+  .run .t { flex: 0 0 50px; font-size: 12.5px; color: var(--gold); }
+}
+.overview { padding: 12px 16px 4px; }
+.overview li { font-size: 13.5px; }
+@media(max-width:480px) {
+  .overview .dt { flex: 0 0 100%; margin-bottom: 1px; font-size: 12px; }
+  .overview li { padding-bottom: 14px; }
+}
+
+/* === FAQ / DETAILS: modern toggle === */
+details.glass {
+  border-radius: 14px;
+  transition: background .2s ease;
+}
+details.glass[open] {
+  background: rgba(255,46,58,.07);
+  border-color: rgba(255,46,58,.2);
+}
+details summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 2px 0;
+  cursor: pointer;
+}
+details summary::after {
+  content: '+';
+  font-size: 20px;
+  color: var(--merah);
+  font-weight: 400;
+  flex: 0 0 auto;
+  margin-left: 10px;
+  transition: transform .2s ease;
+}
+details[open] summary::after {
+  content: '\2212'; /* − */
+}
+details summary::-webkit-details-marker { display: none; }
+
+/* === BADGE STAT: rounded pill === */
+.stat-badge { border-radius: 8px; padding: 4px 10px; font-size: 11px; }
+
+/* === FORM: visual polish === */
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  background: rgba(255,255,255,.07) !important;
+}
+.form label { font-size: 13px; color: rgba(255,255,255,.85); }
+.form .fld { margin-bottom: 16px; }
+.submit { font-size: 15px; padding: 14px 36px; }
+
+/* === CEK BAYAR BAR === */
+.cekbar input {
+  background: rgba(255,255,255,.92) !important;
+  border-radius: 12px;
+  font-size: 15px;
+}
+.cekbar button {
+  padding: 13px 20px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+/* === ANGKA GRID (dalam angka): finance card style === */
+.angka-card {
+  text-align: left !important;
+  padding: 16px 14px !important;
+}
+.angka-n { font-size: 30px !important; }
+.angka-l { font-size: 11px !important; text-transform: uppercase; letter-spacing: .4px; }
+
+/* === ALUR STEP: tighter === */
+.alur-step { padding: 16px 12px; border-radius: 16px; }
+.alur-num { width: 32px; height: 32px; font-size: 13px; }
+.alur-icon { font-size: 26px !important; }
+.alur-step h3 { font-size: 14px; }
+.alur-step p { font-size: 12px; }
+
+/* === FOOTER === */
+footer { margin-top: 44px; padding-top: 18px; font-size: 12px; }
+
+/* === CARD PADDING KONSISTEN === */
+.glass.card { padding: 16px; }
+
+/* === CEK HASIL: card style === */
+.cek-h3 { font-size: 14px; }
+.cek-sub { font-size: 12px; margin-bottom: 10px; }
+
+/* === STATUS BAR === */
+.statusbar { font-size: 12px; margin-bottom: 12px; gap: 8px; }
+.btn-mini { padding: 8px 13px; font-size: 13px; border-radius: 999px; }
+
+/* === SCROLLSPY AKTIF === */
+.topnav a.active {
+  background: rgba(255,46,58,.18) !important;
+  border-color: rgba(255,46,58,.45) !important;
+  color: #fff !important;
+}
+
+/* === BAR PROGRES (iuran) === */
+.prog { height: 12px; border-radius: 999px; }
+.prog > i { border-radius: 999px; }
+
+/* === REKAP SUM === */
+#rekapSum .cektot { font-size: 13px; padding: 8px 6px; }
+
+/* === GAPURA corners: subtle === */
+.g-tl,.g-tr,.g-bl,.g-br { width: 22px; height: 22px; }
 </style>
 </head>
 <body>
