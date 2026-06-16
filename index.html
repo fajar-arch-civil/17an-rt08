@@ -343,6 +343,20 @@ html,body{overflow-x:clip;max-width:100%}
   margin-right:2px;
 }
 @media(max-width:480px){.sec-h::before{font-size:26px}}
+/* ===== Mood tekstur per section (monokrom, elegan, merah-dominan) ===== */
+/* Ceria/festive — titik halus (Daftar & Lomba) */
+#daftar,#lomba{background-image:radial-gradient(rgba(255,46,58,.06) 1.5px,transparent 1.6px);background-size:22px 22px}
+/* Resmi/dashboard — grid halus (Keuangan & Rekap) */
+#keuangan,#rekap{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:42px 42px}
+
+/* ===== Section Jadwal: gaya timeline (garis + titik) ===== */
+.overview{position:relative;padding:8px 4px 0}
+.overview li{position:relative;border-bottom:none;padding:0 0 20px 28px}
+.overview li:last-child{padding-bottom:0}
+.overview li::before{content:"";position:absolute;left:6px;top:6px;bottom:-2px;width:2px;background:linear-gradient(180deg,var(--merah),rgba(255,46,58,.22))}
+.overview li:last-child::before{display:none}
+.overview li::after{content:"";position:absolute;left:1px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--merah);box-shadow:0 0 0 4px rgba(255,46,58,.16)}
+.overview .dt{color:var(--merah)}
 </style>
 <title>17-an RT 08 · HUT RI ke-81 Tahun 2026</title>
 <meta name="description" content="Info lengkap Agustusan RT 08 Taman Kirana Surya: daftar lomba online, jadwal acara, cek iuran, & laporan keuangan transparan. Yuk meriahkan HUT RI ke-81!">
