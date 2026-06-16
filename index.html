@@ -1398,23 +1398,22 @@ form.addEventListener('submit',function(e){
   nav.addEventListener('scroll',function(){ if(!hint)return;
     var end=nav.scrollLeft+nav.clientWidth>=nav.scrollWidth-4; hint.style.opacity=end?'0':'1'; });
 })();
-/* ===== Identitas visual per-jenis section — palet Merah-Putih (senada tema) ===== */
+/* ===== Identitas section (v2) — aksen menyatu di bawah judul, merah-putih ===== */
 (function(){
   if(document.getElementById('tipeSekatStyle'))return;
   var css=document.createElement('style'); css.id='tipeSekatStyle';
   css.textContent=`
-  .sec[data-tipe]{position:relative;border-radius:16px}
-  .sec[data-tipe="form"]{border-radius:18px;box-shadow:inset 0 0 70px rgba(255,46,58,.055)}
-  .sec[data-tipe="info"]{box-shadow:inset 0 0 70px rgba(255,128,136,.035)}
-  .sec[data-tipe="data"]{border-radius:10px;box-shadow:inset 0 0 70px rgba(255,255,255,.022)}
-  .sec[data-tipe="cek"]{border-radius:14px;box-shadow:inset 0 0 70px rgba(255,46,58,.05)}
+  .sec[data-tipe]{position:relative}
+  .sec[data-tipe="form"]{box-shadow:inset 0 0 90px rgba(255,46,58,.04)}
+  .sec[data-tipe="cek"]{box-shadow:inset 0 0 90px rgba(255,46,58,.03)}
 
-  /* garis aksen atas — beda POLA, sama keluarga warna */
-  .sec[data-tipe]::after{content:"";position:absolute;top:0;left:16px;right:16px;height:3px;border-radius:3px;pointer-events:none}
-  .sec[data-tipe="form"]::after{background:var(--merah);box-shadow:0 0 12px rgba(255,46,58,.5)}
-  .sec[data-tipe="info"]::after{height:2px;background:var(--gold);opacity:.85}
-  .sec[data-tipe="data"]::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.6) 0 11px,transparent 11px 19px)}
-  .sec[data-tipe="cek"]::after{background:repeating-linear-gradient(90deg,var(--merah) 0 8px,transparent 8px 14px)}
+  /* aksen MENYATU di bawah judul (bukan garis melayang) */
+  .sec[data-tipe] .sec-h{position:relative;padding-bottom:13px;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,.07)}
+  .sec[data-tipe] .sec-h::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:54px;border-radius:2px}
+  .sec[data-tipe="form"] .sec-h::after{background:var(--merah);height:3px;width:66px;box-shadow:0 0 10px rgba(255,46,58,.5)}
+  .sec[data-tipe="info"] .sec-h::after{background:var(--gold)}
+  .sec[data-tipe="data"] .sec-h::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0 7px,transparent 7px 12px);width:74px}
+  .sec[data-tipe="cek"] .sec-h::after{background:repeating-linear-gradient(90deg,var(--merah) 0 6px,transparent 6px 11px);width:74px}
 
   /* label kecil di judul — variasi gaya, tetap merah-putih */
   .tipe-badge{margin-left:auto;align-self:center;font-size:9.5px;font-weight:800;letter-spacing:1px;
