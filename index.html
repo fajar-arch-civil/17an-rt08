@@ -371,6 +371,7 @@ html,body{overflow-x:clip;max-width:100%}
 }
 .tipe-badge{display:inline-flex;align-items:center;gap:6px}
 .tipe-badge::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--merah);box-shadow:0 0 6px rgba(255,46,58,.55);flex:0 0 auto}
+
 </style>
 <title>17-an RT 08 · HUT RI ke-81 Tahun 2026</title>
 <meta name="description" content="Info lengkap Agustusan RT 08 Taman Kirana Surya: daftar lomba online, jadwal acara, cek iuran, & laporan keuangan transparan. Yuk meriahkan HUT RI ke-81!">
@@ -386,6 +387,7 @@ html,body{overflow-x:clip;max-width:100%}
 <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
+  <a href="#main" class="skip-link">Langsung ke konten utama</a>
   <div class="bg-base"></div><div class="flag-bg"><div class="band"></div><div class="sheen"></div></div><div class="overlay"></div>
   <div class="blob b1"></div><div class="blob b2"></div>
 
@@ -436,6 +438,41 @@ html,body{overflow-x:clip;max-width:100%}
           <div class="u glass"><div class="n" id="cS">0</div><div class="l">Detik</div></div>
         </div>
       </div>
+      <!-- Cuaca Lokasi (kartu kecil 1 baris) -->
+<div id="cuacaBox" style="display:none">
+  <span class="iconify" data-icon="solar:sun-bold" id="cuacaIcon"></span>
+  <span class="ctemp" id="cuacaTemp">—</span>
+  <span class="ccond" id="cuacaCond">Memuat cuaca…</span>
+</div>
+<script>
+(function(){
+  var LAT=-6.34,LON=106.50; // Pasanggrahan, Tangerang
+  var box=document.getElementById('cuacaBox');
+  var icon=document.getElementById('cuacaIcon');
+  var temp=document.getElementById('cuacaTemp');
+  var cond=document.getElementById('cuacaCond');
+  fetch('https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,weather_code,is_day&timezone=Asia/Jakarta',{cache:'no-store'})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(!d||!d.current)throw new Error('no data');
+    var c=d.current;
+    temp.textContent=Math.round(c.temperature_2m)+'°';
+    var wc=c.weather_code||0,day=c.is_day;
+    var ic='solar:sun-bold',txt='Cerah';
+    if(wc===0){}
+    else if(wc<=3){ic='solar:cloudy-bold';txt='Berawan';}
+    else if(wc<=67){ic='solar:cloud-rain-bold';txt='Hujan';}
+    else if(wc<=77){ic='solar:cloud-snow-bold';txt='Salju';}
+    else {ic='solar:cloud-storm-bold';txt='Badai';}
+    if(wc===0&&!day){ic='solar:moon-stars-bold';txt='Malam Cerah';}
+    icon.setAttribute('data-icon',ic);
+    cond.textContent=txt+' · Pasanggrahan';
+    box.style.display='flex';
+    if(window.Iconify)Iconify.scan();
+  })
+  .catch(function(){box.style.display='none';});
+})();
+</script>
     </section>
 
     <!-- FORM -->
