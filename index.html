@@ -1643,5 +1643,111 @@ form.addEventListener('submit',function(e){
   if(window.Iconify&&Iconify.scan){ try{Iconify.scan();}catch(e){} }
 })();
 </script>
+<!-- ===== Bottom Nav + Kontak WA — tempel sebelum </body> di index.html DAN lomba.html ===== -->
+<script>
+(function(){
+  if(document.getElementById('bnav'))return;
+  var WA=(typeof WA_PANITIA!=='undefined'&&WA_PANITIA)||'6281234567890';
+  var isLomba=!!document.getElementById('cabangGrid')||/lomba/i.test(location.pathname);
+
+  var st=document.createElement('style');
+  st.textContent=`
+  @media(max-width:720px){
+    .topnav{display:none!important}
+    body{padding-bottom:92px}
+    #fab{bottom:88px!important}
+  }
+  #waBtn{display:none!important}
+  #bnav{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:60;display:none;
+    align-items:flex-end;gap:2px;padding:8px 10px;border-radius:26px;
+    background:rgba(22,11,13,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,80,90,.22);box-shadow:0 14px 36px rgba(0,0,0,.55)}
+  @media(max-width:720px){#bnav{display:flex}}
+  #bnav a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;
+    color:rgba(255,255,255,.62);font-size:10px;font-weight:600;
+    padding:7px 11px;border-radius:16px;min-width:52px;transition:color .25s ease}
+  #bnav a .iconify{font-size:21px}
+  #bnav a.on{color:#fff}#bnav a.on .iconify{color:#ff5a64}
+  #bnav a.center{margin-top:-24px;color:#fff}
+  #bnav a.center .ci{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;margin-bottom:3px;
+    background:linear-gradient(135deg,#ff3b46,#b3121d);box-shadow:0 8px 22px rgba(255,46,58,.5);
+    border:3px solid rgba(22,11,13,.92)}
+  #bnav a.center .ci .iconify{font-size:26px;color:#fff}
+  .wa-help{max-width:860px;margin:46px auto 0;padding:0 16px}
+  .wa-help-card{display:flex;align-items:center;gap:15px;padding:20px;flex-wrap:wrap}
+  .wa-help-ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;flex:0 0 auto;
+    background:linear-gradient(135deg,#25d366,#0e8a4f);box-shadow:0 6px 18px rgba(37,211,102,.3)}
+  .wa-help-ic .iconify{font-size:26px;color:#fff}
+  .wa-help-txt{flex:1;min-width:170px}
+  .wa-help-txt h3{font-size:16px;font-weight:700;margin:0}
+  .wa-help-txt p{font-size:13px;color:rgba(255,255,255,.7);margin:3px 0 0}
+  .wa-help-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:14px;
+    background:linear-gradient(135deg,#25d366,#0e8a4f);color:#fff;font-weight:700;font-size:14px;
+    text-decoration:none;white-space:nowrap;transition:transform .25s ease}
+  .wa-help-btn .iconify{font-size:19px}.wa-help-btn:hover{transform:translateY(-2px)}
+  @media(max-width:560px){.wa-help-txt{min-width:100%}.wa-help-btn{width:100%;justify-content:center}}
+  `;
+  document.head.appendChild(st);
+
+  var f=document.querySelector('footer');
+  if(f){
+    var sec=document.createElement('div'); sec.className='wa-help';
+    sec.innerHTML='<div class="wa-help-card glass">'
+      +'<div class="wa-help-ic"><span class="iconify" data-icon="mdi:whatsapp"></span></div>'
+      +'<div class="wa-help-txt"><h3>Ada pertanyaan atau keluhan?</h3>'
+      +'<p>Hubungi panitia 17-an RT 08 lewat WhatsApp — kami bantu sebisanya.</p></div>'
+      +'<a id="waHelpBtn" class="wa-help-btn" target="_blank" rel="noopener">'
+      +'<span class="iconify" data-icon="mdi:whatsapp"></span> Chat WhatsApp Panitia</a></div>';
+    f.parentNode.insertBefore(sec,f);
+    sec.querySelector('#waHelpBtn').href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo Panitia 17-an RT 08, saya mau bertanya: ');
+  }
+
+  var items = isLomba ? [
+    {ic:'solar:home-smile-bold',label:'Beranda',go:'index.html'},
+    {ic:'solar:medal-ribbon-bold',label:'Cabang',go:'#cabang'},
+    {ic:'solar:pen-new-square-bold',label:'Daftar',go:'index.html#daftar',center:true},
+    {ic:'solar:users-group-rounded-bold',label:'Peserta',go:'#peserta'},
+    {ic:'solar:cup-star-bold',label:'Hasil',go:'#hasil'}
+  ] : [
+    {ic:'solar:home-smile-bold',label:'Beranda',go:'#__top'},
+    {ic:'solar:wallet-money-bold',label:'Keuangan',go:'#keuangan'},
+    {ic:'solar:pen-new-square-bold',label:'Daftar',go:'#daftar',center:true},
+    {ic:'solar:chart-2-bold',label:'Rekap',go:'#rekap'},
+    {ic:'solar:cup-star-bold',label:'Lomba',go:'lomba.html'}
+  ];
+  var bn=document.createElement('nav'); bn.id='bnav'; bn.setAttribute('aria-label','Navigasi');
+  items.forEach(function(it){
+    var a=document.createElement('a');
+    if(it.center)a.className='center';
+    a.href=(it.go.charAt(0)==='#')?(it.go==='#__top'?'#':it.go):it.go;
+    a.setAttribute('data-go',it.go);
+    a.innerHTML=(it.center?'<span class="ci"><span class="iconify" data-icon="'+it.ic+'"></span></span>'
+      :'<span class="iconify" data-icon="'+it.ic+'"></span>')+it.label;
+    a.addEventListener('click',function(e){
+      var go=it.go;
+      if(go.charAt(0)==='#'){ e.preventDefault();
+        if(go==='#__top')window.scrollTo({top:0,behavior:'smooth'});
+        else{var t=document.querySelector(go);if(t)t.scrollIntoView({behavior:'smooth'});}
+      }
+    });
+    bn.appendChild(a);
+  });
+  document.body.appendChild(bn);
+  if(window.Iconify&&Iconify.scan)Iconify.scan(document.body);
+
+  var spyA=[].slice.call(bn.querySelectorAll('a')).filter(function(a){return a.getAttribute('data-go').charAt(0)==='#';});
+  function spy(){
+    var best=null,bt=-1e9;
+    spyA.forEach(function(a){
+      var go=a.getAttribute('data-go'), el=(go==='#__top')?document.body:document.querySelector(go);
+      if(!el)return; var top=el.getBoundingClientRect().top-96;
+      if(top<=0&&top>bt){bt=top;best=a;}
+    });
+    [].forEach.call(bn.children,function(a){a.classList.remove('on');});
+    if(best)best.classList.add('on');
+  }
+  window.addEventListener('scroll',spy,{passive:true}); spy();
+})();
+</script>
 </body>
 </html>
