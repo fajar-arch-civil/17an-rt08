@@ -539,8 +539,8 @@ html,body{overflow-x:clip;max-width:100%}
       </div>
       <div class="card glass reveal" style="margin-top:14px">
         <div class="cek-h3"><span class="iconify" data-icon="mdi:account-search"></span>Cek Pembayaran Iuran Saya</div>
-        <div class="cek-sub">Ketik blok/alamatmu (mis. <b>C2</b>) untuk melihat status iuranmu — target <b>Rp50.000/KK</b>.</div>
-        <div class="cekbar"><input id="cekInput" placeholder="Ketik blok, contoh: C2" inputmode="text"><button id="cekBtn">Cek</button></div>
+        <div class="cek-sub">Ketik blok/alamatmu (mis. <b>H 37 - 1</b>) untuk melihat status iuranmu — target <b>Rp50.000/KK</b>.</div>
+        <div class="cekbar"><input id="cekInput" placeholder="Ketik blok, contoh: H 37 - 1" inputmode="text"><button id="cekBtn">Cek</button></div>
         <div id="cekHasil"></div>
       </div>
     </section>
@@ -1150,7 +1150,7 @@ form.addEventListener('submit',function(e){
   css.textContent=`
   #dalamAngka{margin-top:40px}
   .angka-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:680px){.angka-grid{grid-template-columns:repeat(4,1fr)}}
+  @media(min-width:680px){.angka-grid{grid-template-columns:repeat(3,1fr)}}
   .angka-tile{position:relative;padding:20px 14px;text-align:center;overflow:hidden}
   .angka-tile .ic .iconify{font-size:23px;color:#ff5a64}
   .angka-tile .num{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:34px;line-height:1;color:#fff;letter-spacing:-1px;text-shadow:0 0 22px rgba(255,46,58,.4);margin-top:7px}
@@ -1164,7 +1164,6 @@ form.addEventListener('submit',function(e){
     <div class="sec-h"><div class="ic"><span class="iconify" data-icon="solar:chart-square-bold"></span></div>
     <div><h2>17-an dalam Angka</h2><small>Sekilas data acara — sebagian diperbarui otomatis.</small></div></div>
     <div class="angka-grid">
-      <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:flag-2-bold"></span></div><div class="num" id="angHUT">0</div><div class="acap">HUT RI ke-</div></div>
       <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:medal-ribbons-star-bold"></span></div><div class="num" id="angLomba">0</div><div class="acap">Cabang Lomba</div></div>
       <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></div><div class="num" id="angDaftar">0</div><div class="acap">Warga Sudah Daftar</div></div>
       <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:calendar-mark-bold"></span></div><div class="num" id="angHari">0</div><div class="acap">Hari Menuju 17-an</div></div>
@@ -1182,7 +1181,6 @@ form.addEventListener('submit',function(e){
 
   var done=false;
   function play(){ if(done)return; done=true;
-    countUp(document.getElementById('angHUT'),81);
     countUp(document.getElementById('angHari'),hariMenuju());
     countUp(document.getElementById('angLomba'),valLomba());
     countUp(document.getElementById('angDaftar'),valDaftar());
@@ -1507,92 +1505,9 @@ form.addEventListener('submit',function(e){
   }`;
   document.head.appendChild(s);
 })();
-/* ===== Lini Masa Acara — rundown interaktif (sorot tahap berjalan + hitung mundur) ===== */
-(function(){
-  var host=document.getElementById('jadwal');
-  if(!host||document.getElementById('liniMasa'))return;
-  var hdr=host.querySelector('.sec-h');
 
-  var css=document.createElement('style');
-  css.textContent=`
-  #liniMasa{margin:16px 0 8px}
-  .lm-track{display:grid;gap:13px;position:relative}
-  @media(min-width:760px){.lm-track{grid-template-columns:repeat(3,1fr);gap:15px}}
-  .lm-stage{position:relative;padding:15px 16px 17px;border-radius:14px;background:rgba(255,255,255,.038);
-    border:1px solid rgba(255,255,255,.09);transition:border-color .25s,background .25s,transform .2s}
-  @media(hover:hover){.lm-stage:hover{transform:translateY(-2px)}}
-  .lm-top{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-  .lm-num{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto;
-    font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:14px;color:#ff8088;
-    background:rgba(255,46,58,.12);border:1px solid rgba(255,46,58,.3)}
-  .lm-date{font-size:11px;font-weight:700;letter-spacing:.4px;color:rgba(255,255,255,.58);text-transform:uppercase}
-  .lm-stage h4{font-size:14.5px;font-weight:700;margin:0 0 5px}
-  .lm-stage p{font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.72);margin:0}
-  .lm-foot{display:flex;align-items:center;gap:8px;margin-top:11px;flex-wrap:wrap}
-  .lm-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.6px;
-    text-transform:uppercase;padding:4px 10px;border-radius:999px}
-  .b-now{background:var(--merah);color:#fff;box-shadow:0 2px 12px rgba(255,46,58,.4)}
-  .b-next{background:transparent;border:1px solid rgba(255,128,136,.55);color:#ffb3b8}
-  .b-done{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.55)}
-  .lm-days{font-size:11.5px;color:rgba(255,255,255,.6)}
-  .lm-days b{color:#ff8088;font-weight:800}
-  .lm-stage.is-active{background:rgba(255,46,58,.085);border-color:rgba(255,46,58,.5);
-    box-shadow:0 0 0 1px rgba(255,46,58,.22),0 12px 32px rgba(255,46,58,.12)}
-  .lm-stage.is-active .lm-num{color:#fff;background:var(--merah);border-color:transparent}
-  .lm-stage.is-done{opacity:.6}
-  .lm-note{font-size:11px;color:rgba(255,255,255,.45);margin:11px 2px 0}`;
-  document.head.appendChild(css);
-
-  var STAGES=[
-    {n:1,date:'Juli – pertengahan Agustus',title:'Lomba Olahraga & Warga',
-     desc:'Tiap akhir pekan (pagi–sore) di Lapangan RT 08. Voli jadi cabang utama; ada futsal & tenis meja. Usia 10 tahun ke atas diarahkan ke sini.',
-     start:'2026-07-04',end:'2026-08-16',firm:false},
-    {n:2,date:'Senin, 17 Agustus',title:'Puncak HUT ke-81',
-     desc:'Upacara, lalu lomba anak (3 kelompok usia: balita, 6–9, 9–12 th). Hadiah anak dibagikan sore hari.',
-     start:'2026-08-17',end:'2026-08-17',firm:true},
-    {n:3,date:'Sabtu, 22 Agustus',title:'Malam Puncak',
-     desc:'Makan bersama, pentas seni yang dinilai langsung, lalu pengumuman & hadiah dewasa. Merdeka!',
-     start:'2026-08-22',end:'2026-08-22',firm:true}
-  ];
-
-  var wrap=document.createElement('div'); wrap.id='liniMasa';
-  var track=document.createElement('div'); track.className='lm-track'; wrap.appendChild(track);
-  var note=document.createElement('div'); note.className='lm-note';
-  note.textContent='Tanggal pasti tiap lomba olahraga diumumkan panitia mendekati hari-H.';
-  wrap.appendChild(note);
-
-  function D(s){return new Date(s+'T00:00:00+07:00').getTime();}
-  function render(){
-    track.innerHTML=''; var now=Date.now(), hi=-1;
-    for(var i=0;i<STAGES.length;i++){ if(now<=D(STAGES[i].end)){hi=i;break;} }
-    STAGES.forEach(function(s,i){
-      var el=document.createElement('div'); el.className='lm-stage';
-      var started=now>=D(s.start), ended=now>D(s.end);
-      if(i===hi) el.className+=' is-active'; else if(ended) el.className+=' is-done';
-      var foot='';
-      if(i===hi) foot = started ? '<span class="lm-badge b-now">Sedang berlangsung</span>'
-                                : '<span class="lm-badge b-next">Berikutnya</span>';
-      else if(ended) foot='<span class="lm-badge b-done">Selesai</span>';
-      if(s.firm && now<D(s.start)){
-        var hari=Math.ceil((D(s.start)-now)/86400000);
-        foot+='<span class="lm-days"><b>'+hari+'</b> hari lagi</span>';
-      }
-      el.innerHTML='<div class="lm-top"><span class="lm-num">'+s.n+'</span>'+
-        '<span class="lm-date">'+s.date+'</span></div>'+
-        '<h4>'+s.title+'</h4><p>'+s.desc+'</p>'+
-        (foot?'<div class="lm-foot">'+foot+'</div>':'');
-      track.appendChild(el);
-    });
-  }
-  render(); setInterval(render,3600000);
-  if(hdr) hdr.insertAdjacentElement('afterend',wrap); else host.insertBefore(wrap,host.firstChild);
-})();
 /* ===== Jadwal jadi SATU rundown interaktif: buang kartu dobel + hidupkan timeline ===== */
 (function(){
-  /* (1) hapus kartu 3-tahap yang bikin dobel */
-  function killLM(){ var m=document.getElementById('liniMasa'); if(m){m.remove();return true;} return false; }
-  if(!killLM()){ var k=0,kv=setInterval(function(){ if(killLM()||++k>40)clearInterval(kv); },120); }
-
   /* (2) hidupkan timeline .overview yang sudah ada */
   var jad=document.getElementById('jadwal'); if(!jad)return;
   var ov=jad.querySelector('.overview'); if(!ov||ov.classList.contains('tl-on'))return;
