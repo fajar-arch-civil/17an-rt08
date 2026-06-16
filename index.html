@@ -403,6 +403,7 @@ html,body{overflow-x:clip;max-width:100%}
     <h1>Mari Meriahkan Kembali <span>Acara 17-an di RT 08!</span></h1>
     <div class="sub">Peringatan HUT Kemerdekaan RI ke-81 · Tahun 2026</div>
     <div class="sub2">Desa Pasanggrahan, Kec. Solear, Kab. Tangerang — Banten</div>
+
     <div class="tagline">Yuk turun ke lapangan, kumpul bareng tetangga, dan bikin Agustusan tahun ini lebih seru dari biasanya.</div>
     <div class="cta-row">
       <a href="#daftar" class="cta-btn primary"><span class="iconify" data-icon="mdi:account-plus"></span>Daftar Sekarang</a>
@@ -1346,6 +1347,56 @@ form.addEventListener('submit',function(e){
     });
   }
   load(); setInterval(load,600000); /* perbarui tiap 10 menit */
+})();
+/* ===== Pindah kartu cuaca ke bawah baris lokasi hero ===== */
+(function(){
+  if(window.__relocCuaca)return; window.__relocCuaca=1;
+  function place(){
+    var box=document.getElementById('cuacaBox'), hero=document.querySelector('.hero');
+    if(!box||!hero)return false;
+    var loc=null, els=hero.querySelectorAll('p,div,span,small,h2,h3,h4');
+    for(var i=0;i<els.length;i++){ var e=els[i];
+      if(box.contains(e))continue;
+      var t=(e.textContent||'');
+      if(/Pasanggrahan/i.test(t)&&/Banten/i.test(t)&&t.length<120) loc=e; /* ambil yang terdalam */
+    }
+    if(!loc)return false;
+    box.classList.add('show'); /* pastikan terlihat */
+    if(loc.nextSibling!==box) loc.parentNode.insertBefore(box, loc.nextSibling);
+    return true;
+  }
+  if(!place()){ var n=0,iv=setInterval(function(){ if(place()||++n>20)clearInterval(iv); },300); }
+})();
+/* ===== Petunjuk "geser" untuk menu atas (muncul hanya bila menu melebihi layar) ===== */
+(function(){
+  if(document.getElementById('navSwipeStyle'))return;
+  var nav=document.querySelector('.topnav'); if(!nav)return;
+  var css=document.createElement('style'); css.id='navSwipeStyle';
+  css.textContent=`
+  .topnav{scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .topnav::-webkit-scrollbar{display:none}
+  .nav-swipe{position:sticky;right:0;flex:0 0 auto;align-self:stretch;display:inline-flex;align-items:center;justify-content:flex-end;
+    min-width:54px;margin-left:-10px;pointer-events:none;background:linear-gradient(90deg,rgba(11,6,7,0),rgba(11,6,7,.92) 55%)}
+  .nav-swipe .iconify{font-size:19px;color:#ff8088;animation:navNudge 1.7s ease-in-out infinite}
+  @keyframes navNudge{0%,100%{transform:translateX(0);opacity:.55}50%{transform:translateX(-5px);opacity:1}}
+  @media(prefers-reduced-motion:reduce){.nav-swipe .iconify{animation:none}}`;
+  document.head.appendChild(css);
+
+  var hint=null;
+  function ensure(){
+    var over=nav.scrollWidth-nav.clientWidth>8;
+    if(over){
+      if(!hint&&!nav.querySelector('.nav-swipe')){
+        hint=document.createElement('span'); hint.className='nav-swipe';
+        hint.innerHTML='<span class="iconify" data-icon="mdi:gesture-swipe-horizontal"></span>';
+        nav.appendChild(hint); if(window.Iconify&&Iconify.scan)Iconify.scan(nav);
+      }
+      if(hint)hint.style.display='';
+    } else if(hint){ hint.style.display='none'; }
+  }
+  ensure(); setTimeout(ensure,800); window.addEventListener('resize',ensure);
+  nav.addEventListener('scroll',function(){ if(!hint)return;
+    var end=nav.scrollLeft+nav.clientWidth>=nav.scrollWidth-4; hint.style.opacity=end?'0':'1'; });
 })();
 </script>
 </body>
