@@ -1398,6 +1398,115 @@ form.addEventListener('submit',function(e){
   nav.addEventListener('scroll',function(){ if(!hint)return;
     var end=nav.scrollLeft+nav.clientWidth>=nav.scrollWidth-4; hint.style.opacity=end?'0':'1'; });
 })();
+/* ===== Identitas visual per-jenis section — palet Merah-Putih (senada tema) ===== */
+(function(){
+  if(document.getElementById('tipeSekatStyle'))return;
+  var css=document.createElement('style'); css.id='tipeSekatStyle';
+  css.textContent=`
+  .sec[data-tipe]{position:relative;border-radius:16px}
+  .sec[data-tipe="form"]{border-radius:18px;box-shadow:inset 0 0 70px rgba(255,46,58,.055)}
+  .sec[data-tipe="info"]{box-shadow:inset 0 0 70px rgba(255,128,136,.035)}
+  .sec[data-tipe="data"]{border-radius:10px;box-shadow:inset 0 0 70px rgba(255,255,255,.022)}
+  .sec[data-tipe="cek"]{border-radius:14px;box-shadow:inset 0 0 70px rgba(255,46,58,.05)}
+
+  /* garis aksen atas — beda POLA, sama keluarga warna */
+  .sec[data-tipe]::after{content:"";position:absolute;top:0;left:16px;right:16px;height:3px;border-radius:3px;pointer-events:none}
+  .sec[data-tipe="form"]::after{background:var(--merah);box-shadow:0 0 12px rgba(255,46,58,.5)}
+  .sec[data-tipe="info"]::after{height:2px;background:var(--gold);opacity:.85}
+  .sec[data-tipe="data"]::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.6) 0 11px,transparent 11px 19px)}
+  .sec[data-tipe="cek"]::after{background:repeating-linear-gradient(90deg,var(--merah) 0 8px,transparent 8px 14px)}
+
+  /* label kecil di judul — variasi gaya, tetap merah-putih */
+  .tipe-badge{margin-left:auto;align-self:center;font-size:9.5px;font-weight:800;letter-spacing:1px;
+    text-transform:uppercase;white-space:nowrap;padding:4px 9px;border-radius:999px;border:1px solid}
+  .tb-form{color:#fff;background:var(--merah);border-color:transparent;box-shadow:0 2px 10px rgba(255,46,58,.35)}
+  .tb-info{color:#ffb3b8;background:transparent;border-color:rgba(255,128,136,.5)}
+  .tb-data{color:rgba(255,255,255,.88);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22)}
+  .tb-cek{color:#ff8088;background:transparent;border-color:rgba(255,46,58,.5);border-style:dashed}
+  @media(max-width:480px){.tipe-badge{font-size:8.5px;padding:3px 7px;letter-spacing:.6px}}`;
+  document.head.appendChild(css);
+
+  var rules=[
+    {re:/laporan keuangan/i, tipe:'data', label:'LAPORAN'},
+    {re:/rekap iuran/i,       tipe:'data', label:'DATA'},
+    {re:/cek pembayaran/i,    tipe:'cek',  label:'CEK MANDIRI'},
+    {re:/jadwal iuran/i,      tipe:'info', label:'INFORMASI'},
+    {re:/daftar lomba|pentas seni/i, tipe:'form', label:'FORMULIR'},
+    {re:/kategori lomba/i,    tipe:'info', label:'INFORMASI'},
+    {re:/peserta yang sudah/i,tipe:'data', label:'DATA'},
+    {re:/susunan acara|jadwal & susunan/i, tipe:'info', label:'JADWAL'},
+    {re:/sambutan|info acara/i, tipe:'info', label:'INFORMASI'},
+    {re:/dalam angka/i,       tipe:'data', label:'RINGKASAN'},
+    {re:/cara ikut/i,         tipe:'info', label:'PANDUAN'}
+  ];
+  document.querySelectorAll('.sec').forEach(function(sec){
+    var h=sec.querySelector('.sec-h'); if(!h||h.querySelector('.tipe-badge'))return;
+    var txt=h.textContent||'', hit=null;
+    for(var i=0;i<rules.length;i++){ if(rules[i].re.test(txt)){ hit=rules[i]; break; } }
+    if(!hit)return;
+    sec.setAttribute('data-tipe',hit.tipe);
+    var b=document.createElement('span'); b.className='tipe-badge tb-'+hit.tipe; b.textContent=hit.label;
+    h.appendChild(b);
+  });
+})();
+/* ===== Visualisasi: Donut status iuran warga (real-time) di Rekap ===== */
+(function(){
+  if(document.getElementById('donutIuran'))return;
+  var anchor=document.getElementById('rekapSum')||document.getElementById('rekapBody');
+  if(!anchor)return;
+  var css=document.createElement('style');
+  css.textContent=`
+  #donutIuran{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;margin:6px 0 16px;
+    padding:16px;border-radius:16px;background:rgba(255,46,58,.045);border:1px solid rgba(255,80,90,.18)}
+  #donutIuran .ring{position:relative;width:134px;height:134px;flex:0 0 auto}
+  #donutIuran svg{transform:rotate(-90deg)}
+  #donutIuran .ringc{transition:stroke-dasharray .9s var(--ease,ease)}
+  #donutIuran .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  #donutIuran .ctr b{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:27px;color:#fff;line-height:1}
+  #donutIuran .ctr small{font-size:9.5px;letter-spacing:1px;color:rgba(255,255,255,.6);margin-top:3px}
+  #donutIuran .leg{display:flex;flex-direction:column;gap:9px;min-width:160px}
+  #donutIuran .leg>div{display:flex;align-items:center;gap:9px;font-size:12.5px;color:rgba(255,255,255,.82)}
+  #donutIuran .leg i{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
+  #donutIuran .leg b{margin-left:auto;color:#fff;font-weight:700}`;
+  document.head.appendChild(css);
+
+  var C=326.726;
+  var wrap=document.createElement('div'); wrap.id='donutIuran';
+  wrap.innerHTML=`
+    <div class="ring">
+      <svg width="134" height="134" viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="13"></circle>
+        <circle id="dSeb" class="ringc" cx="66" cy="66" r="52" fill="none" stroke="#ff8088" stroke-width="13" stroke-dasharray="0 ${C}"></circle>
+        <circle id="dLun" class="ringc" cx="66" cy="66" r="52" fill="none" stroke="#ff2e3a" stroke-width="13" stroke-dasharray="0 ${C}"></circle>
+      </svg>
+      <div class="ctr"><b id="dPct">0%</b><small>KK LUNAS</small></div>
+    </div>
+    <div class="leg">
+      <div><i style="background:#ff2e3a"></i> Lunas <b id="lgLun">0</b></div>
+      <div><i style="background:#ff8088"></i> Sebagian <b id="lgSeb">0</b></div>
+      <div><i style="background:rgba(255,255,255,.18)"></i> Belum <b id="lgBel">0</b></div>
+      <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px"><i style="background:transparent"></i> Total KK <b id="lgTot">0</b></div>
+    </div>`;
+  anchor.parentNode.insertBefore(wrap, anchor);
+
+  function paint(r){
+    if(!r)return; var s=r.ringkasan||{};
+    var lun=s.lunas||0, seb=s.sebagian||0, bel=s.belum||0, tot=s.totalKK||(lun+seb+bel)||0;
+    document.getElementById('lgLun').textContent=lun;
+    document.getElementById('lgSeb').textContent=seb;
+    document.getElementById('lgBel').textContent=bel;
+    document.getElementById('lgTot').textContent=tot;
+    document.getElementById('dPct').textContent=(tot>0?Math.round(lun/tot*100):0)+'%';
+    var lunLen=tot>0?lun/tot*C:0, sebTot=tot>0?(lun+seb)/tot*C:0;
+    document.getElementById('dSeb').setAttribute('stroke-dasharray', sebTot+' '+(C-sebTot));
+    document.getElementById('dLun').setAttribute('stroke-dasharray', lunLen+' '+(C-lunLen));
+  }
+  var n=0,iv=setInterval(function(){
+    try{ if(window.dataKeuangan&&dataKeuangan.rekapIuran) paint(dataKeuangan.rekapIuran); }catch(e){}
+    if(++n>120)clearInterval(iv);
+  },4000);
+  try{ if(window.dataKeuangan&&dataKeuangan.rekapIuran) paint(dataKeuangan.rekapIuran); }catch(e){}
+})();
 </script>
 </body>
 </html>
