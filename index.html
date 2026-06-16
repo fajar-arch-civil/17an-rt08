@@ -1138,6 +1138,66 @@ form.addEventListener('submit',function(e){
   }
   setTimeout(function(){sec.classList.add('show');},900); // failsafe
 })();
+/* ===== "17-an dalam Angka" — papan statistik animasi (informatif + interaktif) ===== */
+(function(){
+  var anchor=document.getElementById('alurIkut')||document.getElementById('daftar');
+  if(!anchor||document.getElementById('dalamAngka'))return;
+
+  var css=document.createElement('style');
+  css.textContent=`
+  #dalamAngka{margin-top:40px}
+  .angka-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(min-width:680px){.angka-grid{grid-template-columns:repeat(4,1fr)}}
+  .angka-tile{position:relative;padding:20px 14px;text-align:center;overflow:hidden}
+  .angka-tile .ic .iconify{font-size:23px;color:#ff5a64}
+  .angka-tile .num{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:34px;line-height:1;color:#fff;letter-spacing:-1px;text-shadow:0 0 22px rgba(255,46,58,.4);margin-top:7px}
+  .angka-tile .acap{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7);margin-top:9px}
+  .angka-tile::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,transparent,var(--merah),transparent);opacity:.55}`;
+  document.head.appendChild(css);
+
+  var sec=document.createElement('section');
+  sec.id='dalamAngka'; sec.className='sec reveal';
+  sec.innerHTML=`
+    <div class="sec-h"><div class="ic"><span class="iconify" data-icon="solar:chart-square-bold"></span></div>
+    <div><h2>17-an dalam Angka</h2><small>Sekilas data acara — sebagian diperbarui otomatis.</small></div></div>
+    <div class="angka-grid">
+      <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:flag-2-bold"></span></div><div class="num" id="angHUT">0</div><div class="acap">HUT RI ke-</div></div>
+      <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:medal-ribbons-star-bold"></span></div><div class="num" id="angLomba">0</div><div class="acap">Cabang Lomba</div></div>
+      <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></div><div class="num" id="angDaftar">0</div><div class="acap">Warga Sudah Daftar</div></div>
+      <div class="angka-tile glass"><div class="ic"><span class="iconify" data-icon="solar:calendar-mark-bold"></span></div><div class="num" id="angHari">0</div><div class="acap">Hari Menuju 17-an</div></div>
+    </div>`;
+  anchor.parentNode.insertBefore(sec,anchor);
+
+  function countUp(el,to,dur){
+    if(!el)return; to=Math.max(0,Math.round(to||0)); dur=dur||1100; var t0=null;
+    (function frame(ts){ if(!t0)t0=ts; var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);
+      el.textContent=String(Math.round(to*e)); if(p<1)requestAnimationFrame(frame); })(performance.now());
+  }
+  function hariMenuju(){ var T=new Date('2026-08-17T00:00:00+07:00').getTime(); return Math.max(0,Math.ceil((T-Date.now())/86400000)); }
+  function valLomba(){ return (typeof LOMBA!=='undefined'&&LOMBA)?LOMBA.length:0; }
+  function valDaftar(){ try{return (dataKeuangan&&dataKeuangan.statistik&&dataKeuangan.statistik.total)||0;}catch(e){return 0;} }
+
+  var done=false;
+  function play(){ if(done)return; done=true;
+    countUp(document.getElementById('angHUT'),81);
+    countUp(document.getElementById('angHari'),hariMenuju());
+    countUp(document.getElementById('angLomba'),valLomba());
+    countUp(document.getElementById('angDaftar'),valDaftar());
+  }
+  if(window.IntersectionObserver){
+    var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');play();o.unobserve(e.target);}});},{threshold:.2});
+    o.observe(sec);
+  } else { sec.classList.add('show'); play(); }
+  setTimeout(function(){sec.classList.add('show');if(!done)play();},1500); // failsafe
+
+  var tick=0,iv=setInterval(function(){ tick++;
+    if(done){
+      var l=document.getElementById('angLomba'),d=document.getElementById('angDaftar'),h=document.getElementById('angHari');
+      if(l)l.textContent=String(valLomba()); if(d)d.textContent=String(valDaftar()); if(h)h.textContent=String(hariMenuju());
+    }
+    if(tick>30)clearInterval(iv);
+  },2000);
+})();
 </script>
 </body>
 </html>
