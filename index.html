@@ -952,18 +952,81 @@ function renderStatistik(s){
 }
 
 function renderRekap(rows){
-  var tb=document.getElementById('rekapBody');
-  var sum=document.getElementById('rekapSum'),info=document.getElementById('rekapInfo');
-  if(!tb)return;
+  function getF(r, keys) {
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    if (r[k] != null && String(r[k]).trim() !== '') return String(r[k]).trim();
+  }
+  // Fallback: case-insensitive + strip spasi/underscore
+  for (var i = 0; i < keys.length; i++) {
+    var kl = keys[i].toLowerCase().replace(/[\s_\-\/]/g, '');
+    for (var key in r) {
+      if (key.toLowerCase().replace(/[\s_\-\/]/g, '') === kl
+          && r[key] != null && String(r[key]).trim() !== '') {
+        return String(r[key]).trim();
+      }
+    }
+  }
+  return null;
+}
 
-  // DEBUG — buka F12 > Console untuk lihat nama kolom aktual dari API
-  console.log('[rekap] jumlah baris:',rows?rows.length:'null');
-  if(rows&&rows[0])console.log('[rekap] contoh baris pertama:',JSON.stringify(rows[0]));
+function renderRekap(rows) {
+  var tb  = document.getElementById('rekapBody');
+  var sum = document.getElementById('rekapSum');
+  var info= document.getElementById('rekapInfo');
+  if (!tb) return;
 
-  if(!rows||!rows.length){
-    tb.innerHTML='<tr><td colspan="4" class="empty">Belum ada data rekap KK.</td></tr>';
+  // DEBUG — buka F12 > Console untuk verifikasi nama kolom API
+  if (rows && rows[0]) {
+    console.log('[rekap] kolom tersedia:', Object.keys(rows[0]).join(', '));
+    console.log('[rekap] contoh baris:', JSON.stringify(rows[0]));
+  } else {
+    console.warn('[rekap] tidak ada data atau null:', rows);
+  }
+
+  if (!rows || !rows.length) {
+    tb.innerHTML = '<tr><td colspan="4" class="empty">Belum ada data rekap KK.</td></tr>';
     return;
   }
+
+  // Filter baris kosong (nama & blok dua-duanya kosong)
+  var valid = rows.filter(function(r) {
+    var nama  = getF(r, ['Nama KK','nama kk','namaKK','nama','Nama','NAMA','Kepala Keluarga']);
+    var blok  = getF(r, ['Blok','blok','Blok/Alamat','blok/alamat','Alamat','alamat','BLOK']);
+    return nama || blok; // tampil hanya jika salah satu ada isi
+  });
+
+  if (!valid.length) {
+    tb.innerHTML = '<tr><td colspan="4" class="empty">Data KK belum diisi lengkap.</td></tr>';
+    return;
+  }
+
+  var lunas = valid.filter(function(r) {
+    var st = getF(r, ['Status','status','STATUS','Lunas','lunas']) || '';
+    return norm(st) === 'lunas';
+  }).length;
+
+  if (sum) sum.innerHTML =
+    '<div class="cektot"><span>Total KK</span><span class="v">' + valid.length + '</span></div>'
+    + '<div class="cektot"><span>Lunas</span><span class="v" style="color:var(--hijau)">' + lunas + '</span></div>'
+    + '<div class="cektot"><span>Belum Lunas</span><span class="v" style="color:var(--merah)">' + (valid.length - lunas) + '</span></div>';
+
+  if (info) info.textContent = 'Data otomatis dari Google Sheets. ' + valid.length + ' KK terdaftar.';
+
+  tb.innerHTML = valid.map(function(r) {
+    var blok   = getF(r, ['Blok','blok','Blok/Alamat','blok/alamat','Alamat','alamat','BLOK']) || '—';
+    var nama   = getF(r, ['Nama KK','nama kk','namaKK','nama','Nama','NAMA','Kepala Keluarga']) || '—';
+    var status = getF(r, ['Status','status','STATUS','Lunas','lunas']) || '';
+    var bayar  = getF(r, ['Terbayar','terbayar','Jumlah','jumlah','Nominal','nominal','Dibayar','dibayar','Bayar']) || 0;
+    var ok     = norm(status) === 'lunas';
+    return '<tr>'
+      + '<td>' + esc(blok)  + '</td>'
+      + '<td>' + esc(nama)  + '</td>'
+      + '<td><span class="stat-badge ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Lunas' : 'Belum') + '</span></td>'
+      + '<td>' + esc(rp(bayar)) + '</td>'
+      + '</tr>';
+  }).join('');
+}
 
   // Ambil nilai field dengan toleran terhadap berbagai nama kolom
   function getF(r,candidates){
@@ -1007,27 +1070,42 @@ function renderRekap(rows){
 }
 
 // ===== CEK BAYAR =====
-function cekBayar(q){
-  var el=document.getElementById('cekHasil');if(!el)return;
-  if(!q){el.innerHTML='<p class="cek-empty">Ketik alamat dulu ya.</p>';return;}
-  if(!dataKeuangan||!dataKeuangan.rekap){el.innerHTML='<p class="cek-empty">Data belum dimuat, tunggu sebentar…</p>';muatKeuangan();return;}
-  var found=dataKeuangan.rekap.filter(function(r){
-    return norm(r.blok||r.alamat||'').indexOf(norm(q))>-1||norm(r.nama||r.namaKK||'').indexOf(norm(q))>-1;
+function cekBayar(q) {
+  var el = document.getElementById('cekHasil'); if (!el) return;
+  if (!q) { el.innerHTML = '<p class="cek-empty">Ketik alamat atau nama dulu ya.</p>'; return; }
+  if (!dataKeuangan || !dataKeuangan.rekap) {
+    el.innerHTML = '<p class="cek-empty">Data belum dimuat, tunggu sebentar…</p>';
+    muatKeuangan(); return;
+  }
+  var found = dataKeuangan.rekap.filter(function(r) {
+    var blok = getF(r, ['Blok','blok','Blok/Alamat','blok/alamat','Alamat','alamat','BLOK']) || '';
+    var nama = getF(r, ['Nama KK','nama kk','namaKK','nama','Nama','NAMA','Kepala Keluarga']) || '';
+    return norm(blok).indexOf(norm(q)) > -1 || norm(nama).indexOf(norm(q)) > -1;
   });
-  if(!found.length){el.innerHTML='<p class="cek-empty">Tidak ditemukan. Coba kata kunci lain.</p>';return;}
-  el.innerHTML=found.map(function(r){
-    var ok=norm(r.status)==='lunas';
-    var bayar=Number(r.terbayar||r.jumlah||0),sisa=Math.max(0,TARGET-bayar),pct=Math.min(100,Math.round(bayar/TARGET*100));
-    return'<div style="margin-bottom:12px">'
-      +'<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
-      +'<b>'+esc(r.nama||r.namaKK||'—')+'</b>'
-      +'<span class="lunas-badge '+(ok?'ok':'no')+'">'+(ok?'&#10003; Lunas':'Belum Lunas')+'</span></div>'
-      +'<div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px">'+esc(r.blok||r.alamat||'—')+'</div>'
-      +'<div class="prog '+(pct<100?'warn':'')+'"><i style="width:'+pct+'%"></i></div>'
-      +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px">'
-      +'<span>Terbayar: '+esc(rp(bayar))+'</span>'
-      +(ok?'<span style="color:var(--hijau)">Lunas &#10003;</span>':'<span style="color:var(--gold)">Sisa: '+esc(rp(sisa))+'</span>')
-      +'</div></div>';
+  if (!found.length) {
+    el.innerHTML = '<p class="cek-empty">Tidak ditemukan. Coba kata kunci lain.</p>'; return;
+  }
+  el.innerHTML = found.map(function(r) {
+    var blok   = getF(r, ['Blok','blok','Blok/Alamat','blok/alamat','Alamat','alamat','BLOK']) || '—';
+    var nama   = getF(r, ['Nama KK','nama kk','namaKK','nama','Nama','NAMA','Kepala Keluarga']) || '—';
+    var status = getF(r, ['Status','status','STATUS']) || '';
+    var bayar  = Number(getF(r, ['Terbayar','terbayar','Jumlah','jumlah','Nominal','nominal','Dibayar','dibayar']) || 0);
+    var ok     = norm(status) === 'lunas';
+    var sisa   = Math.max(0, TARGET - bayar);
+    var pct    = Math.min(100, Math.round(bayar / TARGET * 100));
+    return '<div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px">'
+      + '<div style="font-weight:700;font-size:15px;margin-bottom:2px">' + esc(nama) + '</div>'
+      + '<div style="font-size:12.5px;color:rgba(255,255,255,.65);margin-bottom:10px">' + esc(blok) + '</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+      + '<span class="lunas-badge ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓ Lunas' : 'Belum Lunas') + '</span>'
+      + '<span style="font-size:13px;font-weight:700">' + esc(rp(bayar)) + '</span>'
+      + '</div>'
+      + '<div class="prog' + (pct < 100 ? ' warn' : '') + '"><i style="width:' + pct + '%"></i></div>'
+      + '<div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;justify-content:space-between">'
+      + '<span>' + pct + '% terbayar</span>'
+      + (ok ? '<span style="color:var(--hijau)">Lunas ✓</span>'
+            : '<span style="color:var(--gold)">Sisa: ' + esc(rp(sisa)) + '</span>')
+      + '</div></div>';
   }).join('');
 }
 document.getElementById('cekBtn').addEventListener('click',function(){
