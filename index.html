@@ -296,6 +296,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* FAQ lebih nyaman dibuka-baca */
 details summary{font-size:15.5px;padding:6px 0;cursor:pointer}
+/* ===== FIX kartu sukses pendaftaran (ikon jangan berserakan) ===== */
+.ok-msg{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.ok-msg>.iconify{font-size:54px;color:var(--hijau)}          /* hanya centang utama yang besar */
+.ok-msg h3 .iconify,.ok-msg p .iconify{font-size:1em!important;vertical-align:-2px}  /* ikon di dalam teks ikut ukuran teks */
 </style>
 </head>
 <body>
@@ -378,7 +382,7 @@ details summary{font-size:15.5px;padding:6px 0;cursor:pointer}
   <button type="submit" class="submit" id="btnKirim"><span class="iconify" data-icon="mdi:send"></span>Kirim Pendaftaran</button>
   <iframe name="sink" style="display:none" title="sink"></iframe>
 </form>
-        <div class="ok-msg" id="okMsg"><span class="iconify" data-icon="mdi:check-circle"></span><h3>Pendaftaran Terdaftar! <span class="iconify" data-icon="mdi:check-circle" style="vertical-align:-3px;margin-right:5px"></span></h3><p>Data kamu sudah masuk ke panitia. Sampai jumpa di lapangan! <span class="iconify" data-icon="circle-flags:id" style="margin:0 4px;vertical-align:-2px"></span></p><button id="daftarLagi">Daftar lagi</button></div>
+        <div class="ok-msg" id="okMsg"><span class="iconify" data-icon="mdi:check-circle"></span><h3>Pendaftaran Berhasil! <span class="iconify" data-icon="mdi:check-circle" style="vertical-align:-3px;margin-right:5px"></span></h3><p>Data kamu sudah masuk ke panitia. Sampai jumpa di lapangan! <span class="iconify" data-icon="circle-flags:id" style="margin:0 4px;vertical-align:-2px"></span></p><button id="daftarLagi">Daftar lagi</button></div>
       </div>
       <iframe name="sink" class="hide" id="sink"></iframe>
     </section>
