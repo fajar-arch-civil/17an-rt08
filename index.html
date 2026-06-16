@@ -888,7 +888,10 @@ if(fab){
 
 // ===== KEUANGAN =====
 function fmtTgl(s){
-  if(!s)return'—';var d=new Date(s);
+  if(!s)return'—';
+  var m=String(s).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); // DD/MM/YYYY dari sheet
+  if(m)return (+m[1])+' '+BLN[(+m[2])-1];
+  var d=new Date(s);
   if(isNaN(d))return String(s).slice(0,10)||'—';
   return d.getDate()+' '+BLN[d.getMonth()];
 }
@@ -899,9 +902,9 @@ function isiTabel(tbId,rows,cols,numCols){
   if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="'+cols.length+'" class="empty">Belum ada data.</td></tr>';return;}
   tb.innerHTML=rows.map(function(r){
     return'<tr>'+cols.map(function(c){
-      var v=r[c]||'—';
+      var v=(r[c]!=null&&r[c]!=='')?r[c]:'—';
       if(c==='tgl'||c==='tanggal')return'<td class="tgl">'+esc(fmtTgl(v))+'</td>';
-      if(numCols&&numCols.indexOf(c)>-1)return'<td class="num" style="color:'+(tbId==='tbMasuk'?'var(--hijau)':'var(--merah)')+'">'+esc(rp(v))+'</td>';
+      if(numCols&&numCols.indexOf(c)>-1)return'<td class="num">'+esc(rp(v))+'</td>';
       return'<td>'+esc(v)+'</td>';
     }).join('')+'</tr>';
   }).join('');
@@ -914,22 +917,37 @@ function muatKeuangan(){
   fetch(API+'?aksi=keuangan&v='+Date.now(),{cache:'no-store'})
     .then(function(r){return r.json();})
     .then(function(d){
-      console.log('[API keuangan]',JSON.stringify(d).slice(0,800));
       dataKeuangan=d;
-      var masuk=Number(d.totalMasuk)||0,keluar=Number(d.totalKeluar)||0,saldo=masuk-keluar;
-      var kkL=Number(d.kkLunas)||0,kkT=Number(d.kkTotal)||217;
+      console.log('[keuangan] keys:',Object.keys(d).join(', '));
+      var masuk =Number(d.totalPemasukan)||0;
+      var keluar=Number(d.totalPengeluaran)||0;
+      var saldo =(d.saldo!=null)?Number(d.saldo):(masuk-keluar);
+
+      var rk  =d.rekapIuran||{};
+      var ring=rk.ringkasan||{};
+      var kkL =Number(ring.lunas!=null?ring.lunas:d.jumlahKKBayar)||0;
+      var kkT =Number(ring.totalKK)||0;
+
       document.getElementById('kMasuk').textContent=rp(masuk);
       document.getElementById('kKeluar').textContent=rp(keluar);
       document.getElementById('kSaldo').textContent=rp(saldo);
-      document.getElementById('kKK').textContent=kkL+' / '+kkT;
+      document.getElementById('kKK').textContent=kkL+' / '+(kkT||'—');
+
       var tot=masuk+keluar||1;
       document.getElementById('barM').style.width=(masuk/tot*100).toFixed(1)+'%';
       document.getElementById('barK').style.width=(keluar/tot*100).toFixed(1)+'%';
-      isiTabel('tbMasuk',d.pemasukan,['tgl','keterangan','jumlah'],['jumlah']);
-      isiTabel('tbKeluar',d.pengeluaran,['tgl','keterangan','jumlah'],['jumlah']);
+       isiTabel('tbMasuk',d.pemasukan,['tanggal','keterangan','jumlah'],['jumlah']);
+      isiTabel('tbKeluar',d.pengeluaran,['tanggal','keterangan','jumlah'],['jumlah']);
+
       if(dot)dot.className='dot on';if(st)st.textContent='Diperbarui '+jam();
+
       renderStatistik(d.statistik);
-      renderRekap(d.rekap);
+      renderRekap((rk.daftar)||d.rekap||[]);
+    })
+    if(typeof ALAMAT==='object' && !Object.keys(ALAMAT).length && rk.daftar){
+        ALAMAT=buildAlamatDariRoster(rk.daftar);
+        isiBlokDropdown();
+      }
     })
     .catch(function(err){
       if(dot)dot.className='dot err';if(st)st.textContent='Gagal ('+jam()+')';
@@ -943,31 +961,48 @@ function renderStatistik(s){
   var wrap=document.getElementById('statBox'),tot=document.getElementById('statTotal');
   if(!wrap||!tot||!s)return;
   tot.textContent=s.total||0;
-  wrap.innerHTML=(s.perJenis||[]).map(function(item){
-    var pct=Math.round((item.jumlah/(s.total||1))*100);
-    return'<div class="stat-row"><div class="stat-l">'+esc(item.jenis)+'</div>'
+  var arr=s.perJenis||s.perKategori||[];
+  wrap.innerHTML=arr.map(function(item){
+    var label=item.label||item.jenis||item.kategori||'—';
+    var jml=Number(item.jumlah)||0;
+    var pct=Math.round((jml/(s.total||1))*100);
+    return'<div class="stat-row">'
+      +'<div class="stat-l">'+esc(label)+'</div>'
       +'<div class="stat-bar"><i style="width:'+pct+'%"></i></div>'
-      +'<div class="stat-n">'+esc(item.jumlah)+'</div></div>';
+      +'<div class="stat-n">'+esc(jml)+'</div></div>';
   }).join('');
+}
+function getF(r,keys){
+  for(var i=0;i<keys.length;i++){var k=keys[i];if(r[k]!=null&&String(r[k]).trim()!=='')return String(r[k]).trim();}
+  for(var i=0;i<keys.length;i++){var kl=keys[i].toLowerCase().replace(/[\s_\-\/]/g,'');
+    for(var key in r){if(key.toLowerCase().replace(/[\s_\-\/]/g,'')===kl&&r[key]!=null&&String(r[key]).trim()!=='')return String(r[key]).trim();}}
+  return null;
 }
 
 function renderRekap(rows){
-  function getF(r, keys) {
-  for (var i = 0; i < keys.length; i++) {
-    var k = keys[i];
-    if (r[k] != null && String(r[k]).trim() !== '') return String(r[k]).trim();
-  }
-  // Fallback: case-insensitive + strip spasi/underscore
-  for (var i = 0; i < keys.length; i++) {
-    var kl = keys[i].toLowerCase().replace(/[\s_\-\/]/g, '');
-    for (var key in r) {
-      if (key.toLowerCase().replace(/[\s_\-\/]/g, '') === kl
-          && r[key] != null && String(r[key]).trim() !== '') {
-        return String(r[key]).trim();
-      }
-    }
-  }
-  return null;
+  var tb=document.getElementById('rekapBody'),sum=document.getElementById('rekapSum'),info=document.getElementById('rekapInfo');
+  if(!tb)return;
+  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="4" class="empty">Belum ada data rekap KK.</td></tr>';return;}
+
+  var valid=rows.filter(function(r){return getF(r,['nama','Nama KK','namaKK'])||getF(r,['blok','Blok','alamat']);});
+  var lunas=valid.filter(function(r){return norm(getF(r,['status','Status'])||'')==='lunas';}).length;
+
+  if(sum)sum.innerHTML=
+    '<div class="cektot"><span>Total KK</span><span class="v">'+valid.length+'</span></div>'
+    +'<div class="cektot"><span>Lunas</span><span class="v" style="color:var(--hijau)">'+lunas+'</span></div>'
+    +'<div class="cektot"><span>Belum</span><span class="v" style="color:var(--merah)">'+(valid.length-lunas)+'</span></div>';
+  if(info)info.textContent='Data otomatis dari Google Sheets. '+valid.length+' KK terdaftar.';
+
+  tb.innerHTML=valid.map(function(r){
+    var blok  =getF(r,['blok','Blok','Blok/Alamat','alamat','Alamat'])||'—';
+    var nama  =getF(r,['nama','Nama KK','namaKK','Nama'])||'—';
+    var status=getF(r,['status','Status'])||'';
+    var bayar =getF(r,['total','terbayar','Terbayar','jumlah','Jumlah','Nominal'])||0;
+    var ok=norm(status)==='lunas';
+    return'<tr><td>'+esc(blok)+'</td><td>'+esc(nama)+'</td>'
+      +'<td><span class="stat-badge '+(ok?'ok':'no')+'">'+(ok?'Lunas':'Belum')+'</span></td>'
+      +'<td>'+esc(rp(bayar))+'</td></tr>';
+  }).join('');
 }
 
 function renderRekap(rows) {
@@ -1070,42 +1105,30 @@ function renderRekap(rows) {
 }
 
 // ===== CEK BAYAR =====
-function cekBayar(q) {
-  var el = document.getElementById('cekHasil'); if (!el) return;
-  if (!q) { el.innerHTML = '<p class="cek-empty">Ketik alamat atau nama dulu ya.</p>'; return; }
-  if (!dataKeuangan || !dataKeuangan.rekap) {
-    el.innerHTML = '<p class="cek-empty">Data belum dimuat, tunggu sebentar…</p>';
-    muatKeuangan(); return;
-  }
-  var found = dataKeuangan.rekap.filter(function(r) {
-    var blok = getF(r, ['Blok','blok','Blok/Alamat','blok/alamat','Alamat','alamat','BLOK']) || '';
-    var nama = getF(r, ['Nama KK','nama kk','namaKK','nama','Nama','NAMA','Kepala Keluarga']) || '';
-    return norm(blok).indexOf(norm(q)) > -1 || norm(nama).indexOf(norm(q)) > -1;
+unction cekBayar(q){
+  var el=document.getElementById('cekHasil');if(!el)return;
+  if(!q){el.innerHTML='<p class="cek-empty">Ketik alamat atau nama dulu ya.</p>';return;}
+  var daftar=(dataKeuangan&&dataKeuangan.rekapIuran&&dataKeuangan.rekapIuran.daftar)||(dataKeuangan&&dataKeuangan.rekap)||null;
+  if(!daftar){el.innerHTML='<p class="cek-empty">Data belum dimuat, tunggu sebentar…</p>';muatKeuangan();return;}
+  var found=daftar.filter(function(r){
+    var blok=getF(r,['blok','Blok','alamat'])||'',nama=getF(r,['nama','Nama KK','namaKK'])||'';
+    return norm(blok).indexOf(norm(q))>-1||norm(nama).indexOf(norm(q))>-1;
   });
-  if (!found.length) {
-    el.innerHTML = '<p class="cek-empty">Tidak ditemukan. Coba kata kunci lain.</p>'; return;
-  }
-  el.innerHTML = found.map(function(r) {
-    var blok   = getF(r, ['Blok','blok','Blok/Alamat','blok/alamat','Alamat','alamat','BLOK']) || '—';
-    var nama   = getF(r, ['Nama KK','nama kk','namaKK','nama','Nama','NAMA','Kepala Keluarga']) || '—';
-    var status = getF(r, ['Status','status','STATUS']) || '';
-    var bayar  = Number(getF(r, ['Terbayar','terbayar','Jumlah','jumlah','Nominal','nominal','Dibayar','dibayar']) || 0);
-    var ok     = norm(status) === 'lunas';
-    var sisa   = Math.max(0, TARGET - bayar);
-    var pct    = Math.min(100, Math.round(bayar / TARGET * 100));
-    return '<div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px">'
-      + '<div style="font-weight:700;font-size:15px;margin-bottom:2px">' + esc(nama) + '</div>'
-      + '<div style="font-size:12.5px;color:rgba(255,255,255,.65);margin-bottom:10px">' + esc(blok) + '</div>'
-      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
-      + '<span class="lunas-badge ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓ Lunas' : 'Belum Lunas') + '</span>'
-      + '<span style="font-size:13px;font-weight:700">' + esc(rp(bayar)) + '</span>'
-      + '</div>'
-      + '<div class="prog' + (pct < 100 ? ' warn' : '') + '"><i style="width:' + pct + '%"></i></div>'
-      + '<div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;justify-content:space-between">'
-      + '<span>' + pct + '% terbayar</span>'
-      + (ok ? '<span style="color:var(--hijau)">Lunas ✓</span>'
-            : '<span style="color:var(--gold)">Sisa: ' + esc(rp(sisa)) + '</span>')
-      + '</div></div>';
+  if(!found.length){el.innerHTML='<p class="cek-empty">Tidak ditemukan. Coba kata kunci lain.</p>';return;}
+  el.innerHTML=found.map(function(r){
+    var blok=getF(r,['blok','Blok','alamat'])||'—',nama=getF(r,['nama','Nama KK','namaKK'])||'—';
+    var bayar=Number(getF(r,['total','terbayar','jumlah'])||0),ok=norm(getF(r,['status','Status'])||'')==='lunas';
+    var sisa=Math.max(0,TARGET-bayar),pct=Math.min(100,Math.round(bayar/TARGET*100));
+    return'<div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px">'
+      +'<div style="font-weight:700;font-size:15px">'+esc(nama)+'</div>'
+      +'<div style="font-size:12.5px;color:rgba(255,255,255,.65);margin-bottom:10px">'+esc(blok)+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+      +'<span class="lunas-badge '+(ok?'ok':'no')+'">'+(ok?'✓ Lunas':'Belum Lunas')+'</span>'
+      +'<span style="font-weight:700">'+esc(rp(bayar))+'</span></div>'
+      +'<div class="prog'+(pct<100?' warn':'')+'"><i style="width:'+pct+'%"></i></div>'
+      +'<div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;justify-content:space-between">'
+      +'<span>'+pct+'% terbayar</span>'+(ok?'<span style="color:var(--hijau)">Lunas ✓</span>':'<span style="color:var(--gold)">Sisa: '+esc(rp(sisa))+'</span>')
+      +'</div></div>';
   }).join('');
 }
 document.getElementById('cekBtn').addEventListener('click',function(){
@@ -1139,10 +1162,27 @@ if(selBlok){
 }
 
 function muatOpsi(){
+  function buildAlamatDariRoster(daftar){
+  var map={};
+  (daftar||[]).forEach(function(r){
+    var full=String(r.blok||r.Blok||'').trim();if(!full)return;
+    var parts=full.split(/\s*-\s*/);
+    var grup=parts.length>1?parts.slice(0,-1).join(' - '):full;
+    (map[grup]=map[grup]||[]).push(full);
+  });
+  return map;
+}
+function isiBlokDropdown(){
+  var blokList=Object.keys(ALAMAT).sort(function(a,b){return a.localeCompare(b,undefined,{numeric:true});});
+  if(!blokList.length||!selBlokGrup)return;
+  selBlokGrup.innerHTML='<option value="">— Pilih blok —</option>'
+    +blokList.map(function(b){return'<option value="'+esc(b)+'">'+esc(b)+'</option>';}).join('');
+}
   fetch(API+'?aksi=opsi',{cache:'no-store'})
     .then(function(r){return r.json();})
     .then(function(d){
       LOMBA=d.lomba||[];ALAMAT=d.alamat||{};
+      isiBlokDropdown();
       var blokList=Object.keys(ALAMAT).sort();
       selBlokGrup.innerHTML='<option value="">— Pilih blok —</option>'
         +blokList.map(function(b){return'<option value="'+esc(b)+'">'+esc(b)+'</option>';}).join('');
