@@ -1706,6 +1706,62 @@ form.addEventListener('submit',function(e){
   s.textContent='#rbBar{left:18px!important;right:auto!important;bottom:80px!important;z-index:40!important}';
   document.head.appendChild(s);
 })();
+/* ===== Alokasi Pengeluaran per Kategori (transparansi dana) ===== */
+(function(){
+  if(document.getElementById('alokasiCard'))return;
+  var sec=document.getElementById('keuangan'); if(!sec)return;
+
+  var s=document.createElement('style'); s.id='alokasiStyle';
+  s.textContent=`
+  #alokasiCard{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+  #alokasiCard .ak-h{font-size:14px;font-weight:800;margin:0 0 3px;display:flex;align-items:center;gap:7px;color:var(--merah)}
+  #alokasiCard .ak-h .iconify{font-size:18px}
+  #alokasiCard .ak-sub{font-size:12px;color:rgba(255,255,255,.66);margin:0 0 12px}
+  #alokasiCard .stat-l{line-height:1.25}
+  #alokasiCard .ak-rp{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:1px}
+  #alokasiCard .ak-empty{padding:16px 10px;text-align:center;color:rgba(255,255,255,.62);font-size:13px;background:rgba(255,255,255,.04);border-radius:12px;line-height:1.5}
+  #alokasiCard .ak-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.16);font-size:12.5px;color:rgba(255,255,255,.8)}
+  #alokasiCard .ak-foot b{color:var(--gold);font-weight:800}`;
+  document.head.appendChild(s);
+
+  var card=document.createElement('div'); card.id='alokasiCard';
+  card.innerHTML='<h3 class="ak-h"><span class="iconify" data-icon="solar:pie-chart-2-bold"></span>Alokasi Pengeluaran</h3>'
+    +'<p class="ak-sub">Rincian ke mana dana dibelanjakan — diperbarui otomatis &amp; transparan.</p>'
+    +'<div id="alokasiBody"><div class="ak-empty">Memuat data…</div></div>'
+    +'<div class="ak-foot"><span>Total pengeluaran</span><b id="alokasiTot">—</b></div>';
+  var anchor=sec.querySelector('.fin-cols');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(card, anchor.nextSibling);
+  else sec.appendChild(card);
+
+  var EP=(typeof API!=='undefined'&&API)?API:'https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
+  function rpf(n){return 'Rp'+(Number(n)||0).toLocaleString('id-ID');}
+  function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var body=document.getElementById('alokasiBody'), totEl=document.getElementById('alokasiTot');
+
+  function render(peng){
+    var m={}; (peng||[]).forEach(function(x){
+      var k=((x&&x.kategori)||'Lainnya').toString().trim()||'Lainnya';
+      m[k]=(m[k]||0)+(Number(x&&x.jumlah)||0);
+    });
+    var rows=Object.keys(m).map(function(k){return {k:k,v:m[k]};}).sort(function(a,b){return b.v-a.v;});
+    var tot=rows.reduce(function(s,r){return s+r.v;},0);
+    totEl.textContent=rpf(tot);
+    if(!rows.length||tot<=0){ body.innerHTML='<div class="ak-empty">Belum ada pengeluaran tercatat.<br>Rincian alokasi muncul otomatis saat panitia mulai mencatat belanja.</div>'; return; }
+    body.innerHTML=rows.map(function(r){
+      var pct=Math.round(r.v/tot*100);
+      return '<div class="stat-row"><div class="stat-l"><div>'+esc(r.k)+'</div><div class="ak-rp">'+rpf(r.v)+'</div></div>'
+        +'<div class="stat-bar"><i style="width:'+pct+'%"></i></div>'
+        +'<div class="stat-n">'+pct+'%</div></div>';
+    }).join('');
+  }
+  function pull(){
+    var dk=(typeof window!=='undefined')?window.dataKeuangan:null;
+    if(dk&&Array.isArray(dk.pengeluaran)){ render(dk.pengeluaran); return; }
+    fetch(EP).then(function(r){return r.json();}).then(function(d){ if(d&&Array.isArray(d.pengeluaran)) render(d.pengeluaran); }).catch(function(){});
+  }
+  pull(); setInterval(pull, 30000);
+  if(window.Iconify&&Iconify.scan){ try{Iconify.scan();}catch(e){} }
+})();
 </script>
 </body>
 </html>
