@@ -1100,6 +1100,44 @@ form.addEventListener('submit',function(e){
       if(typeof showToast==='function')showToast('warn','Pendaftaran dikunci: iuran KK alamat ini belum tercatat. Hubungi panitia ya.');}
   },true);
 })();
+/* ===== Alur "3 Langkah" — biar warga langsung paham cara ikut ===== */
+(function(){
+  var anchor=document.getElementById('daftar');
+  if(!anchor||document.getElementById('alurIkut'))return;
+
+  var css=document.createElement('style');
+  css.textContent=`
+  #alurIkut{margin-top:40px;scroll-margin-top:70px}
+  .alur-grid{display:grid;gap:14px;counter-reset:lk}
+  @media(min-width:680px){.alur-grid{grid-template-columns:repeat(3,1fr)}}
+  .alur-step{position:relative;padding:20px 18px}
+  .alur-step::before{counter-increment:lk;content:"0" counter(lk);position:absolute;top:6px;right:14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:42px;line-height:1;color:transparent;-webkit-text-stroke:1.4px rgba(255,46,58,.26)}
+  .alur-step .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:12px;background:linear-gradient(135deg,rgba(255,46,58,.22),rgba(120,10,20,.3));border:1px solid rgba(255,80,90,.32);box-shadow:0 0 18px rgba(255,46,58,.2)}
+  .alur-step .ic .iconify{font-size:24px;color:#ff5a64}
+  .alur-step h4{font-size:15.5px;font-weight:700;margin-bottom:5px}
+  .alur-step p{font-size:13px;color:rgba(255,255,255,.74);line-height:1.5}
+  .alur-step .arr{display:none}
+  @media(min-width:680px){.alur-step:not(:last-child) .arr{display:grid;place-items:center;position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(255,46,58,.16);border:1px solid rgba(255,46,58,.42);z-index:4}.alur-step:not(:last-child) .arr .iconify{font-size:16px;color:#ff5a64}}`;
+  document.head.appendChild(css);
+
+  var sec=document.createElement('section');
+  sec.id='alurIkut'; sec.className='sec reveal';
+  sec.innerHTML=`
+    <div class="sec-h"><div class="ic"><span class="iconify" data-icon="solar:routing-2-bold"></span></div>
+    <div><h2>Cara Ikut — 3 Langkah Mudah</h2><small>Alur sederhana, semua warga gampang ikutan.</small></div></div>
+    <div class="alur-grid">
+      <div class="alur-step glass"><div class="ic"><span class="iconify" data-icon="solar:hand-money-bold"></span></div><h4>Bayar Iuran</h4><p>Tunaikan iuran <b>Rp50.000/KK</b> ke panitia. Pembayaran tercatat & tampil transparan di halaman ini.</p><div class="arr"><span class="iconify" data-icon="solar:alt-arrow-right-bold"></span></div></div>
+      <div class="alur-step glass"><div class="ic"><span class="iconify" data-icon="solar:clipboard-list-bold"></span></div><h4>Daftar Lomba</h4><p>Setelah iuran tercatat, isi formulir di bawah: pilih alamat lalu pilih lomba. Pendaftaran terbuka otomatis.</p><div class="arr"><span class="iconify" data-icon="solar:alt-arrow-right-bold"></span></div></div>
+      <div class="alur-step glass"><div class="ic"><span class="iconify" data-icon="solar:cup-star-bold"></span></div><h4>Datang & Menang</h4><p>Hadir di Lapangan RT 08, ramaikan lombanya, rebut hadiahnya. Merdeka!</p></div>
+    </div>`;
+  anchor.parentNode.insertBefore(sec,anchor);
+
+  if(window.IntersectionObserver){
+    var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');o.unobserve(e.target);}});},{threshold:.12});
+    o.observe(sec);
+  }
+  setTimeout(function(){sec.classList.add('show');},900); // failsafe
+})();
 </script>
 </body>
 </html>
