@@ -357,6 +357,18 @@ html,body{overflow-x:clip;max-width:100%}
 .overview li:last-child::before{display:none}
 .overview li::after{content:"";position:absolute;left:1px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--merah);box-shadow:0 0 0 4px rgba(255,46,58,.16)}
 .overview .dt{color:var(--merah)}
+/* ===== Micro-interaction: kartu "ngangkat" halus saat hover ===== */
+@media(hover:hover){
+  .kpi .box,.run,.fincard,.card{
+    transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease);
+    will-change:transform;
+  }
+  .kpi .box:hover,.run:hover,.fincard:hover,.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 30px rgba(0,0,0,.38),0 0 0 1px rgba(255,46,58,.30);
+    border-color:rgba(255,46,58,.35);
+  }
+}
 </style>
 <title>17-an RT 08 · HUT RI ke-81 Tahun 2026</title>
 <meta name="description" content="Info lengkap Agustusan RT 08 Taman Kirana Surya: daftar lomba online, jadwal acara, cek iuran, & laporan keuangan transparan. Yuk meriahkan HUT RI ke-81!">
