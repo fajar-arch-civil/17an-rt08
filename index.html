@@ -1587,6 +1587,66 @@ form.addEventListener('submit',function(e){
   render(); setInterval(render,3600000);
   if(hdr) hdr.insertAdjacentElement('afterend',wrap); else host.insertBefore(wrap,host.firstChild);
 })();
+/* ===== Jadwal jadi SATU rundown interaktif: buang kartu dobel + hidupkan timeline ===== */
+(function(){
+  /* (1) hapus kartu 3-tahap yang bikin dobel */
+  function killLM(){ var m=document.getElementById('liniMasa'); if(m){m.remove();return true;} return false; }
+  if(!killLM()){ var k=0,kv=setInterval(function(){ if(killLM()||++k>40)clearInterval(kv); },120); }
+
+  /* (2) hidupkan timeline .overview yang sudah ada */
+  var jad=document.getElementById('jadwal'); if(!jad)return;
+  var ov=jad.querySelector('.overview'); if(!ov||ov.classList.contains('tl-on'))return;
+  ov.classList.add('tl-on');
+
+  var s=document.createElement('style'); s.id='ovTlStyle';
+  s.textContent=`
+  #jadwal .overview li{flex-wrap:wrap;align-items:baseline;transition:background .3s var(--ease)}
+  #jadwal .overview li.tl-now{background:rgba(255,46,58,.06);border-radius:12px;padding:5px 12px 18px 28px}
+  #jadwal .overview li.tl-done{opacity:.66}
+  #jadwal .overview li.tl-done::after{background:rgba(255,128,136,.45);box-shadow:none}
+  #jadwal .overview li.tl-up::after{background:#0b0607;box-shadow:inset 0 0 0 2px rgba(255,128,136,.5)}
+  #jadwal .overview li.tl-now::after{background:var(--merah);box-shadow:0 0 0 5px rgba(255,46,58,.20),0 0 14px rgba(255,46,58,.6);animation:tlPulse 1.9s ease-in-out infinite}
+  @keyframes tlPulse{0%,100%{box-shadow:0 0 0 5px rgba(255,46,58,.20),0 0 12px rgba(255,46,58,.5)}50%{box-shadow:0 0 0 8px rgba(255,46,58,.09),0 0 18px rgba(255,46,58,.78)}}
+  @media(prefers-reduced-motion:reduce){#jadwal .overview li.tl-now::after{animation:none}}
+  #jadwal .overview .tl-meta{margin-left:auto;display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;padding-left:10px}
+  .tl-badge{font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .tl-badge.now{background:var(--merah);color:#fff}
+  .tl-badge.next{background:transparent;border:1px solid rgba(255,128,136,.55);color:#ffb3b8}
+  .tl-badge.done{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.55)}
+  .tl-days{font-size:11px;color:rgba(255,255,255,.62);white-space:nowrap}
+  .tl-days b{color:#ff8088;font-weight:800}
+  @media(max-width:520px){#jadwal .overview .tl-meta{flex-basis:100%;margin:6px 0 0;padding-left:0}}`;
+  document.head.appendChild(s);
+
+  function info(t){
+    if(/16\s*Ag/i.test(t)) return {s:'2026-08-16',e:'2026-08-16',firm:true};
+    if(/17\s*Ag/i.test(t)) return {s:'2026-08-17',e:'2026-08-17',firm:true};
+    if(/22\s*Ag/i.test(t)) return {s:'2026-08-22',e:'2026-08-22',firm:true};
+    if(/juli/i.test(t))    return {s:'2026-07-04',e:'2026-08-15',firm:false};
+    return null;
+  }
+  function D(x){return new Date(x+'T00:00:00+07:00').getTime();}
+  var lis=[].slice.call(ov.querySelectorAll('li'));
+  function render(){
+    var now=Date.now();
+    var data=lis.map(function(li){var dt=li.querySelector('.dt');return info((dt?dt.textContent:li.textContent)||'');});
+    var hi=-1; for(var i=0;i<data.length;i++){ if(data[i]&&now<=D(data[i].e)){hi=i;break;} }
+    lis.forEach(function(li,i){
+      li.classList.remove('tl-done','tl-now','tl-up');
+      var old=li.querySelector('.tl-meta'); if(old)old.remove();
+      var d=data[i]; if(!d)return;
+      var ended=now>D(d.e), started=now>=D(d.s), html='';
+      if(i===hi){ li.classList.add('tl-now');
+        html = started ? '<span class="tl-badge now">Sedang berlangsung</span>'
+                       : '<span class="tl-badge next">Berikutnya</span>';
+      } else if(ended){ li.classList.add('tl-done'); html='<span class="tl-badge done">Selesai</span>'; }
+      else { li.classList.add('tl-up'); }
+      if(d.firm && now<D(d.s)){ var hari=Math.ceil((D(d.s)-now)/86400000); html+='<span class="tl-days"><b>'+hari+'</b> hari lagi</span>'; }
+      if(html){ var meta=document.createElement('span'); meta.className='tl-meta'; meta.innerHTML=html; li.appendChild(meta); }
+    });
+  }
+  render(); setInterval(render,3600000);
+})();
 </script>
 </body>
 </html>
