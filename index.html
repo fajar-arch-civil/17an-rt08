@@ -4,6 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#d4111d">
+<style>
+#kategori .katg{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:680px){#kategori .katg{grid-template-columns:repeat(2,1fr)}}
+.katc{padding:18px 18px 16px}
+.katc h3{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;font-family:'Space Grotesk','Poppins',sans-serif}
+.katc h3 .iconify{font-size:20px;color:var(--merah)}
+.katc .katn{font-size:12.5px;color:rgba(255,255,255,.62);margin:6px 0 12px}
+.katc ul{list-style:none;display:flex;flex-wrap:wrap;gap:7px}
+.katc li{font-size:12.5px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+</style>
+
+<section id="kategori" class="sec reveal">
+  <div class="sec-h">
+    <span class="ic"><span class="iconify" data-icon="solar:medal-ribbons-star-bold"></span></span>
+    <div>
+      <h2>Kategori &amp; Cabang Lomba</h2>
+      <small>Daftar lomba per kelompok — acuan saat mengisi formulir pendaftaran di halaman utama.</small>
+    </div>
+  </div>
+  <div class="katg">
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:volleyball"></span> Olahraga</h3>
+      <p class="katn">Bapak &amp; ibu · remaja boleh mengisi tim · utama: Voli</p>
+      <ul>
+        <li>Bola Voli — Bapak-bapak</li><li>Bola Voli — Ibu-ibu</li>
+        <li>Futsal / Sepak Bola Mini</li><li>Tenis Meja</li>
+      </ul>
+    </div>
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:baby-face-outline"></span> Anak · Balita</h3>
+      <p class="katn">Usia 2–5 th</p>
+      <ul>
+        <li>Memindahkan Bendera Kecil</li><li>Memindahkan Bola Sesuai Warna</li>
+        <li>Merangkak Ceria</li><li>Menyusun Menara Balok</li><li>Memasukkan Bola ke Keranjang</li>
+      </ul>
+    </div>
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:school-outline"></span> Anak 6–9</h3>
+      <p class="katn">Usia 6–9 th</p>
+      <ul>
+        <li>Makan Kerupuk Gantung</li><li>Balap Kelereng Pakai Sendok</li>
+        <li>Memasukkan Pensil ke Botol</li><li>Estafet Air Pakai Gelas</li>
+        <li>Balap Karung Pakai Helm</li><li>Lomba Mewarnai Tematik</li>
+      </ul>
+    </div>
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:run"></span> Anak 9–12</h3>
+      <p class="katn">Usia 9–12 th</p>
+      <ul>
+        <li>Tarik Tambang Anak</li><li>Balap Bakiak</li><li>Estafet Tepung</li>
+        <li>Panjat Pinang Mini</li><li>Cerdas Cermat (LCC)</li>
+        <li>Sepak Bola Sarung</li><li>Egrang Bambu</li>
+      </ul>
+    </div>
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:human-female"></span> Ibu-ibu</h3>
+      <p class="katn">Lomba khusus ibu-ibu</p>
+      <ul>
+        <li>Estafet Tepung / Air</li><li>Sedotan: Pindahkan Karet/Kacang</li>
+        <li>Benang ke Jarum</li><li>Fashion Show Daster/Kebaya</li>
+        <li>Senam Poco-poco / Joget Balon</li>
+      </ul>
+    </div>
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:human-male"></span> Bapak-bapak</h3>
+      <p class="katn">Sebagian digelar malam hari</p>
+      <ul>
+        <li>Gaple/Domino atau Catur</li><li>Karaoke Lagu Nasional &amp; Dangdut</li>
+        <li>Tebak Gaya / Tebak Kata</li><li>Futsal Sarung (malam)</li><li>Rebutan Kursi</li>
+      </ul>
+    </div>
+    <div class="glass katc">
+      <h3><span class="iconify" data-icon="mdi:microphone-variant"></span> Pentas Seni</h3>
+      <p class="katn">Dinilai langsung di malam puncak (Sabtu, 22 Agt)</p>
+      <ul>
+        <li>Nyanyi Solo/Duet</li><li>Tari Kreasi / Tradisional</li>
+        <li>Fashion Show Merah Putih</li><li>Baca Puisi Kemerdekaan</li>
+      </ul>
+    </div>
+  </div>
+</section>
 <title>17-an RT 08 — HUT RI ke-81 (2026)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -394,10 +475,11 @@ html,body{overflow-x:clip;max-width:100%}
   <nav class="topnav"><div class="in">
     <a href="#beranda"><span class="iconify" data-icon="mdi:home-variant"></span>Beranda</a>
     <a href="#daftar" class="cta"><span class="iconify" data-icon="mdi:account-plus"></span>Daftar</a>
-    <a href="#lomba"><span class="iconify" data-icon="mdi:medal"></span>Lomba</a>
+    <a href="lomba.html"><span class="iconify" data-icon="mdi:medal"></span>Lomba</a>
     <a href="#jadwal"><span class="iconify" data-icon="mdi:calendar-month"></span>Jadwal</a>
     <a href="#keuangan"><span class="iconify" data-icon="mdi:chart-box"></span>Keuangan</a>
     <a href="#rekap"><span class="iconify" data-icon="mdi:clipboard-list"></span>Rekap</a>
+    <a class="cta" href="lomba.html"><span class="iconify" data-icon="solar:cup-star-bold"></span>Perlombaan</a>
   </div></nav>
 
   <header class="hero" id="beranda">
@@ -443,6 +525,7 @@ html,body{overflow-x:clip;max-width:100%}
     <section class="sec" id="daftar">
       <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:account-plus"></span></div>
         <div><h2>Daftar Lomba & Pentas Seni</h2><small>Yuk daftar dulu — cuma sebentar, gampang kok!</small></div></div>
+        <p style="font-size:12.5px;color:rgba(255,255,255,.72);margin-top:4px">Setelah daftar, nama & status peserta otomatis tampil di <a href="lomba.html" style="color:var(--gold);font-weight:600">halaman Perlombaan</a>.</p>
       <div class="card glass reveal">
         <div class="alert-dup" id="dupMsg"><span class="iconify" data-icon="mdi:alert-circle"></span><b>Data sudah terdaftar!</b> Nama, kategori lomba, dan alamat ini sudah ada di daftar. Tidak perlu mendaftar dua kali ya. Kalau mau ikut lomba lain, ganti pilihan kategorinya.</div>
        <form class="form" id="formDaftar" action="https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec" method="post" target="sink" autocomplete="off">
@@ -471,36 +554,6 @@ html,body{overflow-x:clip;max-width:100%}
       <iframe name="sink" class="hide" id="sink"></iframe>
     </section>
 
-    <!-- LOMBA -->
-    <section class="sec" id="lomba">
-      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:medal"></span></div><div><h2>Kategori Lomba</h2><small>Geser pakai tombol ‹ › atau ketuk tabnya.</small></div></div>
-      <div class="tabwrap reveal"><button class="tnav tprev" aria-label="Sebelumnya">‹</button>
-        <div class="tabs" id="tabs">
-          <button class="tab active" data-t="p1"><span class="iconify" data-icon="mdi:volleyball"></span>Olahraga</button>
-          <button class="tab" data-t="p2"><span class="iconify" data-icon="mdi:baby-face-outline"></span>Balita 2–5</button>
-          <button class="tab" data-t="p3"><span class="iconify" data-icon="mdi:school-outline"></span>Anak 6–9</button>
-          <button class="tab" data-t="p4"><span class="iconify" data-icon="mdi:medal-outline"></span>Anak 9–12</button>
-          <button class="tab" data-t="p5"><span class="iconify" data-icon="mdi:human-female"></span>Ibu-ibu</button>
-          <button class="tab" data-t="p6"><span class="iconify" data-icon="mdi:human-male"></span>Bapak-bapak</button>
-          <button class="tab" data-t="p7"><span class="iconify" data-icon="mdi:microphone-variant"></span>Pentas Seni</button>
-        </div><button class="tnav tnext" aria-label="Berikutnya">›</button></div>
-      <div id="p1" class="panel active"><div class="card glass"><span class="tag">Bapak & ibu · remaja boleh mengisi tim · utama: Voli</span><ul class="lomba"><li><b>Bola Voli — Bapak-bapak</b></li><li><b>Bola Voli — Ibu-ibu</b></li><li><b>Futsal / Sepak Bola Mini</b></li><li><b>Tenis Meja</b></li></ul></div></div>
-      <div id="p2" class="panel"><div class="card glass"><span class="tag">Usia 2–5 th</span><ul class="lomba"><li><b>Memindahkan Bendera Kecil</b></li><li><b>Memindahkan Bola Sesuai Warna</b></li><li><b>Merangkak Ceria</b></li><li><b>Menyusun Menara Balok</b></li><li><b>Memasukkan Bola ke Keranjang</b></li></ul></div></div>
-      <div id="p3" class="panel"><div class="card glass"><span class="tag">Usia 6–9 th</span><ul class="lomba"><li><b>Makan Kerupuk Gantung</b></li><li><b>Balap Kelereng Pakai Sendok</b></li><li><b>Memasukkan Pensil ke Botol</b></li><li><b>Estafet Air Pakai Gelas</b></li><li><b>Balap Karung Pakai Helm</b></li><li><b>Lomba Mewarnai Tematik</b></li></ul></div></div>
-      <div id="p4" class="panel"><div class="card glass"><span class="tag">Usia 9–12 th</span><ul class="lomba"><li><b>Tarik Tambang Anak</b></li><li><b>Balap Bakiak</b></li><li><b>Estafet Tepung</b></li><li><b>Panjat Pinang Mini</b></li><li><b>Cerdas Cermat (LCC)</b></li><li><b>Sepak Bola Sarung</b></li><li><b>Egrang Bambu</b></li></ul></div></div>
-      <div id="p5" class="panel"><div class="card glass"><span class="tag">Ibu-ibu</span><ul class="lomba"><li><b>Estafet Tepung / Air</b></li><li><b>Sedotan: Pindahkan Karet/Kacang</b></li><li><b>Benang ke Jarum</b></li><li><b>Fashion Show Daster/Kebaya</b></li><li><b>Senam Poco-poco / Joget Balon</b></li></ul></div></div>
-      <div id="p6" class="panel"><div class="card glass"><span class="tag">Bapak-bapak · malam hari</span><ul class="lomba"><li><b>Gaple/Domino atau Catur</b></li><li><b>Karaoke Lagu Nasional & Dangdut</b></li><li><b>Tebak Gaya / Tebak Kata</b></li><li><b>Futsal Sarung (malam)</b></li><li><b>Rebutan Kursi</b></li></ul></div></div>
-      <div id="p7" class="panel"><div class="card glass"><span class="tag">Dinilai langsung di malam puncak</span><ul class="lomba"><li><b>Nyanyi Solo/Duet</b></li><li><b>Tari Kreasi / Tradisional</b></li><li><b>Fashion Show Merah Putih</b></li><li><b>Baca Puisi Kemerdekaan</b></li></ul></div></div>
-    </section>
-
-    <!-- STATISTIK -->
-    <section class="sec" id="statistik">
-      <div class="sec-h reveal"><div class="ic glass"><span class="iconify" data-icon="mdi:chart-bar"></span></div><div><h2>Peserta yang Sudah Daftar</h2><small>Jumlah peserta per cabang — otomatis, tanpa menampilkan nama.</small></div></div>
-      <div class="card glass reveal">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:13px;color:rgba(255,255,255,.8)">Total pendaftar:</span><b id="statTotal" style="color:var(--gold);font-size:18px">—</b></div>
-        <div id="statBox"></div>
-      </div>
-    </section>
 
     <!-- JADWAL -->
     <section class="sec" id="jadwal">
@@ -622,10 +675,6 @@ html,body{overflow-x:clip;max-width:100%}
   }
   countTimer=setInterval(tickCount,1000);tickCount();
 
-  (function(){var tabs=[].slice.call(document.querySelectorAll('.tab')),panels=[].slice.call(document.querySelectorAll('.panel')),cur=0;
-    function set(i){cur=(i+tabs.length)%tabs.length;tabs.forEach(function(t,k){t.classList.toggle('active',k===cur);});panels.forEach(function(p,k){p.classList.toggle('active',k===cur);});tabs[cur].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
-    tabs.forEach(function(t,k){t.addEventListener('click',function(){set(k);});});
-    document.querySelector('.tprev').addEventListener('click',function(){set(cur-1);});document.querySelector('.tnext').addEventListener('click',function(){set(cur+1);});})();
 
   /* ===== Carousel foto dari folder Google Drive (fallback ke foto bawaan) ===== */
 (function(){
@@ -697,7 +746,7 @@ html,body{overflow-x:clip;max-width:100%}
 
   function renderStatistik(s){
     var wrap=document.getElementById('statBox'),tot=document.getElementById('statTotal');
-    if(!s)return; tot.textContent=s.total||0;
+    if(!wrap||!tot)return; if(!s)return; tot.textContent=s.total||0;
     if(!s.total){wrap.innerHTML='<div class="cek-empty">Belum ada pendaftar. Jadilah yang pertama! <span class="iconify" data-icon="mdi:party-popper" style="vertical-align:-3px;margin-right:6px"></span></div>';return;}
     var max=1;s.perKategori.forEach(function(x){if(x.jumlah>max)max=x.jumlah;});
     var html='';s.perKategori.forEach(function(x){var pct=Math.round(x.jumlah/max*100);
@@ -1415,7 +1464,6 @@ form.addEventListener('submit',function(e){
     {re:/cek pembayaran/i,    label:'CEK MANDIRI'},
     {re:/jadwal iuran/i,      label:'INFORMASI'},
     {re:/daftar lomba|pentas seni/i, label:'FORMULIR'},
-    {re:/kategori lomba/i,    label:'INFORMASI'},
     {re:/peserta yang sudah/i,label:'DATA'},
     {re:/susunan acara|jadwal & susunan/i, label:'JADWAL'},
     {re:/sambutan|info acara/i, label:'INFORMASI'},
