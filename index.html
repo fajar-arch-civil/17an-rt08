@@ -812,7 +812,37 @@ selLomba.addEventListener('change',function(){
       kirim();
     }).catch(function(){kirim();});
     function kirim(){
-      function kirim(){
+  btn.innerHTML='Menyimpan…';
+  var fd=new FormData(form), qs=new URLSearchParams();
+  fd.forEach(function(v,k){qs.append(k,v);});
+  qs.append('aksi','daftar'); qs.append('_t',Date.now());
+  fetch(API+'?'+qs.toString(),{cache:'no-store'})
+    .then(function(r){return r.json();})
+    .then(function(res){
+      if(res&&res.ok){
+        form.style.display='none';dupMsg.style.display='none';okMsg.style.display='block';
+        okMsg.scrollIntoView({behavior:'smooth',block:'center'});
+        showToast('ok',' Pendaftaran berhasil! Data peserta sudah masuk ke panitia. Sampai jumpa di lapangan!');
+      } else if(res&&res.error==='BELUM_BAYAR'){
+        btn.disabled=false;btn.innerHTML=btnAsli;
+        dupMsg.innerHTML=' <b>Pendaftaran ditolak.</b> Iuran KK untuk alamat <b>'+esc(form.blok.value)+'</b> belum tercatat oleh panitia. Silakan bayar/konfirmasi ke panitia dulu ya.';
+        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
+        showToast('warn',' Belum bisa daftar: iuran KK ini belum tercatat.');
+      } else if(res&&res.error==='SUDAH_TERDAFTAR'){
+        btn.disabled=false;btn.innerHTML=btnAsli;
+        dupMsg.textContent=' Peserta ini sudah terdaftar di lomba tersebut untuk alamat itu.';
+        dupMsg.style.display='block';dupMsg.scrollIntoView({behavior:'smooth',block:'center'});
+        showToast('warn',' Sudah terdaftar di lomba ini.');
+      } else {
+        btn.disabled=false;btn.innerHTML=btnAsli;
+        showToast('warn',' Gagal menyimpan. Coba lagi sebentar ya.');
+      }
+    })
+    .catch(function(){
+      btn.disabled=false;btn.innerHTML=btnAsli;
+      showToast('warn',' Koneksi bermasalah, coba lagi ya.');
+    });
+}
   btn.innerHTML='Menyimpan…';
   var fd=new FormData(form), qs=new URLSearchParams();
   fd.forEach(function(v,k){qs.append(k,v);});
