@@ -321,12 +321,14 @@ details summary{font-size:15.5px;padding:6px 0;cursor:pointer}
 }
 @media (prefers-reduced-motion:reduce){.windline path{animation:none;stroke-dasharray:none;opacity:.85}}
 /* ===== Bingkai "Gapura" + ornamen sudut merah-putih (hero) ===== */
-.gapura{position:absolute;inset:6px;border-radius:22px;pointer-events:none;z-index:-1;border:1px solid rgba(255,255,255,.07)}
+.gapura{position:absolute;inset:6px;border-radius:22px;pointer-events:none;z-index:1;border:1px solid rgba(255,255,255,.07)}
 .gapura span{position:absolute;width:26px;height:26px;border:0 solid transparent}
 .g-tl{top:-1px;left:-1px;border-top-width:3px;border-left-width:3px;border-top-left-radius:14px;border-color:var(--merah)}
 .g-tr{top:-1px;right:-1px;border-top-width:3px;border-right-width:3px;border-top-right-radius:14px;border-color:var(--merah)}
 .g-bl{bottom:-1px;left:-1px;border-bottom-width:3px;border-left-width:3px;border-bottom-left-radius:14px;border-color:#f3f3f3}
 .g-br{bottom:-1px;right:-1px;border-bottom-width:3px;border-right-width:3px;border-bottom-right-radius:14px;border-color:#f3f3f3}
+/* ===== Kunci geser horizontal (hilangkan ruang kosong di kanan, mobile) ===== */
+html,body{overflow-x:clip;max-width:100%}
 </style>
 </head>
 <body>
