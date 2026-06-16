@@ -1198,6 +1198,45 @@ form.addEventListener('submit',function(e){
     if(tick>30)clearInterval(iv);
   },2000);
 })();
+/* ===== Hero glow-up: judul ber-kilau + baris misi & jaminan sistem ===== */
+(function(){
+  var hero=document.querySelector('.hero');
+  if(!hero||document.getElementById('heroMisi'))return;
+
+  var css=document.createElement('style');
+  css.textContent=`
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    .hero h1{
+      background:linear-gradient(100deg,#fff 0%,#fff 40%,#ff5a64 50%,#fff 60%,#fff 100%);
+      background-size:230% 100%;
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:heroSheen 6.5s ease-in-out infinite;
+    }
+  }
+  @keyframes heroSheen{0%,100%{background-position:150% 0}50%{background-position:-50% 0}}
+  #heroMisi{margin:22px auto 2px;max-width:680px;text-align:center;position:relative;z-index:2}
+  #heroMisi .misi-t{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.82)}
+  #heroMisi .misi-t b{color:#fff}
+  .misi-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}
+  .misi-pills .pill{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:600;color:rgba(255,255,255,.9);background:rgba(255,255,255,.045);border:1px solid rgba(255,80,90,.22);transition:transform .2s var(--ease,ease),border-color .2s,background .2s}
+  .misi-pills .pill .iconify{font-size:15px;color:#ff5a64}
+  @media(hover:hover){.misi-pills .pill:hover{transform:translateY(-2px);border-color:rgba(255,80,90,.5);background:rgba(255,46,58,.10)}}
+  @media(prefers-reduced-motion:reduce){.hero h1{animation:none}}`;
+  document.head.appendChild(css);
+
+  var box=document.createElement('div');
+  box.id='heroMisi';
+  box.innerHTML=`
+    <div class="misi-t">Dibuat untuk warga RT 08 — pendaftaran lomba &amp; laporan dana yang <b>rapi, transparan, dan mudah diakses</b> oleh siapa saja, kapan saja.</div>
+    <div class="misi-pills">
+      <span class="pill"><span class="iconify" data-icon="solar:shield-check-bold"></span> Data Rapi &amp; Akurat</span>
+      <span class="pill"><span class="iconify" data-icon="solar:refresh-circle-bold"></span> Real-time Otomatis</span>
+      <span class="pill"><span class="iconify" data-icon="solar:eye-bold"></span> Transparan</span>
+      <span class="pill"><span class="iconify" data-icon="solar:hand-heart-bold"></span> Mudah untuk Semua</span>
+    </div>`;
+  hero.appendChild(box);
+})();
 </script>
 </body>
 </html>
