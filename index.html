@@ -1318,7 +1318,28 @@ function kirim(fd){
   window.addEventListener('scroll',function(){var y=window.scrollY+140;nav.querySelectorAll('.bn-item').forEach(function(a){a.classList.remove('active');});
     for(var i=secIds.length-1;i>=0;i--){var el=document.getElementById(secIds[i]);if(el&&y>=el.offsetTop){var mt=nav.querySelector('[href="#'+secIds[i]+'"]');if(mt){mt.classList.add('active');break;}}}},{passive:true});
 })();
-
+/* ---------- Normalisasi foto Google Drive (sistem folder Drive) ---------- */
+(function(){
+  function driveId(u){var m=(u||'').match(/[-\w]{25,}/);return m?m[0]:null;} // ambil ID file Drive
+  function pasang(im){
+    var asli=im.getAttribute('src')||im.getAttribute('data-src')||'';
+    var id=driveId(asli);
+    if(!id)return; // bukan link Drive → biarkan
+    var fmt=[
+      'https://drive.google.com/thumbnail?id='+id+'&sz=w1600', // paling andal saat ini
+      'https://lh3.googleusercontent.com/d/'+id+'=w1600',       // cadangan
+      'https://drive.google.com/uc?export=view&id='+id          // format lama
+    ];
+    var i=0;
+    im.onerror=function(){
+      i++;
+      if(i<fmt.length){im.src=fmt[i];}
+      else{im.onerror=null;var ph=im.closest('.photo');if(ph)ph.style.background='linear-gradient(135deg,#7a0b14,#ff2e3a)';im.style.display='none';}
+    };
+    im.src=fmt[0];
+  }
+  document.querySelectorAll('.carousel .photo img').forEach(pasang);
+})();
 /* ============================================================
    INIT  (dijalankan paling akhir)
    ============================================================ */
