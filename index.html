@@ -1294,23 +1294,89 @@ function kirim(fd){
     var wrap=document.createElement('div');wrap.appendChild(frag);table.parentNode.insertBefore(wrap,table);table.style.display='none';
   },800);
 })();
-(function(){ // cuaca Open-Meteo
-  var LAT=-6.34,LON=106.50;
-  var WCODE={0:'Cerah',1:'Hampir Cerah',2:'Berawan Sebagian',3:'Mendung',45:'Berkabut',51:'Gerimis Ringan',53:'Gerimis',55:'Gerimis Lebat',61:'Hujan Ringan',63:'Hujan Sedang',65:'Hujan Lebat',80:'Hujan Lokal',81:'Hujan Lokal Sedang',82:'Hujan Lokal Lebat',95:'Badai Petir',99:'Badai Petir Berat'};
+/* ---------- Cuaca realtime (Open-Meteo + Meteocons) ---------- */
+(function(){
+  var LAT=-6.34, LON=106.50;
+
+  if(!document.getElementById('cuacaCSS')){
+    var s=document.createElement('style');s.id='cuacaCSS';
+    s.textContent=
+      '#cuacaBox{--acc:#ff5a64;margin:16px auto 0;max-width:520px;display:flex;align-items:center;gap:14px;'
+      +'padding:14px 16px;border-radius:20px;position:relative;overflow:hidden;'
+      +'background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03));'
+      +'border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);'
+      +'box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 34px rgba(0,0,0,.4)}'
+      +'#cuacaBox::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;'
+      +'background:radial-gradient(150px 110px at 16% -15%,var(--acc),transparent 70%)}'
+      +'#cuacaBox>*{position:relative;z-index:1}'
+      +'#cuacaBox .cu-ic{flex:0 0 auto;width:60px;height:60px;display:grid;place-items:center;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}'
+      +'#cuacaBox .cu-ic .iconify{font-size:56px}'
+      +'#cuacaBox .cu-mid{flex:1;min-width:0}'
+      +'#cuacaBox .cu-temp{font-family:"Space Grotesk","Poppins",sans-serif;font-weight:800;font-size:30px;line-height:1;letter-spacing:-1px}'
+      +'#cuacaBox .cu-lbl{font-size:13px;font-weight:600;color:rgba(255,255,255,.85);margin-top:3px}'
+      +'#cuacaBox .cu-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}'
+      +'#cuacaBox .cu-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;'
+      +'font-size:11.5px;font-weight:600;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.9)}'
+      +'#cuacaBox .cu-chip .iconify{font-size:15px}';
+    document.head.appendChild(s);
+  }
+
   var box=document.createElement('div');box.id='cuacaBox';
+  box.innerHTML='<div class="cu-ic"><span class="iconify" data-icon="meteocons:clear-day-fill"></span></div>'
+    +'<div class="cu-mid"><div class="cu-temp">—°</div><div class="cu-lbl">Memuat cuaca…</div><div class="cu-meta"></div></div>';
+
+  // WMO weather_code → {label, ikon meteocons, warna aksen}
+  function peta(code,day){
+    var d=day?'-day':'-night';
+    var T={
+      0:{l:'Cerah',i:'clear'+d,a:day?'#ffb13b':'#3b6bff'},
+      1:{l:'Cerah Berawan',i:'partly-cloudy'+d,a:'#ffb13b'},
+      2:{l:'Berawan Sebagian',i:'partly-cloudy'+d,a:'#9bb0c9'},
+      3:{l:'Mendung',i:'overcast'+(day?'-day':''),a:'#8fa0b5'},
+      45:{l:'Berkabut',i:'fog'+(day?'-day':''),a:'#9aa6b2'},
+      48:{l:'Kabut Beku',i:'fog'+(day?'-day':''),a:'#9aa6b2'},
+      51:{l:'Gerimis Ringan',i:'drizzle',a:'#5fb7ff'},
+      53:{l:'Gerimis',i:'drizzle',a:'#5fb7ff'},
+      55:{l:'Gerimis Lebat',i:'drizzle',a:'#4aa3ff'},
+      61:{l:'Hujan Ringan',i:'rain',a:'#4aa3ff'},
+      63:{l:'Hujan Sedang',i:'rain',a:'#3b8fff'},
+      65:{l:'Hujan Lebat',i:'extreme-rain',a:'#2f7bff'},
+      80:{l:'Hujan Lokal',i:'partly-cloudy'+d+'-rain',a:'#4aa3ff'},
+      81:{l:'Hujan Lokal Sedang',i:'overcast'+(day?'-day':'')+'-rain',a:'#3b8fff'},
+      82:{l:'Hujan Lokal Lebat',i:'extreme-rain',a:'#2f7bff'},
+      95:{l:'Badai Petir',i:'thunderstorms'+(day?'-day':''),a:'#a06bff'},
+      96:{l:'Badai Petir + Es',i:'thunderstorms-rain',a:'#a06bff'},
+      99:{l:'Badai Petir Berat',i:'thunderstorms-rain',a:'#8a4bff'}
+    };
+    return T[code]||{l:'Kode '+code,i:'clear'+d,a:'#ff5a64'};
+  }
+
   function load(){
-    var url='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FJakarta';
+    var url='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON
+      +'&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,is_day&timezone=Asia%2FJakarta';
     fetch(url,{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-      var c=d.current,code=c.weather_code||0;
-      var temp=Math.round(c.temperature_2m||0),hum=Math.round(c.relative_humidity_2m||0),feel=Math.round(c.apparent_temperature||temp),wind=Math.round(c.wind_speed_10m||0);
-      box.innerHTML='<div class="cw-info"><div class="cw-label">'+(WCODE[code]||'Kode '+code)+'</div>'
-        +'<div class="cw-sub">💧 '+hum+'% · 💨 '+wind+' km/j · Terasa '+feel+'°C</div></div><div class="cw-temp">'+temp+'°C</div>';
-    }).catch(function(){box.innerHTML='<div class="cw-info"><div class="cw-sub">Cuaca tidak tersedia</div></div>';});
+      var c=d.current||{},code=c.weather_code||0,day=c.is_day==null?1:c.is_day;
+      var p=peta(code,!!day);
+      var temp=Math.round(c.temperature_2m||0),hum=Math.round(c.relative_humidity_2m||0),
+          feel=Math.round(c.apparent_temperature||temp),wind=Math.round(c.wind_speed_10m||0);
+      box.style.setProperty('--acc',p.a);
+      box.innerHTML='<div class="cu-ic"><span class="iconify" data-icon="meteocons:'+p.i+'-fill"></span></div>'
+        +'<div class="cu-mid"><div class="cu-temp">'+temp+'°C</div><div class="cu-lbl">'+p.l+'</div>'
+        +'<div class="cu-meta">'
+        +'<span class="cu-chip"><span class="iconify" data-icon="meteocons:humidity-fill"></span>'+hum+'%</span>'
+        +'<span class="cu-chip"><span class="iconify" data-icon="meteocons:windsock-fill"></span>'+wind+' km/j</span>'
+        +'<span class="cu-chip"><span class="iconify" data-icon="meteocons:thermometer-fill"></span>Terasa '+feel+'°</span>'
+        +'</div></div>';
+      if(window.Iconify)window.Iconify.scan(box);
+    }).catch(function(){ var l=box.querySelector('.cu-lbl'); if(l)l.textContent='Cuaca tidak tersedia'; });
   }
   load();
+  setInterval(load,600000); // refresh tiap 10 menit
+
   var cnt=document.getElementById('countBox');
   if(cnt&&cnt.parentNode)cnt.parentNode.insertBefore(box,cnt);
   else{var hero=document.querySelector('.hero');if(hero&&hero.parentNode)hero.parentNode.insertBefore(box,hero.nextSibling);}
+  if(window.Iconify)window.Iconify.scan(box);
 })();
 (function(){ // ukuran teks A- / A+
   var sizes=['14px','16px','18px','20px'],cur=1;
@@ -1376,6 +1442,42 @@ muatKeuangan();
 setInterval(muatKeuangan,120000);
 muatOpsi();
 muatGaleri();
+/* ---------- Morph / Liquid Glass (gaya iOS 26) ---------- */
+(function(){
+  if(document.getElementById('liquidGlassCSS'))return;
+  var s=document.createElement('style');s.id='liquidGlassCSS';
+  s.textContent=[
+    '.cta-btn,.submit,.btn-mini,.cekbar button,.ok-msg button,#fab,.fab,#bnav,#bnav .bn-item{',
+      'position:relative;isolation:isolate;-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);transition:transform .25s var(--ease),box-shadow .25s var(--ease)}',
+    /* kilau specular kaca (pojok kiri-atas, tidak menutup teks) */
+    '.cta-btn::after,.submit::after,.cekbar button::after,#fab::after,.fab::after,#bnav .bn-center::after{',
+      'content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;',
+      'background:radial-gradient(90% 70% at 28% -18%,rgba(255,255,255,.55),transparent 58%)}',
+    /* tombol utama = kaca merah mengambang */
+    '.cta-btn.primary,.submit,.cekbar button,#fab,#bnav .bn-center{',
+      'background:linear-gradient(135deg,rgba(255,75,86,.80),rgba(168,18,30,.66))!important;',
+      'border:1px solid rgba(255,255,255,.28)!important;',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 6px rgba(120,0,8,.4),0 10px 26px rgba(255,46,58,.30),0 16px 40px rgba(0,0,0,.45)!important}',
+    /* tombol netral = kaca putih mengambang */
+    '.cta-btn.ghost,.btn-mini,.ok-msg button{',
+      'background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05))!important;',
+      'border:1px solid rgba(255,255,255,.22)!important;',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 26px rgba(0,0,0,.4)!important}',
+    /* bottom nav bar = panel kaca cair */
+    '#bnav{background:linear-gradient(135deg,rgba(28,14,16,.55),rgba(16,7,9,.42))!important;',
+      'border:1px solid rgba(255,255,255,.18)!important;',
+      '-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 2px rgba(0,0,0,.4),0 14px 44px rgba(0,0,0,.6)!important}',
+    '#bnav .bn-item.active{background:rgba(255,255,255,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}',
+    '#bnav .bn-center{border:1px solid rgba(255,255,255,.3)!important;overflow:hidden}',
+    /* angkat saat hover, tekan saat klik */
+    '@media(hover:hover){.cta-btn:hover,.submit:hover,.btn-mini:hover,.cekbar button:hover,#fab:hover{transform:translateY(-3px)}}',
+    '.cta-btn:active,.submit:active,.btn-mini:active,.cekbar button:active,#fab:active,#bnav .bn-item:active{transform:translateY(1px) scale(.985)!important}',
+    /* kartu kaca dipertajam dikit */
+    '.glass{-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}'
+  ].join('');
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>
