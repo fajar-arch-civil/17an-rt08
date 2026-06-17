@@ -823,6 +823,42 @@ function muatHasil(hasilData){
     }
   },{passive:true});
 })();
+/* ---------- Morph / Liquid Glass (gaya iOS 26) ---------- */
+(function(){
+  if(document.getElementById('liquidGlassCSS'))return;
+  var s=document.createElement('style');s.id='liquidGlassCSS';
+  s.textContent=[
+    '.cta-btn,.submit,.btn-mini,.cekbar button,.ok-msg button,#fab,.fab,#bnav,#bnav .bn-item{',
+      'position:relative;isolation:isolate;-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);transition:transform .25s var(--ease),box-shadow .25s var(--ease)}',
+    /* kilau specular kaca (pojok kiri-atas, tidak menutup teks) */
+    '.cta-btn::after,.submit::after,.cekbar button::after,#fab::after,.fab::after,#bnav .bn-center::after{',
+      'content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;',
+      'background:radial-gradient(90% 70% at 28% -18%,rgba(255,255,255,.55),transparent 58%)}',
+    /* tombol utama = kaca merah mengambang */
+    '.cta-btn.primary,.submit,.cekbar button,#fab,#bnav .bn-center{',
+      'background:linear-gradient(135deg,rgba(255,75,86,.80),rgba(168,18,30,.66))!important;',
+      'border:1px solid rgba(255,255,255,.28)!important;',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 6px rgba(120,0,8,.4),0 10px 26px rgba(255,46,58,.30),0 16px 40px rgba(0,0,0,.45)!important}',
+    /* tombol netral = kaca putih mengambang */
+    '.cta-btn.ghost,.btn-mini,.ok-msg button{',
+      'background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05))!important;',
+      'border:1px solid rgba(255,255,255,.22)!important;',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 26px rgba(0,0,0,.4)!important}',
+    /* bottom nav bar = panel kaca cair */
+    '#bnav{background:linear-gradient(135deg,rgba(28,14,16,.55),rgba(16,7,9,.42))!important;',
+      'border:1px solid rgba(255,255,255,.18)!important;',
+      '-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 2px rgba(0,0,0,.4),0 14px 44px rgba(0,0,0,.6)!important}',
+    '#bnav .bn-item.active{background:rgba(255,255,255,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}',
+    '#bnav .bn-center{border:1px solid rgba(255,255,255,.3)!important;overflow:hidden}',
+    /* angkat saat hover, tekan saat klik */
+    '@media(hover:hover){.cta-btn:hover,.submit:hover,.btn-mini:hover,.cekbar button:hover,#fab:hover{transform:translateY(-3px)}}',
+    '.cta-btn:active,.submit:active,.btn-mini:active,.cekbar button:active,#fab:active,#bnav .bn-item:active{transform:translateY(1px) scale(.985)!important}',
+    /* kartu kaca dipertajam dikit */
+    '.glass{-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}'
+  ].join('');
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>
