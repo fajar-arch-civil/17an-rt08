@@ -690,47 +690,6 @@ body{ overscroll-behavior-y:none; }
 html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
-<style>
-/* ================= NAV FINAL (tunggal) — JANGAN DIUBAH ================= */
-#bnav{
-  position:fixed!important; left:0!important; right:0!important; bottom:0!important;
-  transform:none!important; width:100%!important; z-index:80;
-  display:flex!important; align-items:center; justify-content:space-around;
-  gap:0!important; margin:0!important;
-  padding:8px 6px!important;
-  padding-bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
-  background:color-mix(in srgb,var(--bg0) 92%,transparent)!important;
-  -webkit-backdrop-filter:var(--blur); backdrop-filter:var(--blur);
-  border-top:1px solid var(--bd)!important;
-  border-radius:0!important;
-  box-shadow:none!important;
-}
-#bnav .bn-item, #bnav .bn-item:nth-child(3){
-  flex:1!important; margin:0!important;
-  display:flex!important; flex-direction:column!important;
-  align-items:center; justify-content:center; gap:3px;
-  width:auto!important; height:auto!important;
-  background:none!important; border:0!important; border-radius:0!important;
-  box-shadow:none!important; color:var(--ink); opacity:.6;
-  font-size:10.5px!important; font-weight:600; line-height:1;
-}
-#bnav .bn-item .iconify{ font-size:23px!important; }
-#bnav .bn-item .bn-lbl, #bnav .bn-item:nth-child(3) .bn-lbl{ display:block!important; }
-#bnav .bn-item.active{ color:var(--merah)!important; opacity:1!important; }
-
-/* tombol panah ke atas disembunyikan (sudah ada tab Beranda) */
-#fab{ display:none!important; }
-
-/* beri ruang konten supaya tidak ketutup nav */
-body{ padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))!important; }
-
-/* desktop layar lebar: nav bawah disembunyikan */
-@media(min-width:1080px){
-  #bnav{ display:flex!important; }
-  body{ padding-bottom:36px!important; }
-}
-/* ============== END NAV FINAL ============== */
-</style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
 <link rel="apple-touch-icon" href="icon-192.png">
