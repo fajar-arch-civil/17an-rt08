@@ -830,9 +830,9 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 <script>
 /* ===================== KONSTANTA (JANGAN UBAH) ===================== */
 const API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
-const WA='6285215079010';
-const TARGET=50000;
-const DEADLINE=new Date('2026-08-17T07:00:00+07:00').getTime();
+let WA='6285215079010';
+let TARGET=50000;
+let DEADLINE=new Date('2026-08-17T07:00:00+07:00').getTime();
 const BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
 /* ===================== KONTEN EDITABLE ===================== */
@@ -1389,6 +1389,55 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
     [600,1500,3000].forEach(function(d){setTimeout(paint,d);});
   }
   if(document.readyState!=='loading')start();else document.addEventListener('DOMContentLoaded',start);
+})();
+/* ===== STEP 3 — Pengumuman otomatis dari Sheet (tab "Pengumuman") ===== */
+(function(){
+  var IKON={
+    'info':'solar:info-circle-bold',
+    'jadwal':'solar:calendar-mark-bold',
+    'penting':'solar:danger-triangle-bold',
+    'hadiah':'solar:gift-bold',
+    'lomba':'solar:cup-star-bold',
+    'iuran':'solar:wallet-money-bold'
+  };
+  function ikonOf(v){ return IKON[String(v||'').trim().toLowerCase()] || 'solar:bell-bold'; }
+  async function muatPengumuman(){
+    try{
+      var d=await api('aksi=pengumuman');
+      var arr=getF(d,['pengumuman','announcements','list'])||[];
+      if(!Array.isArray(arr)||!arr.length) return;     // gagal/kosong → biarkan bawaan
+      PENGUMUMAN.length=0;                              // ganti dgn data sheet
+      arr.forEach(function(p){
+        var judul=getF(p,['judul','title'])||'';
+        var isi=getF(p,['isi','teks','text'])||'';
+        var teks=[judul,isi].filter(function(x){return x;}).join(' — ');
+        var waktu=getF(p,['tanggal','waktu','date'])||'';
+        PENGUMUMAN.push({ ikon:ikonOf(getF(p,['ikon','icon','jenis','tipe'])), teks:teks, waktu:waktu });
+      });
+      renderFeed();                                     // pakai ulang render bawaan → tampilan persis sama
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',muatPengumuman);
+  else muatPengumuman();
+})();
+/* ===== STEP 3 — Pengaturan otomatis dari Sheet (tab "Pengaturan") ===== */
+(function(){
+  async function muatConfig(){
+    try{
+      var d=await api('aksi=config');
+      var c=getF(d,['config','pengaturan','settings'])||{};
+      var t=num(getF(c,['targetIuran','target','iuran']));            if(t>0) TARGET=t;
+      var w=String(getF(c,['nomorWA','wa','whatsapp'])||'').replace(/[^\d]/g,''); if(w) WA=w;
+      var tgl=getF(c,['tanggalAcara','deadline','tanggal']);
+      if(tgl){ var s=String(tgl); var dt=new Date(s.length<=10?(s+'T07:00:00+07:00'):s); if(!isNaN(dt)) DEADLINE=dt.getTime(); }
+      // terapkan ke UI yang sudah tampil
+      try{ document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){ a.href=a.href.replace(/wa\.me\/\d+/,'wa.me/'+WA); }); }catch(e){}
+      tickCount();                                   // segarkan countdown
+      if(typeof _rekap!=='undefined' && _rekap){ try{ renderRekap(); }catch(e){} }  // segarkan target iuran
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',muatConfig);
+  else muatConfig();
 })();
 </script>
 </body>
