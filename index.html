@@ -598,6 +598,12 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 .lu-meta span{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);}
 .lu-meta .iconify{font-size:15px;color:var(--merah);flex:none;}
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#050505">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="17an RT 08">
 </head>
 <body>
 <!-- ============ HEADER ============ -->
@@ -1524,6 +1530,13 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',muatJadwal);
   else muatJadwal();
 })();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
