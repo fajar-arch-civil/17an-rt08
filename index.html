@@ -290,7 +290,7 @@ footer b{color:var(--ink2);font-weight:700}
 @keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 .reveal{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
 /* ============ DESKTOP ============ */
-@media(min-width:1080px){#bnav,#fab{display:none}body{padding-bottom:36px}html{scroll-padding-top:78px}.kpi-grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1080px){#fab{display:none}body{padding-bottom:36px}html{scroll-padding-top:78px}.kpi-grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 <style>
 /* ===================== REVISI VISUAL PATCH ===================== */
@@ -726,7 +726,7 @@ body{ padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))!important; }
 
 /* desktop layar lebar: nav bawah disembunyikan */
 @media(min-width:1080px){
-  #bnav{ display:none!important; }
+  #bnav{ display:flex!important; }
   body{ padding-bottom:36px!important; }
 }
 /* ============== END NAV FINAL ============== */
