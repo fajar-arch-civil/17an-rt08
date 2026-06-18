@@ -337,6 +337,139 @@ footer b{color:var(--ink2);font-weight:700}
 /* ============ DESKTOP ============ */
 @media(min-width:1080px){#bnav,#fab{display:none}body{padding-bottom:36px}html{scroll-padding-top:78px}.kpi-grid{grid-template-columns:repeat(4,1fr)}}
 </style>
+<style>
+/* ===================== REVISI VISUAL PATCH ===================== */
+
+/* --- G4: HERO lebih soft, hilangkan grid kaku --- */
+.hero{
+  background:
+    radial-gradient(120% 95% at 80% 8%, rgba(255,255,255,.18), transparent 55%),
+    radial-gradient(140% 130% at 6% 105%, rgba(150,14,14,.55), transparent 62%),
+    linear-gradient(158deg,#ff3a3a 0%,#e8211f 50%,#bd151a 100%);
+  box-shadow:0 26px 64px -22px rgba(255,45,45,.5), inset 0 1px 0 rgba(255,255,255,.16);
+  overflow:hidden;animation:heroIn .7s cubic-bezier(.2,.9,.3,1) both;
+}
+.hero-flag{background:radial-gradient(42% 60% at 86% 22%, rgba(255,255,255,.22), transparent 70%)!important;filter:blur(3px);opacity:.85;}
+.hero-deco{background:radial-gradient(circle at 28% 18%, rgba(255,255,255,.16), transparent 60%)!important;opacity:.7;}
+.hero-spark{background:radial-gradient(circle, rgba(255,255,255,.85), transparent 70%)!important;opacity:.45;filter:blur(1px);}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.16) 50%,transparent 68%);transform:translateX(-130%);animation:heroShine 5s ease-in-out 1.1s infinite;pointer-events:none;}
+.cbox{background:rgba(0,0,0,.18)!important;border:1px solid rgba(255,255,255,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1);}
+@keyframes heroIn{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes heroShine{0%{transform:translateX(-130%)}48%,100%{transform:translateX(130%)}}
+
+/* --- G5: chip kategori lebih natural (bukan gradient AI) --- */
+.lc-cat{background:rgba(255,255,255,.05)!important;color:var(--muted,#9aa0a6)!important;border:1px solid var(--bd,rgba(255,255,255,.08))!important;box-shadow:none!important;text-transform:none;letter-spacing:.01em;font-weight:700;border-radius:999px;display:inline-flex;align-items:center;gap:6px;}
+.lc-cat::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+.lc-cat.olah{color:#7fb0ff!important;background:rgba(90,140,255,.1)!important;border-color:rgba(90,140,255,.22)!important;}
+.lc-cat.anak{color:#ffc24b!important;background:rgba(255,184,0,.1)!important;border-color:rgba(255,184,0,.22)!important;}
+.lc-cat.seni{color:#ff8fa3!important;background:rgba(255,69,90,.1)!important;border-color:rgba(255,69,90,.22)!important;}
+
+/* --- G6: pill statistik lebih kalem --- */
+.pill{background:rgba(255,255,255,.05);border:1px solid var(--bd,rgba(255,255,255,.08));color:var(--muted,#9aa0a6);box-shadow:none;font-weight:700;border-radius:12px;}
+.pill.ok{color:var(--ok,#32d74b);background:rgba(50,215,75,.08);border-color:rgba(50,215,75,.2);}
+.pill.no{color:var(--danger,#ff453a);background:rgba(255,69,58,.08);border-color:rgba(255,69,58,.2);}
+
+/* --- G2: form & stepper lebih lega --- */
+.card.pad{padding:24px;}
+.form{display:flex;flex-direction:column;gap:20px;}
+.field{display:flex;flex-direction:column;gap:9px;}
+.field.two{flex-direction:row;gap:16px;}
+.field.two>.field{flex:1;}
+.inp,select.inp,.dd-btn{padding:15px 16px;}
+.stepper{display:flex;align-items:flex-start;gap:0;margin:2px 0 28px;}
+.step{flex:1;text-align:center;position:relative;}
+.step-n{position:relative;z-index:2;width:34px;height:34px;margin:0 auto;display:grid;place-items:center;border-radius:50%;background:var(--solid2,#1a1a1a);border:1px solid var(--bd2,rgba(255,255,255,.12));font-weight:800;}
+.step-l{margin-top:11px;font-size:12px;}
+.step-line{position:absolute;top:17px;left:50%;width:100%;height:2px;background:var(--bd2,rgba(255,255,255,.12));z-index:0;}
+.step:last-child .step-line{display:none;}
+.step.done .step-line{background:var(--merah,#ff2d2d);}
+
+/* --- G3: keuangan rapatkan + insight chips --- */
+#keuangan .balance{margin-bottom:14px;}
+#keuangan>.kpi-grid{margin-top:0!important;}
+#keuangan .chart-card{margin-top:14px!important;}
+.insight-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px;}
+.ins{display:flex;align-items:center;gap:9px;padding:13px;border-radius:16px;background:var(--glass,rgba(255,255,255,.04));border:1px solid var(--bd,rgba(255,255,255,.08));}
+.ins-ic{font-size:20px;display:grid;place-items:center;flex:none;}
+.ins b{display:block;font-size:14px;font-weight:800;line-height:1.2;}
+.ins span{font-size:10.5px;color:var(--muted,#9aa0a6);font-weight:600;}
+@media(max-width:520px){.insight-row{grid-template-columns:1fr;}.ins{padding:12px 14px;}}
+
+/* ===================== REKAP BARU (kartu terpisah) ===================== */
+.hint{font-size:11px;color:var(--muted,#9aa0a6);font-weight:600;}
+.cek-mode{display:flex;gap:8px;margin-bottom:14px;}
+.cek-mode .cm{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:14px;border:1px solid var(--bd,rgba(255,255,255,.08));background:rgba(255,255,255,.03);color:var(--muted,#9aa0a6);font-weight:700;font-size:13px;cursor:pointer;transition:.18s;}
+.cek-mode .cm.on{background:rgba(255,45,45,.12);border-color:rgba(255,45,45,.4);color:#ff6a6a;}
+#cekWrap{position:relative;}
+.sg-pop{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:30;background:var(--solid,#141414);border:1px solid var(--bd2,rgba(255,255,255,.12));border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.55);padding:6px;display:none;max-height:300px;overflow:auto;}
+.sg-pop.show{display:block;animation:rise .2s ease both;}
+.sg-item{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 12px;border-radius:13px;background:none;border:0;cursor:pointer;color:inherit;transition:.15s;}
+.sg-item:hover{background:rgba(255,255,255,.05);}
+.sg-item>.iconify{color:var(--muted,#9aa0a6);font-size:17px;flex:none;}
+.sg-main{font-weight:700;font-size:14px;}
+.sg-sub{font-size:11.5px;color:var(--muted,#9aa0a6);margin-top:1px;}
+.sg-item>div{flex:1;min-width:0;}
+.sg-main,.sg-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sg-badge{flex:none;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:99px;}
+.sg-badge.ok{color:var(--ok,#32d74b);background:rgba(50,215,75,.12);}
+.sg-badge.no{color:var(--danger,#ff453a);background:rgba(255,69,58,.12);}
+.cek-card{display:flex;align-items:center;gap:13px;padding:13px;margin-top:12px;border-radius:16px;background:var(--glass,rgba(255,255,255,.04));border:1px solid var(--bd,rgba(255,255,255,.08));}
+.cek-ava{width:42px;height:42px;flex:none;border-radius:13px;display:grid;place-items:center;font-weight:800;font-size:17px;}
+.cek-ava.ok{background:rgba(50,215,75,.14);color:var(--ok,#32d74b);}
+.cek-ava.no{background:rgba(255,69,58,.14);color:var(--danger,#ff453a);}
+.cek-info{flex:1;min-width:0;}
+.cek-nm{font-weight:800;font-size:14.5px;}
+.cek-al{font-size:12px;color:var(--muted,#9aa0a6);display:flex;align-items:center;gap:5px;margin-top:2px;}
+.cek-st{text-align:right;flex:none;}
+.cek-nom{font-size:12px;color:var(--muted,#9aa0a6);margin-top:5px;font-weight:700;}
+.lunas-badge{font-size:11px;font-weight:800;padding:5px 11px;border-radius:99px;display:inline-block;}
+.lunas-badge.ok{color:var(--ok,#32d74b);background:rgba(50,215,75,.12);}
+.lunas-badge.no{color:var(--danger,#ff453a);background:rgba(255,69,58,.12);}
+
+/* Ringkasan donut */
+.over-grid{display:flex;align-items:center;gap:20px;}
+.ring{position:relative;width:128px;height:128px;flex:none;}
+.ring svg{width:100%;height:100%;}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-c b{font-size:26px;font-weight:800;line-height:1;}
+.ring-c span{font-size:10.5px;color:var(--muted,#9aa0a6);font-weight:600;margin-top:3px;}
+.rs-wrap{flex:1;display:flex;flex-direction:column;gap:9px;}
+.rs{display:flex;align-items:baseline;justify-content:space-between;padding:10px 13px;border-radius:13px;background:rgba(255,255,255,.04);border:1px solid var(--bd,rgba(255,255,255,.08));}
+.rs b{font-size:18px;font-weight:800;}
+.rs span{font-size:12px;color:var(--muted,#9aa0a6);font-weight:600;}
+.rs.ok b{color:var(--ok,#32d74b);}
+.rs.no b{color:var(--danger,#ff453a);}
+@media(max-width:440px){.over-grid{flex-direction:column;gap:16px;}.rs-wrap{width:100%;}}
+
+/* Bar per blok */
+.blok-row{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;width:100%;text-align:left;padding:13px 14px;margin-bottom:10px;border-radius:16px;background:var(--glass,rgba(255,255,255,.04));border:1px solid var(--bd,rgba(255,255,255,.08));cursor:pointer;transition:.18s;position:relative;}
+.blok-row:hover{border-color:var(--bd2,rgba(255,255,255,.16));transform:translateY(-1px);}
+.br-top{display:flex;align-items:center;justify-content:space-between;grid-column:1/-1;}
+.br-name{font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px;}
+.br-dot{width:9px;height:9px;border-radius:50%;}
+.br-dot.ok{background:var(--ok,#32d74b);}.br-dot.mid{background:var(--warn,#ffb800);}.br-dot.bad{background:var(--danger,#ff453a);}
+.br-count{font-size:12px;color:var(--muted,#9aa0a6);font-weight:700;}
+.br-bar{grid-column:1/-1;height:8px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;}
+.br-bar i{display:block;height:100%;border-radius:99px;transition:width .8s cubic-bezier(.2,.9,.3,1);}
+.br-bar i.ok{background:linear-gradient(90deg,#32d74b,#27a93f);}
+.br-bar i.mid{background:linear-gradient(90deg,#ffb800,#e09e00);}
+.br-bar i.bad{background:linear-gradient(90deg,#ff6a6a,#ff2d2d);}
+.br-go{position:absolute;right:12px;top:14px;color:var(--muted,#9aa0a6);font-size:16px;}
+
+/* Bottom-sheet modal */
+#blokModal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.62);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+#blokModal.show{opacity:1;pointer-events:auto;}
+.bm-sheet{width:100%;max-width:560px;max-height:82vh;background:var(--solid,#141414);border:1px solid var(--bd,rgba(255,255,255,.08));border-radius:26px 26px 0 0;padding:8px 18px 26px;transform:translateY(100%);transition:transform .32s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;box-shadow:0 -22px 60px rgba(0,0,0,.6);}
+#blokModal.show .bm-sheet{transform:translateY(0);}
+.bm-grip{width:44px;height:4px;border-radius:99px;background:var(--bd2,rgba(255,255,255,.18));margin:8px auto 14px;}
+.bm-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.bm-title{font-size:19px;font-weight:800;}
+.bm-sub{font-size:12.5px;color:var(--muted,#9aa0a6);margin-top:2px;font-weight:600;}
+.bm-body{overflow:auto;margin-top:4px;}
+.ml-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 4px;border-bottom:1px solid var(--bd,rgba(255,255,255,.06));}
+.ml-nm{font-weight:700;font-size:14px;}
+.ml-al{font-size:11.5px;color:var(--muted,#9aa0a6);margin-top:1px;}
+</style>
 </head>
 <body>
 <!-- ============ HEADER ============ -->
@@ -876,6 +1009,133 @@ function init(){
  scan();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+</script>
+<script>
+/* ===================== REVISI REKAP + CEK IURAN (override) ===================== */
+let _warga=[], _cekMode='nama', _modalArr=[];
+
+/* Rebuild section #rekap jadi 3 kartu terpisah + modal (sinkron, body sudah ter-parse) */
+(function(){
+ const rk=document.getElementById('rekap');
+ if(rk){rk.innerHTML=`
+  <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:clipboard-list-bold"></span> Rekapan Data</div></div>
+  <div class="card glass pad" id="cekCard">
+    <div class="eyebrow" style="margin-bottom:12px">Cek Status Iuran</div>
+    <div class="cek-mode" id="cekMode">
+      <button type="button" class="cm on" data-mode="nama"><span class="iconify" data-icon="solar:user-linear"></span> Nama</button>
+      <button type="button" class="cm" data-mode="blok"><span class="iconify" data-icon="solar:map-point-linear"></span> Blok / Alamat</button>
+    </div>
+    <div class="cek-wrap" id="cekWrap">
+      <input class="cek-input" id="cekInput" placeholder="Ketik nama warga…" autocomplete="off">
+      <button class="cek-btn" id="cekBtn" aria-label="Cari"><span class="iconify" data-icon="solar:magnifer-bold"></span></button>
+      <div class="sg-pop" id="cekSuggest"></div>
+    </div>
+    <div id="cekHasil"><p class="cek-empty">Masukkan nama untuk cek status pembayaran.</p></div>
+    <div class="pay-note"><span class="iconify" data-icon="solar:info-circle-bold" style="color:var(--merah)"></span> Pembayaran iuran manual via WhatsApp panitia (tombol di bawah).</div>
+  </div>
+  <div class="card glass pad">
+    <div class="eyebrow" style="margin-bottom:14px">Ringkasan Iuran Warga</div>
+    <div class="over-grid"><div class="ring" id="iuranRing"></div><div class="rs-wrap" id="rekapStats"></div></div>
+  </div>
+  <div class="card glass pad">
+    <div class="sec-head" style="margin:0 0 14px"><div class="sec-title" style="font-size:16px"><span class="iconify" data-icon="solar:buildings-2-bold"></span> Status per Blok</div><span class="hint">Ketuk untuk detail</span></div>
+    <div id="blokBars"></div>
+  </div>
+  <div id="blokModal"><div class="bm-sheet"><div class="bm-grip"></div>
+    <div class="bm-head"><div><div class="bm-title" id="blokModalTitle">Blok</div><div class="bm-sub" id="blokModalSub"></div></div><button class="icon-btn" id="blokModalClose" aria-label="Tutup"><span class="iconify" data-icon="solar:close-circle-bold"></span></button></div>
+    <div class="cek-wrap" style="margin:12px 0"><input class="cek-input" id="blokSearch" placeholder="Cari nama di blok ini…" autocomplete="off"></div>
+    <div class="bm-body" id="blokModalBody"></div>
+  </div></div>`;}
+ /* Sisipkan insight chips di ruang kosong Keuangan */
+ const bal=document.querySelector('#keuangan .balance');
+ if(bal && !document.getElementById('finInsight')) bal.insertAdjacentHTML('afterend','<div id="finInsight" class="insight-row"></div>');
+ if(window.Iconify)window.Iconify.scan();
+})();
+
+/* Bangun data warga dari rekap */
+function buildWarga(){
+ _warga=[];
+ let daftar=_rekap?getF(_rekap,['daftar','list','data','warga']):null;
+ if(!Array.isArray(daftar))return;
+ daftar.forEach(it=>{
+  const nama=getF(it,['nama','name'])||'';
+  const alamat=getF(it,['alamat','rumah','noRumah','nomor'])||'';
+  const blok=splitBlok(getF(it,['blok','wilayah'])||alamat);
+  _warga.push({nama,alamat,blok,lunas:isLunasItem(it),terbayar:num(getF(it,['terbayar','dibayar','jumlah','nominal']))});
+ });
+}
+
+/* Jarak kata (typo tolerant) */
+function lev(a,b){a=a||'';b=b||'';const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let prev=Array.from({length:n+1},(_,j)=>j),cur=new Array(n+1);for(let i=1;i<=m;i++){cur[0]=i;for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+c);}[prev,cur]=[cur,prev];}return prev[n];}
+function fieldOf(w){return _cekMode==='blok'?norm(w.blok+' '+w.alamat):norm(w.nama);}
+function suggestNames(q){
+ q=norm(q);if(!q)return [];
+ if(!_warga.length)buildWarga();
+ const scored=_warga.map(w=>{const t=fieldOf(w);let s;if(t.startsWith(q))s=0;else if(t.includes(q))s=1;else s=2+lev(q,t.slice(0,q.length+2));return {w,t,s};});
+ scored.sort((a,b)=>a.s-b.s||a.t.localeCompare(b.t));
+ const seen=new Set(),out=[];
+ for(const x of scored){if(x.s>5)continue;const k=_cekMode==='blok'?(x.w.blok+'|'+x.w.alamat+'|'+x.w.nama):x.w.nama+'|'+x.w.alamat;if(seen.has(k))continue;seen.add(k);out.push(x.w);if(out.length>=6)break;}
+ return out;
+}
+function showSuggest(){
+ const box=$('cekSuggest');if(!box)return;const q=$('cekInput').value;
+ if(!norm(q)){box.classList.remove('show');box.innerHTML='';return;}
+ const list=suggestNames(q);
+ if(!list.length){box.classList.remove('show');box.innerHTML='';return;}
+ box.innerHTML=list.map(w=>{const main=_cekMode==='blok'?('Blok '+w.blok+(w.alamat?(' · '+w.alamat):'')):w.nama;const sub=_cekMode==='blok'?(w.nama||'-'):(w.alamat||('Blok '+w.blok));return '<button type="button" class="sg-item" data-nama="'+esc(w.nama)+'"><span class="iconify" data-icon="solar:magnifer-linear"></span><div><div class="sg-main">'+esc(main)+'</div><div class="sg-sub">'+esc(sub)+'</div></div><span class="sg-badge '+(w.lunas?'ok':'no')+'">'+(w.lunas?'Lunas':'Belum')+'</span></button>';}).join('');
+ box.classList.add('show');if(window.Iconify)window.Iconify.scan();
+ box.querySelectorAll('.sg-item').forEach(b=>b.onclick=()=>{$('cekInput').value=b.dataset.nama;box.classList.remove('show');cekIuran();});
+}
+function cekCard(w){const ok=w.lunas;return '<div class="cek-card"><div class="cek-ava '+(ok?'ok':'no')+'">'+esc((w.nama||'?').trim().charAt(0).toUpperCase()||'?')+'</div><div class="cek-info"><div class="cek-nm">'+esc(maskName(w.nama))+'</div><div class="cek-al"><span class="iconify" data-icon="solar:map-point-linear"></span>'+esc(w.alamat||('Blok '+w.blok))+'</div></div><div class="cek-st"><span class="lunas-badge '+(ok?'ok':'no')+'">'+(ok?'Lunas':'Belum')+'</span><div class="cek-nom">'+rp(ok&&!w.terbayar?TARGET:w.terbayar)+'</div></div></div>';}
+function cekIuran(){
+ const raw=$('cekInput').value,q=norm(raw),box=$('cekHasil'),sg=$('cekSuggest');if(sg)sg.classList.remove('show');
+ if(!q){box.innerHTML='<p class="cek-empty">Masukkan '+(_cekMode==='blok'?'blok/alamat':'nama')+' untuk cek status.</p>';return;}
+ if(!_warga.length)buildWarga();
+ let hit=_warga.filter(w=>fieldOf(w).includes(q));
+ if(!hit.length){const near=suggestNames(raw);if(near.length){box.innerHTML='<p class="cek-empty">Tidak ada yang sama persis — mungkin maksud Anda:</p>'+near.slice(0,4).map(cekCard).join('');if(window.Iconify)window.Iconify.scan();return;}box.innerHTML='<p class="cek-empty">Data tidak ditemukan. Cek ejaan atau hubungi panitia.</p>';return;}
+ box.innerHTML=hit.slice(0,10).map(cekCard).join('');if(window.Iconify)window.Iconify.scan();
+}
+
+/* Ringkasan donut + bar per blok (ganti accordion panjang) */
+function renderRekap(){
+ buildWarga();
+ const ring=$('iuranRing'),stats=$('rekapStats'),bars=$('blokBars');
+ if(!_warga.length){if(bars)bars.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:clipboard-remove-bold"></span>Data rekap iuran belum tersedia.</div>';if(stats)stats.innerHTML='';if(ring)ring.innerHTML='';renderInsight();return;}
+ const tot=_warga.length,lun=_warga.filter(w=>w.lunas).length,blm=tot-lun,pct=tot?Math.round(lun/tot*100):0;
+ if(ring){const R=54,C=2*Math.PI*R,off=C*(1-pct/100);ring.innerHTML='<svg viewBox="0 0 140 140"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D2D"/><stop offset="1" stop-color="#FF7A45"/></linearGradient></defs><circle cx="70" cy="70" r="'+R+'" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="13"/><circle cx="70" cy="70" r="'+R+'" fill="none" stroke="url(#rg)" stroke-width="13" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 70 70)"/></svg><div class="ring-c"><b>'+pct+'%</b><span>Terkumpul</span></div>';}
+ if(stats)stats.innerHTML='<div class="rs ok"><b>'+lun+'</b><span>KK Lunas</span></div><div class="rs no"><b>'+blm+'</b><span>Belum Bayar</span></div><div class="rs"><b>'+tot+'</b><span>Total KK</span></div>';
+ const map={};_warga.forEach(w=>{(map[w.blok]=map[w.blok]||[]).push(w);});
+ const bloks=Object.keys(map).sort();
+ if(bars){bars.innerHTML=bloks.map(b=>{const arr=map[b],l=arr.filter(w=>w.lunas).length,p=Math.round(l/arr.length*100),cls=p>=100?'ok':p>=50?'mid':'bad';return '<button type="button" class="blok-row" data-blok="'+esc(b)+'"><div class="br-top"><span class="br-name"><span class="br-dot '+cls+'"></span>Blok '+esc(b)+'</span><span class="br-count">'+l+'/'+arr.length+' KK · '+p+'%</span></div><div class="br-bar"><i class="'+cls+'" style="width:'+p+'%"></i></div><span class="iconify br-go" data-icon="solar:alt-arrow-right-linear"></span></button>';}).join('');bars.querySelectorAll('.blok-row').forEach(btn=>btn.onclick=()=>openBlokModal(btn.dataset.blok,map[btn.dataset.blok]));}
+ renderInsight();if(window.Iconify)window.Iconify.scan();
+}
+
+/* Insight chips pengisi ruang kosong Keuangan */
+function renderInsight(){
+ const box=$('finInsight');if(!box)return;
+ const tot=_warga.length,lun=_warga.filter(w=>w.lunas).length,sisaTarget=Math.max(0,tot-lun)*TARGET;
+ let big=0;(_pen||[]).forEach(it=>{const v=num(getF(it,['jumlah','nominal','amount','nilai','total','value']));if(v>big)big=v;});
+ box.innerHTML=
+  '<div class="ins"><span class="ins-ic" style="color:var(--warn,#ffb800)"><span class="iconify" data-icon="solar:target-bold"></span></span><div><b>'+rp(sisaTarget)+'</b><span>Sisa target iuran</span></div></div>'+
+  '<div class="ins"><span class="ins-ic" style="color:var(--ok,#32d74b)"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></span><div><b>'+lun+'/'+(tot||0)+'</b><span>KK sudah lunas</span></div></div>'+
+  '<div class="ins"><span class="ins-ic" style="color:var(--danger,#ff453a)"><span class="iconify" data-icon="solar:cart-large-minimalistic-bold"></span></span><div><b>'+rp(big)+'</b><span>Pengeluaran terbesar</span></div></div>';
+ if(window.Iconify)window.Iconify.scan();
+}
+
+/* Modal detail per blok */
+function openBlokModal(blok,arr){const m=$('blokModal');if(!m)return;const l=arr.filter(w=>w.lunas).length,p=Math.round(l/arr.length*100);set('blokModalTitle','Blok '+blok);set('blokModalSub',l+' dari '+arr.length+' KK lunas · '+p+'%');_modalArr=arr;$('blokSearch').value='';renderModalList('');m.classList.add('show');document.body.style.overflow='hidden';}
+function renderModalList(q){q=norm(q);const arr=_modalArr.filter(w=>!q||norm((w.nama||'')+' '+(w.alamat||'')).includes(q));$('blokModalBody').innerHTML=arr.length?arr.map(w=>'<div class="ml-row"><div><div class="ml-nm">'+esc(w.nama||'-')+'</div><div class="ml-al">'+esc(w.alamat||('Blok '+w.blok))+'</div></div><span class="lunas-badge '+(w.lunas?'ok':'no')+'">'+(w.lunas?'Lunas':'Belum')+'</span></div>').join(''):'<p class="cek-empty">Tidak ada hasil.</p>';if(window.Iconify)window.Iconify.scan();}
+function closeBlokModal(){const m=$('blokModal');if(m){m.classList.remove('show');document.body.style.overflow='';}}
+
+/* Wiring baru (mode toggle + autocomplete + modal) — nama sama, dipakai init() */
+function wireSearch(){
+ document.querySelectorAll('#cekMode .cm').forEach(b=>b.onclick=()=>{document.querySelectorAll('#cekMode .cm').forEach(x=>x.classList.remove('on'));b.classList.add('on');_cekMode=b.dataset.mode;const i=$('cekInput');i.placeholder=_cekMode==='blok'?'Ketik blok atau alamat…':'Ketik nama warga…';i.value='';$('cekSuggest').classList.remove('show');$('cekHasil').innerHTML='<p class="cek-empty">Masukkan '+(_cekMode==='blok'?'blok/alamat':'nama')+' untuk cek status pembayaran.</p>';});
+ const inp=$('cekInput');if(inp){inp.addEventListener('input',showSuggest);inp.addEventListener('focus',showSuggest);}
+ const close=$('blokModalClose');if(close)close.onclick=closeBlokModal;
+ const ov=$('blokModal');if(ov)ov.addEventListener('click',e=>{if(e.target===ov)closeBlokModal();});
+ const bs=$('blokSearch');if(bs)bs.addEventListener('input',()=>renderModalList(bs.value));
+ document.addEventListener('click',e=>{const sg=$('cekSuggest');if(sg&&!e.target.closest('#cekWrap'))sg.classList.remove('show');});
+}
 </script>
 </body>
 </html>
