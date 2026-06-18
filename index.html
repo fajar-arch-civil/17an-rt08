@@ -1460,6 +1460,64 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else go();
 })();
+/* ===== STEP 3 — Rundown / Timeline Acara (tab "Jadwal") ===== */
+(function(){
+  if(!document.getElementById('tlCss')){
+    var st=document.createElement('style'); st.id='tlCss';
+    st.textContent=
+    '#rundownSec{margin:18px auto;max-width:var(--maxw,1040px);padding:0 16px}'+
+    '.tl-card{background:var(--glass,rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:18px 16px 6px;backdrop-filter:blur(14px)}'+
+    '.tl-h{display:flex;align-items:center;gap:10px;margin:2px 4px 16px;font-weight:700;font-size:17px}'+
+    '.tl-h .iconify{color:var(--merah,#FF2D2D);font-size:22px}'+
+    '.tl{position:relative;margin:0;padding:0 0 0 38px;list-style:none}'+
+    '.tl::before{content:"";position:absolute;left:15px;top:6px;bottom:18px;width:2px;background:rgba(255,255,255,.12)}'+
+    '.tl-i{position:relative;padding:0 0 18px}'+
+    '.tl-dot{position:absolute;left:-30px;top:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--solid,#141414);border:1px solid rgba(255,255,255,.14)}'+
+    '.tl-dot .iconify{font-size:16px;color:var(--ink2,rgba(255,255,255,.64))}'+
+    '.tl-date{font-size:12px;color:var(--merah,#FF2D2D);font-weight:700}'+
+    '.tl-title{font-weight:700;font-size:15px;margin:1px 0 3px}'+
+    '.tl-desc{font-size:13px;line-height:1.5;color:var(--ink2,rgba(255,255,255,.64))}'+
+    '.tl-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}'+
+    '.tl-i.done .tl-dot{background:rgba(50,215,75,.16);border-color:rgba(50,215,75,.5)}'+
+    '.tl-i.done .tl-dot .iconify{color:#32D74B}.tl-i.done .tl-title{opacity:.7}'+
+    '.tl-i.now .tl-dot{background:var(--merah,#FF2D2D);border-color:var(--merah,#FF2D2D);box-shadow:0 0 0 5px rgba(255,45,45,.18)}'+
+    '.tl-i.now .tl-dot .iconify{color:#fff}'+
+    '.b-done{background:rgba(50,215,75,.16);color:#32D74B}.b-now{background:rgba(255,45,45,.16);color:#FF6B6B}'+
+    '[data-theme="light"] .tl-card{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}'+
+    '[data-theme="light"] .tl::before{background:rgba(0,0,0,.12)}';
+    document.head.appendChild(st);
+  }
+  var IKON={Olahraga:'solar:dumbbell-large-bold',Iuran:'solar:wallet-money-bold',Persiapan:'solar:hammer-bold',
+    Upacara:'solar:flag-bold',Anak:'solar:balloon-bold',Puncak:'solar:cup-star-bold',Seni:'solar:microphone-bold'};
+  function ikonOf(k){k=String(k||'').trim();for(var key in IKON){if(key.toLowerCase()===k.toLowerCase())return IKON[key];}return 'solar:calendar-mark-bold';}
+  function ec(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function mount(){
+    if(document.getElementById('rundownSec')) return document.getElementById('rundownTl');
+    var sec=document.createElement('section'); sec.id='rundownSec';
+    sec.innerHTML='<div class="tl-card"><div class="tl-h"><span class="iconify" data-icon="solar:calendar-date-bold"></span>Rundown Acara</div><ul class="tl" id="rundownTl"><li class="tl-i"><div class="tl-desc">Memuat jadwal…</div></li></ul></div>';
+    var a=document.getElementById('annFeed'); var host=a?(a.closest('section')||a):null;
+    if(host&&host.parentNode){ host.parentNode.insertBefore(sec, host.nextSibling); }
+    else { (document.querySelector('main')||document.body).appendChild(sec); }
+    return document.getElementById('rundownTl');
+  }
+  function render(ul,list){
+    if(!ul) return;
+    if(!list||!list.length){ ul.innerHTML='<li class="tl-i"><div class="tl-desc">Jadwal belum tersedia.</div></li>'; return; }
+    ul.innerHTML=list.map(function(it){
+      var s=String(it.status||'').toLowerCase();
+      var cls=/selesai|done/.test(s)?'done':(/berlangsung|now|aktif/.test(s)?'now':'');
+      var ic=cls==='done'?'solar:check-circle-bold':ikonOf(it.ikon);
+      var badge=cls==='done'?'<span class="tl-badge b-done">Selesai</span>':(cls==='now'?'<span class="tl-badge b-now">Berlangsung</span>':'');
+      return '<li class="tl-i '+cls+'"><span class="tl-dot"><span class="iconify" data-icon="'+ic+'"></span></span>'+
+        (it.tanggal?'<div class="tl-date">'+ec(it.tanggal)+'</div>':'')+
+        '<div class="tl-title">'+ec(it.judul)+badge+'</div>'+
+        (it.desc?'<div class="tl-desc">'+ec(it.desc)+'</div>':'')+'</li>';
+    }).join('');
+  }
+  async function muatJadwal(){ var ul=mount(); try{ var d=await api('aksi=jadwal'); render(ul,(d&&(d.jadwal||d.data||d.items))||[]); }catch(e){ render(ul,[]); } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',muatJadwal);
+  else muatJadwal();
+})();
 </script>
 </body>
 </html>
