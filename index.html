@@ -557,6 +557,37 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 /* 5) payNote sejajar dengan ikon */
 #payNote{display:flex;align-items:center;gap:6px;}
 #payNote .iconify{font-size:16px;flex:none;}
+/* ===== FIX — bar Cek Status Iuran (kembalikan styling yg terhapus) ===== */
+#cekWrap{display:flex;gap:10px;align-items:stretch;position:relative;}
+.cek-wrap{display:flex;gap:10px;align-items:stretch;flex:1;min-width:0;}
+#cekInput,.cek-input{flex:1;min-width:0;border:1px solid var(--bd2);background:var(--solid);color:var(--ink);border-radius:var(--r-el);padding:14px 16px;font-size:15px;font-family:inherit;transition:.16s;}
+#cekInput:focus,.cek-input:focus{outline:none;border-color:var(--merah);box-shadow:0 0 0 4px var(--merah-soft);}
+#cekInput::placeholder,.cek-input::placeholder{color:var(--muted);}
+#cekBtn,.cek-btn{flex:none;border:none;background:linear-gradient(135deg,#ff3a3a,var(--merah2));color:#fff;width:52px;min-height:50px;border-radius:var(--r-el);cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 20px var(--merah-glow);transition:.16s;}
+#cekBtn:active,.cek-btn:active{transform:scale(.95);}
+#cekBtn .iconify,.cek-btn .iconify{font-size:20px;}
+.cek-empty{color:var(--muted);font-size:13.5px;text-align:center;padding:10px 0;margin:0;}
+.cektot{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600;margin-top:8px;}
+.cektot .v{color:var(--ink);font-weight:800;}
+/* ===== LINEUP LOMBA (info kategori di homepage, anti-kosong) ===== */
+.lineup-grid{flex:0 0 100%;width:100%;display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:760px){.lineup-grid{grid-template-columns:repeat(3,1fr);}}
+.lineup-card{position:relative;overflow:hidden;border-radius:var(--r-card);padding:18px;background:var(--glass);border:1px solid var(--bd);display:flex;flex-direction:column;gap:10px;}
+.lineup-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;}
+.lineup-card.olah::before{background:#5a8cff;}
+.lineup-card.anak::before{background:var(--warn);}
+.lineup-card.seni::before{background:var(--merah);}
+.lu-head{display:flex;align-items:center;gap:10px;}
+.lu-ic{width:40px;height:40px;border-radius:var(--r-chip);display:grid;place-items:center;font-size:22px;flex:none;background:rgba(255,255,255,.06);}
+.lineup-card.olah .lu-ic{color:#7fb0ff;background:rgba(90,140,255,.12);}
+.lineup-card.anak .lu-ic{color:#ffc24b;background:rgba(255,184,0,.12);}
+.lineup-card.seni .lu-ic{color:#ff8fa3;background:rgba(255,69,90,.12);}
+.lu-cat{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+.lu-title{font-size:16.5px;font-weight:800;letter-spacing:-.01em;line-height:1.25;}
+.lu-desc{font-size:13px;color:var(--ink2);line-height:1.5;}
+.lu-meta{margin-top:auto;display:flex;flex-direction:column;gap:7px;padding-top:6px;}
+.lu-meta span{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);}
+.lu-meta .iconify{font-size:15px;color:var(--merah);flex:none;}
 </style>
 </head>
 <body>
@@ -1322,6 +1353,45 @@ function renderRekap(){
 }
 
 try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
+/* ===== LINEUP LOMBA — isi section "Perlombaan" biar informatif (anti-kosong) ===== */
+(function(){
+  var L=[
+    {c:'olah',ic:'solar:basketball-bold',cat:'Olahraga Warga',t:'Voli · Futsal · Tenis Meja',
+     d:'Untuk bapak & ibu (remaja boleh isi tim). Voli jadi cabang utama.',
+     m:[['solar:calendar-bold','Mulai Juli — tiap akhir pekan'],['solar:map-point-bold','Lapangan RT 08 (belakang masjid)']]},
+    {c:'anak',ic:'solar:balloon-bold',cat:'Lomba Anak',t:'3 Kelompok Usia',
+     d:'Balita (2–5 th), Anak 6–9 th & 9–12 th. Seru, ramai, banyak hadiah!',
+     m:[['solar:cup-star-bold','Hadiah dibagikan sore hari'],['solar:gift-bold','Setiap anak dapat kesempatan']]},
+    {c:'seni',ic:'solar:microphone-bold',cat:'Pentas Seni',t:'Malam Puncak',
+     d:'Penampilan dinilai langsung, makan bersama & pengumuman juara dewasa.',
+     m:[['solar:calendar-bold','Sabtu, 22 Agustus 2026'],['solar:star-bold','Puncak HUT RI ke-81']]}
+  ];
+  function build(){
+    return '<div class="lineup-grid">'+L.map(function(x){
+      return '<div class="lineup-card '+x.c+'">'
+        +'<div class="lu-head"><span class="lu-ic"><span class="iconify" data-icon="'+x.ic+'"></span></span><span class="lu-cat">'+x.cat+'</span></div>'
+        +'<div class="lu-title">'+x.t+'</div>'
+        +'<div class="lu-desc">'+x.d+'</div>'
+        +'<div class="lu-meta">'+x.m.map(function(m){return '<span><span class="iconify" data-icon="'+m[0]+'"></span>'+m[1]+'</span>';}).join('')+'</div>'
+        +'</div>';
+    }).join('')+'</div>';
+  }
+  function paint(){
+    var t=document.getElementById('lombaTrack');if(!t)return;
+    if(t.querySelector('.lomba-card'))return;     // ada lomba asli dari sheet → biarkan
+    if(t.querySelector('.lineup-grid'))return;    // sudah terpasang → stop (anti-loop)
+    t.innerHTML=build();
+    var s=document.getElementById('seeAll');if(s)s.style.display='none';
+    if(window.Iconify&&Iconify.scan)Iconify.scan(t);
+  }
+  function start(){
+    paint();
+    var t=document.getElementById('lombaTrack');
+    if(t&&window.MutationObserver){new MutationObserver(paint).observe(t,{childList:true});}
+    [600,1500,3000].forEach(function(d){setTimeout(paint,d);});
+  }
+  if(document.readyState!=='loading')start();else document.addEventListener('DOMContentLoaded',start);
+})();
 </script>
 </body>
 </html>
