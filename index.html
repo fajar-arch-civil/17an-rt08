@@ -597,6 +597,31 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 .lu-meta{margin-top:auto;display:flex;flex-direction:column;gap:7px;padding-top:6px;}
 .lu-meta span{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);}
 .lu-meta .iconify{font-size:15px;color:var(--merah);flex:none;}
+/* ===================== SAFE-AREA / NOTCH + LINTAS-DEVICE PATCH ===================== */
+/* Header: beri ruang notch atas + notch samping (landscape) */
+.app-header{
+  height:calc(var(--hd-h) + env(safe-area-inset-top,0px));
+  padding-top:env(safe-area-inset-top,0px);
+  padding-left:calc(16px + env(safe-area-inset-left,0px));
+  padding-right:calc(16px + env(safe-area-inset-right,0px));
+}
+/* Dropdown notif/menu ikut turun mengikuti tinggi header baru */
+.pop-panel{ top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 8px); }
+/* Elemen mengambang: hindari home-indicator bawah */
+#bnav{ bottom:calc(18px + env(safe-area-inset-bottom,0px)); }
+#fab{ bottom:calc(100px + env(safe-area-inset-bottom,0px)); }
+#toast{ bottom:calc(108px + env(safe-area-inset-bottom,0px)); }
+
+/* Fallback aman utk HP/browser lama yang belum dukung color-mix() (header/nav jadi solid, tidak transparan/bug) */
+@supports not (background:color-mix(in srgb,red 50%,blue)){
+  .app-header{ background:var(--bg0); }
+  #bnav{ background:var(--bg2); }
+}
+
+/* Polish lintas device: cegah teks auto-zoom iOS, bounce aneh di standalone, & highlight tap */
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body{ overscroll-behavior-y:none; }
+*{ -webkit-tap-highlight-color:transparent; }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
