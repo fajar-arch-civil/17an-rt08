@@ -621,35 +621,37 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
-/* ===================== BOTTOM-NAV v2 — full-width anchored (native) ===================== */
+/* ===================== BOTTOM-NAV v3 — floating pill (gaya Threads, modern + label) ===================== */
 #bnav{
-  left:0; right:0; bottom:0; transform:none;
-  width:100%; max-width:none;
-  align-items:center; justify-content:space-around; gap:0;
-  padding:9px 8px calc(9px + env(safe-area-inset-bottom,0px));
-  border:none; border-top:1px solid var(--bd); border-radius:0;
-  background:color-mix(in srgb,var(--bg0) 90%,transparent);
-  box-shadow:0 -8px 30px rgba(0,0,0,.32);
+  left:50%; right:auto; transform:translateX(-50%);
+  bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  width:min(450px, calc(100vw - 24px)); max-width:none;
+  align-items:center; justify-content:space-around; gap:2px;
+  padding:8px;
+  border:1px solid var(--bd2); border-radius:24px;
+  background:color-mix(in srgb,var(--bg1) 80%,transparent);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  box-shadow:0 16px 40px rgba(0,0,0,.5);
 }
-#bnav .bn-item{ font-size:10.5px; gap:4px; padding:4px 6px; }
-#bnav .bn-item .iconify{ font-size:23px; }
-
-/* Tombol "Daftar" tetap menonjol (merah) tapi RATA — tidak lagi mengambang di atas bar */
+/* Semua item SERAGAM — tidak ada tombol mengambang di tengah */
+#bnav .bn-item,
 #bnav .bn-item:nth-child(3){
-  margin-top:0; width:auto; height:auto; flex:1;
-  background:none; color:var(--merah);
-  border:none; border-radius:0; box-shadow:none; justify-content:center;
+  flex:1; margin-top:0; width:auto; height:auto;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  padding:7px 4px; border:none; border-radius:14px; box-shadow:none; background:none;
+  color:var(--muted); font-size:10px; font-weight:700;
 }
+#bnav .bn-item .iconify,
 #bnav .bn-item:nth-child(3) .iconify{
-  font-size:23px; color:#fff;
-  width:40px; height:40px; border-radius:13px; display:grid; place-items:center;
-  background:linear-gradient(145deg,#ff3a3a,var(--merah2));
-  box-shadow:0 6px 16px var(--merah-glow);
+  font-size:22px; color:inherit; background:none;
+  width:auto; height:auto; border-radius:0; display:inline-block; box-shadow:none;
 }
-#bnav .bn-item:nth-child(3) .bn-lbl{ display:block; color:var(--merah); }
-
-/* Beri ruang konten agar tidak ketutupan bar (mobile saja) */
-@media(max-width:1079px){ body{ padding-bottom:calc(82px + env(safe-area-inset-bottom,0px)); } }
+#bnav .bn-item:nth-child(3) .bn-lbl{ display:block; color:inherit; }
+/* Status aktif = merah + glow halus (seperti tab terpilih di Threads) */
+#bnav .bn-item.active{ color:var(--merah); }
+#bnav .bn-item.active .iconify{ filter:drop-shadow(0 0 10px var(--merah-glow)); }
+/* Ruang konten agar tidak ketutupan pil mengambang (mobile saja) */
+@media(max-width:1079px){ body{ padding-bottom:calc(98px + env(safe-area-inset-bottom,0px)); } }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
