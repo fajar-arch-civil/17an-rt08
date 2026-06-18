@@ -276,15 +276,6 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .wa-btn .iconify{font-size:21px}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 20px 12px;line-height:1.8}
 footer b{color:var(--ink2);font-weight:700}
-/* ============ BOTTOM NAV (floating glass) ============ */
-#bnav{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:80;display:flex;align-items:flex-end;gap:2px;background:color-mix(in srgb,var(--bg2) 72%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--bd2);border-radius:var(--r-pill);padding:9px 12px;box-shadow:0 16px 40px rgba(0,0,0,.5);width:min(430px,calc(100vw - 32px));justify-content:space-around}
-.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9.5px;font-weight:700;padding:5px 9px;flex:1;transition:.18s;cursor:pointer}
-.bn-item .iconify{font-size:22px}
-.bn-item.active{color:var(--merah)}
-.bn-item.active .iconify{filter:drop-shadow(0 0 10px var(--merah-glow))}
-.bn-item:nth-child(3){background:linear-gradient(145deg,#ff3a3a,var(--merah2));color:#fff;width:58px;height:58px;border-radius:50%;justify-content:center;margin-top:-26px;flex:0 0 auto;box-shadow:0 12px 28px var(--merah-glow);border:4px solid var(--bg0)}
-.bn-item:nth-child(3) .iconify{font-size:26px}
-.bn-item:nth-child(3) .bn-lbl{display:none}
 /* ============ FAB + TOAST + SKELETON ============ */
 #fab{position:fixed;right:18px;bottom:100px;z-index:75;width:48px;height:48px;border-radius:50%;background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);color:var(--merah);font-size:23px;box-shadow:var(--sh);border:1px solid var(--bd2);cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;transform:translateY(14px);transition:.25s}
 #fab.show{opacity:1;pointer-events:auto;transform:none}
@@ -526,14 +517,6 @@ footer b{color:var(--ink2);font-weight:700}
 .btn-close-modal{padding:12px;border-radius:16px;background:var(--glass);border:1px solid var(--bd);color:var(--ink);font-weight:600;font-size:14px;cursor:pointer;}
 </style>
 <style>
-/* ===== REVISI INDEX FINAL — polish visual ===== */
-
-/* 1) Bottom nav / FAB / toast tidak ketutup bar browser HP */
-#bnav{bottom:calc(18px + env(safe-area-inset-bottom,0px))!important;}
-#fab{bottom:calc(100px + env(safe-area-inset-bottom,0px))!important;}
-#toast{bottom:calc(108px + env(safe-area-inset-bottom,0px))!important;}
-body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
-@media(min-width:1080px){body{padding-bottom:36px;}}
 
 /* 2) Glow hero tidak lagi membias ke section bawah */
 .hero{
@@ -651,6 +634,62 @@ body{ overscroll-behavior-y:none; }
 #bnav .bn-item.active .iconify{ filter:drop-shadow(0 0 10px var(--merah-glow)); }
 /* Ruang konten agar tidak ketutupan pil mengambang (mobile saja) */
 @media(max-width:1079px){ body{ padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)); } }
+/* ===================== FINAL — SAFE-AREA (notch) + BOTTOM NAV standar (gesture & tombol, semua device) ===================== */
+/* Header turun di bawah notch atas */
+.app-header{
+  height:calc(var(--hd-h) + env(safe-area-inset-top,0px));
+  padding-top:env(safe-area-inset-top,0px);
+  padding-left:calc(16px + env(safe-area-inset-left,0px));
+  padding-right:calc(16px + env(safe-area-inset-right,0px));
+}
+.pop-panel{ top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 8px); }
+
+/* Bottom nav: bar penuh NEMPEL ke bawah (standar WhatsApp/Shopee) */
+#bnav{
+  left:0; right:0; bottom:0; transform:none;
+  width:100%; max-width:none; margin:0;
+  display:flex; align-items:center; justify-content:space-around; gap:0;
+  border:none; border-top:1px solid var(--bd); border-radius:0;
+  background:color-mix(in srgb,var(--bg0) 92%,transparent);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  box-shadow:0 -6px 24px rgba(0,0,0,.32);
+  padding:8px 6px;
+  padding-bottom:max(8px, env(safe-area-inset-bottom,0px)); /* kunci: aman gesture iOS & tombol Android */
+}
+/* Semua item SERAGAM (hapus tombol tengah yang menonjol) */
+#bnav .bn-item,
+#bnav .bn-item:nth-child(3){
+  flex:1; margin:0; width:auto; height:auto;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  padding:4px 2px; border:none; border-radius:12px; box-shadow:none; background:none;
+  color:var(--muted); font-size:10.5px; font-weight:700; line-height:1.1; cursor:pointer;
+}
+#bnav .bn-item .iconify,
+#bnav .bn-item:nth-child(3) .iconify{
+  font-size:23px; color:inherit; background:none;
+  width:auto; height:auto; border-radius:0; display:inline-block; box-shadow:none; margin:0;
+}
+#bnav .bn-item:nth-child(3) .bn-lbl{ display:block; color:inherit; }
+#bnav .bn-item.active{ color:var(--merah); }
+#bnav .bn-item.active .iconify{ filter:drop-shadow(0 0 8px var(--merah-glow)); }
+
+/* FAB & toast naik di atas bar + area aman */
+#fab{ bottom:calc(94px + env(safe-area-inset-bottom,0px)); }
+#toast{ bottom:calc(102px + env(safe-area-inset-bottom,0px)); }
+
+/* Ruang konten agar tak ketutupan bar (mobile) */
+@media(max-width:1079px){ body{ padding-bottom:calc(66px + env(safe-area-inset-bottom,0px)); } }
+
+/* Fallback HP/browser lama tanpa color-mix() */
+@supports not (background:color-mix(in srgb,red 50%,blue)){
+  .app-header{ background:var(--bg0); }
+  #bnav{ background:var(--bg0); }
+}
+
+/* Polish lintas device */
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body{ overscroll-behavior-y:none; }
+*{ -webkit-tap-highlight-color:transparent; }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
