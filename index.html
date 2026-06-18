@@ -557,6 +557,15 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 /* 5) payNote sejajar dengan ikon */
 #payNote{display:flex;align-items:center;gap:6px;}
 #payNote .iconify{font-size:16px;flex:none;}
+/* ===== Skeleton loading ===== */
+.skel{position:relative;overflow:hidden;background:rgba(255,255,255,.06);border-radius:12px}
+.skel::after{content:"";position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);animation:skq 1.2s infinite}
+@keyframes skq{100%{transform:translateX(100%)}}
+.skel.sk-num{display:inline-block;height:22px;width:64px;vertical-align:middle}
+.skel.sk-row{display:block;height:46px;border-radius:14px;margin:8px 0}
+[data-theme="light"] .skel{background:rgba(0,0,0,.06)}
+[data-theme="light"] .skel::after{background:linear-gradient(90deg,transparent,rgba(0,0,0,.07),transparent)}
 /* ===== FIX — bar Cek Status Iuran (kembalikan styling yg terhapus) ===== */
 #cekWrap{display:flex;gap:10px;align-items:stretch;position:relative;}
 .cek-wrap{display:flex;gap:10px;align-items:stretch;flex:1;min-width:0;}
@@ -1438,6 +1447,18 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',muatConfig);
   else muatConfig();
+})();
+/* ===== STEP 2 — Skeleton shimmer saat loading ===== */
+(function(){
+  function loading(el){ if(!el) return false; var t=(el.textContent||'').trim().toLowerCase();
+    return t===''||t==='—'||t==='-'||/memuat|loading|\.\.\./.test(t); }
+  function num(id){ var el=document.getElementById(id); if(loading(el)) el.innerHTML='<span class="skel sk-num"></span>'; }
+  function rows(id,n){ var el=document.getElementById(id); if(loading(el)){ var s=''; for(var i=0;i<n;i++) s+='<div class="skel sk-row"></div>'; el.innerHTML=s; } }
+  function go(){
+    ['kSaldo','kMasuk','kKeluar','kPeserta','kLombaAktif','kKK'].forEach(num);
+    rows('rekapStats',3); rows('blokBars',4); rows('annFeed',3);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else go();
 })();
 </script>
 </body>
