@@ -1462,33 +1462,33 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
 })();
 /* ===== STEP 3 — Rundown / Timeline Acara (tab "Jadwal") ===== */
 (function(){
-  if(!document.getElementById('tlCss')){
-    var st=document.createElement('style'); st.id='tlCss';
-   st.textContent=
-'#rundownSec{margin:18px auto;max-width:var(--maxw,1040px);padding:0 16px}'+
-'.tl-card{background:var(--glass,rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:20px 18px;backdrop-filter:blur(14px)}'+
-'.tl-h{display:flex;align-items:center;gap:10px;margin:0 0 18px;font-weight:700;font-size:17px}'+
-'.tl-h .iconify{color:var(--merah,#FF2D2D);font-size:22px}'+
-'.tl{position:relative;margin:0;padding:0;list-style:none}'+
-'.tl-i{position:relative;padding:0 0 24px 50px;min-height:38px}'+
-'.tl-i:last-child{padding-bottom:2px}'+
-'.tl-i::before{content:"";position:absolute;left:17px;top:34px;bottom:-2px;width:2px;background:rgba(255,255,255,.12)}'+
-'.tl-i:last-child::before{display:none}'+
-'.tl-dot{position:absolute;left:0;top:-2px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,45,45,.10);border:1px solid rgba(255,45,45,.35);z-index:1}'+
-'.tl-dot .iconify{font-size:19px;color:var(--merah,#FF2D2D)}'+
-'.tl-date{font-size:12px;color:var(--merah,#FF2D2D);font-weight:700;letter-spacing:.2px;line-height:1.3;padding-top:3px}'+
-'.tl-time{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2,rgba(255,255,255,.7));font-weight:600;margin:4px 0 6px;line-height:1.3}'+
-'.tl-time .iconify{font-size:14px;color:var(--merah,#FF2D2D);flex:none}'+
-'.tl-title{font-weight:700;font-size:15.5px;margin:0 0 4px;line-height:1.35}'+
-'.tl-desc{font-size:13px;line-height:1.55;color:var(--ink2,rgba(255,255,255,.62))}'+
-'.tl-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}'+
-'.tl-i.done .tl-dot{background:rgba(50,215,75,.12);border-color:rgba(50,215,75,.4)}'+
-'.tl-i.done .tl-dot .iconify{color:#32D74B}.tl-i.done .tl-title{opacity:.7}'+
-'.tl-i.now .tl-dot{animation:tlp 1.6s ease-in-out infinite}'+
-'@keyframes tlp{0%,100%{box-shadow:0 0 0 3px rgba(255,45,45,.12)}50%{box-shadow:0 0 0 6px rgba(255,45,45,.22)}}'+
-'.b-done{background:rgba(50,215,75,.16);color:#32D74B}.b-now{background:rgba(255,45,45,.16);color:#FF6B6B}'+
-'[data-theme="light"] .tl-card{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}'+
-'[data-theme="light"] .tl-i::before{background:rgba(0,0,0,.12)}';
+  if(!document.getElementById('rdCss')){
+    var st=document.createElement('style'); st.id='rdCss';
+    st.textContent=
+    '#rundownSec{margin:18px auto;max-width:var(--maxw,1040px);padding:0 16px}'+
+    '.rd-card{background:var(--glass,rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:20px 18px;backdrop-filter:blur(14px)}'+
+    '.rd-h{display:flex;align-items:center;gap:10px;margin:0 0 18px;font-weight:700;font-size:17px}'+
+    '.rd-h .iconify{color:var(--merah,#FF2D2D);font-size:22px}'+
+    '.rd{position:relative;margin:0;padding:0;list-style:none}'+
+    '.rd-i{position:relative;padding:0 0 24px 50px;min-height:38px}'+
+    '.rd-i:last-child{padding-bottom:2px}'+
+    '.rd-i::before{content:"";position:absolute;left:17px;top:34px;bottom:-2px;width:2px;background:rgba(255,255,255,.12)}'+
+    '.rd-i:last-child::before{display:none}'+
+    '.rd-dot{position:absolute;left:0;top:-2px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,45,45,.10);border:1px solid rgba(255,45,45,.35);z-index:1}'+
+    '.rd-dot .iconify{font-size:19px;color:var(--merah,#FF2D2D)}'+
+    '.rd-date{font-size:12px;color:var(--merah,#FF2D2D);font-weight:700;letter-spacing:.2px;line-height:1.3;padding-top:3px}'+
+    '.rd-time{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2,rgba(255,255,255,.7));font-weight:600;margin:4px 0 6px;line-height:1.3}'+
+    '.rd-time .iconify{font-size:14px;color:var(--merah,#FF2D2D);flex:none}'+
+    '.rd-title{font-weight:700;font-size:15.5px;margin:0 0 4px;line-height:1.35}'+
+    '.rd-desc{font-size:13px;line-height:1.55;color:var(--ink2,rgba(255,255,255,.62))}'+
+    '.rd-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}'+
+    '.rd-i.done .rd-dot{background:rgba(50,215,75,.12);border-color:rgba(50,215,75,.4)}'+
+    '.rd-i.done .rd-dot .iconify{color:#32D74B}.rd-i.done .rd-title{opacity:.7}'+
+    '.rd-i.now .rd-dot{animation:rdp 1.6s ease-in-out infinite}'+
+    '@keyframes rdp{0%,100%{box-shadow:0 0 0 3px rgba(255,45,45,.12)}50%{box-shadow:0 0 0 6px rgba(255,45,45,.22)}}'+
+    '.rd-bdone{background:rgba(50,215,75,.16);color:#32D74B}.rd-bnow{background:rgba(255,45,45,.16);color:#FF6B6B}'+
+    '[data-theme="light"] .rd-card{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}'+
+    '[data-theme="light"] .rd-i::before{background:rgba(0,0,0,.12)}';
     document.head.appendChild(st);
   }
   var IKON={Olahraga:'solar:dumbbell-large-bold',Iuran:'solar:wallet-money-bold',Persiapan:'solar:hammer-bold',
@@ -1498,7 +1498,7 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
   function mount(){
     if(document.getElementById('rundownSec')) return document.getElementById('rundownTl');
     var sec=document.createElement('section'); sec.id='rundownSec';
-    sec.innerHTML='<div class="tl-card"><div class="tl-h"><span class="iconify" data-icon="solar:calendar-date-bold"></span>Rundown Acara</div><ul class="tl" id="rundownTl"><li class="tl-i"><div class="tl-desc">Memuat jadwal…</div></li></ul></div>';
+    sec.innerHTML='<div class="rd-card"><div class="rd-h"><span class="iconify" data-icon="solar:calendar-date-bold"></span>Rundown Acara</div><ul class="rd" id="rundownTl"><li class="rd-i"><div class="rd-desc">Memuat jadwal…</div></li></ul></div>';
     var a=document.getElementById('annFeed'); var host=a?(a.closest('section')||a):null;
     if(host&&host.parentNode){ host.parentNode.insertBefore(sec, host.nextSibling); }
     else { (document.querySelector('main')||document.body).appendChild(sec); }
@@ -1506,17 +1506,17 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
   }
   function render(ul,list){
     if(!ul) return;
-    if(!list||!list.length){ ul.innerHTML='<li class="tl-i"><div class="tl-desc">Jadwal belum tersedia.</div></li>'; return; }
+    if(!list||!list.length){ ul.innerHTML='<li class="rd-i"><div class="rd-desc">Jadwal belum tersedia.</div></li>'; return; }
     ul.innerHTML=list.map(function(it){
       var s=String(it.status||'').toLowerCase();
       var cls=/selesai|done/.test(s)?'done':(/berlangsung|now|aktif/.test(s)?'now':'');
       var ic=cls==='done'?'solar:check-circle-bold':ikonOf(it.ikon);
-      var badge=cls==='done'?'<span class="tl-badge b-done">Selesai</span>':(cls==='now'?'<span class="tl-badge b-now">Berlangsung</span>':'');
-      return '<li class="tl-i '+cls+'"><span class="tl-dot"><span class="iconify" data-icon="'+ic+'"></span></span>'+
-        (it.tanggal?'<div class="tl-date">'+ec(it.tanggal)+'</div>':'')+
-        (it.waktu?'<div class="tl-time"><span class="iconify" data-icon="solar:clock-circle-bold"></span>'+ec(it.waktu)+'</div>':'')+
-        '<div class="tl-title">'+ec(it.judul)+badge+'</div>'+
-        (it.desc?'<div class="tl-desc">'+ec(it.desc)+'</div>':'')+'</li>';
+      var badge=cls==='done'?'<span class="rd-badge rd-bdone">Selesai</span>':(cls==='now'?'<span class="rd-badge rd-bnow">Berlangsung</span>':'');
+      return '<li class="rd-i '+cls+'"><span class="rd-dot"><span class="iconify" data-icon="'+ic+'"></span></span>'+
+        (it.tanggal?'<div class="rd-date">'+ec(it.tanggal)+'</div>':'')+
+        (it.waktu?'<div class="rd-time"><span class="iconify" data-icon="solar:clock-circle-bold"></span>'+ec(it.waktu)+'</div>':'')+
+        '<div class="rd-title">'+ec(it.judul)+badge+'</div>'+
+        (it.desc?'<div class="rd-desc">'+ec(it.desc)+'</div>':'')+'</li>';
     }).join('');
   }
   async function muatJadwal(){ var ul=mount(); try{ var d=await api('aksi=jadwal'); render(ul,(d&&(d.jadwal||d.data||d.items))||[]); }catch(e){ render(ul,[]); } }
