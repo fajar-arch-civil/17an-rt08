@@ -470,6 +470,65 @@ footer b{color:var(--ink2);font-weight:700}
 .ml-nm{font-weight:700;font-size:14px;}
 .ml-al{font-size:11.5px;color:var(--muted,#9aa0a6);margin-top:1px;}
 </style>
+<style>
+/* ===================== REVISI 2 — VISUAL & TEMA ===================== */
+
+/* --- Header: logo Karang Taruna + klik ke beranda --- */
+.hd-left{cursor:pointer;}
+.hd-ava{overflow:hidden;background:#fff!important;}
+.hd-ava img.hd-logo{width:100%;height:100%;object-fit:contain;padding:3px;display:block;}
+.icon-btn{background:var(--glass,rgba(255,255,255,.05))!important;border:1px solid var(--bd,rgba(255,255,255,.08))!important;color:var(--txt,inherit)!important;}
+.icon-btn .iconify{color:inherit!important;}
+
+/* --- Panel menu/notif: hilangkan merah-di-merah --- */
+.pop-panel{background:var(--solid,#141414)!important;border:1px solid var(--bd,rgba(255,255,255,.1))!important;box-shadow:0 18px 50px -22px rgba(0,0,0,.55)!important;}
+.pop-title{color:var(--muted,#8b9099);}
+.menu-link{color:var(--txt,inherit);}
+.menu-link .iconify,.ann-item .iconify{color:var(--merah,#ff2d2d);}
+.menu-link:hover{background:var(--glass,rgba(128,128,128,.12));}
+
+/* --- Chip kategori lomba: flat + titik (bukan pill gradient AI) --- */
+.lc-cat{display:inline-flex;align-items:center;gap:6px;background:var(--glass,rgba(128,128,128,.1))!important;border:1px solid var(--bd,rgba(128,128,128,.18))!important;color:var(--muted,#8b9099)!important;box-shadow:none!important;text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:999px;}
+.lc-cat::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;}
+.lc-cat.olah::before{background:#5a8cff;}
+.lc-cat.anak::before{background:#f0a500;}
+.lc-cat.seni::before{background:#ff5d73;}
+
+/* --- Shadow lembut + sudut bulat (anti kotak kasar) --- */
+.card,.chart-card,.wa-card,.feed-item,.lb-row,.cek-card,.kpi,.mini{box-shadow:0 16px 40px -24px rgba(0,0,0,.5)!important;}
+.lomba-card,.hcard{border-radius:22px!important;overflow:hidden;}
+.lomba-card{box-shadow:0 14px 34px -22px rgba(0,0,0,.45)!important;}
+.wa-card{border-radius:22px!important;}
+.card,.glass{border-radius:var(--r-card,22px);}
+
+/* --- Track & hover netral (bagus di gelap & terang) --- */
+.br-bar{background:rgba(128,128,128,.2)!important;}
+.cek-mode .cm{background:var(--glass,rgba(128,128,128,.08));}
+.rs{background:var(--glass,rgba(128,128,128,.08));}
+.sg-item:hover{background:rgba(128,128,128,.14);}
+
+/* ===================== MODE TERANG: penyesuaian kontras ===================== */
+[data-theme="light"] .hd-ava{background:#fff!important;}
+[data-theme="light"] .icon-btn{background:rgba(0,0,0,.04)!important;border-color:rgba(0,0,0,.08)!important;color:#222!important;}
+[data-theme="light"] .pop-panel,
+[data-theme="light"] .sg-pop,
+[data-theme="light"] .bm-sheet{background:#fff!important;border-color:rgba(0,0,0,.08)!important;}
+[data-theme="light"] .bm-grip{background:rgba(0,0,0,.18)!important;}
+[data-theme="light"] .sg-item:hover{background:rgba(0,0,0,.05)!important;}
+[data-theme="light"] .br-bar{background:rgba(0,0,0,.1)!important;}
+[data-theme="light"] .card,
+[data-theme="light"] .glass,
+[data-theme="light"] .chart-card,
+[data-theme="light"] .wa-card,
+[data-theme="light"] .lomba-card,
+[data-theme="light"] .kpi,
+[data-theme="light"] .mini,
+[data-theme="light"] .cek-card,
+[data-theme="light"] .feed-item,
+[data-theme="light"] .lb-row,
+[data-theme="light"] .blok-row{box-shadow:0 12px 30px -18px rgba(30,30,60,.16)!important;}
+[data-theme="light"] .ml-row{border-color:rgba(0,0,0,.07)!important;}
+</style>
 </head>
 <body>
 <!-- ============ HEADER ============ -->
@@ -1135,6 +1194,66 @@ function wireSearch(){
  const ov=$('blokModal');if(ov)ov.addEventListener('click',e=>{if(e.target===ov)closeBlokModal();});
  const bs=$('blokSearch');if(bs)bs.addEventListener('input',()=>renderModalList(bs.value));
  document.addEventListener('click',e=>{const sg=$('cekSuggest');if(sg&&!e.target.closest('#cekWrap'))sg.classList.remove('show');});
+}
+</script>
+<script>
+/* ===================== REVISI 2 — LOGIKA ===================== */
+
+/* Header: logo Karang Taruna (fallback aman) + klik balik ke Beranda */
+(function(){
+ const ava=document.querySelector('.hd-ava');
+ if(ava){
+  ava.innerHTML='';
+  const img=document.createElement('img');
+  img.className='hd-logo';
+  img.alt='Karang Taruna RT 08';
+  img.referrerPolicy='no-referrer';
+  img.src='https://karturw.wordpress.com/wp-content/uploads/2013/02/logo-karang-taruna2.jpg';
+  img.onerror=function(){ava.innerHTML='<span class="iconify" data-icon="solar:flag-2-bold"></span>';if(window.Iconify)window.Iconify.scan();};
+  ava.appendChild(img);
+ }
+ const hl=document.querySelector('.hd-left');
+ if(hl){hl.setAttribute('role','button');hl.title='Kembali ke Beranda';hl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));}
+})();
+
+/* Parser alamat: "H 35 - 6" -> blok "H 35", nomor "6" */
+function blokOf(addr){
+ const s=String(addr||'').trim();if(!s)return '?';
+ const before=s.split(/[-–—\/]/)[0].trim();
+ const m=before.match(/([A-Za-z]+)\s*0*(\d+)/);
+ if(m)return m[1].toUpperCase()+' '+m[2];
+ const m2=before.match(/[A-Za-z]+/);
+ return m2?m2[0].toUpperCase():(before||'?');
+}
+
+/* Bangun data warga: gabung blok+alamat jadi alamat lengkap, klasifikasi sub-blok */
+function buildWarga(){
+ _warga=[];
+ let daftar=_rekap?getF(_rekap,['daftar','list','data','warga']):null;
+ if(!Array.isArray(daftar))return;
+ daftar.forEach(it=>{
+  const nama=getF(it,['nama','name'])||'';
+  const a=String(getF(it,['blok','wilayah'])||'').trim();
+  const b=String(getF(it,['alamat','rumah','noRumah','nomor','no'])||'').trim();
+  let full;
+  if(a&&b){if(norm(a).includes(norm(b)))full=a;else if(norm(b).includes(norm(a)))full=b;else full=(a+' '+b).replace(/\s+/g,' ').trim();}
+  else full=a||b;
+  _warga.push({nama,alamat:full,blok:blokOf(full),lunas:isLunasItem(it),terbayar:num(getF(it,['terbayar','dibayar','jumlah','nominal']))});
+ });
+}
+
+/* Ringkasan donut + bar per sub-blok (donut track netral utk terang/gelap) */
+function renderRekap(){
+ buildWarga();
+ const ring=$('iuranRing'),stats=$('rekapStats'),bars=$('blokBars');
+ if(!_warga.length){if(bars)bars.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:clipboard-remove-bold"></span>Data rekap iuran belum tersedia.</div>';if(stats)stats.innerHTML='';if(ring)ring.innerHTML='';renderInsight();return;}
+ const tot=_warga.length,lun=_warga.filter(w=>w.lunas).length,blm=tot-lun,pct=tot?Math.round(lun/tot*100):0;
+ if(ring){const R=54,C=2*Math.PI*R,off=C*(1-pct/100);ring.innerHTML='<svg viewBox="0 0 140 140"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D2D"/><stop offset="1" stop-color="#FF7A45"/></linearGradient></defs><circle cx="70" cy="70" r="'+R+'" fill="none" stroke="rgba(120,120,135,.25)" stroke-width="13"/><circle cx="70" cy="70" r="'+R+'" fill="none" stroke="url(#rg)" stroke-width="13" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 70 70)"/></svg><div class="ring-c"><b>'+pct+'%</b><span>Terkumpul</span></div>';}
+ if(stats)stats.innerHTML='<div class="rs ok"><b>'+lun+'</b><span>KK Lunas</span></div><div class="rs no"><b>'+blm+'</b><span>Belum Bayar</span></div><div class="rs"><b>'+tot+'</b><span>Total KK</span></div>';
+ const map={};_warga.forEach(w=>{(map[w.blok]=map[w.blok]||[]).push(w);});
+ const bloks=Object.keys(map).sort((a,b)=>{const la=(a.match(/[A-Za-z]+/)||[''])[0],lb=(b.match(/[A-Za-z]+/)||[''])[0];if(la!==lb)return la.localeCompare(lb);const na=parseInt((a.match(/\d+/)||['0'])[0],10),nb=parseInt((b.match(/\d+/)||['0'])[0],10);return na-nb;});
+ if(bars){bars.innerHTML=bloks.map(b=>{const arr=map[b],l=arr.filter(w=>w.lunas).length,p=Math.round(l/arr.length*100),cls=p>=100?'ok':p>=50?'mid':'bad';return '<button type="button" class="blok-row" data-blok="'+esc(b)+'"><div class="br-top"><span class="br-name"><span class="br-dot '+cls+'"></span>Blok '+esc(b)+'</span><span class="br-count">'+l+'/'+arr.length+' KK · '+p+'%</span></div><div class="br-bar"><i class="'+cls+'" style="width:'+p+'%"></i></div><span class="iconify br-go" data-icon="solar:alt-arrow-right-linear"></span></button>';}).join('');bars.querySelectorAll('.blok-row').forEach(btn=>btn.onclick=()=>openBlokModal(btn.dataset.blok,map[btn.dataset.blok]));}
+ renderInsight();if(window.Iconify)window.Iconify.scan();
 }
 </script>
 </body>
