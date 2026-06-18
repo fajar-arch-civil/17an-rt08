@@ -1512,6 +1512,7 @@ try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
       var badge=cls==='done'?'<span class="tl-badge b-done">Selesai</span>':(cls==='now'?'<span class="tl-badge b-now">Berlangsung</span>':'');
       return '<li class="tl-i '+cls+'"><span class="tl-dot"><span class="iconify" data-icon="'+ic+'"></span></span>'+
         (it.tanggal?'<div class="tl-date">'+ec(it.tanggal)+'</div>':'')+
+        (it.waktu?'<div class="tl-time"><span class="iconify" data-icon="solar:clock-circle-bold"></span>'+ec(it.waktu)+'</div>':'')+
         '<div class="tl-title">'+ec(it.judul)+badge+'</div>'+
         (it.desc?'<div class="tl-desc">'+ec(it.desc)+'</div>':'')+'</li>';
     }).join('');
