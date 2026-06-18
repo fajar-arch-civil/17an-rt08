@@ -608,7 +608,6 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 /* Dropdown notif/menu ikut turun mengikuti tinggi header baru */
 .pop-panel{ top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 8px); }
 /* Elemen mengambang: hindari home-indicator bawah */
-#bnav{ bottom:calc(18px + env(safe-area-inset-bottom,0px)); }
 #fab{ bottom:calc(100px + env(safe-area-inset-bottom,0px)); }
 #toast{ bottom:calc(108px + env(safe-area-inset-bottom,0px)); }
 
@@ -622,6 +621,35 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
+/* ===================== BOTTOM-NAV v2 — full-width anchored (native) ===================== */
+#bnav{
+  left:0; right:0; bottom:0; transform:none;
+  width:100%; max-width:none;
+  align-items:center; justify-content:space-around; gap:0;
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom,0px));
+  border:none; border-top:1px solid var(--bd); border-radius:0;
+  background:color-mix(in srgb,var(--bg0) 90%,transparent);
+  box-shadow:0 -8px 30px rgba(0,0,0,.32);
+}
+#bnav .bn-item{ font-size:10.5px; gap:4px; padding:4px 6px; }
+#bnav .bn-item .iconify{ font-size:23px; }
+
+/* Tombol "Daftar" tetap menonjol (merah) tapi RATA — tidak lagi mengambang di atas bar */
+#bnav .bn-item:nth-child(3){
+  margin-top:0; width:auto; height:auto; flex:1;
+  background:none; color:var(--merah);
+  border:none; border-radius:0; box-shadow:none; justify-content:center;
+}
+#bnav .bn-item:nth-child(3) .iconify{
+  font-size:23px; color:#fff;
+  width:40px; height:40px; border-radius:13px; display:grid; place-items:center;
+  background:linear-gradient(145deg,#ff3a3a,var(--merah2));
+  box-shadow:0 6px 16px var(--merah-glow);
+}
+#bnav .bn-item:nth-child(3) .bn-lbl{ display:block; color:var(--merah); }
+
+/* Beri ruang konten agar tidak ketutupan bar (mobile saja) */
+@media(max-width:1079px){ body{ padding-bottom:calc(82px + env(safe-area-inset-bottom,0px)); } }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
