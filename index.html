@@ -623,15 +623,14 @@ body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
 /* ===================== BOTTOM-NAV v3 — floating pill (gaya Threads, modern + label) ===================== */
 #bnav{
-  left:50%; right:auto; transform:translateX(-50%);
-  bottom:max(10px, calc(env(safe-area-inset-bottom,0px) - 14px));
-  width:min(450px, calc(100vw - 24px)); max-width:none;
-  align-items:center; justify-content:space-around; gap:2px;
-  padding:8px;
-  border:1px solid var(--bd2); border-radius:24px;
-  background:color-mix(in srgb,var(--bg1) 80%,transparent);
+  left:0; right:0; bottom:0; transform:none;
+  width:100%; max-width:none;
+  align-items:center; justify-content:space-around; gap:0;
+  padding:10px 8px calc(10px + env(safe-area-inset-bottom,0px));
+  border:none; border-top:1px solid var(--bd); border-radius:0;
+  background:color-mix(in srgb,var(--bg0) 92%,transparent);
   backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
-  box-shadow:0 16px 40px rgba(0,0,0,.5);
+  box-shadow:0 -8px 30px rgba(0,0,0,.35);
 }
 /* Semua item SERAGAM — tidak ada tombol mengambang di tengah */
 #bnav .bn-item,
@@ -651,7 +650,7 @@ body{ overscroll-behavior-y:none; }
 #bnav .bn-item.active{ color:var(--merah); }
 #bnav .bn-item.active .iconify{ filter:drop-shadow(0 0 10px var(--merah-glow)); }
 /* Ruang konten agar tidak ketutupan pil mengambang (mobile saja) */
-@media(max-width:1079px){ body{ padding-bottom:calc(98px + env(safe-area-inset-bottom,0px)); } }
+@media(max-width:1079px){ body{ padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)); } }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
