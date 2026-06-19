@@ -801,7 +801,7 @@ footer b{color:var(--merah)}
   else mount();
 })();
 </script>
-<!-- ===== LOMBA CABANG v2 — slider + tap untuk detail (Sheet & Drive) ===== -->
+<!-- ===== LOMBA CABANG v3 — slider landscape + tap detail (fix mis-tap) ===== -->
 <script>
 (function(){
   if(window.__cabApp) return; window.__cabApp=true;
@@ -810,14 +810,10 @@ footer b{color:var(--merah)}
   function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
   function fmtJadwal(v){
     v=String(v||'').trim(); if(!v) return '';
-    if(v.indexOf('GMT')>-1){
-      var d=new Date(v);
-      if(!isNaN(d)){
-        var hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][d.getDay()];
+    if(v.indexOf('GMT')>-1){var d=new Date(v);
+      if(!isNaN(d)){var hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][d.getDay()];
         var bln=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][d.getMonth()];
-        return hari+', '+d.getDate()+' '+bln+' '+d.getFullYear();
-      }
-    }
+        return hari+', '+d.getDate()+' '+bln+' '+d.getFullYear();}}
     return v;
   }
 
@@ -825,11 +821,13 @@ footer b{color:var(--merah)}
    +'.cab-host{display:block!important;padding:0!important;margin:0!important;background:none!important;border:none!important;box-shadow:none!important}'
    +'.cab-slider{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px 2px 16px;scrollbar-width:none}'
    +'.cab-slider::-webkit-scrollbar{display:none}'
-   +'.cab-slide{position:relative;flex:0 0 76%;max-width:300px;scroll-snap-align:center;border:1px solid var(--bd);border-radius:22px;overflow:hidden;background:var(--bg1);aspect-ratio:4/5;box-shadow:var(--sh);cursor:pointer;padding:0;display:block;text-align:left}'
-   +'.cab-slide img{width:100%;height:100%;object-fit:cover;display:block}'
+   +'.cab-slide{position:relative;flex:0 0 85%;scroll-snap-align:center;border:1px solid var(--bd);border-radius:20px;overflow:hidden;background:var(--bg1);aspect-ratio:16/10;box-shadow:var(--sh);cursor:pointer;padding:0;display:block;text-align:left;touch-action:pan-x}'
+   +'@media(min-width:560px){.cab-slide{flex:0 0 340px}}'
+   +'@media(min-width:900px){.cab-slide{flex:0 0 380px}}'
+   +'.cab-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}'
    +'.cab-slide .ph{position:absolute;inset:0;display:grid;place-items:center;background:var(--chip);color:var(--merah)}'
    +'.cab-slide .ph svg{width:54px;height:54px}'
-   +'.cab-slide .ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;padding:16px;background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.06) 56%,transparent)}'
+   +'.cab-slide .ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;padding:15px;background:linear-gradient(to top,rgba(0,0,0,.74),rgba(0,0,0,.04) 58%,transparent);pointer-events:none}'
    +'.cab-slide .nm{color:#fff;font-weight:800;font-size:17px;line-height:1.2}'
    +'.cab-slide .hint{color:rgba(255,255,255,.82);font-size:11.5px;display:flex;align-items:center;gap:6px}'
    +'.cab-slide .hint svg{width:14px;height:14px}'
@@ -873,23 +871,17 @@ footer b{color:var(--merah)}
 
   function modal(){
     var m=D.getElementById('cabModal');
-    if(!m){
-      m=D.createElement('div'); m.id='cabModal';
-      m.innerHTML='<div class="cab-sheet"></div>';
-      D.body.appendChild(m);
+    if(!m){m=D.createElement('div'); m.id='cabModal'; m.innerHTML='<div class="cab-sheet"></div>'; D.body.appendChild(m);
       m.addEventListener('click',function(e){ if(e.target===m) close(); });
-      D.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
-    }
+      D.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });}
     return m;
   }
   function close(){var m=D.getElementById('cabModal'); if(m) m.classList.remove('on');}
   function open(r){
     var m=modal();
     var nama=getF(r,'nama','Nama')||'Lomba';
-    var kat=getF(r,'kategori','Kategori');
-    var jadwal=fmtJadwal(getF(r,'jadwal','Jadwal'));
-    var lokasi=getF(r,'lokasi','Lokasi');
-    var cat=getF(r,'catatan','Catatan','ket','keterangan');
+    var kat=getF(r,'kategori','Kategori'), jadwal=fmtJadwal(getF(r,'jadwal','Jadwal'));
+    var lokasi=getF(r,'lokasi','Lokasi'), cat=getF(r,'catatan','Catatan','ket','keterangan');
     var img=getF(r,'gambar','Gambar','foto','image','url');
     var rows='';
     if(kat) rows+=drow('Kategori',esc(kat));
@@ -911,8 +903,17 @@ footer b{color:var(--merah)}
     if(!grid){grid=D.createElement('div');grid.className='cat-grid';host.appendChild(grid);}
     grid.classList.add('cab-host');
     grid.innerHTML='<div class="cab-slider">'+rows.map(slide).join('')+'</div>';
-    grid.querySelectorAll('.cab-slide').forEach(function(b){
-      b.addEventListener('click',function(){ open(DATA[+b.getAttribute('data-i')]); });
+    var slider=grid.querySelector('.cab-slider');
+    // --- deteksi swipe vs tap supaya geser tidak terbaca sebagai klik ---
+    var sx=0, sy=0, moved=false;
+    slider.addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY;moved=false;},true);
+    slider.addEventListener('pointermove',function(e){if(Math.abs(e.clientX-sx)>8||Math.abs(e.clientY-sy)>8)moved=true;},true);
+    slider.querySelectorAll('.cab-slide').forEach(function(b){
+      b.addEventListener('click',function(e){
+        e.preventDefault(); e.stopPropagation();   // cegah klik "tembus" ke link/section lain
+        if(moved) return;                            // kalau barusan menggeser, jangan buka
+        open(DATA[+b.getAttribute('data-i')]);
+      });
     });
   }
   function load(){
