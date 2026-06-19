@@ -1935,30 +1935,33 @@ if('serviceWorker' in navigator){
   else mount();
 })();
 </script>
-<!-- ===== HASH SCROLL FIX v2 — tunggu layout stabil, scroll SEKALI (anti glitch) ===== -->
+<!-- ===== HASH PIN — kunci ke #daftar selama layout memuat (anti glitch naik-turun) ===== -->
 <script>
 (function(){
   if(window.__hashFix) return; window.__hashFix=true;
   if(!location.hash || location.hash.length<2) return;
-  var OFF=64, done=false, last=-1, stable=0, tries=0, cancelled=false;
-  function target(){ try{ return document.querySelector(location.hash); }catch(e){ return null; } }
+  var OFF=64, cancelled=false, stop=Date.now()+6000, lastY=-1, since=0;
+  function tgt(){ try{ return document.querySelector(location.hash); }catch(e){ return null; } }
+  function absY(el){ var y=0; while(el){ y+=el.offsetTop; el=el.offsetParent; } return y; }   // posisi layout (kebal transform)
   ['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){
-    window.addEventListener(ev,function(){ cancelled=true; },{passive:true,once:true});
+    window.addEventListener(ev,function(){ cancelled=true; },{passive:true});
   });
-  function tick(){
-    if(done||cancelled) return;
-    var el=target(); if(!el){ done=true; return; }
-    var y=Math.max(0, el.getBoundingClientRect().top+window.pageYOffset-OFF);
-    if(Math.abs(y-last)<2) stable++; else stable=0;
-    last=y; tries++;
-    if(stable>=3 || tries>40){ window.scrollTo({top:y, behavior:'smooth'}); done=true; return; }
-    setTimeout(tick,90);
+  function frame(){
+    if(cancelled) return;
+    var el=tgt();
+    if(el){
+      var ay=absY(el), y=Math.max(0, ay-OFF);
+      if(Math.abs(window.pageYOffset-y)>1) window.scrollTo(0,y);
+      if(Math.abs(ay-lastY)<1){ if(!since) since=Date.now(); } else { since=0; lastY=ay; }
+    }
+    var settled = since && (Date.now()-since>1200) && document.readyState==='complete';
+    if(!settled && Date.now()<stop) requestAnimationFrame(frame);
   }
-  function start(){ setTimeout(tick,150); }
-  if(document.readyState==='complete') start(); else window.addEventListener('load', start);
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(frame);});
+  else requestAnimationFrame(frame);
 })();
 </script>
-<!-- ===== UI BASE — dukung notch (safe-area) + sembunyikan nama file galeri ===== -->
+<!-- ===== UI BASE v2 — perbaiki notch (safe-area) + galeri tanpa nama file ===== -->
 <script>
 (function(){
   if(window.__uiBase) return; window.__uiBase=true;
@@ -1966,11 +1969,12 @@ if('serviceWorker' in navigator){
   if(vp){ if(vp.content.indexOf('viewport-fit')<0) vp.content=vp.content.trim().replace(/,?\s*$/,'')+', viewport-fit=cover'; }
   else { vp=document.createElement('meta'); vp.name='viewport'; vp.content='width=device-width, initial-scale=1, viewport-fit=cover'; document.head.appendChild(vp); }
   var css=''
-   +':root{--utop-h:calc(56px + env(safe-area-inset-top,0px))}'
-   +'.utop{padding-top:env(safe-area-inset-top,0px)}'
-   +'.udrawer{padding-top:calc(14px + env(safe-area-inset-top,0px))}'
-   +'.photo .cap{display:none!important}';   /* galeri index tanpa nama file */
-  var st=document.createElement('style'); st.id='uiBaseCss'; st.textContent=css; document.head.appendChild(st);
+   +':root{--utop-h:calc(56px + env(safe-area-inset-top,0px)) !important}'
+   +'.utop{padding-top:env(safe-area-inset-top,0px) !important}'
+   +'.udrawer{padding-top:calc(14px + env(safe-area-inset-top,0px)) !important}'
+   +'.photo .cap{display:none !important}';
+  var st=document.createElement('style'); st.id='uiBaseCss'; st.textContent=css;
+  document.head.appendChild(st);
 })();
 </script>
 <!-- ===== INDEX POLISH — skeleton loading + animasi reveal saat scroll ===== -->

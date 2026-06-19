@@ -949,7 +949,7 @@ footer b{color:var(--merah)}
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
 })();
 </script>
-<!-- ===== UI BASE — dukung notch (safe-area) + sembunyikan nama file galeri ===== -->
+<!-- ===== UI BASE v2 — perbaiki notch (safe-area) + galeri tanpa nama file ===== -->
 <script>
 (function(){
   if(window.__uiBase) return; window.__uiBase=true;
@@ -957,11 +957,12 @@ footer b{color:var(--merah)}
   if(vp){ if(vp.content.indexOf('viewport-fit')<0) vp.content=vp.content.trim().replace(/,?\s*$/,'')+', viewport-fit=cover'; }
   else { vp=document.createElement('meta'); vp.name='viewport'; vp.content='width=device-width, initial-scale=1, viewport-fit=cover'; document.head.appendChild(vp); }
   var css=''
-   +':root{--utop-h:calc(56px + env(safe-area-inset-top,0px))}'
-   +'.utop{padding-top:env(safe-area-inset-top,0px)}'
-   +'.udrawer{padding-top:calc(14px + env(safe-area-inset-top,0px))}'
-   +'.photo .cap{display:none!important}';   /* galeri index tanpa nama file */
-  var st=document.createElement('style'); st.id='uiBaseCss'; st.textContent=css; document.head.appendChild(st);
+   +':root{--utop-h:calc(56px + env(safe-area-inset-top,0px)) !important}'
+   +'.utop{padding-top:env(safe-area-inset-top,0px) !important}'
+   +'.udrawer{padding-top:calc(14px + env(safe-area-inset-top,0px)) !important}'
+   +'.photo .cap{display:none !important}';
+  var st=document.createElement('style'); st.id='uiBaseCss'; st.textContent=css;
+  document.head.appendChild(st);
 })();
 </script>
 </body>
