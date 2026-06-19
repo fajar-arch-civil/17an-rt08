@@ -785,6 +785,26 @@ body{ overscroll-behavior-y:none; }
   .hero{ margin-left:auto!important; margin-right:auto!important; }
 }
 /* ===== HERO DESKTOP FIX — END ===== */
+/* ===== MATERIAL CARDS v1 — START (flat & solid, anti-glass/AI) ===== */
+/* bayangan netral lembut ala referensi */
+:root[data-theme="light"]{
+  --bg2:#FFFFFF;
+  --sh:0 10px 24px -14px rgba(30,32,40,.18);
+  --sh-sm:0 6px 16px -10px rgba(30,32,40,.14);
+}
+:root[data-theme="dark"]{
+  --bg2:#171717;
+  --sh:0 12px 28px -16px rgba(0,0,0,.55);
+}
+/* permukaan kartu: SOLID, tanpa blur kaca */
+.glass,.kpi,.mini,.card{
+  background:var(--bg2)!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  border:1px solid var(--bd)!important;
+  box-shadow:var(--sh)!important;
+}
+/* ===== MATERIAL CARDS v1 — END ===== */
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
