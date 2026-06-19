@@ -32,7 +32,7 @@
   --sh:0 16px 34px -20px rgba(0,0,0,.65);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:78px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(56px + env(safe-area-inset-top,0px) + 16px)}
 body{font-family:'Poppins',system-ui,-apple-system,sans-serif;background:var(--bg0);color:var(--ink);line-height:1.6;font-size:15.5px;min-height:100vh;-webkit-text-size-adjust:100%;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 a{color:inherit}
 .iconify{vertical-align:-.14em}
