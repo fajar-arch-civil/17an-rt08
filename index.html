@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
+  <style id="appLock">
+/* === APP LOCK: rasa aplikasi native === */
+input,textarea,select{font-size:16px!important}        /* stop auto-zoom iOS saat fokus field */
+body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap zoom, delay 300ms, & pantulan */
+@media(max-width:791px){
+  html,body{overflow-x:hidden;max-width:100%}           /* tidak ada geser kiri-kanan */
+  .glass{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--bg2)!important} /* stop KEDIP + kartu jadi solid */
+}
+</style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>RT 08 17-an · HUT RI ke-81 2026</title>
 <script>(function(){try{var t=localStorage.getItem('rt08-theme');document.documentElement.setAttribute('data-theme',(t==='dark')?'dark':'light');document.documentElement.setAttribute('data-theme',(t==='dark')?'dark':'light');}catch(e){}})();</script>
@@ -2042,6 +2051,31 @@ if('serviceWorker' in navigator){
   }
   function run(){ skel(); reveal(); }
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',run); else run();
+})();
+</script>
+<script>
+(function(){
+  if(window.__appLock) return; window.__appLock=true;
+  ['gesturestart','gesturechange','gestureend'].forEach(function(ev){
+    document.addEventListener(ev,function(e){ e.preventDefault(); },{passive:false});  /* tidak bisa dicubit-zoom */
+  });
+})();
+</script>
+<!-- ===== KB-NAV v2 — sembunyikan top & bottom bar saat keyboard aktif ===== -->
+<script>
+(function(){
+  if(window.__kbNav) return; window.__kbNav=true;
+  var D=document, hideTO=null;
+  function top(){return D.getElementById('utop');}
+  function bot(){return D.getElementById('ubot');}
+  function isField(el){ return el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) && !el.closest('#usearch'); }
+  function set(el,hidden,dir){ if(!el)return; el.style.transition='transform .22s ease,opacity .22s ease';
+    if(hidden){ el.style.transform='translateY('+dir+')'; el.style.opacity='0'; el.style.pointerEvents='none'; }
+    else { el.style.transform=''; el.style.opacity=''; el.style.pointerEvents=''; } }
+  function hide(){ set(bot(),true,'130%'); set(top(),true,'-130%'); }
+  function show(){ set(bot(),false); set(top(),false); }
+  D.addEventListener('focusin',function(e){ if(isField(e.target)){ if(hideTO){clearTimeout(hideTO);hideTO=null;} hide(); } });
+  D.addEventListener('focusout',function(e){ if(isField(e.target)){ hideTO=setTimeout(function(){ if(!isField(D.activeElement)) show(); },150); } });
 })();
 </script>
 </body>
