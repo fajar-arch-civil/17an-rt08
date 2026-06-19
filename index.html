@@ -808,11 +808,11 @@ body{ overscroll-behavior-y:none; }
 </style>
 </head>
 <body>
-  <!-- ===== DAFTAR GATE — solusi pasti: tirai loading lalu tampil pas di form ===== -->
+ <!-- ===== DAFTAR GATE v2 — tunggu Rekap/Keuangan benar2 selesai, baru tampil pas di form ===== -->
 <script>
 (function(){
-  if(window.__hashFix) return; window.__hashFix=true;          /* gantikan blok hash lama */
-  if((location.hash||'').toLowerCase()!=='#daftar') return;     /* hanya saat dibuka dari tombol Daftar */
+  if(window.__hashFix) return; window.__hashFix=true;
+  if((location.hash||'').toLowerCase()!=='#daftar') return;
 
   var OFF=64, done=false, theme='light';
   try{ theme=localStorage.getItem('rt08-theme')==='dark'?'dark':'light'; }catch(e){}
@@ -829,28 +829,41 @@ body{ overscroll-behavior-y:none; }
     +'<style>@keyframes dgS{to{transform:rotate(360deg)}}</style>';
   (document.body||html).appendChild(ov);
 
-  var lastY=-1, since=0, start=Date.now(), MAX=4500;
   function ty(){ var el=document.getElementById('daftar'); if(!el) return null; var y=0,n=el; while(n){ y+=n.offsetTop; n=n.offsetParent; } return Math.max(0,y-OFF); }
+
+  var lastMut=Date.now(), start=Date.now(), MAX=6500, mo=null;
+  function watch(){
+    try{
+      mo=new MutationObserver(function(){ lastMut=Date.now(); });
+      ['keuangan','rekap'].forEach(function(id){ var el=document.getElementById(id); if(el) mo.observe(el,{childList:true,subtree:true}); });
+    }catch(e){}
+  }
   function loop(){
     if(done) return;
-    var y=ty(), now=Date.now();
-    if(y==null){ if(now-start<MAX) return setTimeout(loop,120); return finish(0); }
-    if(Math.abs(y-lastY)<1){ if(!since) since=now; } else { since=0; lastY=y; }
-    var ok=since && now-since>500 && document.readyState==='complete';   /* posisi stabil 0,5 dtk & halaman selesai */
-    if(ok || now-start>=MAX) return finish(y);
-    setTimeout(loop,120);
+    var now=Date.now();
+    var quiet=now-lastMut>800, ready=document.readyState==='complete';
+    if((quiet && ready && now-start>900) || now-start>MAX) return finish();
+    setTimeout(loop,100);
   }
-  function finish(y){
+  function finish(){
     if(done) return; done=true;
+    if(mo){ try{mo.disconnect();}catch(e){} }
     html.style.overflow='';
-    try{ window.scrollTo(0,y); }catch(e){}
-    requestAnimationFrame(function(){ var n=ty(); if(n!=null && Math.abs(window.pageYOffset-n)>2) window.scrollTo(0,n); });
+    var y=ty()||0; try{ window.scrollTo(0,y); }catch(e){}
     ov.style.opacity='0';
-    setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); html.style.scrollBehavior=prevB; },380);
+    setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); },380);
+    /* pin pengaman 1,5 dtk: lawan pergeseran terakhir tanpa terlihat */
+    var stop=false, t0=Date.now();
+    ['wheel','touchmove','keydown'].forEach(function(ev){ window.addEventListener(ev,function(){stop=true;},{passive:true,once:true}); });
+    (function pin(){
+      if(stop || Date.now()-t0>1500){ html.style.scrollBehavior=prevB; return; }
+      var n=ty(); if(n!=null && Math.abs(window.pageYOffset-n)>1) window.scrollTo(0,n);
+      requestAnimationFrame(pin);
+    })();
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(loop,180);});
-  else setTimeout(loop,180);
-  window.addEventListener('load',function(){ setTimeout(loop,40); });
+  function begin(){ watch(); setTimeout(loop,150); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',begin); else begin();
+  window.addEventListener('load',function(){ lastMut=Date.now(); });
 })();
 </script>
 <!-- ============ HEADER ============ -->
