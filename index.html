@@ -1756,27 +1756,27 @@ if('serviceWorker' in navigator){
     {t:'Lomba',   href:'lomba.html'}
   ];
   var BOT = isLomba
-    ? [['Beranda','index.html','home'],['Cabang','#cabang','dumbbell'],['Peserta','#peserta','users'],['Hasil','#hasil','medal'],['Info','#info','flag']]
+    ? [['Beranda','index.html','home'],['Cabang','#cabang','dumbbell'],['Peserta','#peserta','users'],['Hasil','#hasil','medal'],['Info','#info','info']]
     : [['Beranda','#top','home'],['Keuangan','#keuangan','wallet'],['Rekap','#rekap','list'],['Daftar','#daftar','plus'],['Lomba','lomba.html','cup']];
 
   var IC={
-    home:'M3 10.5 12 3l9 7.5M5.5 9.5V20h13V9.5',
-    wallet:'M3 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Zm13 4h.01',
+    home:'M4 11 12 4l8 7M6 9.5V20h4v-5h4v5h4V9.5',
+    wallet:'M3 8a2 2 0 0 1 2-2h11M3 8v9a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H5a2 2 0 0 1-2-2M16.5 12.5h.01',
     list:'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
-    plus:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 8v8M8 12h8',
-    cup:'M7 4h10v3a5 5 0 0 1-10 0V4ZM7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 0-3 3M9 18h6M10 21h4M12 21v-3',
-    dumbbell:'M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12',
-    users:'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3 20a6 6 0 0 1 12 0M16 5a3 3 0 0 1 0 6M21 20a6 6 0 0 0-4-5.7',
-    medal:'M9 3l3 6 3-6M12 21a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z',
-    flag:'M6 3v18M6 4h11l-2.5 3.5L17 11H6',
-    info:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 11v5M12 8h.01',
+    plus:'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17M12 8v8M8 12h8',
+    cup:'M8 4h8v3.5a4 4 0 0 1-8 0zM8 5.5H5v1A2.5 2.5 0 0 0 8 9M16 5.5h3v1A2.5 2.5 0 0 1 16 9M9.5 16.5h5M10 20h4M12 12.5V16',
+    dumbbell:'M6.5 8.5v7M9.5 10v4M14.5 10v4M17.5 8.5v7M9.5 12h5',
+    users:'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6M4 19a5 5 0 0 1 10 0M16.5 5.2a3 3 0 0 1 0 5.6M16.5 14.3a5 5 0 0 1 3.5 4.7',
+    medal:'M8.5 3.5 11 8M15.5 3.5 13 8M12 20.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11M12 13l.8 1.6 1.7.2-1.25 1.2.3 1.7L12 17.1l-1.55.8.3-1.7L9.5 15l1.7-.2z',
+    flag:'M6 3v18M6 4.5h11l-2.5 3.5L17 11.5H6',
+    info:'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17M12 11v5M12 7.5h.01',
     menu:'M4 7h16M4 12h16M4 17h16',
-    search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14ZM20 20l-4-4',
-    sun:'M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
-    moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z',
+    search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-3.7-3.7',
+    sun:'M12 4V2.5M12 21.5V20M4 12H2.5M21.5 12H20M5.6 5.6 4.5 4.5M19.5 19.5l-1.1-1.1M18.4 5.6l1.1-1.1M4.5 19.5l1.1-1.1M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8',
+    moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5',
     close:'M6 6l12 12M18 6 6 18'
   };
-  function svg(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]?'<path d="'+IC[n]+'"/>':'')+'</svg>';}
+  function svg(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]?'<path d="'+IC[n]+'"/>':'')+'</svg>';}
 
   var css=''
    +':root{--utop-h:56px}'
@@ -1785,9 +1785,9 @@ if('serviceWorker' in navigator){
    +'.utop{position:fixed;top:0;left:0;right:0;height:var(--utop-h);z-index:60;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:0 10px;background:var(--bg2);border-bottom:1px solid var(--bd);box-shadow:var(--sh)}'
    +'.utop .ub{display:grid;place-items:center;width:40px;height:40px;border:0;background:transparent;color:var(--ink);border-radius:12px;cursor:pointer;padding:0}'
    +'.utop .ub:hover{background:var(--bg1)}'
-   +'.utop .ub svg{width:22px;height:22px}'
+   +'.utop .ub svg{width:23px;height:23px}'
    +'.ulogo{display:grid;place-items:center;text-decoration:none}'
-   +'.ulogo img{height:30px;width:auto;display:block}'
+   +'.ulogo img{height:40px;width:auto;max-width:160px;display:block;object-fit:contain}'
    +'.uscrim{position:fixed;inset:0;z-index:64;background:rgba(0,0,0,.42);opacity:0;visibility:hidden;transition:opacity .22s}'
    +'.uscrim.on{opacity:1;visibility:visible}'
    +'.udrawer{position:fixed;top:0;bottom:0;left:0;width:min(82vw,320px);z-index:65;background:var(--bg2);border-right:1px solid var(--bd);transform:translateX(-100%);transition:transform .26s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:14px}'
@@ -1795,7 +1795,7 @@ if('serviceWorker' in navigator){
    +'.ud-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}'
    +'.ud-brand{font-weight:800;color:var(--ink);font-size:15px}'
    +'.udrawer .ub{width:36px;height:36px;display:grid;place-items:center;border:0;background:transparent;color:var(--ink2);border-radius:10px;cursor:pointer}'
-   +'.udrawer .ub svg{width:20px;height:20px}'
+   +'.udrawer .ub svg{width:21px;height:21px}'
    +'.ud-nav{display:flex;flex-direction:column;gap:4px;margin-top:6px}'
    +'.ud-link{display:block;padding:12px 14px;border-radius:14px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}'
    +'.ud-link:hover{background:var(--bg1)}'
@@ -1814,7 +1814,10 @@ if('serviceWorker' in navigator){
    +'.usearch.on{opacity:1;visibility:visible}'
    +'.us-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:6px 8px 6px 12px;box-shadow:var(--sh);position:sticky;top:0}'
    +'.us-ic{display:grid;place-items:center;color:var(--muted)}.us-ic svg{width:20px;height:20px}'
-   +'#usInput{flex:1;border:0;background:transparent;outline:none;font-size:16px;color:var(--ink);padding:10px 4px}'
+   +'#usInput{flex:1;min-width:0;border:0;background:transparent;outline:none;font-size:16px;color:var(--ink);padding:10px 4px}'
+   +'.us-bar .ub{flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;border:0;background:transparent;color:var(--ink2);border-radius:12px;cursor:pointer;padding:0}'
+   +'.us-bar .ub:hover{background:var(--bg1)}'
+   +'.us-bar .ub svg{width:22px;height:22px}'
    +'.us-res{margin-top:12px;display:flex;flex-direction:column;gap:6px;padding-bottom:24px}'
    +'.us-item{display:flex;flex-direction:column;gap:2px;padding:12px 14px;background:var(--bg2);border:1px solid var(--bd);border-radius:14px;text-decoration:none;cursor:pointer}'
    +'.us-item b{color:var(--ink);font-size:15px}'
@@ -1822,14 +1825,13 @@ if('serviceWorker' in navigator){
    +'.us-empty{color:var(--muted);text-align:center;padding:24px}'
    +'.ubot{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:repeat('+BOT.length+',1fr);background:var(--bg2);border-top:1px solid var(--bd);box-shadow:var(--sh)}'
    +'.ubn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));text-decoration:none;color:var(--ink2);font-size:11px;font-weight:600}'
-   +'.ubn svg{width:22px;height:22px}'
+   +'.ubn svg{width:23px;height:23px}'
    +'.ubn.on{color:var(--merah)}'
    +'@media(min-width:792px){.ubot{display:none}.utop{grid-template-columns:48px 1fr 48px;padding:0 18px}}';
 
   function mount(){
     if(D.getElementById('utop')) return;
     var st=D.createElement('style'); st.id='navU3css'; st.textContent=css; D.head.appendChild(st);
-
     var sp=D.createElement('div'); sp.className='utop-sp'; D.body.insertBefore(sp,D.body.firstChild);
 
     var top=D.createElement('header'); top.id='utop'; top.className='utop';
@@ -1890,7 +1892,7 @@ if('serviceWorker' in navigator){
         var sec=h.closest('[id]');
         idx.push({l:txt,t:'Bagian',href:sec?('#'+sec.id):null,el:h});
       });
-      if(isLomba){try{D.querySelectorAll('#pesTbody tr').forEach(function(r){var c=r.children[0];var nm=c?(c.textContent||'').trim():'';if(nm)idx.push({l:nm,t:'Peserta',href:'#peserta'});});}catch(e){}}
+      if(isLomba){try{D.querySelectorAll('#pesTbody tr').forEach(function(r){var c=r.children[1]||r.children[0];var nm=c?(c.textContent||'').trim():'';if(nm&&nm.length<40)idx.push({l:nm,t:'Peserta',href:'#peserta'});});}catch(e){}}
       return idx.filter(function(o){var k=o.t+'|'+o.l.toLowerCase();if(seen[k])return false;seen[k]=1;return true;});
     }
     function go(o){
