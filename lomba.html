@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
-<script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root{
   --merah:#EE1C25;--merah2:#C8101A;
@@ -39,7 +39,7 @@ a{color:inherit}
 
 /* topnav (desktop) */
 .topnav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg0) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd2)}
-.topnav .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:10px 14px;overflow-x:auto}
+.topnav .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:10px 64px 10px 14px;overflow-x:auto}
 .topnav .in::-webkit-scrollbar{height:0}
 .topnav .brand{font-weight:800;font-size:14px;margin-right:auto;white-space:nowrap}
 .topnav .brand b{color:var(--merah)}
@@ -52,9 +52,8 @@ a{color:inherit}
 @media(max-width:791px){.topnav{display:none}}
 
 /* toggle tema mengambang (mobile) */
-.tfab{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:55;width:42px;height:42px;border-radius:50%;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink);box-shadow:var(--sh);display:none;place-items:center;cursor:pointer}
+.tfab{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:70;width:42px;height:42px;border-radius:50%;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink);box-shadow:var(--sh);display:grid;place-items:center;cursor:pointer}
 .tfab .iconify{font-size:21px}
-@media(max-width:791px){.tfab{display:grid}}
 
 /* hero */
 .hero{position:relative;overflow:hidden;margin:14px 16px 0;border-radius:var(--r-xl);padding:26px 20px 22px;color:#fff;background:linear-gradient(160deg,#F0202A,#D81621);box-shadow:0 12px 26px -16px rgba(216,22,33,.5)}
@@ -188,15 +187,14 @@ footer b{color:var(--merah)}
 
 <header class="topnav">
   <div class="in">
-    <span class="brand">RT 08 · <b>Lomba</b></span>
+    <span class="brand">RT 08 · <b>17 Agustusan</b></span>
     <a class="nl back" href="index.html"><span class="iconify" data-icon="solar:home-2-bold"></span> Beranda</a>
     <a class="nl" href="#cabang">Cabang</a>
     <a class="nl" href="#peserta">Peserta</a>
     <a class="nl" href="#hasil">Hasil</a>
     <a class="nl" href="#info">Info</a>
     <a class="nl go" href="index.html#daftar"><span class="iconify" data-icon="solar:clipboard-add-bold"></span> Daftar</a>
-    <button class="tbtn" id="themeBtn" aria-label="Ganti tema"><span class="iconify" data-icon="solar:moon-bold"></span></button>
-  </div>
+</div>
 </header>
 
 <button class="tfab" id="themeFab" aria-label="Ganti tema"><span class="iconify" data-icon="solar:moon-bold"></span></button>
@@ -336,11 +334,11 @@ function getF(o,keys){if(!o||typeof o!=='object')return '';var i;for(i=0;i<keys.
 /* WA link */
 (function(){var a=document.getElementById('waLink');if(a)a.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo Panitia RT 08, saya mau bertanya tentang lomba 17-an.');})();
 
-/* tema — satu kontrol, dua tombol (desktop + mobile) */
-(function(){var btns=[document.getElementById('themeBtn'),document.getElementById('themeFab')].filter(Boolean);
-  function ico(){var dark=document.documentElement.getAttribute('data-theme')==='dark';btns.forEach(function(b){var s=b.querySelector('.iconify');if(s)s.setAttribute('data-icon',dark?'solar:sun-bold':'solar:moon-bold');if(window.Iconify)Iconify.scan(b);});}
-  function toggle(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var nt=dark?'light':'dark';document.documentElement.setAttribute('data-theme',nt);try{localStorage.setItem('theme',nt);}catch(e){}ico();}
-  ico();btns.forEach(function(b){b.addEventListener('click',toggle);});})();
+/* tema — tombol mengambang (semua ukuran), tersimpan & seragam dgn index */
+(function(){var b=document.getElementById('themeFab');if(!b)return;
+  function ico(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var s=b.querySelector('.iconify');if(s)s.setAttribute('data-icon',dark?'solar:sun-bold':'solar:moon-bold');if(window.Iconify)Iconify.scan(b);}
+  function toggle(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var nt=dark?'light':'dark';document.documentElement.setAttribute('data-theme',nt);try{localStorage.setItem('rt08-theme',nt);}catch(e){}ico();}
+  ico();b.addEventListener('click',toggle);})();
 
 /* toast */
 var _tt;function showToast(m,type,dur){var t=document.getElementById('toast'),el=document.getElementById('toastMsg');if(!t||!el)return;el.textContent=m;t.className='show '+(type||'info');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},dur||4000);}
