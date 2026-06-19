@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>AGUSTUSAN — RT 08 · HUT RI ke-81</title>
-<script>(function(){try{var t=localStorage.getItem('rt08-theme');document.documentElement.setAttribute('data-theme',(t==='light')?'light':'dark');}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('rt08-theme');document.documentElement.setAttribute('data-theme',(t==='dark')?'dark':'light');document.documentElement.setAttribute('data-theme',(t==='dark')?'dark':'light');}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -691,37 +691,58 @@ html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
 <style>
-/* ===== POLISH v1 — START (digabung saat Tahap B) ===== */
+/* ===== MERAH PUTIH v1 — START (Light-first, dark toggle) ===== */
 
-/* Benang merah: garis aksen di setiap judul section */
-.sec-title{position:relative;padding-left:14px;}
-.sec-title::before{
-  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
-  width:3.5px;height:18px;border-radius:99px;
-  background:linear-gradient(var(--merah),var(--merah2));
-  box-shadow:0 0 10px var(--merah-glow);
+/* A) Merah seimbang utk dua mode */
+:root{ --merah:#EE1C25; --merah2:#C8101A; }
+
+/* B) MODE TERANG (utama): kanvas abu muda, kartu putih, chip pink */
+:root[data-theme="light"]{
+  --bg0:#ECECEE; --bg1:#E6E6EA; --bg2:#FFFFFF;
+  --solid:#FFFFFF; --solid2:#F2F2F5; --glass:#FFFFFF; --glass-2:#FFFFFF;
+  --bd:rgba(0,0,0,.07); --bd2:rgba(0,0,0,.12);
+  --ink:#191919; --ink2:#5A5A62; --muted:#9A9AA2;
+  --merah-glow:rgba(238,28,37,.20); --merah-soft:#FCE3E4;
+  --ok:#22C55E; --ok-soft:rgba(34,197,94,.12);
+  --chip:#FCE3E4;
+  --sh:0 16px 36px -20px rgba(40,40,60,.20);
+  --sh-sm:0 8px 18px -10px rgba(40,40,60,.14);
+  --sh-glow:0 18px 44px -22px rgba(238,28,37,.34);
 }
+/* MODE GELAP (toggle): chip netral */
+:root[data-theme="dark"]{ --chip:rgba(255,255,255,.07); --merah-soft:rgba(238,28,37,.14); --merah-glow:rgba(238,28,37,.30); }
 
-/* Semua kartu seragam + sedikit "hidup" saat disentuh */
-.kpi,.mini,.card,.glass,.chart-card,.balance,.feed-item,.lb-row,.blok-row,.lomba-card,.cek-card{
-  border:1px solid var(--bd)!important;
-  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+/* C) Ikon seragam: chip satu rona + glyph sesuai MAKNA saja (buang pelangi) */
+.kpi-ic,.kpi.info .kpi-ic,.kpi.warn .kpi-ic,.feed-ic,
+.lineup-card .lu-ic,.lineup-card.olah .lu-ic,.lineup-card.anak .lu-ic,.lineup-card.seni .lu-ic{
+  background:var(--chip)!important; color:var(--merah)!important;
 }
-.kpi:active,.mini:active,.lomba-card:active,.feed-item:active,.lb-row:active{transform:scale(.99);}
+.kpi.ok .kpi-ic{background:var(--ok-soft)!important;color:var(--ok)!important;}        /* uang masuk */
+.kpi.danger .kpi-ic,.kpi.bad .kpi-ic{background:var(--chip)!important;color:var(--merah)!important;}
+.kpi::after,.kpi.ok::after,.kpi.warn::after,.kpi.info::after{display:none!important;}
 
-/* KPI: garis atas warna-aksen biar tiap kartu punya identitas */
-.kpi{position:relative;}
-.kpi::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--merah);opacity:.55;}
-.kpi.ok::after{background:var(--ok);}
-.kpi.warn::after{background:var(--warn);}
-.kpi.info::after{background:var(--info);}
+/* D) Badge & chip kategori: netral, beda lewat ikon/teks (buang biru/emas/ungu) */
+.cat-badge.konsumsi,.cat-badge.hadiah,.cat-badge.perlengkapan,.cat-badge.lain,
+.lc-cat,.lc-cat.olah,.lc-cat.anak,.lc-cat.seni{
+  background:var(--solid2)!important; color:var(--ink2)!important; border:1px solid var(--bd)!important;
+}
+.lc-cat::before{display:none!important;}
+.lineup-card::before{display:none!important;}
 
-/* Saldo Kas: merah jadi aksen lembut (bukan blok penuh) biar serasi hero gelap */
-.balance{background:linear-gradient(150deg,rgba(255,45,45,.12),rgba(255,255,255,.02))!important;}
+/* E) Tombol & cek pakai merah utama */
+.btn-primary,#cekBtn,.cek-btn{background:linear-gradient(135deg,var(--merah),var(--merah2))!important;}
 
-/* Sentuhan kecil tombol "Lihat Semua" */
-.sec-act:active{opacity:.6;}
-/* ===== POLISH v1 — END ===== */
+/* F) HERO: kartu merah penuh + teks putih (first impression kuat), seimbang oleh kartu putih di bawahnya */
+.hero{
+  background:
+    radial-gradient(120% 130% at 88% -20%, #FF3B43, transparent 60%),
+    linear-gradient(150deg,#EE1C25 0%,#D2121C 55%,#A60E16 100%)!important;
+  box-shadow:0 22px 48px -26px rgba(238,28,37,.55), inset 0 1px 0 rgba(255,255,255,.18)!important;
+  border:none!important; color:#fff!important;
+}
+.cbox{background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.24)!important;}
+.hero-btn{background:#fff!important;color:var(--merah)!important;}
+/* ===== MERAH PUTIH v1 — END ===== */
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
