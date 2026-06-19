@@ -594,36 +594,6 @@ footer b{color:var(--ink2);font-weight:700}
 html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
-/* ===================== BOTTOM-NAV v3 — floating pill (gaya Threads, modern + label) ===================== */
-#bnav{
-  left:0; right:0; bottom:0; transform:none;
-  width:100%; max-width:none;
-  align-items:center; justify-content:space-around; gap:0;
-  padding:10px 8px calc(10px + env(safe-area-inset-bottom,0px));
-  border:none; border-top:1px solid var(--bd); border-radius:0;
-  background:color-mix(in srgb,var(--bg0) 92%,transparent);
-  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
-  box-shadow:0 -8px 30px rgba(0,0,0,.35);
-}
-/* Semua item SERAGAM — tidak ada tombol mengambang di tengah */
-#bnav .bn-item,
-#bnav .bn-item:nth-child(3){
-  flex:1; margin-top:0; width:auto; height:auto;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
-  padding:7px 4px; border:none; border-radius:14px; box-shadow:none; background:none;
-  color:var(--muted); font-size:10px; font-weight:700;
-}
-#bnav .bn-item .iconify,
-#bnav .bn-item:nth-child(3) .iconify{
-  font-size:22px; color:inherit; background:none;
-  width:auto; height:auto; border-radius:0; display:inline-block; box-shadow:none;
-}
-#bnav .bn-item:nth-child(3) .bn-lbl{ display:block; color:inherit; }
-/* Status aktif = merah + glow halus (seperti tab terpilih di Threads) */
-#bnav .bn-item.active{ color:var(--merah); }
-#bnav .bn-item.active .iconify{ filter:drop-shadow(0 0 10px var(--merah-glow)); }
-/* Ruang konten agar tidak ketutupan pil mengambang (mobile saja) */
-@media(max-width:1079px){ body{ padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)); } }
 /* ===================== FINAL — SAFE-AREA (notch) + BOTTOM NAV standar (gesture & tombol, semua device) ===================== */
 /* Header turun di bawah notch atas */
 .app-header{
@@ -832,6 +802,31 @@ body{ overscroll-behavior-y:none; }
 .rd-title{ font-size:15px!important; }
 .rd-desc{ font-size:12.5px!important; line-height:1.5!important; color:var(--ink2)!important; }
 /* ===== RUNDOWN POLISH v2 — END ===== */
+/* ===== UI FLAT POLISH v3 — START (lanjutan flat, anti-kaca) ===== */
+
+/* A1 — kanvas bersih: matikan semburat merah latar di MODE TERANG */
+:root[data-theme="light"] body::before{ display:none!important; }
+
+/* A2 — kartu Saldo Kas jadi flat & solid (samakan dgn kartu lain) */
+.balance{
+  background:var(--bg2)!important;
+  border:1px solid var(--bd)!important;
+  box-shadow:var(--sh)!important;
+}
+.balance::after{ display:none!important; } /* buang gumpalan glow merah */
+
+/* A3 — FAB & header rata (buang efek kaca/blur) */
+#fab{
+  background:var(--bg2)!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+  border:1px solid var(--bd)!important;
+  box-shadow:var(--sh)!important;
+}
+.app-header{
+  background:var(--bg0)!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+}
+/* ===== UI FLAT POLISH v3 — END ===== */
 </style>
 </head>
 <body>
