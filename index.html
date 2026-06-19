@@ -826,6 +826,18 @@ body{ overscroll-behavior-y:none; }
 /* gutter kiri-kanan samain dgn hero */
 .wrap{ padding:0 16px!important; }
 /* ===== SPACING POLISH v1 — END ===== */
+/* ===== RUNDOWN VISUAL v1 — START (visual & to the point) ===== */
+.tl-item{ padding-bottom:15px!important; }
+.tl-time{
+  display:inline-block; background:var(--merah-soft); color:var(--merah)!important;
+  padding:2px 10px; border-radius:999px; font-size:11px!important; letter-spacing:.2px!important;
+}
+.tl-t{ font-size:14.5px!important; margin-top:6px!important; }
+.tl-d{
+  font-size:11.5px!important; line-height:1.4!important; margin-top:3px!important;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+/* ===== RUNDOWN VISUAL v1 — END ===== */
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
@@ -1804,5 +1816,17 @@ if('serviceWorker' in navigator){
   else go();
 })();
 </script>
+<script>
+/* ===== RUNDOWN RINGKAS v1 — START ===== */
+(function(){
+  var tl=document.getElementById('rundownTl')||document.querySelector('.timeline');
+  if(!tl)return;   /* aman: kalau wadah tak ketemu, tak ada yang berubah */
+  var items=[
+    ['JULI–AGT','Lomba Olahraga','Tiap akhir pekan di Lapangan RT 08 (belakang masjid). Cabang utama: voli.'],
+    ['17 AGT','Upacara & Acara Inti','Senin pagi — upacara bendera & puncak kegiatan.'],
+    ['SORE','Hadiah Lomba Anak','Dibagikan sore hari, biar anak tidak menunggu malam.'],
+    ['22 AGT','Malam Puncak','Sabtu malam — makan bersama, pentas seni, & hadiah dewasa.']
+  ];
+  </script>
 </body>
 </html>
