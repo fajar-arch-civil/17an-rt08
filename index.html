@@ -1932,5 +1932,27 @@ if('serviceWorker' in navigator){
   else mount();
 })();
 </script>
+<!-- ===== HASH SCROLL FIX — cegah loncat ke section salah saat layout bergeser ===== -->
+<script>
+(function(){
+  if(window.__hashFix) return; window.__hashFix=true;
+  var OFF=64;
+  function go(){
+    var h=location.hash; if(!h||h.length<2) return;
+    var el; try{ el=document.querySelector(h); }catch(e){ return; }
+    if(!el) return;
+    var y=el.getBoundingClientRect().top+window.pageYOffset-OFF;
+    window.scrollTo(0, y<0?0:y);
+  }
+  if(location.hash){
+    var cancelled=false;
+    ['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){
+      window.addEventListener(ev,function(){cancelled=true;},{passive:true,once:true});
+    });
+    [60,250,500,900,1400,2000].forEach(function(t){ setTimeout(function(){ if(!cancelled) go(); }, t); });
+    window.addEventListener('load',function(){ if(!cancelled) setTimeout(go,150); });
+  }
+})();
+</script>
 </body>
 </html>
