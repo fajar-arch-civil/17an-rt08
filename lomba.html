@@ -801,70 +801,124 @@ footer b{color:var(--merah)}
   else mount();
 })();
 </script>
-<!-- ===== LOMBA CABANG — kartu lomba + foto dari Sheet & Drive ===== -->
+<!-- ===== LOMBA CABANG v2 — slider + tap untuk detail (Sheet & Drive) ===== -->
 <script>
 (function(){
   if(window.__cabApp) return; window.__cabApp=true;
   var D=document, API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
   function getF(o){for(var i=1;i<arguments.length;i++){var k=arguments[i];if(o&&o[k]!=null&&o[k]!=='')return o[k];}return '';}
   function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
+  function fmtJadwal(v){
+    v=String(v||'').trim(); if(!v) return '';
+    if(v.indexOf('GMT')>-1){
+      var d=new Date(v);
+      if(!isNaN(d)){
+        var hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][d.getDay()];
+        var bln=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][d.getMonth()];
+        return hari+', '+d.getDate()+' '+bln+' '+d.getFullYear();
+      }
+    }
+    return v;
+  }
 
   var css=''
-   +'.cab-card{border-radius:20px;overflow:hidden;background:var(--bg2);border:1px solid var(--bd);box-shadow:var(--sh);display:flex;flex-direction:column}'
-   +'.cab-thumb{position:relative;aspect-ratio:16/10;background:var(--bg1);cursor:zoom-in}'
-   +'.cab-thumb img{width:100%;height:100%;object-fit:cover;display:block}'
-   +'.cab-thumb .ph{position:absolute;inset:0;display:grid;place-items:center;background:var(--chip);color:var(--merah)}'
-   +'.cab-thumb .ph svg{width:46px;height:46px}'
-   +'.cab-lbl{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:999px;color:#fff;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}'
-   +'.cab-body{padding:14px;display:flex;flex-direction:column;gap:8px}'
-   +'.cab-body h3{font-size:15px;font-weight:800;letter-spacing:-.01em}'
-   +'.cab-meta{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink2)}'
-   +'.cab-meta span{display:flex;align-items:center;gap:7px}'
-   +'.cab-meta b{color:var(--merah);flex:0 0 auto}'
-   +'#cabLb{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}'
-   +'#cabLb.on{display:flex}'
-   +'#cabLb img{max-width:96vw;max-height:88vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}';
+   +'.cab-host{display:block!important;padding:0!important;margin:0!important;background:none!important;border:none!important;box-shadow:none!important}'
+   +'.cab-slider{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px 2px 16px;scrollbar-width:none}'
+   +'.cab-slider::-webkit-scrollbar{display:none}'
+   +'.cab-slide{position:relative;flex:0 0 76%;max-width:300px;scroll-snap-align:center;border:1px solid var(--bd);border-radius:22px;overflow:hidden;background:var(--bg1);aspect-ratio:4/5;box-shadow:var(--sh);cursor:pointer;padding:0;display:block;text-align:left}'
+   +'.cab-slide img{width:100%;height:100%;object-fit:cover;display:block}'
+   +'.cab-slide .ph{position:absolute;inset:0;display:grid;place-items:center;background:var(--chip);color:var(--merah)}'
+   +'.cab-slide .ph svg{width:54px;height:54px}'
+   +'.cab-slide .ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;padding:16px;background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.06) 56%,transparent)}'
+   +'.cab-slide .nm{color:#fff;font-weight:800;font-size:17px;line-height:1.2}'
+   +'.cab-slide .hint{color:rgba(255,255,255,.82);font-size:11.5px;display:flex;align-items:center;gap:6px}'
+   +'.cab-slide .hint svg{width:14px;height:14px}'
+   +'#cabModal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center}'
+   +'#cabModal.on{display:flex}'
+   +'.cab-sheet{background:var(--bg2);width:100%;max-width:520px;border-radius:24px 24px 0 0;max-height:92vh;overflow:auto;animation:cabUp .26s ease}'
+   +'@media(min-width:560px){#cabModal{align-items:center}.cab-sheet{border-radius:24px}}'
+   +'@keyframes cabUp{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}'
+   +'.cab-sheet .hero{position:relative;aspect-ratio:16/10;background:var(--bg1)}'
+   +'.cab-sheet .hero img{width:100%;height:100%;object-fit:cover;display:block}'
+   +'.cab-sheet .hero .ph{position:absolute;inset:0;display:grid;place-items:center;background:var(--chip);color:var(--merah)}'
+   +'.cab-sheet .hero .ph svg{width:54px;height:54px}'
+   +'.cab-sheet .cls{position:absolute;top:12px;right:12px;width:36px;height:36px;border:none;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;cursor:pointer;display:grid;place-items:center}'
+   +'.cab-sheet .cls svg{width:18px;height:18px}'
+   +'.cab-sheet .cont{padding:18px 18px 22px}'
+   +'.cab-sheet h3{font-size:20px;font-weight:800;letter-spacing:-.01em;margin:0}'
+   +'.cab-dl{display:flex;flex-direction:column;gap:11px;margin-top:14px}'
+   +'.cab-dl .row{display:flex;gap:12px;font-size:13.5px;align-items:flex-start}'
+   +'.cab-dl .k{flex:0 0 76px;color:var(--ink2);font-weight:600}'
+   +'.cab-dl .v{color:var(--ink);font-weight:600}'
+   +'.cab-cta{display:block;text-align:center;margin-top:18px;background:var(--merah);color:#fff;font-weight:700;padding:13px;border-radius:14px;text-decoration:none}';
   var st=D.createElement('style'); st.id='cabCss'; st.textContent=css; D.head.appendChild(st);
 
   var ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3.5a4 4 0 0 1-8 0zM8 5.5H5v1A2.5 2.5 0 0 0 8 9M16 5.5h3v1A2.5 2.5 0 0 1 16 9M9.5 16.5h5M10 20h4M12 12.5V16"/></svg>';
+  var EYE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var CLOSE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
-  function card(r){
-    var nama=esc(getF(r,'nama','Nama')||'Lomba');
-    var kat=esc(getF(r,'kategori','Kategori')||'');
-    var jadwal=esc(getF(r,'jadwal','Jadwal')||'');
-    var lokasi=esc(getF(r,'lokasi','Lokasi')||'');
-    var cat=esc(getF(r,'catatan','Catatan','ket','keterangan')||'');
-    var img=getF(r,'gambar','Gambar','foto','image','url');
-    var thumb = img
-      ? '<img loading="lazy" src="'+esc(img)+'" alt="'+nama+'" onerror="this.style.display=\'none\';var p=this.parentNode.querySelector(\'.ph\');if(p)p.style.display=\'grid\'"><div class="ph" style="display:none">'+ICON+'</div>'
+  var DATA=[];
+  function mediaTag(img,nama,big){
+    return img
+      ? '<img '+(big?'':'loading="lazy" ')+'src="'+esc(img)+'" alt="'+esc(nama)+'" onerror="this.style.display=\'none\';var p=this.parentNode.querySelector(\'.ph\');if(p)p.style.display=\'grid\'"><div class="ph" style="display:none">'+ICON+'</div>'
       : '<div class="ph">'+ICON+'</div>';
-    var meta='';
-    if(jadwal) meta+='<span><b>•</b>'+jadwal+'</span>';
-    if(lokasi) meta+='<span><b>•</b>'+lokasi+'</span>';
-    if(cat)    meta+='<span><b>•</b>'+cat+'</span>';
-    return '<article class="cab-card"><div class="cab-thumb">'+thumb+(kat?'<span class="cab-lbl">'+kat+'</span>':'')+'</div>'
-      +'<div class="cab-body"><h3>'+nama+'</h3><div class="cab-meta">'+meta+'</div></div></article>';
   }
+  function slide(r,i){
+    var nama=getF(r,'nama','Nama')||'Lomba';
+    var img=getF(r,'gambar','Gambar','foto','image','url');
+    return '<button class="cab-slide" type="button" data-i="'+i+'">'+mediaTag(img,nama,false)
+      +'<span class="ov"><span class="nm">'+esc(nama)+'</span><span class="hint">'+EYE+'Ketuk untuk detail</span></span></button>';
+  }
+  function drow(k,v){return '<div class="row"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';}
 
-  function lightbox(){
-    var lb=D.getElementById('cabLb');
-    if(!lb){lb=D.createElement('div');lb.id='cabLb';lb.innerHTML='<img alt="">';D.body.appendChild(lb);lb.addEventListener('click',function(){lb.classList.remove('on');});}
-    return lb;
+  function modal(){
+    var m=D.getElementById('cabModal');
+    if(!m){
+      m=D.createElement('div'); m.id='cabModal';
+      m.innerHTML='<div class="cab-sheet"></div>';
+      D.body.appendChild(m);
+      m.addEventListener('click',function(e){ if(e.target===m) close(); });
+      D.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+    }
+    return m;
+  }
+  function close(){var m=D.getElementById('cabModal'); if(m) m.classList.remove('on');}
+  function open(r){
+    var m=modal();
+    var nama=getF(r,'nama','Nama')||'Lomba';
+    var kat=getF(r,'kategori','Kategori');
+    var jadwal=fmtJadwal(getF(r,'jadwal','Jadwal'));
+    var lokasi=getF(r,'lokasi','Lokasi');
+    var cat=getF(r,'catatan','Catatan','ket','keterangan');
+    var img=getF(r,'gambar','Gambar','foto','image','url');
+    var rows='';
+    if(kat) rows+=drow('Kategori',esc(kat));
+    if(jadwal) rows+=drow('Jadwal',esc(jadwal));
+    if(lokasi) rows+=drow('Lokasi',esc(lokasi));
+    if(cat) rows+=drow('Catatan',esc(cat));
+    m.querySelector('.cab-sheet').innerHTML=
+      '<div class="hero">'+mediaTag(img,nama,true)+'<button class="cls" type="button" aria-label="Tutup">'+CLOSE+'</button></div>'
+      +'<div class="cont"><h3>'+esc(nama)+'</h3><div class="cab-dl">'+rows+'</div>'
+      +'<a class="cab-cta" href="index.html#daftar">Daftar Lomba Ini</a></div>';
+    m.querySelector('.cls').addEventListener('click',close);
+    m.classList.add('on');
   }
 
   function render(rows){
+    DATA=rows;
     var host=D.getElementById('cabang'); if(!host) return;
     var grid=host.querySelector('.cat-grid');
     if(!grid){grid=D.createElement('div');grid.className='cat-grid';host.appendChild(grid);}
-    grid.innerHTML=rows.map(card).join('');
-    var lb=lightbox();
-    grid.querySelectorAll('.cab-thumb img').forEach(function(im){im.addEventListener('click',function(){lb.querySelector('img').src=im.src;lb.classList.add('on');});});
+    grid.classList.add('cab-host');
+    grid.innerHTML='<div class="cab-slider">'+rows.map(slide).join('')+'</div>';
+    grid.querySelectorAll('.cab-slide').forEach(function(b){
+      b.addEventListener('click',function(){ open(DATA[+b.getAttribute('data-i')]); });
+    });
   }
-
   function load(){
     fetch(API+'?aksi=cabang').then(function(r){return r.json();}).then(function(d){
       var rows=Array.isArray(d)?d:(d&&d.cabang?d.cabang:[]);
-      if(rows&&rows.length) render(rows);     // kalau sheet kosong/gagal -> kartu statis tetap tampil
+      if(rows&&rows.length) render(rows);
     }).catch(function(){});
   }
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
