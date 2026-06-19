@@ -801,5 +801,74 @@ footer b{color:var(--merah)}
   else mount();
 })();
 </script>
+<!-- ===== LOMBA CABANG — kartu lomba + foto dari Sheet & Drive ===== -->
+<script>
+(function(){
+  if(window.__cabApp) return; window.__cabApp=true;
+  var D=document, API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
+  function getF(o){for(var i=1;i<arguments.length;i++){var k=arguments[i];if(o&&o[k]!=null&&o[k]!=='')return o[k];}return '';}
+  function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
+
+  var css=''
+   +'.cab-card{border-radius:20px;overflow:hidden;background:var(--bg2);border:1px solid var(--bd);box-shadow:var(--sh);display:flex;flex-direction:column}'
+   +'.cab-thumb{position:relative;aspect-ratio:16/10;background:var(--bg1);cursor:zoom-in}'
+   +'.cab-thumb img{width:100%;height:100%;object-fit:cover;display:block}'
+   +'.cab-thumb .ph{position:absolute;inset:0;display:grid;place-items:center;background:var(--chip);color:var(--merah)}'
+   +'.cab-thumb .ph svg{width:46px;height:46px}'
+   +'.cab-lbl{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:999px;color:#fff;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}'
+   +'.cab-body{padding:14px;display:flex;flex-direction:column;gap:8px}'
+   +'.cab-body h3{font-size:15px;font-weight:800;letter-spacing:-.01em}'
+   +'.cab-meta{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink2)}'
+   +'.cab-meta span{display:flex;align-items:center;gap:7px}'
+   +'.cab-meta b{color:var(--merah);flex:0 0 auto}'
+   +'#cabLb{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}'
+   +'#cabLb.on{display:flex}'
+   +'#cabLb img{max-width:96vw;max-height:88vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}';
+  var st=D.createElement('style'); st.id='cabCss'; st.textContent=css; D.head.appendChild(st);
+
+  var ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3.5a4 4 0 0 1-8 0zM8 5.5H5v1A2.5 2.5 0 0 0 8 9M16 5.5h3v1A2.5 2.5 0 0 1 16 9M9.5 16.5h5M10 20h4M12 12.5V16"/></svg>';
+
+  function card(r){
+    var nama=esc(getF(r,'nama','Nama')||'Lomba');
+    var kat=esc(getF(r,'kategori','Kategori')||'');
+    var jadwal=esc(getF(r,'jadwal','Jadwal')||'');
+    var lokasi=esc(getF(r,'lokasi','Lokasi')||'');
+    var cat=esc(getF(r,'catatan','Catatan','ket','keterangan')||'');
+    var img=getF(r,'gambar','Gambar','foto','image','url');
+    var thumb = img
+      ? '<img loading="lazy" src="'+esc(img)+'" alt="'+nama+'" onerror="this.style.display=\'none\';var p=this.parentNode.querySelector(\'.ph\');if(p)p.style.display=\'grid\'"><div class="ph" style="display:none">'+ICON+'</div>'
+      : '<div class="ph">'+ICON+'</div>';
+    var meta='';
+    if(jadwal) meta+='<span><b>•</b>'+jadwal+'</span>';
+    if(lokasi) meta+='<span><b>•</b>'+lokasi+'</span>';
+    if(cat)    meta+='<span><b>•</b>'+cat+'</span>';
+    return '<article class="cab-card"><div class="cab-thumb">'+thumb+(kat?'<span class="cab-lbl">'+kat+'</span>':'')+'</div>'
+      +'<div class="cab-body"><h3>'+nama+'</h3><div class="cab-meta">'+meta+'</div></div></article>';
+  }
+
+  function lightbox(){
+    var lb=D.getElementById('cabLb');
+    if(!lb){lb=D.createElement('div');lb.id='cabLb';lb.innerHTML='<img alt="">';D.body.appendChild(lb);lb.addEventListener('click',function(){lb.classList.remove('on');});}
+    return lb;
+  }
+
+  function render(rows){
+    var host=D.getElementById('cabang'); if(!host) return;
+    var grid=host.querySelector('.cat-grid');
+    if(!grid){grid=D.createElement('div');grid.className='cat-grid';host.appendChild(grid);}
+    grid.innerHTML=rows.map(card).join('');
+    var lb=lightbox();
+    grid.querySelectorAll('.cab-thumb img').forEach(function(im){im.addEventListener('click',function(){lb.querySelector('img').src=im.src;lb.classList.add('on');});});
+  }
+
+  function load(){
+    fetch(API+'?aksi=cabang').then(function(r){return r.json();}).then(function(d){
+      var rows=Array.isArray(d)?d:(d&&d.cabang?d.cabang:[]);
+      if(rows&&rows.length) render(rows);     // kalau sheet kosong/gagal -> kartu statis tetap tampil
+    }).catch(function(){});
+  }
+  if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
+})();
+</script>
 </body>
 </html>
