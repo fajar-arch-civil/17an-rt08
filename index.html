@@ -808,62 +808,61 @@ body{ overscroll-behavior-y:none; }
 </style>
 </head>
 <body>
- <!-- ===== DAFTAR GATE v2 — tunggu Rekap/Keuangan benar2 selesai, baru tampil pas di form ===== -->
+ <!-- ===== DAFTAR GATE v3 — mendarat persis di form, identik dengan navbar ===== -->
 <script>
 (function(){
   if(window.__hashFix) return; window.__hashFix=true;
   if((location.hash||'').toLowerCase()!=='#daftar') return;
 
-  var OFF=64, done=false, theme='light';
+  var html=document.documentElement, prevB=html.style.scrollBehavior;
+  html.style.scrollBehavior='auto';                                  /* matikan smooth selama proses */
+  try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}  /* buang #daftar → matikan lompatan bawaan browser */
+  try{ window.scrollTo(0,0); }catch(e){}
+
+  var theme='light';
   try{ theme=localStorage.getItem('rt08-theme')==='dark'?'dark':'light'; }catch(e){}
   var bg=theme==='dark'?'#0E0E0E':'#ECECEE', ink=theme==='dark'?'rgba(255,255,255,.72)':'#5A5A62';
-  var html=document.documentElement, prevB=html.style.scrollBehavior;
-  html.style.scrollBehavior='auto';
-  try{ window.scrollTo(0,0); }catch(e){}
-  html.style.overflow='hidden';
 
   var ov=document.createElement('div'); ov.id='daftarGate';
-  ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:'+bg+';transition:opacity .35s ease';
+  ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:'+bg+';transition:opacity .3s ease;touch-action:none;overscroll-behavior:contain';
   ov.innerHTML='<div style="width:42px;height:42px;border-radius:50%;border:3px solid rgba(140,140,140,.25);border-top-color:#EE1C25;animation:dgS .8s linear infinite"></div>'
     +'<div style="font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:'+ink+'">Menyiapkan formulir…</div>'
     +'<style>@keyframes dgS{to{transform:rotate(360deg)}}</style>';
+  ov.addEventListener('touchmove',function(e){e.preventDefault();},{passive:false});
+  ov.addEventListener('wheel',function(e){e.preventDefault();},{passive:false});
   (document.body||html).appendChild(ov);
 
-  function ty(){ var el=document.getElementById('daftar'); if(!el) return null; var y=0,n=el; while(n){ y+=n.offsetTop; n=n.offsetParent; } return Math.max(0,y-OFF); }
+  function padTop(){ var v=parseInt(getComputedStyle(html).scrollPaddingTop,10); return isNaN(v)?76:v; }
+  function ty(){ var el=document.getElementById('daftar'); if(!el) return null;
+    return Math.max(0,Math.round(el.getBoundingClientRect().top+(window.pageYOffset||window.scrollY)-padTop())); }
 
-  var lastMut=Date.now(), start=Date.now(), MAX=6500, mo=null;
-  function watch(){
-    try{
-      mo=new MutationObserver(function(){ lastMut=Date.now(); });
-      ['keuangan','rekap'].forEach(function(id){ var el=document.getElementById(id); if(el) mo.observe(el,{childList:true,subtree:true}); });
-    }catch(e){}
+  var start=Date.now(), lastMut=Date.now(), lastY=-1, lastChange=Date.now();
+  var lifted=false, userScroll=false, mo=null;
+
+  ['wheel','touchmove','keydown'].forEach(function(ev){ window.addEventListener(ev,function(){ if(lifted) userScroll=true; },{passive:true}); });
+  try{ mo=new MutationObserver(function(){ lastMut=Date.now(); }); mo.observe(document.body,{childList:true,subtree:true}); }catch(e){}  /* pantau SELURUH halaman */
+
+  function frame(){
+    var now=Date.now(), y=ty();
+    if(!userScroll && y!=null && Math.abs((window.pageYOffset||window.scrollY)-y)>1){ try{window.scrollTo(0,y);}catch(e){} }
+    if(y!==lastY){ lastY=y; lastChange=now; }
+    var quiet=now-lastMut>500, ready=document.readyState==='complete';
+    if(!lifted && ((quiet && ready && now-lastChange>400 && now-start>700) || now-start>5500)){
+      lifted=true;
+      if(y!=null){ try{window.scrollTo(0,y);}catch(e){} }
+      ov.style.opacity='0';
+      setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); },320);
+    }
+    var settled = lifted && (now-lastChange>2000) && ready;       /* posisi form sudah diam 2 dtk */
+    if(userScroll || settled || now-start>12000){
+      if(mo){try{mo.disconnect();}catch(e){}}
+      html.style.scrollBehavior=prevB;                            /* kembalikan smooth utk navbar */
+      return;
+    }
+    requestAnimationFrame(frame);
   }
-  function loop(){
-    if(done) return;
-    var now=Date.now();
-    var quiet=now-lastMut>800, ready=document.readyState==='complete';
-    if((quiet && ready && now-start>900) || now-start>MAX) return finish();
-    setTimeout(loop,100);
-  }
-  function finish(){
-    if(done) return; done=true;
-    if(mo){ try{mo.disconnect();}catch(e){} }
-    html.style.overflow='';
-    var y=ty()||0; try{ window.scrollTo(0,y); }catch(e){}
-    ov.style.opacity='0';
-    setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); },380);
-    /* pin pengaman 1,5 dtk: lawan pergeseran terakhir tanpa terlihat */
-    var stop=false, t0=Date.now();
-    ['wheel','touchmove','keydown'].forEach(function(ev){ window.addEventListener(ev,function(){stop=true;},{passive:true,once:true}); });
-    (function pin(){
-      if(stop || Date.now()-t0>1500){ html.style.scrollBehavior=prevB; return; }
-      var n=ty(); if(n!=null && Math.abs(window.pageYOffset-n)>1) window.scrollTo(0,n);
-      requestAnimationFrame(pin);
-    })();
-  }
-  function begin(){ watch(); setTimeout(loop,150); }
+  function begin(){ requestAnimationFrame(frame); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',begin); else begin();
-  window.addEventListener('load',function(){ lastMut=Date.now(); });
 })();
 </script>
 <!-- ============ HEADER ============ -->
