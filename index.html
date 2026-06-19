@@ -808,6 +808,51 @@ body{ overscroll-behavior-y:none; }
 </style>
 </head>
 <body>
+  <!-- ===== DAFTAR GATE — solusi pasti: tirai loading lalu tampil pas di form ===== -->
+<script>
+(function(){
+  if(window.__hashFix) return; window.__hashFix=true;          /* gantikan blok hash lama */
+  if((location.hash||'').toLowerCase()!=='#daftar') return;     /* hanya saat dibuka dari tombol Daftar */
+
+  var OFF=64, done=false, theme='light';
+  try{ theme=localStorage.getItem('rt08-theme')==='dark'?'dark':'light'; }catch(e){}
+  var bg=theme==='dark'?'#0E0E0E':'#ECECEE', ink=theme==='dark'?'rgba(255,255,255,.72)':'#5A5A62';
+  var html=document.documentElement, prevB=html.style.scrollBehavior;
+  html.style.scrollBehavior='auto';
+  try{ window.scrollTo(0,0); }catch(e){}
+  html.style.overflow='hidden';
+
+  var ov=document.createElement('div'); ov.id='daftarGate';
+  ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:'+bg+';transition:opacity .35s ease';
+  ov.innerHTML='<div style="width:42px;height:42px;border-radius:50%;border:3px solid rgba(140,140,140,.25);border-top-color:#EE1C25;animation:dgS .8s linear infinite"></div>'
+    +'<div style="font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:'+ink+'">Menyiapkan formulir…</div>'
+    +'<style>@keyframes dgS{to{transform:rotate(360deg)}}</style>';
+  (document.body||html).appendChild(ov);
+
+  var lastY=-1, since=0, start=Date.now(), MAX=4500;
+  function ty(){ var el=document.getElementById('daftar'); if(!el) return null; var y=0,n=el; while(n){ y+=n.offsetTop; n=n.offsetParent; } return Math.max(0,y-OFF); }
+  function loop(){
+    if(done) return;
+    var y=ty(), now=Date.now();
+    if(y==null){ if(now-start<MAX) return setTimeout(loop,120); return finish(0); }
+    if(Math.abs(y-lastY)<1){ if(!since) since=now; } else { since=0; lastY=y; }
+    var ok=since && now-since>500 && document.readyState==='complete';   /* posisi stabil 0,5 dtk & halaman selesai */
+    if(ok || now-start>=MAX) return finish(y);
+    setTimeout(loop,120);
+  }
+  function finish(y){
+    if(done) return; done=true;
+    html.style.overflow='';
+    try{ window.scrollTo(0,y); }catch(e){}
+    requestAnimationFrame(function(){ var n=ty(); if(n!=null && Math.abs(window.pageYOffset-n)>2) window.scrollTo(0,n); });
+    ov.style.opacity='0';
+    setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); html.style.scrollBehavior=prevB; },380);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(loop,180);});
+  else setTimeout(loop,180);
+  window.addEventListener('load',function(){ setTimeout(loop,40); });
+})();
+</script>
 <!-- ============ HEADER ============ -->
 <header class="app-header">
   <div class="hd-left">
@@ -1933,51 +1978,6 @@ if('serviceWorker' in navigator){
 
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',mount);
   else mount();
-})();
-</script>
-<!-- ===== DAFTAR GATE — solusi pasti: tirai loading lalu tampil pas di form ===== -->
-<script>
-(function(){
-  if(window.__hashFix) return; window.__hashFix=true;          /* gantikan blok hash lama */
-  if((location.hash||'').toLowerCase()!=='#daftar') return;     /* hanya saat dibuka dari tombol Daftar */
-
-  var OFF=64, done=false, theme='light';
-  try{ theme=localStorage.getItem('rt08-theme')==='dark'?'dark':'light'; }catch(e){}
-  var bg=theme==='dark'?'#0E0E0E':'#ECECEE', ink=theme==='dark'?'rgba(255,255,255,.72)':'#5A5A62';
-  var html=document.documentElement, prevB=html.style.scrollBehavior;
-  html.style.scrollBehavior='auto';
-  try{ window.scrollTo(0,0); }catch(e){}
-  html.style.overflow='hidden';
-
-  var ov=document.createElement('div'); ov.id='daftarGate';
-  ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:'+bg+';transition:opacity .35s ease';
-  ov.innerHTML='<div style="width:42px;height:42px;border-radius:50%;border:3px solid rgba(140,140,140,.25);border-top-color:#EE1C25;animation:dgS .8s linear infinite"></div>'
-    +'<div style="font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:'+ink+'">Menyiapkan formulir…</div>'
-    +'<style>@keyframes dgS{to{transform:rotate(360deg)}}</style>';
-  (document.body||html).appendChild(ov);
-
-  var lastY=-1, since=0, start=Date.now(), MAX=4500;
-  function ty(){ var el=document.getElementById('daftar'); if(!el) return null; var y=0,n=el; while(n){ y+=n.offsetTop; n=n.offsetParent; } return Math.max(0,y-OFF); }
-  function loop(){
-    if(done) return;
-    var y=ty(), now=Date.now();
-    if(y==null){ if(now-start<MAX) return setTimeout(loop,120); return finish(0); }
-    if(Math.abs(y-lastY)<1){ if(!since) since=now; } else { since=0; lastY=y; }
-    var ok=since && now-since>500 && document.readyState==='complete';   /* posisi stabil 0,5 dtk & halaman selesai */
-    if(ok || now-start>=MAX) return finish(y);
-    setTimeout(loop,120);
-  }
-  function finish(y){
-    if(done) return; done=true;
-    html.style.overflow='';
-    try{ window.scrollTo(0,y); }catch(e){}
-    requestAnimationFrame(function(){ var n=ty(); if(n!=null && Math.abs(window.pageYOffset-n)>2) window.scrollTo(0,n); });
-    ov.style.opacity='0';
-    setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); html.style.scrollBehavior=prevB; },380);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(loop,180);});
-  else setTimeout(loop,180);
-  window.addEventListener('load',function(){ setTimeout(loop,40); });
 })();
 </script>
 <!-- ===== UI BASE v2 — perbaiki notch (safe-area) + galeri tanpa nama file ===== -->
