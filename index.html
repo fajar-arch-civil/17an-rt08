@@ -1935,26 +1935,78 @@ if('serviceWorker' in navigator){
   else mount();
 })();
 </script>
-<!-- ===== HASH SCROLL FIX — cegah loncat ke section salah saat layout bergeser ===== -->
+<!-- ===== HASH SCROLL FIX v2 — tunggu layout stabil, scroll SEKALI (anti glitch) ===== -->
 <script>
 (function(){
   if(window.__hashFix) return; window.__hashFix=true;
-  var OFF=64;
-  function go(){
-    var h=location.hash; if(!h||h.length<2) return;
-    var el; try{ el=document.querySelector(h); }catch(e){ return; }
-    if(!el) return;
-    var y=el.getBoundingClientRect().top+window.pageYOffset-OFF;
-    window.scrollTo(0, y<0?0:y);
+  if(!location.hash || location.hash.length<2) return;
+  var OFF=64, done=false, last=-1, stable=0, tries=0, cancelled=false;
+  function target(){ try{ return document.querySelector(location.hash); }catch(e){ return null; } }
+  ['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){
+    window.addEventListener(ev,function(){ cancelled=true; },{passive:true,once:true});
+  });
+  function tick(){
+    if(done||cancelled) return;
+    var el=target(); if(!el){ done=true; return; }
+    var y=Math.max(0, el.getBoundingClientRect().top+window.pageYOffset-OFF);
+    if(Math.abs(y-last)<2) stable++; else stable=0;
+    last=y; tries++;
+    if(stable>=3 || tries>40){ window.scrollTo({top:y, behavior:'smooth'}); done=true; return; }
+    setTimeout(tick,90);
   }
-  if(location.hash){
-    var cancelled=false;
-    ['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){
-      window.addEventListener(ev,function(){cancelled=true;},{passive:true,once:true});
-    });
-    [60,250,500,900,1400,2000].forEach(function(t){ setTimeout(function(){ if(!cancelled) go(); }, t); });
-    window.addEventListener('load',function(){ if(!cancelled) setTimeout(go,150); });
+  function start(){ setTimeout(tick,150); }
+  if(document.readyState==='complete') start(); else window.addEventListener('load', start);
+})();
+</script>
+<!-- ===== UI BASE — dukung notch (safe-area) + sembunyikan nama file galeri ===== -->
+<script>
+(function(){
+  if(window.__uiBase) return; window.__uiBase=true;
+  var vp=document.querySelector('meta[name="viewport"]');
+  if(vp){ if(vp.content.indexOf('viewport-fit')<0) vp.content=vp.content.trim().replace(/,?\s*$/,'')+', viewport-fit=cover'; }
+  else { vp=document.createElement('meta'); vp.name='viewport'; vp.content='width=device-width, initial-scale=1, viewport-fit=cover'; document.head.appendChild(vp); }
+  var css=''
+   +':root{--utop-h:calc(56px + env(safe-area-inset-top,0px))}'
+   +'.utop{padding-top:env(safe-area-inset-top,0px)}'
+   +'.udrawer{padding-top:calc(14px + env(safe-area-inset-top,0px))}'
+   +'.photo .cap{display:none!important}';   /* galeri index tanpa nama file */
+  var st=document.createElement('style'); st.id='uiBaseCss'; st.textContent=css; document.head.appendChild(st);
+})();
+</script>
+<!-- ===== INDEX POLISH — skeleton loading + animasi reveal saat scroll ===== -->
+<script>
+(function(){
+  if(window.__idxPolish) return; window.__idxPolish=true;
+  var D=document, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var css=''
+   +'.sk{position:relative;overflow:hidden;background:var(--solid2,rgba(255,255,255,.06));border-radius:14px}'
+   +'.sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:sksh 1.3s infinite}'
+   +'@keyframes sksh{100%{transform:translateX(100%)}}'
+   +'.sk-row{display:flex;gap:12px;align-items:center;padding:7px 0}'
+   +'.rv{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}'
+   +'.rv.in{opacity:1;transform:none}';
+  var st=D.createElement('style'); st.textContent=css; D.head.appendChild(st);
+
+  // 1) Skeleton loading untuk galeri, katalog lomba, & leaderboard (otomatis tertimpa data asli)
+  function skel(){
+    var t=D.getElementById('track'); if(t&&!t.children.length) t.innerHTML='<div class="sk" style="aspect-ratio:16/10;border-radius:18px"></div>';
+    var lt=D.getElementById('lombaTrack'); if(lt&&!lt.children.length){var c='<div class="sk" style="flex:0 0 76%;max-width:300px;aspect-ratio:4/5;border-radius:18px"></div>';lt.innerHTML=c+c+c;}
+    var lb=D.getElementById('lbScroll'); if(lb&&!lb.children.length){var r='<div class="sk-row"><div class="sk" style="width:34px;height:34px;border-radius:10px"></div><div class="sk" style="flex:1;height:16px"></div><div class="sk" style="width:44px;height:16px"></div></div>';lb.innerHTML=r+r+r+r;}
   }
+
+  // 2) Reveal halus tiap section saat di-scroll (aman: ada fallback paksa tampil)
+  function reveal(){
+    if(reduce || !('IntersectionObserver' in window)) return;
+    var els=D.querySelectorAll('.sec'); if(!els.length) return;
+    els.forEach(function(e){ e.classList.add('rv'); });
+    var io=new IntersectionObserver(function(ents){
+      ents.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{rootMargin:'0px 0px -8% 0px', threshold:.08});
+    els.forEach(function(e){ io.observe(e); });
+    setTimeout(function(){ els.forEach(function(e){ e.classList.add('in'); }); }, 1800);
+  }
+  function run(){ skel(); reveal(); }
+  if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',run); else run();
 })();
 </script>
 </body>
