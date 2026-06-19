@@ -754,6 +754,32 @@ body{ overscroll-behavior-y:none; }
 }
 .hero-inner{ position:relative; z-index:2; }   /* teks & tombol selalu di atas peta */
 /* ===== HERO PETA INDONESIA v1 — END ===== */
+/* ===== HERO FLAT v2 — START (ringkas, rata, anti-glow) ===== */
+.hero{
+  margin:14px 16px 0!important;
+  border-radius:24px!important;
+  background:linear-gradient(160deg,#F0202A 0%,#D81621 100%)!important;  /* merah RATA, tanpa glow radial */
+  box-shadow:0 12px 26px -16px rgba(216,22,33,.42)!important;            /* bayangan lembut, BUKAN glow */
+  border:none!important;
+}
+.hero::after{ display:none!important; }            /* matikan sapuan kilau (kesan AI) */
+.hero-spark,.hero-deco,.hero-flag{ display:none!important; }  /* buang dekal ramai */
+
+/* ukuran lebih efektif & padat */
+.hero-inner{ padding:18px 18px 20px!important; }
+.hero-eyebrow{ font-size:11px!important; letter-spacing:.4px!important; }
+.hero-title{ font-size:21px!important; line-height:1.25!important; margin-top:6px!important; }
+.hero-sub{ font-size:12.5px!important; opacity:.9!important; }
+
+/* countdown ringkas */
+.cbox{ padding:9px 6px!important; border-radius:14px!important;
+  background:rgba(255,255,255,.14)!important; border:1px solid rgba(255,255,255,.20)!important; }
+.cbox b{ font-size:23px!important; }
+.cbox span{ font-size:9.5px!important; letter-spacing:.3px!important; }
+
+/* tombol ringkas */
+.hero-btn{ padding:11px 16px!important; font-size:13px!important; border-radius:12px!important; }
+/* ===== HERO FLAT v2 — END ===== */
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
