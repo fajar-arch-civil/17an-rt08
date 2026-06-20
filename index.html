@@ -975,10 +975,21 @@ body{ overscroll-behavior-y:none; }
   margin-left:max(14px, calc((100% - var(--maxw)) / 2 + 14px))!important;
   margin-right:max(14px, calc((100% - var(--maxw)) / 2 + 14px))!important;
 }
-/* ===== SCREEN 02 — KEUANGAN & REKAP (UI re-skin · COMPACT) — START ===== */
-#keuangan.sec, #rekap.sec{margin-top:14px!important}
-#keuangan .sec-head, #rekap .sec-head{margin-bottom:10px!important}
-#keuangan .sec-title, #rekap .sec-title{font-size:18px!important;font-weight:700!important}
+/* ===== SCREEN 02 — REFERENCE MATCH (flat · merah-putih · compact) — START ===== */
+
+/* Flat: matikan glass/blur di section ini (senada rundown Anda) */
+#pengumuman .glass, #keuangan .glass, #keuangan .balance{
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+}
+
+/* PENGUMUMAN — kartu MERAH (sesuai referensi) */
+#pengumuman #annFeed{display:flex;flex-direction:column;gap:10px}
+#pengumuman #annFeed > *{
+  background:#E53935!important;border:none!important;border-radius:20px!important;
+  padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important;
+}
+#pengumuman #annFeed > *, #pengumuman #annFeed *{color:#fff!important}
+#pengumuman #annFeed .iconify{color:#fff!important}
 
 /* SALDO KAS — merah & dangkal */
 #keuangan .balance{
@@ -991,35 +1002,32 @@ body{ overscroll-behavior-y:none; }
 #keuangan .balance .bal-sub{color:rgba(255,255,255,.85)!important;font-size:11px!important;margin-top:2px!important}
 #keuangan .balance .iconify{color:#fff!important}
 
-/* STATISTIK — kartu kecil & padat (tanpa min-height) */
+/* STATISTIK — kartu kecil & padat */
 #keuangan .kpi-grid{gap:10px!important;margin-top:12px!important}
 #keuangan .kpi{
-  background:#fff!important;border:1px solid rgba(0,0,0,.06)!important;
-  border-radius:14px!important;padding:12px!important;
-  box-shadow:0 4px 12px rgba(0,0,0,.05)!important;
+  background:var(--bg2)!important;border:1px solid var(--bd)!important;
+  border-radius:14px!important;padding:12px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important;
 }
 #keuangan .kpi .kpi-ic{width:30px!important;height:30px!important;font-size:17px!important;border-radius:9px!important;margin-bottom:8px!important}
 #keuangan .kpi .kpi-v{font-size:17px!important;font-weight:700!important;line-height:1.05}
 #keuangan .kpi .kpi-l{font-size:11px!important;margin-top:2px!important}
 
-/* KARTU BESAR — Arus Kas & Rekap (padat) */
+/* KARTU BESAR — Arus Kas & Rekap */
 #keuangan .chart-card, #rekap .card{
-  background:#fff!important;border:1px solid rgba(0,0,0,.06)!important;
+  background:var(--bg2)!important;border:1px solid var(--bd)!important;
   border-radius:20px!important;box-shadow:0 6px 16px rgba(0,0,0,.05)!important;
 }
 #keuangan .chart-card{padding:14px!important;margin-top:12px!important}
-#rekap .card{padding:14px!important;margin-bottom:12px!important}
 
 /* TABS Mutasi */
 #keuangan .tabs{gap:8px!important;margin-bottom:10px!important}
 #keuangan .tab{border-radius:11px!important;font-weight:700!important;font-size:13px!important}
 #keuangan .tab.on{background:#E53935!important;color:#fff!important;border-color:transparent!important}
 
-/* REKAP — search & input */
-#rekap .search-bar{background:#fff!important;border:1px solid rgba(0,0,0,.06)!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important;margin:12px 0!important}
-#rekap .cek-wrap .cek-input, #rekap .search-bar input, #rekap .cek-btn{border-radius:11px!important}
-#rekap .rekap-sum{margin:12px 0!important}
-/* ===== SCREEN 02 — KEUANGAN & REKAP (UI re-skin · COMPACT) — END ===== */
+/* Heading konsisten & rapat */
+#keuangan .sec-head, #pengumuman .sec-head{margin-bottom:10px!important}
+#keuangan .sec-title, #pengumuman .sec-title{font-size:18px!important;font-weight:700!important}
+/* ===== SCREEN 02 — REFERENCE MATCH — END ===== */
 </style>
 </head>
 <body>
