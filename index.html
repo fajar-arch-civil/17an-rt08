@@ -1152,33 +1152,6 @@ img,svg,video,canvas,iframe,table{max-width:100%}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',begin); else begin();
 })();
 </script>
-<!-- ============ HEADER ============ -->
-<header class="app-header">
-  <div class="hd-left">
-    <div class="hd-ava"><span class="iconify" data-icon="solar:flag-2-bold"></span></div>
-    <div>
-      <div class="hd-name">RT 08 | 17 Agustusan</div>
-      <div class="hd-sub">Web Application (Web App)</div>
-    </div>
-  </div>
-  <div class="hd-right">
-    <button class="icon-btn" id="bellBtn" aria-label="Notifikasi"><span class="iconify" data-icon="solar:bell-bold"></span><span class="badge-dot" id="bellDot"></span></button>
-    <button class="icon-btn" id="themeToggle" aria-label="Ganti tema"><span class="iconify" data-icon="solar:moon-bold"></span></button>
-    <button class="icon-btn" id="menuBtn" aria-label="Menu"><span class="iconify" data-icon="solar:hamburger-menu-linear"></span></button>
-  </div>
-</header>
-<div class="pop-panel glass" id="bellPanel">
-  <div class="pop-title">Pengumuman</div>
-  <div id="bellList"></div>
-</div>
-<div class="pop-panel glass" id="menuPanel">
-  <div class="pop-title">Navigasi</div>
-  <a class="menu-link" href="#top"><span class="iconify" data-icon="solar:home-2-bold"></span> Beranda</a>
-  <a class="menu-link" href="#keuangan"><span class="iconify" data-icon="solar:wallet-bold"></span> Keuangan</a>
-  <a class="menu-link" href="#rekap"><span class="iconify" data-icon="solar:clipboard-list-bold"></span> Rekapan Data</a>
-  <a class="menu-link" href="#daftar"><span class="iconify" data-icon="solar:document-add-bold"></span> Pendaftaran</a>
-  <a class="menu-link" href="lomba.html"><span class="iconify" data-icon="solar:cup-star-bold"></span> Perlombaan</a>
-</div>
 
 <!-- ============ HERO COUNTDOWN ============ -->
 <header class="hero" id="top">
@@ -1398,7 +1371,6 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 </main>
 
 <!-- ============ FLOATING NAV + FAB + TOAST ============ -->
-<nav id="bnav"></nav>
 <div id="toast"><span class="iconify ti" id="toastIc" data-icon="solar:check-circle-bold"></span><span id="toastMsg">—</span><span class="iconify" id="toastX" data-icon="solar:close-circle-linear"></span></div>
 <script>
 /* ===================== KONSTANTA (JANGAN UBAH) ===================== */
@@ -1603,8 +1575,7 @@ function initCarousel(){$('galPrev').onclick=()=>{goSlide(_cur-1);resetAuto();};
 /* ===================== PENGUMUMAN ===================== */
 function renderFeed(){
  setH('annFeed',PENGUMUMAN.map(p=>'<div class="feed-item glass reveal"><div class="feed-ic"><span class="iconify" data-icon="'+esc(p.ikon)+'"></span></div><div class="feed-main"><div class="feed-t">'+esc(p.teks)+'</div><div class="feed-d"><span class="iconify" data-icon="solar:clock-circle-linear"></span>'+esc(p.waktu)+'</div></div></div>').join(''));
- setH('bellList',PENGUMUMAN.map(p=>'<div class="ann-item"><span class="iconify" data-icon="'+esc(p.ikon)+'"></span><div>'+esc(p.teks)+'<div class="feed-d" style="margin-top:3px">'+esc(p.waktu)+'</div></div></div>').join(''));
- if(PENGUMUMAN.length)$('bellDot').classList.add('on');scan();
+ scan();
 }
 
 /* ===================== COUNTDOWN + CUACA ===================== */
@@ -1624,13 +1595,9 @@ async function muatCuaca(){
 
 /* ===================== UI WIRING ===================== */
 function wirePanels(){
- const bp=$('bellPanel'),mp=$('menuPanel');
- $('bellBtn').onclick=e=>{e.stopPropagation();mp.classList.remove('show');bp.classList.toggle('show');$('bellDot').classList.remove('on');};
- $('menuBtn').onclick=e=>{e.stopPropagation();bp.classList.remove('show');mp.classList.toggle('show');};
- bp.addEventListener('click',e=>e.stopPropagation());mp.addEventListener('click',e=>e.stopPropagation());
- document.addEventListener('click',()=>{bp.classList.remove('show');mp.classList.remove('show');document.querySelectorAll('.dd.open').forEach(o=>o.classList.remove('open'));});
- const tg=$('themeToggle');const cur=document.documentElement.getAttribute('data-theme');tg.querySelector('.iconify').setAttribute('data-icon',cur==='light'?'solar:sun-bold':'solar:moon-bold');
- tg.onclick=()=>{const n=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('rt08-theme',n);}catch(e){}tg.querySelector('.iconify').setAttribute('data-icon',n==='light'?'solar:sun-bold':'solar:moon-bold');scan();};
+  // Header & panel lama sudah dibongkar (diganti navbar baru).
+  // Sisakan hanya: tutup dropdown form (Blok/No. Rumah) saat klik di luar.
+  document.addEventListener('click',()=>{document.querySelectorAll('.dd.open').forEach(o=>o.classList.remove('open'));});
 }
 function wireTabs(){
  $('tabMasuk').onclick=()=>{$('tabMasuk').classList.add('on');$('tabKeluar').classList.remove('on');$('paneMasuk').classList.add('on');$('paneKeluar').classList.remove('on');};
@@ -1645,10 +1612,7 @@ function exportCSV(){
  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='keuangan-rt08.csv';a.click();toast('CSV diunduh','ok');
 }
 function wireWA(){const a=$('waBtn');if(a)a.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.');}
-function buildNav(){
- const items=[{ic:'solar:home-2-bold',l:'Beranda',t:'#top'},{ic:'solar:wallet-bold',l:'Keuangan',t:'#keuangan'},{ic:'solar:add-circle-bold',l:'Daftar',t:'#daftar'},{ic:'solar:clipboard-list-bold',l:'Rekap',t:'#rekap'},{ic:'solar:cup-star-bold',l:'Lomba',t:'lomba.html'}];
- $('bnav').innerHTML=items.map(it=>'<a class="bn-item" href="'+it.t+'" data-t="'+it.t+'"><span class="iconify" data-icon="'+it.ic+'"></span><span class="bn-lbl">'+it.l+'</span></a>').join('');scan();
-}
+function buildNav(){}
 function scrollSpy(){
  const secs=['#top','#keuangan','#rekap','#daftar'].map(s=>({s,el:document.querySelector(s)})).filter(o=>o.el);
  const y=window.scrollY+130;let cur='#top';secs.forEach(o=>{if(o.el.getBoundingClientRect().top+window.scrollY<=y)cur=o.s;});
@@ -1778,23 +1742,6 @@ function wireSearch(){
 <script>
 /* ===================== REVISI 2 — LOGIKA ===================== */
 
-/* Header: logo Karang Taruna (fallback aman) + klik balik ke Beranda */
-(function(){
- const ava=document.querySelector('.hd-ava');
- if(ava){
-  ava.innerHTML='';
-  const img=document.createElement('img');
-  img.className='hd-logo';
-  img.alt='Karang Taruna RT 08';
-  img.referrerPolicy='no-referrer';
-  img.src='https://karturw.wordpress.com/wp-content/uploads/2013/02/logo-karang-taruna2.jpg';
-  img.onerror=function(){ava.innerHTML='<span class="iconify" data-icon="solar:flag-2-bold"></span>';if(window.Iconify)window.Iconify.scan();};
-  ava.appendChild(img);
- }
- const hl=document.querySelector('.hd-left');
- if(hl){hl.setAttribute('role','button');hl.title='Kembali ke Beranda';hl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));}
-})();
-
 /* Parser alamat: "H 35 - 6" -> blok "H 35", nomor "6" */
 function blokOf(addr){
  const s=String(addr||'').trim();if(!s)return '?';
@@ -1910,7 +1857,6 @@ async function muatLomba(){
  }
 },true);})();
 
-try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
 </script>
 <script>
 /* ===== REVISI INDEX FINAL — leaderboard pindah, ikon flat, polish ===== */
@@ -1944,7 +1890,6 @@ function renderRekap(){
  renderInsight();syncFormAddr();scan();
 }
 
-try{ if(typeof _rekap!=='undefined' && _rekap) renderRekap(); }catch(e){}
 /* ===== LINEUP LOMBA — isi section "Perlombaan" biar informatif (anti-kosong) ===== */
 (function(){
   var L=[
