@@ -814,6 +814,23 @@ body{ overscroll-behavior-y:none; }
   -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
 }
 /* ===== UI FLAT POLISH v3 — END ===== */
+
+/* ===== REDESIGN INDEX v1 — tata letak Beranda (layout & ukuran saja) ===== */
+/* Cuaca full-width (melebar ke samping) */
+.cu-wide{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px}
+.cu-wide .cu-top{flex:1 1 200px;min-width:0}
+.cu-wide .cu-meta{margin-top:0;flex:2 1 260px;justify-content:flex-end}
+.cu-wide .cu-updated{flex-basis:100%;margin-top:2px}
+@media(max-width:520px){.cu-wide .cu-meta{justify-content:flex-start;flex-basis:100%}}
+/* Banner hitung mundur (terpisah, di bawah cuaca) */
+.cd-banner{background:linear-gradient(160deg,#F0202A 0%,#D81621 100%);border-radius:var(--r-card);padding:16px 14px;color:#fff;box-shadow:0 12px 26px -16px rgba(216,22,33,.42)}
+.cd-banner-head{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;letter-spacing:.02em;opacity:.95;margin-bottom:12px}
+.cd-banner-head .iconify{font-size:16px}
+.cd-banner .count-wrap{margin-top:0}
+/* Kartu infografis Saldo */
+.info-amt{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-top:8px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.info-sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:8px}
+/* ===== REDESIGN INDEX v1 — END ===== */
 </style>
 </head>
 <body>
@@ -909,6 +926,29 @@ body{ overscroll-behavior-y:none; }
     <span class="hero-eyebrow">Dirgahayu RI ke-81 · RT 08</span>
     <h1 class="hero-title">Menuju HUT Kemerdekaan RI ke-81</h1>
     <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
+    <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold" data-width="30"></span> Klik Untuk Pendaftaran Lomba</button>
+  </div>
+</header>
+
+<main class="wrap">
+ <!-- ===== CUACA (full-width) ===== -->
+<section class="sec">
+  <div class="mini glass cu-anim cu-wide" id="cuacaBox">
+    <div class="cu-top">
+      <div class="cu-ic"><span class="iconify" id="cuIcon" data-icon="meteocons:clear-day-fill"></span></div>
+      <div>
+        <div class="cu-temp" id="cuTemp">--°</div>
+        <div class="cu-lbl" id="cuLbl">Memuat cuaca…</div>
+      </div>
+    </div>
+    <div class="cu-meta" id="cuMeta"></div>
+    <div class="cu-updated"><span class="cu-live"></span><span id="cuUpdated">—</span></div>
+  </div>
+</section>
+<!-- ===== HITUNG MUNDUR (banner terpisah) ===== -->
+<section class="sec">
+  <div class="cd-banner">
+    <div class="cd-banner-head"><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Menuju 17 Agustus 2026</div>
     <div class="count-wrap" id="countBox">
       <div class="cbox"><b id="cD">0</b><span>Hari</span></div>
       <div class="csep">:</div>
@@ -918,56 +958,45 @@ body{ overscroll-behavior-y:none; }
       <div class="csep">:</div>
       <div class="cbox"><b id="cS">0</b><span>Detik</span></div>
     </div>
-    <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold" data-width="30"></span> Klik Untuk Pendaftaran Lomba</button>
   </div>
-</header>
-
-<main class="wrap">
-  <!-- ===== DUO: CUACA + IURAN ===== -->
-  <section class="sec">
-    <div class="duo">
-      <div class="mini glass cu-anim" id="cuacaBox">
-        <div class="cu-top">
-          <div class="cu-ic"><span class="iconify" id="cuIcon" data-icon="meteocons:clear-day-fill"></span></div>
-          <div>
-            <div class="cu-temp" id="cuTemp">--°</div>
-            <div class="cu-lbl" id="cuLbl">Memuat cuaca…</div>
-          </div>
-        </div>
-        <div class="cu-meta" id="cuMeta"></div>
-        <div class="cu-updated"><span class="cu-live"></span><span id="cuUpdated">—</span></div>
+</section>
+<!-- ===== GALERI CAROUSEL (foto full-width) ===== -->
+<section class="sec" id="galeri">
+  <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:gallery-wide-bold"></span> Galeri</div><button class="sec-act" id="seeAll">Lihat Semua <span class="iconify" data-icon="solar:arrow-right-linear"></span></button></div>
+  <div class="carousel">
+    <div class="track" id="track"></div>
+    <button class="nav prev" id="galPrev" aria-label="Sebelumnya"><span class="iconify" data-icon="solar:alt-arrow-left-linear"></span></button>
+    <button class="nav next" id="galNext" aria-label="Berikutnya"><span class="iconify" data-icon="solar:alt-arrow-right-linear"></span></button>
+  </div>
+  <div id="dots"></div>
+</section>
+<!-- ===== 2 KARTU INFOGRAFIS (Iuran + Saldo) ===== -->
+<section class="sec">
+  <div class="duo">
+    <div class="mini glass">
+      <div class="eyebrow">Iuran Terkumpul</div>
+      <div class="iuran-top" style="margin-top:10px">
+        <div class="iuran-pct" id="iuranPct">0%</div>
+        <div class="iuran-cap" id="iuranCap">Target<br>Rp50rb/KK</div>
       </div>
-      <div class="mini glass">
-        <div class="eyebrow">Iuran Terkumpul</div>
-        <div class="iuran-top" style="margin-top:10px">
-          <div class="iuran-pct" id="iuranPct">0%</div>
-          <div class="iuran-cap" id="iuranCap">Target<br>Rp50rb/KK</div>
-        </div>
-        <div class="prog" id="iuranProg"><i id="iuranBar" style="width:0"></i></div>
-        <div class="iuran-nom" id="iuranNom"><span class="t">Memuat…</span></div>
-      </div>
+      <div class="prog" id="iuranProg"><i id="iuranBar" style="width:0"></i></div>
+      <div class="iuran-nom" id="iuranNom"><span class="t">Memuat…</span></div>
     </div>
-  </section>
-
-  <!-- ===== QUICK STATS ===== -->
-  <section class="sec">
-    <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-      <div class="kpi glass info"><div class="kpi-ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></div><div class="kpi-v" id="kKK">0</div><div class="kpi-l">KK Bayar</div></div>
-      <div class="kpi glass"><div class="kpi-ic"><span class="iconify" data-icon="solar:user-plus-bold"></span></div><div class="kpi-v" id="kPeserta">0</div><div class="kpi-l">Peserta</div></div>
-      <div class="kpi glass warn"><div class="kpi-ic"><span class="iconify" data-icon="solar:cup-star-bold"></span></div><div class="kpi-v" id="kLombaAktif">0</div><div class="kpi-l">Lomba Aktif</div></div>
+    <div class="mini glass">
+      <div class="eyebrow">Saldo Kas RT 08</div>
+      <div class="info-amt" id="kSaldoTop">Rp0</div>
+      <div class="info-sub" id="kSaldoTopSub">Memuat data…</div>
     </div>
-  </section>
-
-  <!-- ===== GALERI CAROUSEL ===== -->
-  <section class="sec" id="galeri">
-    <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:gallery-wide-bold"></span> Galeri</div><button class="sec-act" id="seeAll">Lihat Semua <span class="iconify" data-icon="solar:arrow-right-linear"></span></button></div>
-    <div class="carousel">
-      <div class="track" id="track"></div>
-      <button class="nav prev" id="galPrev" aria-label="Sebelumnya"><span class="iconify" data-icon="solar:alt-arrow-left-linear"></span></button>
-      <button class="nav next" id="galNext" aria-label="Berikutnya"><span class="iconify" data-icon="solar:alt-arrow-right-linear"></span></button>
-    </div>
-    <div id="dots"></div>
-  </section>
+  </div>
+</section>
+<!-- ===== 3 KARTU DATA (KK Bayar · Peserta · Lomba Aktif) ===== -->
+<section class="sec">
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi glass info"><div class="kpi-ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></div><div class="kpi-v" id="kKK">0</div><div class="kpi-l">KK Bayar</div></div>
+    <div class="kpi glass"><div class="kpi-ic"><span class="iconify" data-icon="solar:user-plus-bold"></span></div><div class="kpi-v" id="kPeserta">0</div><div class="kpi-l">Peserta</div></div>
+    <div class="kpi glass warn"><div class="kpi-ic"><span class="iconify" data-icon="solar:cup-star-bold"></span></div><div class="kpi-v" id="kLombaAktif">0</div><div class="kpi-l">Lomba Aktif</div></div>
+  </div>
+</section>
 
   <!-- ===== PERLOMBAAN (preview) ===== -->
   <section class="sec">
@@ -2076,6 +2105,23 @@ if('serviceWorker' in navigator){
   function show(){ set(bot(),false); set(top(),false); }
   D.addEventListener('focusin',function(e){ if(isField(e.target)){ if(hideTO){clearTimeout(hideTO);hideTO=null;} hide(); } });
   D.addEventListener('focusout',function(e){ if(isField(e.target)){ hideTO=setTimeout(function(){ if(!isField(D.activeElement)) show(); },150); } });
+})();
+</script>
+<!-- ===== INFOGRAFIS SALDO — cermin nilai Saldo Kas ke kartu atas (display saja) ===== -->
+<script>
+(function(){
+  function mirror(){
+    var s=document.getElementById('kSaldo'),t=document.getElementById('kSaldoTop');
+    if(s&&t&&t.textContent!==s.textContent)t.textContent=s.textContent;
+    var ss=document.getElementById('kSaldoSub'),ts=document.getElementById('kSaldoTopSub');
+    if(ss&&ts&&ts.textContent!==ss.textContent)ts.textContent=ss.textContent;
+  }
+  ['kSaldo','kSaldoSub'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&window.MutationObserver)new MutationObserver(mirror).observe(el,{childList:true,characterData:true,subtree:true});
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mirror);else mirror();
+  [600,1500,3000,6000].forEach(function(d){setTimeout(mirror,d);});
 })();
 </script>
 </body>
