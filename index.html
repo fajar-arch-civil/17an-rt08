@@ -67,24 +67,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .sec-title .iconify{color:var(--merah);font-size:22px}
 .sec-act{font-size:13px;font-weight:700;color:var(--merah);display:inline-flex;align-items:center;gap:4px;cursor:pointer;border:none;background:none;font-family:inherit;white-space:nowrap}
 /* ============ HEADER ============ */
-.app-header{position:sticky;top:0;z-index:60;height:var(--hd-h);display:flex;align-items:center;justify-content:space-between;padding:0 max(14px, calc((100% - var(--maxw)) / 2 + 14px));background:color-mix(in srgb,var(--bg0) 70%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--bd)}
-.hd-left{display:flex;align-items:center;gap:11px}
 .hd-ava{width:38px;height:38px;border-radius:var(--r-chip);background:linear-gradient(150deg,var(--merah),#9d1414);display:grid;place-items:center;color:#fff;font-size:18px;box-shadow:0 6px 16px var(--merah-glow)}
-.hd-name{font-weight:800;font-size:15px;letter-spacing:-.02em;line-height:1.1}
-.hd-sub{font-size:11.5px;font-weight:500;color:var(--muted)}
-.hd-right{display:flex;align-items:center;gap:8px}
-.icon-btn{width:40px;height:40px;border-radius:var(--r-chip);background:var(--glass-2);color:var(--ink);font-size:20px;display:grid;place-items:center;cursor:pointer;border:1px solid var(--bd);transition:.18s;position:relative;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
-.icon-btn:active{transform:scale(.9)}.icon-btn:hover{border-color:var(--bd2)}
-.badge-dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--merah);border:2px solid var(--bg0);display:none;box-shadow:0 0 8px var(--merah-glow)}
-.badge-dot.on{display:block}
-.pop-panel{position:fixed;top:calc(var(--hd-h) + 8px);right:14px;z-index:70;width:min(320px,calc(100vw - 28px));border-radius:var(--r-card);padding:10px;opacity:0;transform:translateY(-10px) scale(.98);pointer-events:none;transition:.2s cubic-bezier(.2,.8,.2,1)}
-.pop-panel.show{opacity:1;transform:none;pointer-events:auto}
-.pop-title{font-size:11px;font-weight:700;color:var(--muted);padding:8px 10px 6px;text-transform:uppercase;letter-spacing:.12em}
-.ann-item{display:flex;gap:11px;padding:11px;border-radius:var(--r-el);margin-bottom:4px;font-size:14px}
-.ann-item:hover{background:var(--solid2)}
-.ann-item .iconify{color:var(--merah);font-size:19px;flex-shrink:0;margin-top:1px}
-.menu-link{display:flex;align-items:center;gap:12px;padding:13px 11px;border-radius:var(--r-el);font-weight:600;font-size:15px}
-.menu-link:hover{background:var(--solid2)}.menu-link .iconify{font-size:21px;color:var(--merah)}
 /* ============ HERO (Independence countdown) ============ */
 .hero{position:relative;overflow:hidden;margin:16px 20px 0;border-radius:var(--r-hero);background:linear-gradient(140deg,#ff3a3a 0%,#d41a1a 55%,#7d0f0f 100%);color:#fff;box-shadow:var(--sh-glow);max-width:var(--maxw)}
 @media(min-width:1080px){.hero{margin-left:auto;margin-right:auto}}
@@ -414,18 +397,8 @@ footer b{color:var(--ink2);font-weight:700}
 /* ===================== REVISI 2 — VISUAL & TEMA ===================== */
 
 /* --- Header: logo Karang Taruna + klik ke beranda --- */
-.hd-left{cursor:pointer;}
 .hd-ava{overflow:hidden;background:#fff!important;}
 .hd-ava img.hd-logo{width:100%;height:100%;object-fit:contain;padding:3px;display:block;}
-.icon-btn{background:var(--glass,rgba(255,255,255,.05))!important;border:1px solid var(--bd,rgba(255,255,255,.08))!important;color:var(--txt,inherit)!important;}
-.icon-btn .iconify{color:inherit!important;}
-
-/* --- Panel menu/notif: hilangkan merah-di-merah --- */
-.pop-panel{background:var(--solid,#141414)!important;border:1px solid var(--bd,rgba(255,255,255,.1))!important;box-shadow:0 18px 50px -22px rgba(0,0,0,.55)!important;}
-.pop-title{color:var(--muted,#8b9099);}
-.menu-link{color:var(--txt,inherit);}
-.menu-link .iconify,.ann-item .iconify{color:var(--merah,#ff2d2d);}
-.menu-link:hover{background:var(--glass,rgba(128,128,128,.12));}
 
 /* --- Chip kategori lomba: flat + titik (bukan pill gradient AI) --- */
 .lc-cat{display:inline-flex;align-items:center;gap:6px;background:var(--glass,rgba(128,128,128,.1))!important;border:1px solid var(--bd,rgba(128,128,128,.18))!important;color:var(--muted,#8b9099)!important;box-shadow:none!important;text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:999px;}
@@ -449,7 +422,6 @@ footer b{color:var(--ink2);font-weight:700}
 
 /* ===================== MODE TERANG: penyesuaian kontras ===================== */
 [data-theme="light"] .hd-ava{background:#fff!important;}
-[data-theme="light"] .icon-btn{background:rgba(0,0,0,.04)!important;border-color:rgba(0,0,0,.08)!important;color:#222!important;}
 [data-theme="light"] .pop-panel,
 [data-theme="light"] .sg-pop,
 [data-theme="light"] .bm-sheet{background:#fff!important;border-color:rgba(0,0,0,.08)!important;}
@@ -551,80 +523,21 @@ footer b{color:var(--ink2);font-weight:700}
 .lu-meta span{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);}
 .lu-meta .iconify{font-size:15px;color:var(--merah);flex:none;}
 /* ===================== SAFE-AREA / NOTCH + LINTAS-DEVICE PATCH ===================== */
-/* Header: beri ruang notch atas + notch samping (landscape) */
-.app-header{
-  height:calc(var(--hd-h) + env(safe-area-inset-top,0px));
-  padding-top:env(safe-area-inset-top,0px);
-  padding-left:calc(16px + env(safe-area-inset-left,0px));
-  padding-right:calc(16px + env(safe-area-inset-right,0px));
-}
-/* Dropdown notif/menu ikut turun mengikuti tinggi header baru */
-.pop-panel{ top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 8px); }
-/* Elemen mengambang: hindari home-indicator bawah */
-#fab{ bottom:calc(100px + env(safe-area-inset-bottom,0px)); }
-#toast{ bottom:calc(108px + env(safe-area-inset-bottom,0px)); }
 
-/* Fallback aman utk HP/browser lama yang belum dukung color-mix() (header/nav jadi solid, tidak transparan/bug) */
-@supports not (background:color-mix(in srgb,red 50%,blue)){
-  .app-header{ background:var(--bg0); }
-  #bnav{ background:var(--bg2); }
-}
+/* Elemen mengambang: hindari home-indicator bawah */
+#toast{ bottom:calc(108px + env(safe-area-inset-bottom,0px)); }
 
 /* Polish lintas device: cegah teks auto-zoom iOS, bounce aneh di standalone, & highlight tap */
 html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
 /* ===================== FINAL — SAFE-AREA (notch) + BOTTOM NAV standar (gesture & tombol, semua device) ===================== */
-/* Header turun di bawah notch atas */
-.app-header{
-  height:calc(var(--hd-h) + env(safe-area-inset-top,0px));
-  padding-top:env(safe-area-inset-top,0px);
-  padding-left:calc(16px + env(safe-area-inset-left,0px));
-  padding-right:calc(16px + env(safe-area-inset-right,0px));
-}
-.pop-panel{ top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 8px); }
-
-/* Bottom nav: bar penuh NEMPEL ke bawah (standar WhatsApp/Shopee) */
-#bnav{
-  left:0; right:0; bottom:0; transform:none;
-  width:100%; max-width:none; margin:0;
-  display:flex; align-items:center; justify-content:space-around; gap:0;
-  border:none; border-top:1px solid var(--bd); border-radius:0;
-  background:color-mix(in srgb,var(--bg0) 92%,transparent);
-  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
-  box-shadow:0 -6px 24px rgba(0,0,0,.32);
-  padding:8px 6px;
-  padding-bottom:max(8px, env(safe-area-inset-bottom,0px)); /* kunci: aman gesture iOS & tombol Android */
-}
-/* Semua item SERAGAM (hapus tombol tengah yang menonjol) */
-#bnav .bn-item,
-#bnav .bn-item:nth-child(3){
-  flex:1; margin:0; width:auto; height:auto;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
-  padding:4px 2px; border:none; border-radius:12px; box-shadow:none; background:none;
-  color:var(--muted); font-size:10.5px; font-weight:700; line-height:1.1; cursor:pointer;
-}
-#bnav .bn-item .iconify,
-#bnav .bn-item:nth-child(3) .iconify{
-  font-size:23px; color:inherit; background:none;
-  width:auto; height:auto; border-radius:0; display:inline-block; box-shadow:none; margin:0;
-}
-#bnav .bn-item:nth-child(3) .bn-lbl{ display:block; color:inherit; }
-#bnav .bn-item.active{ color:var(--merah); }
-#bnav .bn-item.active .iconify{ filter:drop-shadow(0 0 8px var(--merah-glow)); }
 
 /* FAB & toast naik di atas bar + area aman */
-#fab{ bottom:calc(94px + env(safe-area-inset-bottom,0px)); }
 #toast{ bottom:calc(102px + env(safe-area-inset-bottom,0px)); }
 
 /* Ruang konten agar tak ketutupan bar (mobile) */
 @media(max-width:1079px){ body{ padding-bottom:calc(66px + env(safe-area-inset-bottom,0px)); } }
-
-/* Fallback HP/browser lama tanpa color-mix() */
-@supports not (background:color-mix(in srgb,red 50%,blue)){
-  .app-header{ background:var(--bg0); }
-  #bnav{ background:var(--bg0); }
-}
 
 /* Polish lintas device */
 html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
@@ -798,19 +711,6 @@ body{ overscroll-behavior-y:none; }
   box-shadow:var(--sh)!important;
 }
 .balance::after{ display:none!important; } /* buang gumpalan glow merah */
-
-/* A3 — FAB & header rata (buang efek kaca/blur) */
-#fab{
-  background:var(--bg2)!important;
-  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
-  border:1px solid var(--bd)!important;
-  box-shadow:var(--sh)!important;
-}
-.app-header{
-  background:var(--bg0)!important;
-  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
-}
-/* ===== UI FLAT POLISH v3 — END ===== */
 
 /* ===== REDESIGN INDEX v3 — UKURAN PERSIS WIREFRAME ===== */
 /* GLOBAL */
