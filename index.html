@@ -975,81 +975,69 @@ body{ overscroll-behavior-y:none; }
   margin-left:max(14px, calc((100% - var(--maxw)) / 2 + 14px))!important;
   margin-right:max(14px, calc((100% - var(--maxw)) / 2 + 14px))!important;
 }
-/* ===== SCREEN 02 — REFERENCE MATCH (ref 02+03) — START ===== */
-/* Flat: matikan glass/blur */
-#pengumuman .glass, #keuangan .glass, #keuangan .balance, #rekap .card{
-  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
-}
-#keuangan .sec-head, #pengumuman .sec-head{margin-bottom:10px!important}
-#keuangan .sec-title, #pengumuman .sec-title{font-size:18px!important;font-weight:700!important}
+/* ============================================================
+   SCREEN 02 — KEUANGAN & REKAP  (SATU-SATUNYA blok; hapus patch lama)
+   ============================================================ */
+/* Umum: flat & rapat */
+#pengumuman .glass,#keuangan .glass,#keuangan .balance,#rekap .card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#keuangan>.sec-head,#pengumuman .sec-head{margin-bottom:10px!important}
+#keuangan>.sec-head .sec-title,#pengumuman .sec-title{font-size:18px!important;font-weight:700!important}
 
-/* PENGUMUMAN — kartu merah */
+/* PENGUMUMAN: kartu merah */
 #pengumuman #annFeed{display:flex;flex-direction:column;gap:10px}
-#pengumuman #annFeed > *{background:#E53935!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
-#pengumuman #annFeed > *, #pengumuman #annFeed *{color:#fff!important}
+#pengumuman #annFeed>*{background:#E53935!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
+#pengumuman #annFeed>*,#pengumuman #annFeed *{color:#fff!important}
 
-/* SALDO KAS — merah & dangkal */
+/* SALDO KAS: merah, dangkal */
 #keuangan .balance{background:#E53935!important;color:#fff!important;border:none!important;border-radius:18px!important;padding:12px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
 #keuangan .balance .bal-l{color:rgba(255,255,255,.92)!important;font-size:12px!important;font-weight:700!important;display:flex;align-items:center;gap:6px}
 #keuangan .balance .bal-amt{color:#fff!important;font-size:23px!important;font-weight:700!important;line-height:1.1;margin-top:2px!important}
 #keuangan .balance .bal-sub{color:rgba(255,255,255,.85)!important;font-size:11px!important;margin-top:2px!important}
 #keuangan .balance .iconify{color:#fff!important}
 
-/* STATISTIK — kecil & padat */
+/* STATISTIK: kartu putih kecil & padat */
 #keuangan .kpi-grid{gap:10px!important;margin-top:12px!important}
 #keuangan .kpi{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:14px!important;padding:12px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important}
-#keuangan .kpi .kpi-ic{width:30px!important;height:30px!important;font-size:17px!important;border-radius:9px!important;margin-bottom:8px!important}
+#keuangan .kpi .kpi-ic{width:30px!important;height:30px!important;display:flex;align-items:center;justify-content:center;font-size:17px!important;border-radius:9px!important;margin-bottom:8px!important}
 #keuangan .kpi .kpi-v{font-size:17px!important;font-weight:700!important;line-height:1.05}
 #keuangan .kpi .kpi-l{font-size:11px!important;margin-top:2px!important}
 
-/* RINGKASAN ARUS — kartu MERAH, chart putih, tidak tinggi */
+/* RINGKASAN ARUS: kartu MERAH, chart putih, tidak tinggi */
 #keuangan .chart-card{background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px!important;margin-top:12px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
-#keuangan .chart-card .sec-head *{color:#fff!important}
+#keuangan .chart-card .sec-head{margin:0 0 10px!important;display:flex;align-items:center;justify-content:space-between}
+#keuangan .chart-card .sec-head>div{color:#fff!important}            /* judul putih, BUKAN tombol */
 #keuangan .chart-card .chart-wrap{background:#fff!important;border-radius:14px!important;padding:8px!important}
 #keuangan .chart-card .chart-x{color:rgba(255,255,255,.92)!important;font-size:11px!important;margin-top:6px!important}
-#keuangan #frefresh{
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:6px!important;
-  background:#fff!important;color:#E53935!important;border:none!important;
-  border-radius:999px!important;padding:6px 12px!important;
-  font-size:12px!important;font-weight:700!important;line-height:1!important;
-}
-#keuangan #frefresh .iconify{font-size:14px!important;flex:none!important}
 
-/* MUTASI — kartu putih rounded besar */
+/* Refresh: pill putih, IKON MERAH terlihat di kiri teks */
+#keuangan #frefresh{display:inline-flex!important;align-items:center!important;gap:6px!important;background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important;padding:6px 12px!important;font-size:12px!important;font-weight:700!important;line-height:1!important}
+#keuangan #frefresh .iconify{width:15px!important;height:15px!important;font-size:15px!important;color:#E53935!important;flex:0 0 auto!important}
+
+/* MUTASI: kartu putih rounded besar, tab aktif hijau */
 #keuangan .sec{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:22px!important;padding:14px!important;margin-top:14px!important;box-shadow:0 6px 16px rgba(0,0,0,.05)!important}
 #keuangan .tabs{gap:8px!important;margin-bottom:12px!important}
-#keuangan .tab{border-radius:999px!important;font-weight:800!important;font-size:14px!important;padding:10px 16px!important}
+#keuangan .tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px!important;font-weight:800!important;font-size:14px!important;padding:10px 16px!important}
 #keuangan .tab:not(.on){background:#ededed!important;color:#333!important;border-color:transparent!important}
 #keuangan .tab.masuk.on{background:#34c759!important;color:#fff!important;border-color:transparent!important}
 #keuangan .tab.keluar.on{background:#E53935!important;color:#fff!important;border-color:transparent!important}
-#keuangan #btnExport{background:#E53935!important;color:#fff!important;border:none!important;border-radius:999px!important;padding:7px 16px!important;font-size:12px!important;font-weight:700!important}
+#keuangan #btnExport{display:inline-flex;align-items:center;gap:6px;background:#E53935!important;color:#fff!important;border:none!important;border-radius:999px!important;padding:7px 16px!important;font-size:12px!important;font-weight:700!important}
 
-/* Toggle Nama / Blok-Alamat — selalu kontras, tidak menyatu dgn merah */
-#rekap .card button:not(.cek-btn){
-  background:#fff!important;
-  color:#E53935!important;
-  border:none!important;
-  border-radius:999px!important;
-  font-weight:800!important;
-  padding:10px 14px!important;
-  opacity:1!important;
-  box-shadow:0 2px 6px rgba(0,0,0,.12)!important;
-}
+/* CEK STATUS IURAN: kartu merah, input & toggle pill putih */
+#rekap .card{background:#E53935!important;border:none!important;border-radius:20px!important;padding:16px!important;margin-bottom:12px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
+#rekap .card .eyebrow{color:#fff!important}
+#rekap .card .cek-wrap{gap:8px!important}
+#rekap .card .cek-input{background:#fff!important;border:none!important;border-radius:999px!important;padding:12px 16px!important;color:#333!important}
+#rekap .card .cek-btn{background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important}
+#rekap .card .cek-btn .iconify{color:#E53935!important}
+#rekap .card #cekHasil,#rekap .card .cek-empty{color:#fff!important}
+#rekap .card button:not(.cek-btn){background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important;font-weight:800!important;padding:10px 14px!important;opacity:1!important;box-shadow:0 2px 6px rgba(0,0,0,.12)!important}
 #rekap .card button:not(.cek-btn) .iconify{color:#E53935!important}
-/* Penanda aktif */
-#rekap .card button:not(.cek-btn).on,
-#rekap .card button:not(.cek-btn).active,
-#rekap .card button:not(.cek-btn)[aria-selected="true"]{
-  box-shadow:0 0 0 2px #fff, 0 4px 10px rgba(0,0,0,.18)!important;
-}
+#rekap .card button:not(.cek-btn).on,#rekap .card button:not(.cek-btn).active,#rekap .card button:not(.cek-btn)[aria-selected="true"]{box-shadow:0 0 0 2px #fff,0 4px 10px rgba(0,0,0,.18)!important}
 
 /* SEARCH REKAP */
 #rekap .search-bar{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important;margin:12px 0!important}
 #rekap .rekap-sum{margin:12px 0!important}
-/* ===== SCREEN 02 — REFERENCE MATCH — END ===== */
+/* ============================================================ */
 </style>
 </head>
 <body>
