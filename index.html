@@ -1476,11 +1476,33 @@ function txItem(it,masuk){
  let cb='lain';if(kn.includes('konsum')||kn.includes('makan'))cb='konsumsi';else if(kn.includes('hadiah')||kn.includes('juara'))cb='hadiah';else if(kn.includes('perleng')||kn.includes('alat')||kn.includes('sewa'))cb='perlengkapan';
  return '<div class="txn"><div class="txn-ic '+(masuk?'in':'out')+'"><span class="iconify" data-icon="'+(masuk?'solar:arrow-down-bold':'solar:arrow-up-bold')+'"></span></div><div class="txn-main"><div class="txn-t">'+esc(lbl)+'</div><div class="txn-d">'+(kat?'<span class="cat-badge '+cb+'">'+esc(kat)+'</span> ':'')+fmtTgl(tgl)+'</div></div><div class="txn-v '+(masuk?'in':'out')+'">'+(masuk?'+':'−')+rp(v)+'</div></div>';
 }
+/* ===== MUTASI RINGKAS — 5 terbaru (urut terbaru dulu) + tombol "Lihat semua" ===== */
+var _txnExpand={masuk:false,keluar:false};
+function _txnSort(arr){
+  return arr.slice().sort(function(a,b){
+    var da=parseDate(getF(a,['tanggal','tgl','date','waktu','timestamp']));
+    var db=parseDate(getF(b,['tanggal','tgl','date','waktu','timestamp']));
+    return (db?db.getTime():0)-(da?da.getTime():0);
+  });
+}
+function _txnPane(elId,arr,masuk,key){
+  var el=$(elId);if(!el)return;
+  if(!arr||!arr.length){el.innerHTML='<div class="tbl-empty">'+(masuk?'Belum ada pemasukan.':'Belum ada pengeluaran.')+'</div>';return;}
+  var sorted=_txnSort(arr),LIMIT=5,exp=_txnExpand[key];
+  var show=exp?sorted.slice(0,40):sorted.slice(0,LIMIT);
+  var html=show.map(function(it){return txItem(it,masuk);}).join('');
+  if(sorted.length>LIMIT){
+    html+='<button type="button" class="txn-more" style="width:100%;margin-top:12px;padding:11px;border:1px solid var(--bd2);background:var(--glass-2);color:var(--merah);font-weight:700;font-size:13px;border-radius:var(--r-el);cursor:pointer;font-family:inherit">'
+      +(exp?'Tampilkan lebih sedikit':('Lihat semua ('+sorted.length+')'))+'</button>';
+  }
+  el.innerHTML=html;
+  var btn=el.querySelector('.txn-more');
+  if(btn)btn.onclick=function(){_txnExpand[key]=!_txnExpand[key];_txnPane(elId,arr,masuk,key);scan();};
+}
 function renderTxn(){
- const m=$('tbMasuk'),k=$('tbKeluar');
- if(m)m.innerHTML=_pem.length?_pem.slice(0,40).map(it=>txItem(it,true)).join(''):'<div class="tbl-empty">Belum ada pemasukan.</div>';
- if(k)k.innerHTML=_pen.length?_pen.slice(0,40).map(it=>txItem(it,false)).join(''):'<div class="tbl-empty">Belum ada pengeluaran.</div>';
- scan();
+  _txnPane('tbMasuk',_pem,true,'masuk');
+  _txnPane('tbKeluar',_pen,false,'keluar');
+  scan();
 }
 function isLunasItem(it){const st=norm(getF(it,['status','lunas','keterangan','ket'])||'');if(st.includes('belum'))return false;if(st.includes('lunas')||st.includes('bayar')||st==='ya'||st==='true')return true;return num(getF(it,['terbayar','dibayar','jumlah','nominal']))>=TARGET;}
 function buildChart(){
