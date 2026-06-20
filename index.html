@@ -917,6 +917,16 @@ body{ overscroll-behavior-y:none; }
 .kpi-grid.stat3 .kpi-v{font-size:14px!important;line-height:1}
 .kpi-grid.stat3 .kpi-l{font-size:9px!important;margin-top:3px!important}
 /* ===== SCREEN 01 HOME — END ===== */
+/* Distribusi Peserta */
+.dist-card{display:flex;flex-direction:column;justify-content:center;gap:7px}
+.dp-row{display:flex;align-items:center;gap:8px}
+.dp-lbl{font-size:9.5px;font-weight:700;color:var(--ink2);flex:0 0 56px}
+.dp-track{flex:1;height:7px;border-radius:99px;background:var(--bg0);overflow:hidden}
+.dp-bar{display:block;height:100%;width:0;border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.dp-bar.olah{background:#EE1C25}
+.dp-bar.anak{background:#FF8A8A}
+.dp-bar.seni{background:#9A1014}
+.dp-num{font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;flex:0 0 auto;min-width:14px;text-align:right}
 </style>
 </head>
 <body>
@@ -1068,11 +1078,12 @@ body{ overscroll-behavior-y:none; }
       <div class="prog" id="iuranProg"><i id="iuranBar" style="width:0"></i></div>
       <div class="iuran-nom" id="iuranNom"><span class="t">Memuat…</span></div>
     </div>
-    <div class="mini glass">
-      <div class="eyebrow">Saldo Kas RT 08</div>
-      <div class="info-amt" id="kSaldoTop">Rp0</div>
-      <div class="info-sub" id="kSaldoTopSub">Memuat data…</div>
-    </div>
+    <div class="mini glass dist-card">
+  <div class="eyebrow">Distribusi Peserta</div>
+  <div class="dp-row"><span class="dp-lbl">Olahraga</span><span class="dp-track"><i id="dpbOlah" class="dp-bar olah"></i></span><b class="dp-num" id="dpOlah">0</b></div>
+  <div class="dp-row"><span class="dp-lbl">Anak</span><span class="dp-track"><i id="dpbAnak" class="dp-bar anak"></i></span><b class="dp-num" id="dpAnak">0</b></div>
+  <div class="dp-row"><span class="dp-lbl">Pentas Seni</span><span class="dp-track"><i id="dpbSeni" class="dp-bar seni"></i></span><b class="dp-num" id="dpSeni">0</b></div>
+</div>
   </div>
 </section>
 <!-- ===== 3 KARTU STATISTIK ===== -->
@@ -2196,18 +2207,32 @@ if('serviceWorker' in navigator){
 <!-- ===== INFOGRAFIS SALDO — cermin nilai Saldo Kas ke kartu atas (display saja) ===== -->
 <script>
 (function(){
-  function mirror(){
-    var s=document.getElementById('kSaldo'),t=document.getElementById('kSaldoTop');
-    if(s&&t&&t.textContent!==s.textContent)t.textContent=s.textContent;
-    var ss=document.getElementById('kSaldoSub'),ts=document.getElementById('kSaldoTopSub');
-    if(ss&&ts&&ts.textContent!==ss.textContent)ts.textContent=ss.textContent;
+  var API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
+  function catOf(r){
+    var v='';for(var k in r){if(/jenis|kategori|lomba|cabang|cat/i.test(k)&&r[k]!=null){v+=' '+r[k];}}
+    v=(''+v).toLowerCase();
+    if(/anak|balita/.test(v))return 'anak';
+    if(/seni|pentas/.test(v))return 'seni';
+    if(/olah|voli|futsal|tenis/.test(v))return 'olah';
+    return '';
   }
-  ['kSaldo','kSaldoSub'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el&&window.MutationObserver)new MutationObserver(mirror).observe(el,{childList:true,characterData:true,subtree:true});
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mirror);else mirror();
-  [600,1500,3000,6000].forEach(function(d){setTimeout(mirror,d);});
+  function paint(c){
+    var max=Math.max(c.olah,c.anak,c.seni,1);
+    var put=function(numId,barId,val){var n=document.getElementById(numId),b=document.getElementById(barId);if(n)n.textContent=val;if(b)b.style.width=Math.round(val/max*100)+'%';};
+    put('dpOlah','dpbOlah',c.olah);put('dpAnak','dpbAnak',c.anak);put('dpSeni','dpbSeni',c.seni);
+  }
+  function run(){
+    try{
+      fetch(API+'?aksi=peserta',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+        var rows=Array.isArray(d)?d:((d&&(d.data||d.peserta||d.rows||d.result||d.list))||[]);
+        if(!Array.isArray(rows))return;
+        var c={olah:0,anak:0,seni:0};
+        rows.forEach(function(r){if(r&&typeof r==='object'){var k=catOf(r);if(k)c[k]++;}});
+        paint(c);
+      }).catch(function(){});
+    }catch(e){}
+  }
+  if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run);
 })();
 </script>
 </body>
