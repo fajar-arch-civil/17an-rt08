@@ -815,72 +815,58 @@ body{ overscroll-behavior-y:none; }
 }
 /* ===== UI FLAT POLISH v3 — END ===== */
 
-/* ===== REDESIGN INDEX v1 — tata letak Beranda (layout & ukuran saja) ===== */
-/* Cuaca full-width (melebar ke samping) */
-.cu-wide{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px}
-.cu-wide .cu-top{flex:1 1 200px;min-width:0}
-.cu-wide .cu-meta{margin-top:0;flex:2 1 260px;justify-content:flex-end}
-.cu-wide .cu-updated{flex-basis:100%;margin-top:2px}
-@media(max-width:520px){.cu-wide .cu-meta{justify-content:flex-start;flex-basis:100%}}
-/* Banner hitung mundur (terpisah, di bawah cuaca) */
-.cd-banner{background:linear-gradient(160deg,#F0202A 0%,#D81621 100%);border-radius:var(--r-card);padding:16px 14px;color:#fff;box-shadow:0 12px 26px -16px rgba(216,22,33,.42)}
-.cd-banner-head{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;letter-spacing:.02em;opacity:.95;margin-bottom:12px}
-.cd-banner-head .iconify{font-size:16px}
-.cd-banner .count-wrap{margin-top:0}
-/* Kartu infografis Saldo */
-.info-amt{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-top:8px;font-variant-numeric:tabular-nums;color:var(--ink)}
-.info-sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:8px}
-/* ===== REDESIGN INDEX v1 — END ===== */
-/* ===== REDESIGN INDEX v2 — UKURAN PADAT (proporsi wireframe) ===== */
-/* Jarak antar-section & gutter lebih rapat */
-.wrap{padding:0 14px!important}
+/* ===== REDESIGN INDEX v3 — UKURAN PERSIS WIREFRAME ===== */
+/* GLOBAL */
+.wrap{padding-left:14px!important;padding-right:14px!important}
 .sec{margin-top:14px!important}
 .sec-head{margin:0 2px 8px!important}
 .sec-title{font-size:15px!important}
 .sec-title .iconify{font-size:17px!important}
-.sec-act{font-size:12px!important}
-/* HERO ringkas */
-.hero{margin:12px 14px 0!important;border-radius:20px!important}
-.hero-inner{padding:15px 15px 16px!important}
-.hero-eyebrow{font-size:10px!important;padding:5px 11px!important}
-.hero-title{font-size:18px!important;line-height:1.2!important;margin:8px 0 3px!important}
-.hero-sub{font-size:11.5px!important}
-.hero-btn{margin-top:12px!important;padding:11px!important;font-size:13px!important;border-radius:12px!important}
-/* CUACA full-width — lebih pendek & rapat */
-.cu-wide{padding:12px 14px!important;gap:8px 18px!important}
-.cu-temp{font-size:22px!important}
-.cu-lbl{font-size:11.5px!important}
-.cu-ic .iconify{font-size:36px!important}
-.cu-meta{margin-top:0!important}
-.cu-chip{font-size:10px!important;padding:3px 8px!important}
-.cu-updated{font-size:10px!important;margin-top:2px!important}
-/* HITUNG MUNDUR — banner padat */
-.cd-banner{padding:12px!important;border-radius:18px!important}
-.cd-banner-head{font-size:11.5px!important;margin-bottom:9px!important}
-.count-wrap{gap:7px!important}
-.cbox{padding:8px 4px!important;border-radius:12px!important}
-.cbox b{font-size:20px!important}
-.cbox span{font-size:9px!important;margin-top:5px!important}
-.csep{font-size:18px!important}
-/* FOTO/GALERI — landscape (lebih lebar & pendek) */
-.photo{aspect-ratio:16/9!important}
-.photo .cap{font-size:12px!important;padding:24px 14px 12px!important}
-/* 2 INFOGRAFIS + 3 DATA — kartu & teks lebih kecil, kolom rapat */
-.duo{gap:8px!important}
-.kpi-grid{gap:8px!important}
-.mini{padding:12px!important}
-.kpi{padding:12px!important}
-.kpi-ic{width:34px!important;height:34px!important;font-size:17px!important;margin-bottom:8px!important;border-radius:11px!important}
-.kpi-v{font-size:18px!important}
-.kpi-l{font-size:11px!important;margin-top:2px!important}
+/* HERO — tinggi 130, judul+tombol sebaris, deskripsi di bawah */
+.hero{min-height:130px!important;border-radius:20px!important;margin:12px 14px 0!important}
+.hero-inner{padding:20px!important;min-height:130px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.hero-title{font-size:22px!important;line-height:1.15!important;margin:0!important;flex:1}
+.hero-desc{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.hero-eyebrow{font-size:12px!important;padding:4px 10px!important}
+.hero-sub{font-size:14px!important;line-height:20px!important;margin:0!important;opacity:.9}
+.hero-btn{flex:0 0 auto;width:auto!important;height:44px!important;padding:0 24px!important;border-radius:999px!important;font-size:16px!important;margin:0!important}
+/* CUACA — tinggi 56, satu baris */
+.cu-wide{height:56px!important;min-height:56px!important;border-radius:16px!important;padding:0 14px!important;display:flex!important;align-items:center;gap:12px;flex-wrap:nowrap!important}
+.cu-wide .cu-top{flex:0 0 auto}
+.cu-ic .iconify{font-size:32px!important}
+.cu-temp{font-size:20px!important;line-height:1.05}
+.cu-lbl{font-size:12px!important;margin-top:1px!important}
+.cu-wide .cu-meta{margin-top:0!important;flex:1;justify-content:flex-end;overflow:hidden;flex-wrap:nowrap}
+.cu-updated{display:none!important}
+/* COUNTDOWN — banner 140, 4 box 78x58 */
+.cd-banner{min-height:140px!important;border-radius:18px!important;padding:16px!important;color:#fff;background:linear-gradient(160deg,#F0202A 0%,#D81621 100%);box-shadow:0 12px 26px -16px rgba(216,22,33,.42);display:flex;align-items:center}
+.cd-banner-head{display:none!important}
+.cd-banner .count-wrap{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;margin:0!important;width:100%}
+.csep{display:none!important}
+.cbox{height:58px!important;border-radius:12px!important;padding:0!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center}
+.cbox b{font-size:20px!important;font-weight:700!important}
+.cbox span{font-size:10px!important;margin-top:3px!important;letter-spacing:.06em!important}
+/* FOTO — landscape 2.3/1 */
+.carousel{border-radius:18px!important}
+.photo{aspect-ratio:2.3/1!important}
+/* 2 INFOGRAFIS — card 120, gap 12 */
+.duo{gap:12px!important}
+.mini{min-height:120px!important;border-radius:18px!important;padding:14px!important}
 .eyebrow{font-size:11px!important}
 .iuran-pct{font-size:24px!important}
 .iuran-cap{font-size:10px!important}
-.iuran-nom{font-size:11.5px!important;margin-top:9px!important}
-.prog{height:8px!important;margin-top:10px!important}
-.info-amt{font-size:22px!important}
-.info-sub{font-size:11px!important;margin-top:6px!important}
-/* ===== REDESIGN INDEX v2 — END ===== */
+.iuran-nom{font-size:11px!important;margin-top:8px!important}
+.prog{height:8px!important;margin-top:9px!important}
+.info-amt{font-size:22px!important;font-weight:800;letter-spacing:-.03em;margin-top:6px!important;font-variant-numeric:tabular-nums;color:var(--ink)}
+.info-sub{font-size:11px!important;color:var(--muted);font-weight:600;margin-top:6px!important}
+/* 3 STATISTIK — card 95 (hanya grid 3 kolom; Keuangan tidak terpengaruh) */
+.kpi-grid[style*="repeat(3,1fr)"]{gap:10px!important}
+.kpi-grid[style*="repeat(3,1fr)"] .kpi{min-height:95px!important;border-radius:14px!important;padding:12px!important;display:flex;flex-direction:column;justify-content:center}
+.kpi-grid[style*="repeat(3,1fr)"] .kpi-ic{width:28px!important;height:28px!important;font-size:16px!important;margin-bottom:6px!important;border-radius:9px!important}
+.kpi-grid[style*="repeat(3,1fr)"] .kpi-v{font-size:18px!important}
+.kpi-grid[style*="repeat(3,1fr)"] .kpi-l{font-size:11px!important;margin-top:2px!important}
+/* ===== REDESIGN INDEX v3 — END ===== */
 </style>
 </head>
 <body>
@@ -973,11 +959,15 @@ body{ overscroll-behavior-y:none; }
 <header class="hero" id="top">
   <div class="hero-deco"></div><div class="hero-flag"></div><div class="hero-spark"></div>
   <div class="hero-inner">
-    <span class="hero-eyebrow">Dirgahayu RI ke-81 · RT 08</span>
+  <div class="hero-top">
     <h1 class="hero-title">Menuju HUT Kemerdekaan RI ke-81</h1>
-    <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
-    <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold" data-width="30"></span> Klik Untuk Pendaftaran Lomba</button>
+    <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})">Daftar</button>
   </div>
+  <div class="hero-desc">
+    <span class="hero-eyebrow">Dirgahayu RI ke-81 · RT 08</span>
+    <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
+  </div>
+</div>
 </header>
 
 <main class="wrap">
