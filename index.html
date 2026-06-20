@@ -867,6 +867,56 @@ body{ overscroll-behavior-y:none; }
 .kpi-grid[style*="repeat(3,1fr)"] .kpi-v{font-size:18px!important}
 .kpi-grid[style*="repeat(3,1fr)"] .kpi-l{font-size:11px!important;margin-top:2px!important}
 /* ===== REDESIGN INDEX v3 — END ===== */
+/* ===== SCREEN 01 HOME — UKURAN PERSIS (FINAL) ===== */
+:root{--bg0:#D9D9D9}
+.wrap{padding-left:14px!important;padding-right:14px!important}
+.sec{margin-top:14px!important}
+/* HERO 112 / radius20 / pad16 — konten kiri, tombol kanan-bawah */
+.hero{min-height:112px!important;border-radius:20px!important;margin:14px 14px 0!important}
+.hero-inner{position:relative!important;padding:16px!important;min-height:112px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.hero-eyebrow{display:none!important}
+.hero-text{max-width:62%}
+.hero-title{font-size:14px!important;line-height:1.15!important;margin:0 0 5px!important;max-width:100%!important}
+.hero-sub{font-size:11px!important;line-height:14px!important;opacity:.92}
+.hero-btn{position:absolute!important;right:16px!important;bottom:16px!important;width:auto!important;margin:0!important;height:34px!important;padding:0 18px!important;border-radius:18px!important;font-size:12.5px!important;gap:6px!important}
+.hero-btn .iconify{font-size:15px!important}
+/* CUACA 36 / radius16 — center, 1 baris */
+.cu-wide{height:36px!important;min-height:36px!important;border-radius:16px!important;padding:0 14px!important;display:flex!important;align-items:center;justify-content:center;gap:8px;overflow:hidden}
+.cu-wide .cu-top{display:flex;align-items:center;gap:8px}
+.cu-wide .cu-ic .iconify{font-size:22px!important}
+.cu-wide .cu-temp{font-size:14px!important;line-height:1}
+.cu-wide .cu-lbl{font-size:11px!important;margin-top:0!important;color:var(--muted)}
+.cu-wide .cu-meta,.cu-wide .cu-updated{display:none!important}
+/* COUNTDOWN 96 / radius18 — merah, 4 box 73x45 */
+.cd-banner{min-height:96px!important;border-radius:18px!important;padding:10px 12px!important;color:#fff;background:linear-gradient(150deg,#FF3A3A 0%,#D81621 60%,#B11217 100%);box-shadow:0 12px 26px -16px rgba(216,22,33,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.cd-head{text-align:center;line-height:1.1}
+.cd-title{font-size:11px;font-weight:800}
+.cd-sub{font-size:9px;opacity:.85;font-weight:600;margin-top:2px}
+.cd-banner .count-wrap{display:flex!important;justify-content:center;gap:7px!important;margin:0!important;width:auto}
+.cd-banner .cbox{flex:0 0 auto!important;width:73px!important;height:45px!important;border-radius:10px!important;padding:0!important;background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.22)!important;backdrop-filter:none!important;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cd-banner .cbox b{font-size:18px!important;font-weight:800!important;line-height:1}
+.cd-banner .cbox span{font-size:8px!important;margin-top:3px!important;letter-spacing:.08em!important;opacity:.85}
+.cd-banner .csep{display:none!important}
+/* FOTO 365x132 (2.76:1) / radius16 */
+.carousel{border-radius:16px!important}
+.photo{aspect-ratio:2.76/1!important}
+/* 2 INFOGRAFIS — card 177x105 / radius20 / gap11 */
+.duo{gap:11px!important}
+.duo .mini{min-height:105px!important;border-radius:20px!important;padding:12px!important}
+.eyebrow{font-size:10px!important}
+.iuran-pct{font-size:20px!important}
+.iuran-cap{font-size:9px!important}
+.prog{height:7px!important;margin-top:8px!important}
+.iuran-nom{font-size:10px!important;margin-top:7px!important}
+.info-amt{font-size:20px!important;font-weight:800;letter-spacing:-.03em;margin-top:8px;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1}
+.info-sub{font-size:10px!important;color:var(--muted);font-weight:600;margin-top:7px}
+/* 3 STATISTIK — panel + 3 card 92x65 / radius18 */
+.kpi-grid.stat3{display:flex!important;justify-content:center;gap:12px!important;background:var(--bg2);border:1px solid var(--bd);border-radius:20px!important;box-shadow:var(--sh);padding:14px 10px!important}
+.kpi-grid.stat3 .kpi{flex:0 0 92px!important;width:92px!important;height:65px!important;min-height:65px!important;border-radius:18px!important;padding:8px 4px!important;background:var(--bg0)!important;border:none!important;box-shadow:none!important;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.kpi-grid.stat3 .kpi-ic{width:24px!important;height:24px!important;font-size:14px!important;margin-bottom:4px!important;border-radius:8px!important}
+.kpi-grid.stat3 .kpi-v{font-size:14px!important;line-height:1}
+.kpi-grid.stat3 .kpi-l{font-size:9px!important;margin-top:3px!important}
+/* ===== SCREEN 01 HOME — END ===== */
 </style>
 </head>
 <body>
@@ -954,26 +1004,9 @@ body{ overscroll-behavior-y:none; }
   <a class="menu-link" href="#daftar"><span class="iconify" data-icon="solar:document-add-bold"></span> Pendaftaran</a>
   <a class="menu-link" href="lomba.html"><span class="iconify" data-icon="solar:cup-star-bold"></span> Perlombaan</a>
 </div>
-
-<!-- ============ HERO COUNTDOWN ============ -->
-<header class="hero" id="top">
-  <div class="hero-deco"></div><div class="hero-flag"></div><div class="hero-spark"></div>
-  <div class="hero-inner">
-  <div class="hero-top">
-    <h1 class="hero-title">Menuju HUT Kemerdekaan RI ke-81</h1>
-    <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})">Daftar</button>
-  </div>
-  <div class="hero-desc">
-    <span class="hero-eyebrow">Dirgahayu RI ke-81 · RT 08</span>
-    <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
-  </div>
-</div>
-</header>
-
-<main class="wrap">
- <!-- ===== CUACA (full-width) ===== -->
+<!-- ===== CUACA (full width) ===== -->
 <section class="sec">
-  <div class="mini glass cu-anim cu-wide" id="cuacaBox">
+  <div class="mini glass cu-wide" id="cuacaBox">
     <div class="cu-top">
       <div class="cu-ic"><span class="iconify" id="cuIcon" data-icon="meteocons:clear-day-fill"></span></div>
       <div>
@@ -985,22 +1018,22 @@ body{ overscroll-behavior-y:none; }
     <div class="cu-updated"><span class="cu-live"></span><span id="cuUpdated">—</span></div>
   </div>
 </section>
-<!-- ===== HITUNG MUNDUR (banner terpisah) ===== -->
+<!-- ===== COUNTDOWN HUT RI ===== -->
 <section class="sec">
   <div class="cd-banner">
-    <div class="cd-banner-head"><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Menuju 17 Agustus 2026</div>
+    <div class="cd-head">
+      <div class="cd-title">Hitung Mundur HUT RI ke-81</div>
+      <div class="cd-sub">Menuju 17 Agustus 2026</div>
+    </div>
     <div class="count-wrap" id="countBox">
       <div class="cbox"><b id="cD">0</b><span>Hari</span></div>
-      <div class="csep">:</div>
       <div class="cbox"><b id="cH">0</b><span>Jam</span></div>
-      <div class="csep">:</div>
       <div class="cbox"><b id="cM">0</b><span>Menit</span></div>
-      <div class="csep">:</div>
       <div class="cbox"><b id="cS">0</b><span>Detik</span></div>
     </div>
   </div>
 </section>
-<!-- ===== GALERI CAROUSEL (foto full-width) ===== -->
+<!-- ===== FOTO KEGIATAN ===== -->
 <section class="sec" id="galeri">
   <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:gallery-wide-bold"></span> Galeri</div><button class="sec-act" id="seeAll">Lihat Semua <span class="iconify" data-icon="solar:arrow-right-linear"></span></button></div>
   <div class="carousel">
@@ -1010,12 +1043,12 @@ body{ overscroll-behavior-y:none; }
   </div>
   <div id="dots"></div>
 </section>
-<!-- ===== 2 KARTU INFOGRAFIS (Iuran + Saldo) ===== -->
+<!-- ===== 2 KARTU INFOGRAFIS ===== -->
 <section class="sec">
   <div class="duo">
     <div class="mini glass">
       <div class="eyebrow">Iuran Terkumpul</div>
-      <div class="iuran-top" style="margin-top:10px">
+      <div class="iuran-top" style="margin-top:8px">
         <div class="iuran-pct" id="iuranPct">0%</div>
         <div class="iuran-cap" id="iuranCap">Target<br>Rp50rb/KK</div>
       </div>
@@ -1029,9 +1062,9 @@ body{ overscroll-behavior-y:none; }
     </div>
   </div>
 </section>
-<!-- ===== 3 KARTU DATA (KK Bayar · Peserta · Lomba Aktif) ===== -->
+<!-- ===== 3 KARTU STATISTIK ===== -->
 <section class="sec">
-  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="kpi-grid stat3" style="grid-template-columns:repeat(3,1fr)">
     <div class="kpi glass info"><div class="kpi-ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></div><div class="kpi-v" id="kKK">0</div><div class="kpi-l">KK Bayar</div></div>
     <div class="kpi glass"><div class="kpi-ic"><span class="iconify" data-icon="solar:user-plus-bold"></span></div><div class="kpi-v" id="kPeserta">0</div><div class="kpi-l">Peserta</div></div>
     <div class="kpi glass warn"><div class="kpi-ic"><span class="iconify" data-icon="solar:cup-star-bold"></span></div><div class="kpi-v" id="kLombaAktif">0</div><div class="kpi-l">Lomba Aktif</div></div>
@@ -2162,6 +2195,20 @@ if('serviceWorker' in navigator){
   });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mirror);else mirror();
   [600,1500,3000,6000].forEach(function(d){setTimeout(mirror,d);});
+})();
+</script>
+<script>
+(function(){
+  function mirror(){
+    var s=document.getElementById('kSaldo'),t=document.getElementById('kSaldoTop');
+    if(s&&t)t.textContent=s.textContent;
+    var ss=document.getElementById('kSaldoSub'),ts=document.getElementById('kSaldoTopSub');
+    if(ss&&ts)ts.textContent=ss.textContent;
+  }
+  var src=document.getElementById('kSaldo');
+  if(src&&window.MutationObserver)new MutationObserver(mirror).observe(src,{childList:true,characterData:true,subtree:true});
+  [600,1500,3000,6000].forEach(function(ms){setTimeout(mirror,ms)});
+  document.addEventListener('DOMContentLoaded',mirror);
 })();
 </script>
 </body>
