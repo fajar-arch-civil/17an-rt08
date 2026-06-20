@@ -975,6 +975,57 @@ body{ overscroll-behavior-y:none; }
   margin-left:max(14px, calc((100% - var(--maxw)) / 2 + 14px))!important;
   margin-right:max(14px, calc((100% - var(--maxw)) / 2 + 14px))!important;
 }
+/* ===== SCREEN 02 — KEUANGAN & REKAP (UI re-skin, CSS-only) — START ===== */
+/* Jarak antar section 14px (scoped, tidak mempengaruhi Home) */
+#keuangan.sec, #rekap.sec{margin-top:14px!important}
+
+/* SALDO KAS — kartu merah */
+#keuangan .balance{
+  background:#E53935!important;color:#fff!important;border:none!important;
+  border-radius:18px!important;padding:16px!important;
+  box-shadow:0 10px 24px rgba(229,57,53,.28)!important;
+}
+#keuangan .balance .bal-l{color:rgba(255,255,255,.92)!important;font-size:13px!important;font-weight:700!important;display:flex;align-items:center;gap:7px}
+#keuangan .balance .bal-amt{color:#fff!important;font-size:26px!important;font-weight:700!important;line-height:1.12;margin-top:6px}
+#keuangan .balance .bal-sub{color:rgba(255,255,255,.85)!important;font-size:12px!important;margin-top:4px}
+#keuangan .balance .iconify{color:#fff!important}
+
+/* SUMMARY — kartu kecil r14 */
+#keuangan .kpi-grid{gap:10px!important;margin-top:14px!important}
+#keuangan .kpi{
+  background:#fff!important;border:1px solid rgba(0,0,0,.06)!important;
+  border-radius:14px!important;padding:14px!important;
+  box-shadow:0 6px 16px rgba(0,0,0,.06)!important;min-height:95px;
+}
+#keuangan .kpi .kpi-ic{width:36px!important;height:36px!important;font-size:20px!important;border-radius:10px!important;margin-bottom:10px!important}
+#keuangan .kpi .kpi-v{font-size:18px!important;font-weight:700!important}
+#keuangan .kpi .kpi-l{font-size:11px!important;margin-top:3px!important}
+
+/* KARTU BESAR — Arus Kas & kartu Rekap (r20) */
+#keuangan .chart-card, #rekap .card{
+  background:#fff!important;border:1px solid rgba(0,0,0,.06)!important;
+  border-radius:20px!important;box-shadow:0 8px 22px rgba(0,0,0,.06)!important;
+}
+#keuangan .chart-card{padding:16px!important;margin-top:14px!important}
+#rekap .card{border-radius:20px!important;padding:16px!important}
+
+/* TABS Mutasi — pill bersih */
+#keuangan .tabs{gap:8px!important;margin-bottom:12px!important}
+#keuangan .tab{border-radius:12px!important;font-weight:700!important}
+#keuangan .tab.on{background:#E53935!important;color:#fff!important;border-color:transparent!important}
+
+/* REKAP — search & input (r18) */
+#rekap .search-bar{
+  background:#fff!important;border:1px solid rgba(0,0,0,.06)!important;
+  border-radius:18px!important;box-shadow:0 6px 16px rgba(0,0,0,.05)!important;margin:14px 0!important;
+}
+#rekap .cek-wrap .cek-input, #rekap .search-bar input{border-radius:12px!important}
+#rekap .cek-btn{border-radius:12px!important}
+#rekap .rekap-sum{margin:14px 0!important}
+
+/* Heading section konsisten */
+#keuangan .sec-title, #rekap .sec-title{font-size:20px!important;font-weight:700!important}
+/* ===== SCREEN 02 — KEUANGAN & REKAP (UI re-skin, CSS-only) — END ===== */
 </style>
 </head>
 <body>
