@@ -507,26 +507,6 @@ footer b{color:var(--ink2);font-weight:700}
 /* 3) Hilangkan titik ● pada kartu lomba (kesan AI) */
 .lc-cat::before{display:none!important;}
 
-/* ===== STATUS PER BLOK — kartu MERAH (target #blokBars) ===== */
-:has(> #blokBars){background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px!important}
-:has(> #blokBars) > :not(#blokBars){color:#fff!important}
-:has(> #blokBars) > :not(#blokBars) .iconify{color:#fff!important}
-#blokBars{background:transparent!important;padding:0!important}
-.blok-row{background:#fff!important;border:none!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.06)!important;margin-bottom:10px!important}
-.blok-row:hover{transform:none!important;border:none!important}
-.br-name{color:#E53935!important}
-.br-count{color:#8a8f98!important}
-.br-bar{background:#D9D9D9!important}
-.br-bar i.ok,.br-bar i.mid,.br-bar i.bad{background:#E53935!important}
-
-/* ===== RINGKASAN IURAN WARGA — warna teks selaras (kartu putih) ===== */
-.ring-c b{color:#191919!important}
-.ring-c span{color:#8a8f98!important}
-.rs b{color:#191919!important}
-.rs span{color:#8a8f98!important}
-.rs.no b{color:#E53935!important}
-.rs.ok b,.rs.warn b{color:#191919!important}
-
 /* 5) payNote sejajar dengan ikon */
 #payNote{display:flex;align-items:center;gap:6px;}
 #payNote .iconify{font-size:16px;flex:none;}
@@ -1029,8 +1009,6 @@ body{ overscroll-behavior-y:none; }
 #rekap .card button:not(.cek-btn).on .iconify,#rekap .card button:not(.cek-btn).active .iconify,#rekap .card button:not(.cek-btn)[aria-selected="true"] .iconify{color:#E53935!important}
 
 /* ===== STATUS PER BLOK — base merah, baris putih (ref 04) ===== */
-#rekap #rekapAccordion{background:#E53935!important;border-radius:20px!important;padding:14px!important}
-#rekap #rekapAccordion .sec-head,#rekap #rekapAccordion .sec-title,#rekap #rekapAccordion .sec-act,#rekap #rekapAccordion .sec-act .iconify{color:#fff!important}
 .blok-row{background:#fff!important;border:none!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.06)!important;margin-bottom:10px!important}
 .blok-row:hover{transform:none!important;border:none!important}
 .br-name{color:#E53935!important}
@@ -1063,16 +1041,33 @@ body{ overscroll-behavior-y:none; }
 #keuangan .tab.keluar.on{background:#E53935!important;color:#fff!important;border-color:transparent!important}
 #keuangan #btnExport{display:inline-flex;align-items:center;gap:6px;background:#E53935!important;color:#fff!important;border:none!important;border-radius:999px!important;padding:7px 16px!important;font-size:12px!important;font-weight:700!important}
 
-#rekap .search-bar{background:#fff!important;border:1px solid var(--bd)!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important}
-#rekap .rekap-sum{background:#fff!important;border:1px solid var(--bd)!important;border-radius:18px!important;padding:14px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important}
-
-.sp-item{display:flex;flex-direction:column;justify-content:center;width:100%;height:86px;background:#fff;border:none;border-radius:18px;padding:12px 14px;text-align:left;cursor:pointer}
-.sp-name{color:#E53935;font-size:18px;font-weight:700;margin-bottom:12px}
-.sp-bar{width:100%;height:8px;background:#D9D9D9;border-radius:999px;overflow:hidden}
-.sp-fill{height:8px;background:#E53935;border-radius:999px}
-.sp-info{display:flex;align-items:center;justify-content:center;min-height:74px;background:#fff;border-radius:999px;margin-top:14px;padding:0 20px}
-.sp-info span{font-size:12px;line-height:16px;text-align:center;max-width:70%}
 /* ============================================================ */
+/* ===== REKAP FINAL v4 — Ringkasan PUTIH + Status per Blok MERAH (2 mode) ===== */
+/* Status per Blok: kartu merah, baris putih, isi terbaca */
+#rekap :has(> #blokBars){background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px!important}
+#rekap :has(> #blokBars) > :not(#blokBars){color:#fff!important}
+#rekap :has(> #blokBars) > :not(#blokBars) .iconify{color:#fff!important}
+#blokBars{background:transparent!important;padding:0!important}
+.blok-row{background:#fff!important;border:none!important;border-radius:14px!important;box-shadow:0 4px 12px rgba(0,0,0,.06)!important;margin-bottom:10px!important}
+.blok-row:hover{transform:none!important;border:none!important}
+.br-name{color:#191919!important;font-weight:800!important}
+.br-count{color:#6B7280!important;font-weight:700!important}
+.br-go{color:#9AA0A6!important}
+.br-bar{background:#E9E9EC!important}
+.br-bar i.ok,.br-bar i.mid,.br-bar i.bad{background:#E53935!important}
+.br-dot.ok{background:#22C55E!important}.br-dot.mid{background:#F59E0B!important}.br-dot.bad{background:#E53935!important}
+
+/* Ringkasan Iuran Warga: kartu PUTIH adaptif (terang & gelap) + warna semantik */
+#rekap .card:has(#iuranRing){background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:20px!important;padding:16px!important;box-shadow:var(--sh)!important}
+#rekap .card:has(#iuranRing) .eyebrow{color:var(--muted)!important}
+.ring-c b{color:var(--ink)!important}
+.ring-c span{color:var(--muted)!important}
+.rs{background:var(--solid2)!important;border:1px solid var(--bd)!important}
+.rs b{color:var(--ink)!important}
+.rs span{color:var(--muted)!important}
+.rs.ok b{color:var(--ok)!important}
+.rs.mid b,.rs.warn b{color:#F59E0B!important}
+.rs.no b{color:var(--merah)!important}
 </style>
 </head>
 <body>
