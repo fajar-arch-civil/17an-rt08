@@ -931,6 +931,37 @@ body{ overscroll-behavior-y:none; }
 .dp-bar.anak{background:#FF8A8A}
 .dp-bar.seni{background:#9A1014}
 .dp-num{font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;flex:0 0 auto;min-width:14px;text-align:right}
+
+/* ===== CUACA BAR — FINAL PUTIH (match referensi) ===== */
+.cu-wide{
+  min-height:64px!important;height:auto!important;
+  border-radius:18px!important;padding:11px 16px!important;
+  background:var(--bg2)!important;                         /* putih */
+  border:1px solid var(--bd,rgba(0,0,0,.06))!important;
+  box-shadow:var(--sh,0 2px 10px rgba(0,0,0,.05))!important;
+  display:flex!important;align-items:center!important;
+  justify-content:space-between!important;gap:14px!important;overflow:hidden!important;
+}
+.cu-wide .cu-top{
+  display:grid!important;grid-template-columns:auto auto!important;grid-template-rows:auto auto!important;
+  align-items:center!important;column-gap:12px!important;flex:0 0 auto!important;margin:0!important;
+}
+.cu-wide .cu-ic{grid-row:1 / span 2!important;grid-column:1!important;display:flex!important;align-items:center!important}
+.cu-wide .cu-ic .iconify{font-size:36px!important}
+.cu-wide .cu-temp{grid-column:2!important;grid-row:1!important;align-self:end!important;font-size:26px!important;font-weight:800!important;line-height:1.05!important;text-align:left!important}
+.cu-wide .cu-lbl{grid-column:2!important;grid-row:2!important;align-self:start!important;font-size:11px!important;margin:1px 0 0!important;color:var(--muted)!important;text-align:left!important}
+.cu-wide .cu-meta{
+  display:flex!important;flex-wrap:nowrap!important;gap:10px!important;
+  margin-left:auto!important;flex:0 1 auto!important;justify-content:flex-end!important;overflow:hidden!important;
+}
+.cu-wide .cu-meta>*{
+  display:flex!important;align-items:center!important;gap:6px!important;
+  background:#F3F3F5!important;border:1px solid rgba(0,0,0,.06)!important;
+  border-radius:999px!important;padding:8px 14px!important;
+  font-size:13px!important;font-weight:700!important;color:var(--ink)!important;white-space:nowrap!important;box-shadow:none!important;
+}
+.cu-wide .cu-meta .iconify{font-size:16px!important;color:var(--muted)!important}
+.cu-wide .cu-updated{display:none!important}
 </style>
 </head>
 <body>
