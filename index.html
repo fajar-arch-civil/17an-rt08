@@ -507,13 +507,11 @@ footer b{color:var(--ink2);font-weight:700}
 /* 3) Hilangkan titik ● pada kartu lomba (kesan AI) */
 .lc-cat::before{display:none!important;}
 
-/* ===== STATUS PER BLOK — kartu MERAH, baris putih (ref 04) ===== */
-#rekap .card:has(.blok-row){background:#E53935!important;border:none!important;border-radius:20px!important}
-#rekap .card:has(.blok-row) .sec-head,
-#rekap .card:has(.blok-row) .sec-title,
-#rekap .card:has(.blok-row) .sec-act,
-#rekap .card:has(.blok-row) .eyebrow,
-#rekap .card:has(.blok-row) .sec-head .iconify{color:#fff!important}
+/* ===== STATUS PER BLOK — kartu MERAH (target #blokBars) ===== */
+:has(> #blokBars){background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px!important}
+:has(> #blokBars) > :not(#blokBars){color:#fff!important}
+:has(> #blokBars) > :not(#blokBars) .iconify{color:#fff!important}
+#blokBars{background:transparent!important;padding:0!important}
 .blok-row{background:#fff!important;border:none!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.06)!important;margin-bottom:10px!important}
 .blok-row:hover{transform:none!important;border:none!important}
 .br-name{color:#E53935!important}
@@ -521,10 +519,13 @@ footer b{color:var(--ink2);font-weight:700}
 .br-bar{background:#D9D9D9!important}
 .br-bar i.ok,.br-bar i.mid,.br-bar i.bad{background:#E53935!important}
 
-/* ===== #rekap: kartu lain (Ringkasan Iuran Warga, dll) = PUTIH ===== */
-#rekap .card:not(:has(.cek-wrap)){background:#fff!important;border:1px solid var(--bd)!important;border-radius:18px!important;padding:14px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important}
-#rekap .card:not(:has(.cek-wrap)) .eyebrow{color:#E53935!important}
-#rekap .card:not(:has(.cek-wrap)) *{color:inherit}
+/* ===== RINGKASAN IURAN WARGA — warna teks selaras (kartu putih) ===== */
+.ring-c b{color:#191919!important}
+.ring-c span{color:#8a8f98!important}
+.rs b{color:#191919!important}
+.rs span{color:#8a8f98!important}
+.rs.no b{color:#E53935!important}
+.rs.ok b,.rs.warn b{color:#191919!important}
 
 /* 5) payNote sejajar dengan ikon */
 #payNote{display:flex;align-items:center;gap:6px;}
