@@ -690,17 +690,21 @@ body{ overscroll-behavior-y:none; }
 .cbox{background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.24)!important;}
 .hero-btn{background:#fff!important;color:var(--merah)!important;}
 /* ===== MERAH PUTIH v1 — END ===== */
-/* ===== HERO PETA INDONESIA v1 — START ===== */
-.hero{ position:relative; overflow:hidden; }
+/* ===== HERO PETA INDONESIA v2 — START ===== */
 .hero::before{
-  content:""; position:absolute; z-index:0; pointer-events:none;
-  right:-46px; bottom:-72px; width:500px; height:500px;
-  background:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat center / 500px auto;
-  opacity:.15;                 /* emboss merah lebih gelap — halus & senada */
-  mix-blend-mode:multiply;     /* nyatu dengan gradien hero */
+  content:"";
+  position:absolute;
+  inset:0;                 /* ikut ukuran hero, bukan kotak 500px yang meluber */
+  z-index:0;
+  pointer-events:none;
+  background-image:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg');
+  background-repeat:no-repeat;
+  background-position:right 16px center;  /* nempel kanan, center vertikal */
+  background-size:auto 86%;              /* tinggi 86% hero, lebar proporsional → peta UTUH & tidak gepeng */
+  opacity:.15;
+  mix-blend-mode:multiply;              /* emboss merah gelap, menyatu dgn gradien */
 }
-.hero-inner{ position:relative; z-index:2; }   /* teks & tombol selalu di atas peta */
-/* ===== HERO PETA INDONESIA v1 — END ===== */
+/* ===== HERO PETA INDONESIA v2 — END ===== */
 /* ===== HERO FLAT v2 — START (ringkas, rata, anti-glow) ===== */
 .hero{
   margin:14px 16px 0!important;
