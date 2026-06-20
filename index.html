@@ -6,7 +6,7 @@
 input,textarea,select{font-size:16px!important}        /* stop auto-zoom iOS saat fokus field */
 body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap zoom, delay 300ms, & pantulan */
 @media(max-width:791px){
-  html,body{overflow-x:hidden;max-width:100%}           /* tidak ada geser kiri-kanan */
+  html,body{overflow-x:hidden;overflow-x:clip;max-width:100%} /* clip: cegah geser samping TANPA mengunci scroll vertikal (fix scroll Android) */
   .glass{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--bg2)!important} /* stop KEDIP + kartu jadi solid */
 }
 </style>
@@ -1080,6 +1080,18 @@ body{ overscroll-behavior-y:none; }
 #keuangan .kpi,#keuangan .sec,#keuangan .card,#finInsight>*{background:var(--bg2)!important;border:1px solid var(--bd)!important}
 #keuangan .kpi-v,#keuangan .txn-t,#finInsight b{color:var(--ink)!important}
 #keuangan .kpi-l,#keuangan .txn-d,#finInsight span{color:var(--muted)!important}
+/* ===== RESPONSIVE & SCROLL FINAL — sehat di semua perangkat (v7) ===== */
+html{height:auto}
+body{min-height:100svh;-webkit-overflow-scrolling:touch}
+/* tidak ada elemen melebihi lebar layar di resolusi kecil */
+img,svg,video,canvas,iframe,table{max-width:100%}
+/* bottom-nav (.ubot) hanya muncul di mobile → beri ruang aman agar konten tak tertutup */
+@media(max-width:791px){body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))!important}}
+@media(min-width:792px){body{padding-bottom:28px!important}}
+/* sheet & overlay panjang tetap bisa discroll penuh di layar pendek (dynamic viewport) */
+.bm-sheet{max-height:85svh!important}
+.bm-body{-webkit-overflow-scrolling:touch}
+.usearch{overscroll-behavior:contain}
 </style>
 </head>
 <body>
