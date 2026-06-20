@@ -1030,9 +1030,31 @@ body{ overscroll-behavior-y:none; }
 #rekap .card .cek-btn{background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important}
 #rekap .card .cek-btn .iconify{color:#E53935!important}
 #rekap .card #cekHasil,#rekap .card .cek-empty{color:#fff!important}
-#rekap .card button:not(.cek-btn){background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important;font-weight:800!important;padding:10px 14px!important;opacity:1!important;box-shadow:0 2px 6px rgba(0,0,0,.12)!important}
-#rekap .card button:not(.cek-btn) .iconify{color:#E53935!important}
-#rekap .card button:not(.cek-btn).on,#rekap .card button:not(.cek-btn).active,#rekap .card button:not(.cek-btn)[aria-selected="true"]{box-shadow:0 0 0 2px #fff,0 4px 10px rgba(0,0,0,.18)!important}
+/* Toggle Nama / Blok-Alamat — beda jelas aktif vs non-aktif */
+#rekap .card button:not(.cek-btn){
+  background:transparent!important;
+  color:#fff!important;
+  border:1.5px solid rgba(255,255,255,.7)!important;
+  border-radius:999px!important;
+  font-weight:800!important;
+  padding:10px 14px!important;
+  opacity:1!important;
+  box-shadow:none!important;
+}
+#rekap .card button:not(.cek-btn) .iconify{color:#fff!important}
+
+/* AKTIF: pill putih solid + teks merah */
+#rekap .card button:not(.cek-btn).on,
+#rekap .card button:not(.cek-btn).active,
+#rekap .card button:not(.cek-btn)[aria-selected="true"]{
+  background:#fff!important;
+  color:#E53935!important;
+  border-color:#fff!important;
+  box-shadow:0 4px 10px rgba(0,0,0,.20)!important;
+}
+#rekap .card button:not(.cek-btn).on .iconify,
+#rekap .card button:not(.cek-btn).active .iconify,
+#rekap .card button:not(.cek-btn)[aria-selected="true"] .iconify{color:#E53935!important}
 
 /* SEARCH REKAP */
 #rekap .search-bar{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:18px!important;box-shadow:0 4px 12px rgba(0,0,0,.05)!important;margin:12px 0!important}
