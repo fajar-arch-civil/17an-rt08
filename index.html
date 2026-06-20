@@ -1043,9 +1043,9 @@ body{ overscroll-behavior-y:none; }
 
 /* ============================================================ */
 /* ============================================================ */
-/* ===== KONTRAS FINAL v5 — teks terbaca di SEMUA mode (PENGGANTI v4) ===== */
+/* ===== KONTRAS FINAL v6 — UI auto ikut dark/light (PENGGANTI v5) ===== */
 
-/* --- STATUS PER BLOK: kartu merah, baris transparan, TEKS PUTIH (2 mode) --- */
+/* --- STATUS PER BLOK: kartu merah aksen, baris transparan, teks putih (2 mode) --- */
 #rekap :has(> #blokBars){background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px!important}
 #rekap :has(> #blokBars) > :not(#blokBars){color:#fff!important}
 #rekap :has(> #blokBars) > :not(#blokBars) .iconify{color:#fff!important}
@@ -1060,7 +1060,7 @@ body{ overscroll-behavior-y:none; }
 #rekap .br-bar i.ok,#rekap .br-bar i.mid,#rekap .br-bar i.bad{background:#fff!important}
 #rekap .br-dot.ok{background:#4ADE80!important}#rekap .br-dot.mid{background:#FBBF24!important}#rekap .br-dot.bad{background:#fff!important}
 
-/* --- RINGKASAN IURAN WARGA: kartu PUTIH adaptif + warna semantik --- */
+/* --- RINGKASAN IURAN WARGA: kartu adaptif + warna semantik --- */
 #rekap .card:has(#iuranRing){background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:20px!important;padding:16px!important;box-shadow:var(--sh)!important}
 #rekap .card:has(#iuranRing) .eyebrow{color:var(--muted)!important}
 .ring-c b{color:var(--ink)!important}
@@ -1072,18 +1072,14 @@ body{ overscroll-behavior-y:none; }
 .rs.mid b,.rs.warn b{color:#F59E0B!important}
 .rs.no b{color:var(--merah)!important}
 
-/* --- CUACA: chip selalu terang → teks & ikon GELAP (dark & light) --- */
-.cu-wide .cu-meta>*{color:#1c1c1e!important}
-.cu-wide .cu-meta .iconify{color:#6b7280!important}
+/* --- CUACA: chip ADAPTIF (otomatis gelap di dark, terang di light) --- */
+.cu-wide .cu-meta>*{background:var(--solid2)!important;border:1px solid var(--bd)!important;color:var(--ink2)!important}
+.cu-wide .cu-meta .iconify{color:var(--muted)!important}
 
-/* --- KEUANGAN: kartu yang dipaksa putih → teks GELAP (anti hilang di dark) --- */
-#keuangan .kpi-v{color:#191919!important}
-#keuangan .kpi-l{color:#6b7280!important}
-#keuangan .txn-t{color:#191919!important}
-#keuangan .txn-d{color:#6b7280!important}
-#finInsight>*{background:#fff!important;border:1px solid rgba(0,0,0,.06)!important}
-#finInsight b{color:#191919!important}
-#finInsight span{color:#6b7280!important}
+/* --- KEUANGAN: kartu ADAPTIF (ikut mode otomatis, teks ikut tema) --- */
+#keuangan .kpi,#keuangan .sec,#keuangan .card,#finInsight>*{background:var(--bg2)!important;border:1px solid var(--bd)!important}
+#keuangan .kpi-v,#keuangan .txn-t,#finInsight b{color:var(--ink)!important}
+#keuangan .kpi-l,#keuangan .txn-d,#finInsight span{color:var(--muted)!important}
 </style>
 </head>
 <body>
