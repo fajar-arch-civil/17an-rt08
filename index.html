@@ -1004,6 +1004,19 @@ body{ overscroll-behavior-y:none; }
   <a class="menu-link" href="#daftar"><span class="iconify" data-icon="solar:document-add-bold"></span> Pendaftaran</a>
   <a class="menu-link" href="lomba.html"><span class="iconify" data-icon="solar:cup-star-bold"></span> Perlombaan</a>
 </div>
+
+<!-- ============ HERO COUNTDOWN ============ -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+  <div class="hero-text">
+    <h1 class="hero-title">Menuju HUT Kemerdekaan RI ke-81</h1>
+    <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
+  </div>
+  <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold"></span> Daftar</button>
+</div>
+</header>
+
+<main class="wrap">
 <!-- ===== CUACA (full width) ===== -->
 <section class="sec">
   <div class="mini glass cu-wide" id="cuacaBox">
@@ -2195,20 +2208,6 @@ if('serviceWorker' in navigator){
   });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mirror);else mirror();
   [600,1500,3000,6000].forEach(function(d){setTimeout(mirror,d);});
-})();
-</script>
-<script>
-(function(){
-  function mirror(){
-    var s=document.getElementById('kSaldo'),t=document.getElementById('kSaldoTop');
-    if(s&&t)t.textContent=s.textContent;
-    var ss=document.getElementById('kSaldoSub'),ts=document.getElementById('kSaldoTopSub');
-    if(ss&&ts)ts.textContent=ss.textContent;
-  }
-  var src=document.getElementById('kSaldo');
-  if(src&&window.MutationObserver)new MutationObserver(mirror).observe(src,{childList:true,characterData:true,subtree:true});
-  [600,1500,3000,6000].forEach(function(ms){setTimeout(mirror,ms)});
-  document.addEventListener('DOMContentLoaded',mirror);
 })();
 </script>
 </body>
