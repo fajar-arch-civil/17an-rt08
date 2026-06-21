@@ -1153,7 +1153,7 @@ img,svg,video,canvas,iframe,table{max-width:100%}
         <input type="hidden" id="hidAlamat" name="blok">
         <div class="field"><label>Nama Lengkap</label><input class="inp" id="nama" placeholder="Nama lengkap peserta"></div>
         <div class="field"><label>Jenis Lomba</label>
-          <select class="inp" id="selJenis"><option value="">Pilih jenis…</option><option>Lomba Olahraga</option><option>Lomba Anak</option><option>Pentas Seni</option></select>
+          <select class="inp" id="selJenis"><option value="">Pilih jenis…</option></select>
         </div>
         <div class="field"><label>Cabang Lomba</label>
           <select class="inp" id="selLomba" disabled><option value="">Pilih jenis dulu…</option></select>
@@ -1320,7 +1320,7 @@ function buildChart(){
 async function muatOpsi(){
  try{const d=await api('aksi=opsi');const l=getF(d,['lomba','lombaList','daftarLomba','competitions']);_lombaList=(Array.isArray(l)&&l.length)?l:LOMBA_DEFAULT;_addrMap=normalizeAddr(getF(d,['alamat','alamatMap','blok','wilayah']));}
  catch(e){_lombaList=LOMBA_DEFAULT;_addrMap={};}
- buildBlokDD();renderKatalog();
+ buildBlokDD();fillJenis();renderKatalog();
 }
 function normalizeAddr(al){const map={};if(!al)return map;if(Array.isArray(al)){al.forEach(s=>{const b=splitBlok(s);(map[b]=map[b]||[]).push(String(s));});}else if(typeof al==='object'){Object.keys(al).forEach(k=>{const v=al[k];if(Array.isArray(v))map[k.toUpperCase()]=v.map(String);else if(v&&typeof v==='object')map[k.toUpperCase()]=Object.values(v).map(String);});}return map;}
 function ddInit(id){const dd=$(id);if(!dd)return;dd.querySelector('.dd-btn').addEventListener('click',e=>{e.stopPropagation();if(dd.classList.contains('disabled'))return;document.querySelectorAll('.dd.open').forEach(o=>{if(o!==dd)o.classList.remove('open');});dd.classList.toggle('open');});}
@@ -1328,43 +1328,33 @@ function ddReset(id,ph){const dd=$(id);if(!dd)return;const v=dd.querySelector('.
 function ddFill(id,items,ph,onpick){const dd=$(id);if(!dd)return;const pop=dd.querySelector('.dd-pop'),val=dd.querySelector('.dd-val');if(!items||!items.length){pop.innerHTML='<div class="dd-empty">Tidak ada pilihan</div>';dd.classList.add('disabled');val.textContent=ph;val.classList.add('ph');return;}dd.classList.remove('disabled');pop.innerHTML=items.map(it=>'<button type="button" class="dd-item" data-v="'+esc(it)+'">'+esc(it)+'</button>').join('');pop.querySelectorAll('.dd-item').forEach(b=>b.addEventListener('click',()=>{val.textContent=b.dataset.v;val.classList.remove('ph');dd.classList.remove('open');if(onpick)onpick(b.dataset.v);}));}
 
 /* ===================== FORM ===================== */
-function lombaFor(jenis){return (_lombaList||[]).filter(l=>norm(getF(l,['jenis','kategori','tipe'])||'')===norm(jenis));}
-function kelompokFor(u){u=num(u);if(u<=5)return 'Balita (2-5 th)';if(u<=9)return 'Anak (6-9 th)';return 'Anak (10-12 th)';}
-function setLomba(){
- const j=$('selJenis').value,sel=$('selLomba');
- if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';}
- else{const arr=lombaFor(j);sel.disabled=false;sel.innerHTML='<option value="">Pilih cabang…</option>'+arr.map(l=>{const nm=getF(l,['nama','name','lomba'])||'';const kuota=num(getF(l,['kuota','quota','slot'])),ter=num(getF(l,['terdaftar','peserta','count']));const sisa=kuota?Math.max(0,kuota-ter):null;return '<option value="'+esc(nm)+'">'+esc(nm)+(sisa!=null?(' (sisa '+sisa+')'):'')+'</option>';}).join('');}
- $('anakFields').classList.toggle('hide',j!=='Lomba Anak');updateStepper();
-}
-function updateStepper(){
- const st=document.querySelectorAll('#stepper .step');if(!st.length)return;
- const s1=$('hidAlamat').value&&$('nama').value.trim();const s2=s1&&$('selJenis').value&&$('selLomba').value;
- st.forEach(s=>s.classList.remove('on','done'));
- if(s2){st[0].classList.add('done');st[1].classList.add('done');st[2].classList.add('on');}
- else if(s1){st[0].classList.add('done');st[1].classList.add('on');}
- else st[0].classList.add('on');
-}
+function isAnak(j){ return /anak/i.test(j||''); }
+function lombaFor(jenis){ return (_lombaList||[]).filter(l=>norm(getF(l,['jenis','kategori'])||'')===norm(jenis)); }
+function lombaObj(jenis,nama){ return (_lombaList||[]).find(l=>norm(getF(l,['jenis','kategori'])||'')===norm(jenis) && norm(getF(l,['nama','name','lomba'])||'')===norm(nama)); }
+function fillJenis(){ const sel=$('selJenis'); if(!sel) return; const seen=[]; (_lombaList||[]).forEach(l=>{const j=(getF(l,['jenis','kategori'])||'').toString().trim(); if(j&&seen.indexOf(j)<0) seen.push(j);}); seen.sort((a,b)=>a.localeCompare(b,'id',{numeric:true})); sel.innerHTML='<option value="">Pilih jenis…</option>'+seen.map(j=>'<option value="'+esc(j)+'">'+esc(j)+'</option>').join(''); }
+function setKelompok(){ const o=lombaObj($('selJenis').value,$('selLomba').value); $('hidKelompok').value=(o?(getF(o,['kelompok','kelompokUmur','umur'])||''):''); }
+function setLomba(){ const j=$('selJenis').value,sel=$('selLomba'); if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';} else{const arr=lombaFor(j);sel.disabled=false;sel.innerHTML='<option value="">Pilih cabang…</option>'+arr.map(l=>{const nm=getF(l,['nama','name','lomba'])||'';return '<option value="'+esc(nm)+'">'+esc(nm)+'</option>';}).join('');} $('anakFields').classList.toggle('hide',!isAnak(j)); $('hidKelompok').value=''; updateStepper(); }
+function updateStepper(){ const st=document.querySelectorAll('#stepper .step');if(!st.length)return; const s1=$('hidAlamat').value&&$('nama').value.trim();const s2=s1&&$('selJenis').value&&$('selLomba').value; st.forEach(s=>s.classList.remove('on','done')); if(s2){st[0].classList.add('done');st[1].classList.add('done');st[2].classList.add('on');} else if(s1){st[0].classList.add('done');st[1].classList.add('on');} else st[0].classList.add('on'); }
 function suksesDaftar(){$('formDaftar').style.display='none';$('okMsg').style.display='block';document.querySelectorAll('#stepper .step').forEach(s=>{s.classList.remove('on');s.classList.add('done');});scan();muatLomba();}
 function wireForm(){
- $('selJenis').addEventListener('change',setLomba);
- ['nama','selLomba'].forEach(id=>$(id).addEventListener('change',updateStepper));
- $('nama').addEventListener('input',updateStepper);
- $('usia').addEventListener('input',()=>$('hidKelompok').value=$('usia').value?kelompokFor($('usia').value):'');
- $('daftarLagi').onclick=()=>{$('okMsg').style.display='none';$('formDaftar').style.display='';$('formDaftar').reset();ddReset('ddBlok','Blok…');ddReset('ddNomor','Nomor…');$('ddNomor').classList.add('disabled');$('hidAlamat').value='';$('anakFields').classList.add('hide');updateStepper();};
- $('formDaftar').addEventListener('submit',async e=>{
-  e.preventDefault();if(_sending)return;$('dupMsg').style.display='none';
-  const nama=$('nama').value.trim(),blok=$('hidAlamat').value,hp=$('hp').value.trim(),jenis=$('selJenis').value,lomba=$('selLomba').value;
-  if(!nama||!blok||!hp||!jenis||!lomba){toast('Lengkapi data dulu ya','warn');return;}
-  if(jenis==='Lomba Anak'){const u=num($('usia').value);if(u<2||u>15){toast('Usia anak 2–15 tahun','warn');return;}$('hidKelompok').value=kelompokFor(u);}
-  _sending=true;$('btnKirim').disabled=true;$('btnKirim').innerHTML='<span class="iconify" data-icon="svg-spinners:ring-resize"></span> Mengirim…';scan();
-  try{
-   const fd=new FormData();fd.append('aksi','daftar');fd.append('ts',new Date().toISOString());
-   fd.append('nama',nama);fd.append('blok',blok);fd.append('hp',hp);fd.append('jenis',jenis);fd.append('lomba',lomba);
-   fd.append('kelompok',$('hidKelompok').value||'');fd.append('wali',$('wali').value.trim());fd.append('usia',$('usia').value||'');fd.append('catatan',$('catatan').value.trim());fd.append('status','Terdaftar');
-   await fetch(API,{method:'POST',body:fd});suksesDaftar();
-  }catch(err){toast('Gagal mengirim, coba lagi','err');}
-  _sending=false;$('btnKirim').disabled=false;$('btnKirim').innerHTML='<span class="iconify" data-icon="solar:check-circle-bold"></span> Daftarkan Sekarang';scan();
- });
+  $('selJenis').addEventListener('change',setLomba);
+  $('selLomba').addEventListener('change',()=>{ setKelompok(); updateStepper(); });
+  $('nama').addEventListener('input',updateStepper);
+  $('daftarLagi').onclick=()=>{$('okMsg').style.display='none';$('formDaftar').style.display='';$('formDaftar').reset();ddReset('ddBlok','Blok…');ddReset('ddNomor','Nomor…');$('ddNomor').classList.add('disabled');$('hidAlamat').value='';$('anakFields').classList.add('hide');fillJenis();$('selLomba').disabled=true;$('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';updateStepper();};
+  $('formDaftar').addEventListener('submit',async e=>{
+    e.preventDefault();if(_sending)return;$('dupMsg').style.display='none';
+    const nama=$('nama').value.trim(),blok=$('hidAlamat').value,hp=$('hp').value.trim(),jenis=$('selJenis').value,lomba=$('selLomba').value;
+    if(!nama||!blok||!hp||!jenis||!lomba){toast('Lengkapi data dulu ya','warn');return;}
+    setKelompok();
+    _sending=true;$('btnKirim').disabled=true;$('btnKirim').innerHTML='<span class="iconify" data-icon="svg-spinners:ring-resize"></span> Mengirim…';scan();
+    try{
+      const fd=new FormData();fd.append('aksi','daftar');fd.append('ts',new Date().toISOString());
+      fd.append('nama',nama);fd.append('blok',blok);fd.append('hp',hp);fd.append('jenis',jenis);fd.append('lomba',lomba);
+      fd.append('kelompok',$('hidKelompok').value||'');fd.append('wali',$('wali').value.trim());fd.append('usia',$('usia').value||'');fd.append('catatan',$('catatan').value.trim());fd.append('status','Terdaftar');
+      await fetch(API,{method:'POST',body:fd});suksesDaftar();
+    }catch(err){toast('Gagal mengirim, coba lagi','err');}
+    _sending=false;$('btnKirim').disabled=false;$('btnKirim').innerHTML='<span class="iconify" data-icon="solar:check-circle-bold"></span> Daftarkan Sekarang';scan();
+  });
 }
 
 function renderKatalog(){
