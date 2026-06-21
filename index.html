@@ -735,7 +735,6 @@ body{ overscroll-behavior-y:none; }
 /* ===== REDESIGN INDEX v3 — END ===== */
 
 /* ===== SCREEN 01 HOME — UKURAN PERSIS (FINAL) ===== */
-:root{--bg0:#D9D9D9}
 .wrap{padding-left:14px!important;padding-right:14px!important}
 .sec{margin-top:14px!important}
 /* HERO 112 / radius20 / pad16 — konten kiri, tombol kanan-bawah */
@@ -1129,26 +1128,8 @@ img,svg,video,canvas,iframe,table{max-width:100%}
     </div>
   </section>
 
-  <!-- ============ REKAPAN DATA ============ -->
-  <section class="sec" id="rekap">
-    <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:clipboard-list-bold"></span> Rekapan Data</div></div>
-    <div class="card glass pad" style="margin-bottom:16px">
-      <div class="eyebrow" style="margin-bottom:11px">Cek Status Iuran</div>
-      <div class="cek-wrap">
-        <input class="cek-input" id="cekInput" placeholder="Ketik nama warga…">
-        <button class="cek-btn" id="cekBtn" aria-label="Cari"><span class="iconify" data-icon="solar:magnifer-bold"></span></button>
-      </div>
-      <div id="cekHasil"><p class="cek-empty">Masukkan nama untuk cek status pembayaran.</p></div>
-    </div>
-    <div class="search-bar glass">
-      <span class="iconify" data-icon="solar:magnifer-linear"></span>
-      <input id="rekapSearch" placeholder="Cari blok atau nomor rumah…">
-      <span class="filt" id="rekapFilt" role="button" aria-label="Filter"><span class="iconify" data-icon="solar:tuning-2-bold"></span></span>
-    </div>
-    <div class="rekap-sum" id="rekapSum"></div>
-    <div id="rekapInfo" style="font-size:12px;color:var(--muted);font-weight:600;margin:0 4px 12px"></div>
-    <div id="rekapAccordion"></div>
-  </section>
+  <!-- ============ REKAPAN DATA (diisi otomatis oleh script REKAP) ============ -->
+<section class="sec" id="rekap"></section>
 
   <!-- ============ PENDAFTARAN ============ -->
   <section class="sec" id="daftar">
@@ -1467,7 +1448,7 @@ function wireMisc(){
  $('seeAll').onclick=()=>document.getElementById('galeri').scrollIntoView({behavior:'smooth'});
  $('frefresh').onclick=()=>{toast('Menyegarkan…','info');muatKeuangan();muatLomba();};
  $('btnExport').onclick=exportCSV;
- $('cekBtn').onclick=cekIuran;$('cekInput').addEventListener('keydown',e=>{if(e.key==='Enter')cekIuran();});
+ var _cekBtn=$('cekBtn');if(_cekBtn)_cekBtn.onclick=cekIuran;var _cekInp=$('cekInput');if(_cekInp)_cekInp.addEventListener('keydown',e=>{if(e.key==='Enter')cekIuran();});
  window.addEventListener('scroll',scrollSpy,{passive:true});scrollSpy();
 }
 
