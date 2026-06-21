@@ -956,13 +956,16 @@ function renderHasil(){
 <!-- ===== STRUKTUR PANITIA — START ===== -->
 <style id="spCss">
 .sp-wrap{margin:16px 0}
-.sp-h{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px;margin:0 0 10px;color:var(--ink,#111)}
-.sp-grp{margin-bottom:12px}
-.sp-grp-t{font-weight:700;font-size:12px;color:#E53935;margin:0 0 7px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.3px}
-.sp-card{display:flex;flex-wrap:wrap;gap:7px;background:transparent;border:none;box-shadow:none;padding:0}
-.sp-av{display:none}
-.sp-row{display:inline-flex;align-items:baseline;gap:6px;padding:6px 12px;background:#fff;border:1px solid var(--bd,#e5e7eb);border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.04);white-space:nowrap}
-.sp-tx{display:inline-flex;align-items:baseline;gap:6px;min-width:0}
+.sp-h{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--ink,#111)}
+.sp-acc{border:1px solid var(--bd,#e5e7eb);border-radius:14px;background:#fff;margin-bottom:9px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.sp-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font-weight:700;font-size:13.5px;color:#111}
+.sp-sum::-webkit-details-marker{display:none}
+.sp-sum-t{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
+.sp-count{background:#E53935;color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px}
+.sp-chev{color:#999;font-size:13px;transition:.2s}
+details[open] .sp-chev{transform:rotate(180deg)}
+.sp-body{display:flex;flex-wrap:wrap;gap:7px;padding:2px 14px 14px}
+.sp-row{display:inline-flex;align-items:baseline;gap:6px;padding:6px 12px;background:var(--bg2,#f7f7f8);border:1px solid var(--bd,#eee);border-radius:999px;white-space:nowrap}
 .sp-nm{font-weight:700;font-size:12.5px;color:#111}
 .sp-jb{font-size:11px;color:var(--muted,#6b7280)}
 .sp-empty{text-align:center;color:var(--muted,#6b7280);font-size:13px;padding:20px 14px}
@@ -973,7 +976,6 @@ function renderHasil(){
   var D=document, API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
   function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
   function getF(o){for(var i=1;i<arguments.length;i++){var k=arguments[i];if(o&&o[k]!=null&&o[k]!=='')return o[k];}return '';}
-  function ini(n){n=String(n||'').trim();if(!n)return '?';var p=n.split(/\s+/);return ((p[0][0]||'')+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
   function host(){
     var h=D.getElementById('strukturPanitia');
     if(!h){ h=D.createElement('section'); h.id='strukturPanitia'; h.className='sp-wrap'; var a=D.querySelector('main.wrap')||D.querySelector('.wrap')||D.body; a.appendChild(h); }
@@ -989,13 +991,13 @@ function renderHasil(){
       groups[g].push(p);
     });
     var html='<div class="sp-h">👥 Struktur Panitia</div>';
-    order.forEach(function(g){
+    order.forEach(function(g,gi){
       var rows=groups[g].map(function(p){
         var nm=getF(p,'nama','Nama','name')||'-';
         var jb=esc(getF(p,'jabatan','Jabatan','peran','Peran','Jabatan/Peran')||'');
-        return '<div class="sp-row"><div class="sp-av">'+esc(ini(nm))+'</div><div class="sp-tx"><div class="sp-nm">'+esc(nm)+'</div>'+(jb?'<div class="sp-jb">'+jb+'</div>':'')+'</div></div>';
+        return '<span class="sp-row"><span class="sp-nm">'+esc(nm)+'</span>'+(jb?'<span class="sp-jb">'+jb+'</span>':'')+'</span>';
       }).join('');
-      html+='<div class="sp-grp"><div class="sp-grp-t">🔹 '+esc(g)+'</div><div class="sp-card">'+rows+'</div></div>';
+      html+='<details class="sp-acc"'+(gi===0?' open':'')+'><summary class="sp-sum"><span class="sp-sum-t">🔹 '+esc(g)+'<span class="sp-count">'+groups[g].length+'</span></span><span class="sp-chev">▾</span></summary><div class="sp-body">'+rows+'</div></details>';
     });
     h.innerHTML=html;
   }
