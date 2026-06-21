@@ -834,64 +834,72 @@ img,svg,video,canvas,iframe,table{max-width:100%}
   D.addEventListener('focusout',function(e){ if(isField(e.target)){ hideTO=setTimeout(function(){ if(!isField(D.activeElement)) show(); },150); } });
 })();
 </script>
-<!-- ======================= APP-STYLE LOMBA v1 ======================= -->
-<!-- Hanya lapisan visual. TIDAK mengubah HTML / JS / ID / logika.       -->
+<!-- ======================= APP-STYLE LOMBA v2 ======================= -->
+<!-- GANTI TOTAL blok v1 dengan blok ini. Hanya visual; ID/JS/logika utuh. -->
 <style id="appLombaV1">
-:root{ --lr:#E8121D; --lr2:#C00E18; }
+:root{ --lr:#EE1C25; }
 
-/* ===== 0. SPACING global lebih kompak ===== */
-.wrap{max-width:720px}
-.sec{margin-top:24px}
+/* ===== 0. SPACING ===== */
+.wrap{max-width:740px}
+.sec{margin-top:26px}
 .sec-h{margin-bottom:12px}
 
-/* ===== 1. HERO — kartu merah flat, kompak, center ===== */
-.hero{background:var(--lr)!important;margin:12px 16px 0;padding:22px 18px!important;border-radius:22px;text-align:center;box-shadow:none}
-.hero::before{opacity:.08}
-.hero-in{display:flex;flex-direction:column;align-items:center}
-.hero .badge{margin-bottom:10px}
-.hero h1{font-size:clamp(22px,6.2vw,28px)}
-.hero .sub{font-size:13.5px;max-width:32ch}
-.cta-row{justify-content:center;margin-top:14px}
-.cta-btn{padding:10px 16px;font-size:13.5px}
-@media(min-width:792px){.hero{max-width:720px;margin:16px auto 0}}
+/* ===== 1. HERO — disamakan dgn hero index + 1 tombol putih penuh ===== */
+.hero{margin:16px 16px 0;border-radius:24px;padding:24px 22px 26px;text-align:left;
+  background:linear-gradient(140deg,#ff3a3a 0%,#d41a1a 55%,#7d0f0f 100%);
+  box-shadow:0 16px 40px rgba(238,28,37,.18)}
+.hero::before{opacity:.12}
+.hero .badge{margin-bottom:14px}
+.hero h1{font-size:25px;line-height:1.12;letter-spacing:-.035em;max-width:18ch}
+.hero .sub{margin-top:6px;font-size:13.5px;opacity:.9}
+.cta-row{margin-top:18px;flex-direction:column;gap:0}
+.hero .cta-row .cta-btn:last-child{display:none}             /* sisakan 1 tombol */
+.hero .cta-row .cta-btn:first-child{width:100%;justify-content:center;padding:14px;
+  border-radius:18px;font-size:14.5px;font-weight:800;border:none;
+  background:#fff;color:#c11414;box-shadow:0 8px 22px rgba(0,0,0,.25)}
+@media(min-width:792px){.hero{margin:16px auto 0;max-width:740px}}
 
 /* ===== 2. SECTION HEAD ===== */
 .sec-h .ic{display:none}
 .sec-h h2{font-size:18px}
 .sec-h small{font-size:12px}
-#peserta .sec-h h2{color:var(--lr)}
-/* #cabang → header pill merah */
+#peserta .sec-h h2,#hasil .sec-h h2{color:var(--lr)}
 #cabang .sec-h{display:inline-flex;background:var(--lr);border-radius:999px;padding:9px 18px;margin-bottom:14px}
 #cabang .sec-h h2{color:#fff;font-size:16px}
 #cabang .sec-h small{display:none}
 
-/* ===== 3. CABANG — grid 2 kolom, gambar dominan ===== */
+/* ===== 3. CABANG — tetap slider geser (tidak menumpuk), label merah ===== */
 #cabang .cab-group{margin-top:16px}
 #cabang .cab-grp-h h3{color:var(--lr);font-size:13px;font-weight:800}
 #cabang .cab-cnt{display:none}
-#cabang .cab-slider{display:grid!important;grid-template-columns:1fr 1fr;gap:10px;overflow:visible;scroll-snap-type:none;padding:0}
-@media(min-width:560px){#cabang .cab-slider{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
-#cabang .cab-slide{flex:none;width:auto;aspect-ratio:4/3.4;border-radius:16px;scroll-snap-align:none;box-shadow:0 4px 12px -8px rgba(0,0,0,.25)}
-#cabang .cab-slide .ov{background:linear-gradient(to top,rgba(0,0,0,.68),rgba(0,0,0,.02) 55%,transparent);padding:12px}
+#cabang .cab-slide .ov{background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.02) 55%,transparent);padding:12px}
 #cabang .cab-slide .nm{font-size:15px}
 #cabang .cab-slide .hint{font-size:11px}
+@media(max-width:559px){#cabang .cab-slide{flex:0 0 70%;max-width:300px}}
 
-/* ===== 4. PESERTA — statistik kartu merah near-square (kontainer putih) ===== */
-#peserta .pes-stat{background:var(--bg2);border:1px solid var(--bd);border-radius:20px;padding:12px;gap:10px;box-shadow:none}
-#peserta .pes-stat .box{background:var(--lr);border:none;border-radius:16px;box-shadow:none;aspect-ratio:1/1;display:flex;flex-direction:column-reverse;align-items:center;justify-content:center;text-align:center;padding:8px}
-#peserta .pes-stat .box .n{color:#fff;font-size:26px}
-#peserta .pes-stat .box .l{color:rgba(255,255,255,.92);margin:0 0 4px}
-/* chart + cari + filter kompak */
-#peserta .pes-chart{border-radius:18px;box-shadow:none;border:1px solid var(--bd);padding:14px 16px}
-#peserta .pes-search{border-radius:14px;box-shadow:none;padding:9px 13px}
-#peserta .filter-btn{padding:7px 14px;font-size:12.5px}
-/* tabel = area putih dominan */
-#peserta .tbl-card{border-radius:18px;box-shadow:none;border:1px solid var(--bd)}
-@media(max-width:560px){#peserta .tbl-card{border:none}#peserta .mini tr{border-radius:14px;box-shadow:0 4px 12px -10px rgba(0,0,0,.25)}}
+/* ===== 4. PESERTA — kompak & interaktif, tidak kaku ===== */
+#peserta .pes-stat{gap:10px;margin-bottom:14px}
+#peserta .pes-stat .box{background:var(--lr);border:none;border-radius:14px;box-shadow:none;
+  padding:13px 14px;display:flex;flex-direction:column-reverse;gap:2px;align-items:flex-start;text-align:left}
+#peserta .pes-stat .box .n{color:#fff;font-size:23px;line-height:1.05}
+#peserta .pes-stat .box .l{color:rgba(255,255,255,.85);font-size:10px;letter-spacing:.04em;margin:0}
+#peserta .pes-chart{border-radius:16px;box-shadow:none;border:1px solid var(--bd);padding:14px 16px;margin-bottom:14px}
+#peserta .pes-search{border-radius:14px;box-shadow:none;padding:10px 14px;margin-bottom:10px}
+#peserta .filter-bar{flex-wrap:nowrap;overflow-x:auto;gap:8px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+#peserta .filter-bar::-webkit-scrollbar{height:0}
+#peserta .filter-btn{flex:0 0 auto;padding:7px 14px;font-size:12.5px}
+#peserta .tbl-card{border-radius:16px;box-shadow:none;border:1px solid var(--bd)}
+@media(min-width:561px){#peserta .mini th,#peserta .mini td{padding:11px 12px}}
+@media(max-width:560px){
+  #peserta .tbl-card{border:none}
+  #peserta .mini tr{border-radius:13px;box-shadow:0 4px 12px -10px rgba(0,0,0,.22);padding:11px 14px;margin-bottom:8px}
+  #peserta .mini td:nth-child(2){font-size:14.5px;font-weight:700;margin-bottom:2px}
+  #peserta .mini td:nth-child(3),#peserta .mini td:nth-child(4){display:inline;font-size:12px;color:var(--ink2)}
+  #peserta .mini td:nth-child(3)::after{content:' — '}
+}
 
 /* ===== 5. HASIL — kartu putih, judul merah ===== */
-#hasil .sec-h h2{color:var(--lr)}
-#hasil .hasil-card,#hasil .placeholder{background:var(--bg2);border:1px solid var(--bd);border-radius:20px;box-shadow:none}
+#hasil .hasil-card,#hasil .placeholder{background:var(--bg2);border:1px solid var(--bd);border-radius:18px;box-shadow:none}
 
 /* ===== 6. INFO & KETENTUAN — kontainer merah, FAQ pill putih ===== */
 #info{background:var(--lr);border-radius:22px;padding:18px 16px 20px}
@@ -900,11 +908,11 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 #info .sec-h small{color:rgba(255,255,255,.9)}
 #info .info-list{background:transparent;padding:0 2px}
 #info .info-list p{color:rgba(255,255,255,.95)}
-#info details.faq{background:var(--bg2);border:none;border-radius:18px;margin-top:10px;padding:14px 16px;box-shadow:none}
+#info details.faq{background:var(--bg2);border:none;border-radius:16px;margin-top:10px;padding:14px 16px;box-shadow:none}
 #info details.faq summary{color:var(--ink)}
 #info details.faq[open]{border:none}
 #info details.faq p{color:var(--ink2)}
 </style>
-<!-- ===================== /APP-STYLE LOMBA v1 ===================== -->
+<!-- ===================== /APP-STYLE LOMBA v2 ===================== -->
 </body>
 </html>
