@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel Panitia · RT 08</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--card2:#1f242d;--bd:#2a313c;--ink:#f3f5f8;--ink2:#c4cad4;--muted:#8b93a1;--merah:#ff3a3a;--ok:#22c55e;--gold:#FFD75A;--silver:#cbd5e1;--bronze:#E8A06E;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);padding:16px;max-width:680px;margin:0 auto;-webkit-tap-highlight-color:transparent}
+h1{font-size:20px;margin:4px 0 2px;display:flex;align-items:center;gap:8px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:14px}
+label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:7px}
+select,input{width:100%;background:var(--card2);border:1px solid var(--bd);color:var(--ink);border-radius:10px;padding:12px 13px;font-size:15px;font-family:inherit}
+select:focus,input:focus{outline:none;border-color:var(--merah)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mb{margin-bottom:12px}
+.pes{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--bd);border-radius:11px;margin-bottom:9px;background:var(--card2)}
+.pes-info{min-width:0;flex:1}
+.pes-nm{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pes-bl{font-size:12px;color:var(--muted)}
+.seg{display:flex;gap:5px;flex-shrink:0}
+.seg button{width:34px;height:34px;border-radius:9px;border:1px solid var(--bd);background:var(--card);color:var(--ink2);font-weight:800;font-size:13px;cursor:pointer}
+.seg button.s1.on{background:var(--gold);color:#1a1a1a;border-color:transparent}
+.seg button.s2.on{background:var(--silver);color:#1a1a1a;border-color:transparent}
+.seg button.s3.on{background:var(--bronze);color:#1a1a1a;border-color:transparent}
+.seg button.sg.on{background:var(--merah);color:#fff;border-color:transparent}
+.reg{margin-bottom:11px}
+.reg .ttl{font-weight:700;font-size:13.5px;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.btn{width:100%;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit}
+.btn-save{background:var(--merah);color:#fff;margin-top:4px}
+.btn-save:disabled{opacity:.6}
+.btn-ghost{background:var(--card2);color:var(--ink2);border:1px solid var(--bd);margin-top:10px;font-size:14px;padding:11px}
+.empty{color:var(--muted);font-size:13.5px;text-align:center;padding:20px}
+.hint{font-size:12px;color:var(--muted);margin-top:8px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#000;color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90%}
+.toast.on{opacity:1}.toast.ok{background:var(--ok)}.toast.err{background:var(--merah)}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<h1>🏅 Panel Panitia</h1>
+<div class="sub">Input juara & gugur langsung di lapangan · RT 08</div>
+
+<div class="card">
+  <div class="mb"><label>Jenis Lomba</label><select id="selJenis"><option value="">Memuat…</option></select></div>
+  <div><label>Nama Lomba</label><select id="selLomba" disabled><option value="">Pilih jenis dulu…</option></select></div>
+  <div id="lInfo" class="hint hide"></div>
+</div>
+
+<div id="panel" class="hide">
+  <div class="card"><div id="body"></div></div>
+  <button class="btn btn-save" id="btnSave">💾 Simpan Hasil</button>
+  <button class="btn btn-ghost" id="btnReload">↻ Muat ulang data</button>
+</div>
+
+<div id="emptyState" class="card empty">Pilih jenis & nama lomba untuk mulai.</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
+const TOKEN='pemerintahbobrok'; // WAJIB sama dengan PANITIA_TOKEN di Code.gs
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,' ');
+let DATA={lomba:[],hasil:[]}, CUR=null, ASSIGN={};
+
+function toast(m,t){const e=$('toast');e.textContent=m;e.className='toast on '+(t||'');setTimeout(()=>e.className='toast',2400);}
+
+async function load(){
+  try{
+    const r=await fetch(API+'?aksi=peserta&cb='+Date.now());
+    const d=await r.json();
+    DATA.lomba=(d&&d.lomba)||[]; DATA.hasil=(d&&d.hasil)||[];
+    fillJenis(); toast('Data dimuat','ok');
+    if(CUR){const c=findLomba(CUR.jenis,CUR.nama); if(c){CUR=c;renderPanel();}}
+  }catch(e){ toast('Gagal memuat data','err'); }
+}
+function fillJenis(){
+  const seen=[]; DATA.lomba.forEach(l=>{const j=(l.jenis||'').trim();if(j&&seen.indexOf(j)<0)seen.push(j);});
+  seen.sort((a,b)=>a.localeCompare(b,'id',{numeric:true}));
+  $('selJenis').innerHTML='<option value="">Pilih jenis…</option>'+seen.map(j=>'<option>'+esc(j)+'</option>').join('');
+}
+function lombaInJenis(j){return DATA.lomba.filter(l=>norm(l.jenis)===norm(j));}
+function findLomba(j,n){return DATA.lomba.find(l=>norm(l.jenis)===norm(j)&&norm(l.nama)===norm(n));}
+
+$('selJenis').addEventListener('change',()=>{
+  const j=$('selJenis').value, sel=$('selLomba');
+  if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';showPanel(false);return;}
+  sel.disabled=false;
+  sel.innerHTML='<option value="">Pilih lomba…</option>'+lombaInJenis(j).map(l=>'<option>'+esc(l.nama)+'</option>').join('');
+  showPanel(false);
+});
+$('selLomba').addEventListener('change',()=>{
+  const n=$('selLomba').value; if(!n){showPanel(false);return;}
+  CUR=findLomba($('selJenis').value,n); renderPanel();
+});
+function showPanel(on){ $('panel').classList.toggle('hide',!on); $('emptyState').classList.toggle('hide',on); $('lInfo').classList.toggle('hide',!on); }
+function curHasil(){ return DATA.hasil.filter(h=>norm(h.jenis)===norm(CUR.jenis)&&norm(h.lomba)===norm(CUR.nama)); }
+
+function renderPanel(){
+  if(!CUR){showPanel(false);return;}
+  const tipe=(CUR.tipe||'Individu'), isRegu=/regu|tim/i.test(tipe);
+  $('lInfo').innerHTML='Tipe: <b>'+esc(tipe)+'</b> · Kelompok: '+esc(CUR.kelompok||'-')+' · '+((CUR.peserta||[]).length)+' peserta terdaftar';
+  const win={}; curHasil().forEach(h=>{const p=parseInt(h.peringkat,10);if(p>=1&&p<=3)win[p]={nama:h.nama,blok:h.blok};});
+  ASSIGN={};
+  if(isRegu) renderRegu(win); else renderIndividu(win);
+  showPanel(true);
+}
+function renderRegu(win){
+  let h='<div style="font-weight:800;margin-bottom:12px">🏆 Pemenang (Regu)</div>';
+  const med={1:'🥇',2:'🥈',3:'🥉'};
+  for(let r=1;r<=3;r++){const w=win[r]||{};
+    h+='<div class="reg"><div class="ttl"><span>'+med[r]+'</span> Juara '+r+'</div><div class="row2"><input id="rn'+r+'" placeholder="Nama tim" value="'+esc(w.nama||'')+'"><input id="rb'+r+'" placeholder="Blok" value="'+esc(w.blok||'')+'"></div></div>';}
+  $('body').innerHTML=h;
+}
+function renderIndividu(win){
+  const pes=(CUR.peserta||[]);
+  if(!pes.length){$('body').innerHTML='<div class="empty">Belum ada peserta terdaftar untuk lomba ini.</div>';return;}
+  const winKey={}; for(let r=1;r<=3;r++){if(win[r])winKey[norm(win[r].nama)+'||'+norm(win[r].blok)]=String(r);}
+  let h='<div style="font-weight:800;margin-bottom:4px">👥 Peserta</div><div class="hint" style="margin-bottom:12px">Ketuk 1/2/3 untuk juara, G untuk gugur. Ketuk lagi untuk batal.</div>';
+  pes.forEach((p,i)=>{
+    const k=norm(p.nama)+'||'+norm(p.blok);
+    let init=winKey[k]||''; if(!init&&norm(p.status)==='gugur')init='gugur';
+    ASSIGN[i]=init;
+    h+='<div class="pes"><div class="pes-info"><div class="pes-nm">'+esc(p.nama||'-')+'</div><div class="pes-bl">Blok '+esc(p.blok||'-')+'</div></div>'+
+       '<div class="seg" data-i="'+i+'"><button class="s1" data-v="1">1</button><button class="s2" data-v="2">2</button><button class="s3" data-v="3">3</button><button class="sg" data-v="gugur">G</button></div></div>';
+  });
+  $('body').innerHTML=h; syncSeg();
+  document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+    const i=b.parentElement.dataset.i, v=b.dataset.v;
+    if(ASSIGN[i]===v) ASSIGN[i]='';
+    else{ if(v!=='gugur') Object.keys(ASSIGN).forEach(k=>{if(ASSIGN[k]===v)ASSIGN[k]='';}); ASSIGN[i]=v; }
+    syncSeg();
+  }));
+}
+function syncSeg(){
+  document.querySelectorAll('.seg').forEach(w=>{const v=ASSIGN[w.dataset.i]||'';w.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));});
+}
+$('btnSave').addEventListener('click',async()=>{
+  if(!CUR)return;
+  if(TOKEN==='GANTI-DENGAN-TOKEN-KAMU'){toast('Setel TOKEN dulu di file ini','err');return;}
+  const isRegu=/regu|tim/i.test(CUR.tipe||'Individu');
+  const fd=new FormData();
+  fd.append('aksi','setHasil');fd.append('token',TOKEN);
+  fd.append('jenis',CUR.jenis);fd.append('lomba',CUR.nama);fd.append('kelompok',CUR.kelompok||'');
+  const gugur=[];
+  if(isRegu){ for(let r=1;r<=3;r++){fd.append('nama'+r,($('rn'+r).value||'').trim());fd.append('blok'+r,($('rb'+r).value||'').trim());} }
+  else{
+    const pes=(CUR.peserta||[]), win={};
+    Object.keys(ASSIGN).forEach(i=>{const v=ASSIGN[i],p=pes[i];if(!p)return;if(v==='gugur')gugur.push({nama:p.nama,blok:p.blok});else if(v==='1'||v==='2'||v==='3')win[v]=p;});
+    for(let r=1;r<=3;r++){fd.append('nama'+r,win[r]?win[r].nama:'');fd.append('blok'+r,win[r]?win[r].blok:'');}
+  }
+  fd.append('gugur',JSON.stringify(gugur));
+  $('btnSave').disabled=true;$('btnSave').textContent='Menyimpan…';
+  try{
+    const r=await fetch(API,{method:'POST',body:fd});
+    let d=null; try{ d=await r.json(); }catch(_){}
+    if(d&&d.ok===false){toast('Gagal: '+(d.error||'?'),'err');}
+    else{toast('Tersimpan ✓','ok'); await load();}
+  }catch(e){toast('Gagal menyimpan','err');}
+  $('btnSave').disabled=false;$('btnSave').textContent='💾 Simpan Hasil';
+});
+$('btnReload').addEventListener('click',load);
+load();
+</script>
+</body>
+</html>
