@@ -229,6 +229,31 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 .bm-body{-webkit-overflow-scrolling:touch}
 .usearch{overscroll-behavior:contain}
 </style>
+<style id="hasilCss">
+.hasil-ctrl{margin:0 0 12px}
+.hasil-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.hf-btn{padding:8px 14px;border-radius:999px;border:1.5px solid #E53935;background:#fff;color:#E53935;font-weight:700;font-size:13px;cursor:pointer}
+.hf-btn.on{background:#E53935;color:#fff}
+.hasil-search{width:100%;box-sizing:border-box;padding:11px 14px;border:1px solid var(--bd,#e5e7eb);border-radius:999px;font-size:14px;outline:none}
+.hasil-search:focus{border-color:#E53935}
+.hasil-acc{border:1px solid var(--bd,#e5e7eb);border-radius:16px;margin-bottom:10px;overflow:hidden;background:#fff}
+.hasil-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}
+.hasil-sum::-webkit-details-marker{display:none}
+.hs-info{flex:1;min-width:0}
+.hs-nm{font-weight:800;font-size:14.5px;color:#111}
+.hs-sub{font-size:11.5px;color:var(--muted,#6b7280);margin-top:2px}
+.hs-champ{font-size:12.5px;font-weight:700;color:#b8860b;white-space:nowrap;max-width:42%;overflow:hidden;text-overflow:ellipsis}
+.hs-chev{transition:.2s;color:#999;font-size:14px}
+details[open] .hs-chev{transform:rotate(180deg)}
+details[open] .hs-champ{display:none}
+.hasil-body{padding:4px 15px 14px;border-top:1px solid var(--bd,#f0f0f0)}
+.hasil-body .podium-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #f3f4f6}
+.hasil-body .podium-row:last-child{border-bottom:none}
+.hasil-body .podium-rank{font-size:20px;width:30px;text-align:center;flex:0 0 auto}
+.hasil-body .podium-name{font-weight:600;font-size:14px;color:#111}
+.podium-blok{font-weight:400;font-size:11.5px;color:#888}
+.hasil-empty{text-align:center;color:var(--muted,#6b7280);font-size:13.5px;padding:26px 14px;line-height:1.5}
+</style>
 </head>
 <body>
 
@@ -621,15 +646,47 @@ img,svg,video,canvas,iframe,table{max-width:100%}
     var tb=$('pesTbody'); if(tb) tb.innerHTML=rows(list);
     var inf=$('pesInfo'); if(inf) inf.textContent='Menampilkan '+list.length+' dari '+ALL.length+' peserta.';
   }
-  function hasil(arr){
-    var box=$('hasilBox'); if(!box||!arr||!arr.length) return;
-    box.innerHTML=arr.map(function(h){
-      var nm=esc(getF(h,'nama','Nama','juara','pemenang')||'-');
-      var lm=esc(getF(h,'lomba','Lomba','kategori','cabang')||'-');
-      var rk=esc(getF(h,'peringkat','Peringkat','rank','juara')||'-');
-      return '<div class="podium-row"><div class="podium-rank">'+rk+'</div><div class="podium-name">'+nm+'</div><div class="podium-info">'+lm+'</div></div>';
-    }).join('');
+  var HASIL=[], hF='Semua', hQ='';
+function hasil(arr){
+  HASIL=arr||[];
+  var box=$('hasilBox'); if(!box) return;
+  if(!HASIL.length){ var c=$('hasilCtrl'); if(c) c.remove(); box.innerHTML='<div class="hasil-empty">Belum ada hasil lomba. Hasil muncul otomatis begitu panitia mengumumkan juara. 🏆</div>'; return; }
+  if(!$('hasilCtrl')){
+    var ctrl=D.createElement('div'); ctrl.id='hasilCtrl'; ctrl.className='hasil-ctrl';
+    ctrl.innerHTML='<div class="hasil-filter" id="hasilFilter">'+
+      ['Semua','Olahraga','Anak','Pentas Seni'].map(function(f,i){return '<button class="hf-btn'+(i===0?' on':'')+'">'+f+'</button>';}).join('')+
+      '</div><input id="hasilSearch" class="hasil-search" placeholder="🔎 Cari lomba / nama juara…">';
+    box.parentNode.insertBefore(ctrl, box);
+    $('hasilFilter').querySelectorAll('.hf-btn').forEach(function(b){b.addEventListener('click',function(){$('hasilFilter').querySelectorAll('.hf-btn').forEach(function(x){x.classList.remove('on');});b.classList.add('on');hF=(b.textContent||'').trim();renderHasil();});});
+    $('hasilSearch').addEventListener('input',function(e){hQ=(e.target.value||'').toLowerCase().trim();renderHasil();});
   }
+  renderHasil();
+}
+function renderHasil(){
+  var box=$('hasilBox'); if(!box) return;
+  var groups={}, order=[];
+  HASIL.forEach(function(h){
+    var key=(h.jenis||'')+'|'+(h.lomba||'')+'|'+(h.kelompok||'');
+    if(!groups[key]){ groups[key]={jenis:h.jenis,lomba:h.lomba,kelompok:h.kelompok,rows:[]}; order.push(key); }
+    groups[key].rows.push(h);
+  });
+  var meda=['🥇','🥈','🥉'];
+  var html=order.map(function(k){return groups[k];}).filter(function(g){
+    if(hF!=='Semua' && kat({jenis:g.jenis,lomba:g.lomba})!==hF) return false;
+    if(hQ){ var hay=((g.lomba||'')+' '+g.rows.map(function(r){return r.nama;}).join(' ')).toLowerCase(); if(hay.indexOf(hQ)<0) return false; }
+    return true;
+  }).map(function(g){
+    g.rows.sort(function(a,b){return (Number(a.peringkat)||9)-(Number(b.peringkat)||9);});
+    var champ=g.rows[0]?esc(g.rows[0].nama):'-';
+    var body=g.rows.map(function(r){
+      var rk=Number(r.peringkat||0), ic=meda[rk-1]||('#'+rk);
+      return '<div class="podium-row"><div class="podium-rank">'+ic+'</div><div class="podium-name">'+esc(r.nama)+(r.blok?' <span class="podium-blok">Blok '+esc(r.blok)+'</span>':'')+'</div></div>';
+    }).join('');
+    var sub=[g.kelompok?('Usia '+esc(g.kelompok)):'', kat({jenis:g.jenis,lomba:g.lomba})].filter(Boolean).join(' · ');
+    return '<details class="hasil-acc"><summary class="hasil-sum"><div class="hs-info"><div class="hs-nm">'+esc(g.lomba)+'</div><div class="hs-sub">'+sub+'</div></div><div class="hs-champ">🥇 '+champ+'</div><div class="hs-chev">▾</div></summary><div class="hasil-body">'+body+'</div></details>';
+  }).join('');
+  box.innerHTML=html||'<div class="hasil-empty">Tidak ada hasil untuk filter ini.</div>';
+}
   function wire(){
     var fb=$('filterBar');
     if(fb) fb.querySelectorAll('.filter-btn').forEach(function(b){b.addEventListener('click',function(){fb.querySelectorAll('.filter-btn').forEach(function(x){x.classList.remove('on');});b.classList.add('on');curF=(b.textContent||'').trim()||'Semua';apply();});});
