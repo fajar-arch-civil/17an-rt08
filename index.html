@@ -2214,5 +2214,162 @@ if('serviceWorker' in navigator){
   if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run);
 })();
 </script>
+<!-- ============ PANEL PANITIA (overlay, additive) ============ -->
+<style id="pnCss">
+.pn-ov{position:fixed;inset:0;z-index:80;background:var(--bg0,#0f1115);opacity:0;visibility:hidden;transition:opacity .2s;overflow:auto;padding:12px 12px calc(28px + env(safe-area-inset-bottom,0px))}
+.pn-ov.on{opacity:1;visibility:visible}
+.pn-bar{display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--bg0,#0f1115);padding:8px 2px 12px;z-index:2}
+.pn-bar h2{font-size:17px;margin:0;flex:1;color:var(--ink)}
+.pn-x{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--bd);background:var(--bg2);color:var(--ink);border-radius:12px;cursor:pointer;font-size:16px}
+.pn-card{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+.pn-card label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:7px}
+.pn-card select,.pn-card input{width:100%;background:var(--bg1);border:1px solid var(--bd);color:var(--ink);border-radius:12px;padding:12px 13px;font-size:15px;font-family:inherit;box-sizing:border-box}
+.pn-card select:focus,.pn-card input:focus{outline:none;border-color:var(--merah)}
+.pn-mb{margin-bottom:12px}
+.pn-pes{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--bd);border-radius:12px;margin-bottom:9px;background:var(--bg1)}
+.pn-pes-info{min-width:0;flex:1}
+.pn-nm{font-weight:700;font-size:14.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-bl{font-size:12px;color:var(--muted)}
+.pn-seg{display:flex;gap:5px;flex-shrink:0}
+.pn-seg button{width:34px;height:34px;border-radius:9px;border:1px solid var(--bd);background:var(--bg2);color:var(--ink2);font-weight:800;font-size:13px;cursor:pointer;padding:0}
+.pn-seg button.s1.on{background:#FFD75A;color:#1a1a1a;border-color:transparent}
+.pn-seg button.s2.on{background:#cbd5e1;color:#1a1a1a;border-color:transparent}
+.pn-seg button.s3.on{background:#E8A06E;color:#1a1a1a;border-color:transparent}
+.pn-seg button.sg.on{background:var(--merah);color:#fff;border-color:transparent}
+.pn-reg{margin-bottom:11px}
+.pn-reg .t{font-weight:700;font-size:13.5px;margin-bottom:7px;color:var(--ink)}
+.pn-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pn-btn{width:100%;border:none;border-radius:13px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+.pn-save{background:var(--merah);color:#fff;margin-bottom:10px}
+.pn-go{background:var(--merah);color:#fff}
+.pn-ghost{background:var(--bg2);color:var(--ink2);border:1px solid var(--bd)}
+.pn-hint{font-size:12px;color:var(--muted);margin-top:8px}
+.pn-empty{color:var(--muted);text-align:center;padding:20px;font-size:13.5px}
+.pn-hide{display:none!important}
+.pn-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000;color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90%}
+.pn-toast.on{opacity:1}.pn-toast.ok{background:#22c55e}.pn-toast.err{background:var(--merah)}
+</style>
+
+<div class="pn-ov" id="pnOv">
+  <div class="pn-bar"><h2 id="pnTitle">🔒 Panel Panitia</h2><button class="pn-x" id="pnClose">✕</button></div>
+  <div id="pnGate" class="pn-card">
+    <label>Masukkan Token Panitia</label>
+    <input id="pnToken" type="password" placeholder="Token rahasia panitia" autocomplete="off">
+    <button class="pn-btn pn-go" id="pnEnter" style="margin-top:12px">Masuk</button>
+    <div class="pn-hint">Hanya panitia yang memiliki token.</div>
+  </div>
+  <div id="pnPanel" class="pn-hide">
+    <div class="pn-card">
+      <div class="pn-mb"><label>Jenis Lomba</label><select id="pnJenis"><option value="">Memuat…</option></select></div>
+      <div><label>Nama Lomba</label><select id="pnLomba" disabled><option value="">Pilih jenis dulu…</option></select></div>
+      <div id="pnInfo" class="pn-hint pn-hide"></div>
+    </div>
+    <div id="pnBodyCard" class="pn-card pn-hide"><div id="pnBody"></div></div>
+    <button class="pn-btn pn-save pn-hide" id="pnSave">💾 Simpan Hasil</button>
+    <button class="pn-btn pn-ghost" id="pnReload">↻ Muat ulang data</button>
+  </div>
+</div>
+<div class="pn-toast" id="pnToast"></div>
+
+<script>
+(function(){
+  var API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
+  var D=document, $=function(id){return D.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var norm=function(s){return String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,' ');};
+  var TOKEN='', DATA={lomba:[],hasil:[]}, CUR=null, ASSIGN={}, loaded=false;
+  try{ TOKEN=sessionStorage.getItem('pn_tok')||''; }catch(e){}
+  function toast(m,t){var e=$('pnToast');if(!e)return;e.textContent=m;e.className='pn-toast on '+(t||'');setTimeout(function(){e.className='pn-toast';},2400);}
+
+  function inject(){
+    var nav=D.querySelector('.ud-nav');
+    if(!nav){ return setTimeout(inject,150); }
+    if($('navPanitia')) return;
+    var a=D.createElement('a'); a.id='navPanitia'; a.href='#'; a.className='ud-link go'; a.textContent='🔒 Panel Panitia';
+    a.addEventListener('click',function(e){ e.preventDefault(); closeDrawer(); openOv(); });
+    nav.appendChild(a);
+  }
+  function closeDrawer(){ D.querySelectorAll('.udrawer,.uscrim').forEach(function(el){el.classList.remove('on');}); }
+  function openOv(){ $('pnOv').classList.add('on'); D.body.style.overflow='hidden';
+    if(TOKEN){ $('pnGate').classList.add('pn-hide'); $('pnPanel').classList.remove('pn-hide'); if(!loaded) loadData(); }
+    else{ $('pnGate').classList.remove('pn-hide'); $('pnPanel').classList.add('pn-hide'); setTimeout(function(){try{$('pnToken').focus();}catch(e){}},120); } }
+  function closeOv(){ $('pnOv').classList.remove('on'); D.body.style.overflow=''; }
+
+  async function enter(){
+    var tok=($('pnToken').value||'').trim(); if(!tok){ toast('Isi token dulu','err'); return; }
+    var b=$('pnEnter'); b.disabled=true; b.textContent='Memeriksa…'; var ok=false;
+    try{ var r=await fetch(API+'?aksi=cekToken&token='+encodeURIComponent(tok)+'&cb='+Date.now()); var d=await r.json(); ok=!!(d&&d.ok); }catch(e){ ok=false; }
+    b.disabled=false; b.textContent='Masuk';
+    if(!ok){ toast('Token salah','err'); return; }
+    TOKEN=tok; try{sessionStorage.setItem('pn_tok',tok);}catch(e){}
+    $('pnGate').classList.add('pn-hide'); $('pnPanel').classList.remove('pn-hide'); loadData();
+  }
+  async function loadData(){
+    try{ var r=await fetch(API+'?aksi=peserta&cb='+Date.now()); var d=await r.json();
+      DATA.lomba=(d&&d.lomba)||[]; DATA.hasil=(d&&d.hasil)||[]; loaded=true; fillJenis(); toast('Data dimuat','ok');
+      if(CUR){ var c=findLomba(CUR.jenis,CUR.nama); if(c){CUR=c; renderPanel();} }
+    }catch(e){ toast('Gagal memuat data','err'); }
+  }
+  function fillJenis(){ var seen=[]; DATA.lomba.forEach(function(l){var j=(l.jenis||'').trim(); if(j&&seen.indexOf(j)<0)seen.push(j);});
+    seen.sort(function(a,b){return a.localeCompare(b,'id',{numeric:true});});
+    $('pnJenis').innerHTML='<option value="">Pilih jenis…</option>'+seen.map(function(j){return '<option>'+esc(j)+'</option>';}).join(''); }
+  function lombaInJenis(j){return DATA.lomba.filter(function(l){return norm(l.jenis)===norm(j);});}
+  function findLomba(j,n){return DATA.lomba.filter(function(l){return norm(l.jenis)===norm(j)&&norm(l.nama)===norm(n);})[0];}
+  function curHasil(){return DATA.hasil.filter(function(h){return norm(h.jenis)===norm(CUR.jenis)&&norm(h.lomba)===norm(CUR.nama);});}
+
+  function renderPanel(){ if(!CUR){ showPanel(false); return; }
+    var tipe=(CUR.tipe||'Individu'), isRegu=/regu|tim/i.test(tipe);
+    $('pnInfo').innerHTML='Tipe: <b>'+esc(tipe)+'</b> · Kelompok: '+esc(CUR.kelompok||'-')+' · '+((CUR.peserta||[]).length)+' peserta';
+    $('pnInfo').classList.remove('pn-hide');
+    var win={}; curHasil().forEach(function(h){var p=parseInt(h.peringkat,10); if(p>=1&&p<=3)win[p]={nama:h.nama,blok:h.blok};});
+    ASSIGN={}; if(isRegu) renderRegu(win); else renderIndividu(win); showPanel(true); }
+  function showPanel(on){ $('pnBodyCard').classList.toggle('pn-hide',!on); $('pnSave').classList.toggle('pn-hide',!on); }
+  function renderRegu(win){ var med={1:'🥇',2:'🥈',3:'🥉'};
+    var h='<div style="font-weight:800;margin-bottom:12px;color:var(--ink)">🏆 Pemenang (Regu)</div>';
+    for(var r=1;r<=3;r++){ var w=win[r]||{}; h+='<div class="pn-reg"><div class="t">'+med[r]+' Juara '+r+'</div><div class="pn-row2"><input id="pnrn'+r+'" placeholder="Nama tim" value="'+esc(w.nama||'')+'"><input id="pnrb'+r+'" placeholder="Blok" value="'+esc(w.blok||'')+'"></div></div>'; }
+    $('pnBody').innerHTML=h; }
+  function renderIndividu(win){ var pes=(CUR.peserta||[]);
+    if(!pes.length){ $('pnBody').innerHTML='<div class="pn-empty">Belum ada peserta terdaftar untuk lomba ini.</div>'; return; }
+    var winKey={}; for(var r=1;r<=3;r++){ if(win[r]) winKey[norm(win[r].nama)+'||'+norm(win[r].blok)]=String(r); }
+    var h='<div style="font-weight:800;color:var(--ink)">👥 Peserta</div><div class="pn-hint" style="margin-bottom:12px">Ketuk 1/2/3 untuk juara, G untuk gugur. Ketuk lagi untuk batal.</div>';
+    pes.forEach(function(p,i){ var k=norm(p.nama)+'||'+norm(p.blok), init=winKey[k]||''; if(!init&&norm(p.status)==='gugur')init='gugur'; ASSIGN[i]=init;
+      h+='<div class="pn-pes"><div class="pn-pes-info"><div class="pn-nm">'+esc(p.nama||'-')+'</div><div class="pn-bl">Blok '+esc(p.blok||'-')+'</div></div><div class="pn-seg" data-i="'+i+'"><button class="s1" data-v="1">1</button><button class="s2" data-v="2">2</button><button class="s3" data-v="3">3</button><button class="sg" data-v="gugur">G</button></div></div>'; });
+    $('pnBody').innerHTML=h; syncSeg();
+    D.querySelectorAll('#pnBody .pn-seg button').forEach(function(b){ b.addEventListener('click',function(){
+      var i=b.parentElement.getAttribute('data-i'), v=b.getAttribute('data-v');
+      if(ASSIGN[i]===v) ASSIGN[i]=''; else { if(v!=='gugur'){ Object.keys(ASSIGN).forEach(function(k){ if(ASSIGN[k]===v) ASSIGN[k]=''; }); } ASSIGN[i]=v; } syncSeg(); }); }); }
+  function syncSeg(){ D.querySelectorAll('#pnBody .pn-seg').forEach(function(w){ var v=ASSIGN[w.getAttribute('data-i')]||''; w.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-v')===v); }); }); }
+
+  async function save(){ if(!CUR) return;
+    var isRegu=/regu|tim/i.test(CUR.tipe||'Individu');
+    var fd=new FormData(); fd.append('aksi','setHasil'); fd.append('token',TOKEN);
+    fd.append('jenis',CUR.jenis); fd.append('lomba',CUR.nama); fd.append('kelompok',CUR.kelompok||'');
+    var gugur=[];
+    if(isRegu){ for(var r=1;r<=3;r++){ fd.append('nama'+r,($('pnrn'+r).value||'').trim()); fd.append('blok'+r,($('pnrb'+r).value||'').trim()); } }
+    else{ var pes=(CUR.peserta||[]), win={};
+      Object.keys(ASSIGN).forEach(function(i){ var v=ASSIGN[i], p=pes[i]; if(!p) return; if(v==='gugur') gugur.push({nama:p.nama,blok:p.blok}); else if(v==='1'||v==='2'||v==='3') win[v]=p; });
+      for(var r2=1;r2<=3;r2++){ fd.append('nama'+r2,win[r2]?win[r2].nama:''); fd.append('blok'+r2,win[r2]?win[r2].blok:''); } }
+    fd.append('gugur',JSON.stringify(gugur));
+    var b=$('pnSave'); b.disabled=true; b.textContent='Menyimpan…';
+    try{ var r3=await fetch(API,{method:'POST',body:fd}); var d=null; try{ d=await r3.json(); }catch(_){}
+      if(d&&d.ok===false){ toast('Gagal: '+(d.error||'?'),'err'); } else { toast('Tersimpan ✓','ok'); await loadData(); }
+    }catch(e){ toast('Gagal menyimpan','err'); }
+    b.disabled=false; b.textContent='💾 Simpan Hasil'; }
+
+  function wire(){
+    $('pnClose').addEventListener('click',closeOv);
+    $('pnEnter').addEventListener('click',enter);
+    $('pnToken').addEventListener('keydown',function(e){ if(e.key==='Enter') enter(); });
+    $('pnReload').addEventListener('click',loadData);
+    $('pnSave').addEventListener('click',save);
+    $('pnJenis').addEventListener('change',function(){ var j=$('pnJenis').value, sel=$('pnLomba');
+      if(!j){ sel.disabled=true; sel.innerHTML='<option value="">Pilih jenis dulu…</option>'; CUR=null; showPanel(false); $('pnInfo').classList.add('pn-hide'); return; }
+      sel.disabled=false; sel.innerHTML='<option value="">Pilih lomba…</option>'+lombaInJenis(j).map(function(l){return '<option>'+esc(l.nama)+'</option>';}).join(''); CUR=null; showPanel(false); $('pnInfo').classList.add('pn-hide'); });
+    $('pnLomba').addEventListener('change',function(){ var n=$('pnLomba').value; if(!n){ CUR=null; showPanel(false); return; } CUR=findLomba($('pnJenis').value,n); renderPanel(); });
+  }
+  if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',function(){ inject(); wire(); }); else { inject(); wire(); }
+})();
+</script>
+<!-- ============ /PANEL PANITIA ============ -->
 </body>
 </html>
