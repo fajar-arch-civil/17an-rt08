@@ -71,18 +71,13 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 /* ============ HERO (Independence countdown) ============ */
 .hero{position:relative;overflow:hidden;margin:16px 20px 0;border-radius:var(--r-hero);background:linear-gradient(140deg,#ff3a3a 0%,#d41a1a 55%,#7d0f0f 100%);color:#fff;box-shadow:var(--sh-glow);max-width:var(--maxw)}
 @media(min-width:1080px){.hero{margin-left:auto;margin-right:auto}}
-.hero-deco{position:absolute;inset:0;z-index:0;opacity:.9;background:radial-gradient(70% 90% at 85% 10%,rgba(255,255,255,.22),transparent 55%),radial-gradient(60% 80% at 0% 100%,rgba(0,0,0,.28),transparent 60%)}
-.hero-flag{position:absolute;inset:0;z-index:0;opacity:.07;background:repeating-linear-gradient(135deg,#fff 0 2px,transparent 2px 20px)}
-.hero-spark{position:absolute;right:-30px;top:-30px;z-index:0;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.3),transparent 70%);filter:blur(6px)}
 .hero-inner{position:relative;z-index:2;padding:24px 22px 26px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.04em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);padding:6px 13px;border-radius:var(--r-pill);backdrop-filter:blur(6px)}
 .hero-title{font-size:25px;font-weight:800;line-height:1.12;margin:16px 0 4px;letter-spacing:-.035em;max-width:15ch}
 .hero-sub{font-size:13.5px;opacity:.9;font-weight:500}
 .count-wrap{display:flex;align-items:stretch;gap:10px;margin-top:20px}
 .cbox{flex:1;background:rgba(0,0,0,.26);border:1px solid rgba(255,255,255,.16);border-radius:var(--r-el);padding:14px 6px;text-align:center;backdrop-filter:blur(8px)}
 .cbox b{display:block;font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 .cbox span{display:block;font-size:10px;opacity:.82;margin-top:7px;text-transform:uppercase;letter-spacing:.14em;font-weight:600}
-.csep{align-self:center;font-size:26px;font-weight:800;opacity:.5}
 .hero-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:18px;background:#fff;color:#c11414;font-weight:800;font-size:14.5px;padding:14px;border-radius:var(--r-el);border:none;cursor:pointer;font-family:inherit;box-shadow:0 8px 22px rgba(0,0,0,.25);transition:.16s}
 .hero-btn:active{transform:scale(.98)}
 /* ============ KPI CARDS ============ */
@@ -586,14 +581,6 @@ body{ overscroll-behavior-y:none; }
 .btn-primary,#cekBtn,.cek-btn{background:linear-gradient(135deg,var(--merah),var(--merah2))!important;}
 
 /* F) HERO: kartu merah penuh + teks putih (first impression kuat), seimbang oleh kartu putih di bawahnya */
-.hero{
-  background:
-    radial-gradient(120% 130% at 88% -20%, #FF3B43, transparent 60%),
-    linear-gradient(150deg,#EE1C25 0%,#D2121C 55%,#A60E16 100%)!important;
-  box-shadow:0 22px 48px -26px rgba(238,28,37,.55), inset 0 1px 0 rgba(255,255,255,.18)!important;
-  border:none!important; color:#fff!important;
-}
-.cbox{background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.24)!important;}
 .hero-btn{background:#fff!important;color:var(--merah)!important;}
 /* ===== MERAH PUTIH v1 — END ===== */
 /* ===== HERO PETA INDONESIA v2 — START ===== */
@@ -722,18 +709,13 @@ body{ overscroll-behavior-y:none; }
 /* HERO — tinggi 130, judul+tombol sebaris, deskripsi di bawah */
 .hero{min-height:130px!important;border-radius:20px!important;margin:12px 14px 0!important}
 .hero-inner{padding:20px!important;min-height:130px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
-.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .hero-title{font-size:22px!important;line-height:1.15!important;margin:0!important;flex:1}
-.hero-desc{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
-.hero-eyebrow{font-size:12px!important;padding:4px 10px!important}
 .hero-sub{font-size:14px!important;line-height:20px!important;margin:0!important;opacity:.9}
 .hero-btn{flex:0 0 auto;width:auto!important;height:44px!important;padding:0 24px!important;border-radius:999px!important;font-size:16px!important;margin:0!important}
 
 /* COUNTDOWN — banner 140, 4 box 78x58 */
 .cd-banner{min-height:140px!important;border-radius:18px!important;padding:16px!important;color:#fff;background:linear-gradient(160deg,#F0202A 0%,#D81621 100%);box-shadow:0 12px 26px -16px rgba(216,22,33,.42);display:flex;align-items:center}
-.cd-banner-head{display:none!important}
 .cd-banner .count-wrap{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;margin:0!important;width:100%}
-.csep{display:none!important}
 .cbox{height:58px!important;border-radius:12px!important;padding:0!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center}
 .cbox b{font-size:20px!important;font-weight:700!important}
 .cbox span{font-size:10px!important;margin-top:3px!important;letter-spacing:.06em!important}
@@ -759,7 +741,6 @@ body{ overscroll-behavior-y:none; }
 /* HERO 112 / radius20 / pad16 — konten kiri, tombol kanan-bawah */
 .hero{min-height:112px!important;border-radius:20px!important;margin:14px 14px 0!important}
 .hero-inner{position:relative!important;padding:16px!important;min-height:112px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-.hero-eyebrow{display:none!important}
 .hero-text{max-width:62%}
 .hero-title{font-size:14px!important;line-height:1.15!important;margin:0 0 5px!important;max-width:100%!important}
 .hero-sub{font-size:11px!important;line-height:14px!important;opacity:.92}
