@@ -209,6 +209,10 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .lb-empty{text-align:center;color:var(--muted);font-size:13.5px;padding:30px 12px}
 .lb-empty .iconify{font-size:38px;color:var(--bd2);display:block;margin:0 auto 10px}
 #cekHasil{margin-top:15px}
+.lb-lomba{font-weight:800;font-size:14px;margin:20px 0 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lb-lomba:first-child{margin-top:4px}
+.lb-lomba span{font-weight:600;font-size:11.5px;color:var(--muted)}
+
 /* ============ FORM (stepper + inputs + dropdown) ============ */
 .stepper{display:flex;align-items:center;gap:6px;margin-bottom:20px}
 .step{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative}
@@ -1088,7 +1092,7 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 
   <!-- ===== LIVE LEADERBOARD (preview) ===== -->
   <section class="sec">
-    <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:medal-ribbon-star-bold"></span> Live Leaderboard</div><a class="sec-act" href="lomba.html">Lihat Semua <span class="iconify" data-icon="solar:arrow-right-linear"></span></a></div>
+    <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:medal-ribbon-star-bold"></span> Papan Juara</div><a class="sec-act" href="lomba.html">Lihat Semua <span class="iconify" data-icon="solar:arrow-right-linear"></span></a></div>
     <div class="lb-filter" id="lbFilter">
       <button class="chip on" data-filter="all">Semua</button>
       <button class="chip" data-filter="Lomba Olahraga">Olahraga</button>
@@ -1363,11 +1367,34 @@ function renderKatalog(){
  t.innerHTML=arr.slice(0,8).map(l=>{const nm=getF(l,['nama','name','lomba'])||'';const j=getF(l,['jenis','kategori','tipe'])||'';const info=getF(l,['info','keterangan','jadwal','lokasi'])||'';const kuota=num(getF(l,['kuota','quota','slot'])),ter=num(getF(l,['terdaftar','peserta','count']));const sisa=kuota?Math.max(0,kuota-ter):null;return '<div class="hcard"><div class="lomba-card glass"><div class="lc-body"><span class="lc-cat '+jenisCls(j)+'">'+esc(j||'Lomba')+'</span><div class="lc-name">'+esc(nm)+'</div><div class="lc-meta">'+(info?'<span><span class="iconify" data-icon="solar:info-circle-linear"></span>'+esc(info)+'</span>':'')+'</div><div class="lc-foot"><span class="lc-reg">Terdaftar <b>'+ter+'</b></span>'+(sisa!=null?'<span class="lc-cat '+(sisa>0?'olah':'seni')+'">'+(sisa>0?('Sisa '+sisa):'Penuh')+'</span>':'')+'</div></div></div></div>';}).join('');scan();
 }
 function renderLeaderboard(filter){
- const box=$('lbScroll');if(!box)return;let arr=_hasil||[];
- if(filter&&filter!=='all')arr=arr.filter(h=>norm(getF(h,['jenis','kategori','tipe'])||'').includes(filter==='Pentas Seni'?'seni':norm(filter).replace('lomba ','')));
- if(!Array.isArray(arr)||!arr.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold"></span>Belum ada hasil lomba. Pantau terus, ya!</div>';return;}
- const rows=arr.map(h=>({nama:getF(h,['nama','name','peserta'])||'-',blok:getF(h,['blok','alamat','wilayah','rumah'])||getF(h,['lomba','cabang'])||'',poin:num(getF(h,['poin','point','skor','score','nilai']))})).sort((a,b)=>b.poin-a.poin);
- box.innerHTML=rows.slice(0,20).map((r,i)=>{const rk=i+1,rc=rk===1?'r1':rk===2?'r2':rk===3?'r3':'rn';return '<div class="lb-row glass'+(rk<=3?' top':'')+'"><div class="lb-rank '+rc+'">'+rk+'</div><div><div class="lb-name">'+esc(r.nama)+'</div><div class="lb-blok">'+esc(r.blok)+'</div></div><div class="lb-pts"><b>'+r.poin+'</b><span>Poin</span></div></div>';}).join('');scan();
+  const box=$('lbScroll');if(!box)return;
+  let arr=_hasil||[];
+  if(filter&&filter!=='all')arr=arr.filter(h=>norm(getF(h,['jenis','kategori'])||'').includes(filter==='Pentas Seni'?'seni':norm(filter).replace('lomba ','')));
+  if(!Array.isArray(arr)||!arr.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold"></span>Belum ada hasil lomba. Pantau terus, ya!</div>';return;}
+  const groups={},order=[];
+  arr.forEach(h=>{
+    const lomba=getF(h,['lomba','cabang','namaLomba','nama_lomba'])||'';
+    const jenis=getF(h,['jenis','kategori'])||'';
+    if(!lomba)return;
+    const key=norm(jenis)+'||'+norm(lomba);
+    if(!groups[key]){groups[key]={lomba:lomba,jenis:jenis,kelompok:getF(h,['kelompok','kelompokUmur','umur'])||'',win:{}};order.push(key);}
+    const pr=num(getF(h,['peringkat','rank','juara','posisi']));
+    if(pr>=1&&pr<=3&&!groups[key].win[pr])groups[key].win[pr]={nama:getF(h,['nama','name','peserta','tim','namaTim'])||'-',blok:getF(h,['blok','alamat','wilayah','rumah'])||''};
+  });
+  if(!order.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold"></span>Belum ada hasil lomba. Pantau terus, ya!</div>';return;}
+  const medal={1:'🥇',2:'🥈',3:'🥉'};
+  box.innerHTML=order.map(k=>{
+    const g=groups[k];
+    const sub=[g.jenis,g.kelompok?('Usia '+g.kelompok):''].filter(Boolean).join(' · ');
+    let rows='';
+    for(var r=1;r<=3;r++){
+      const w=g.win[r];if(!w)continue;
+      rows+='<div class="lb-row glass top"><div class="lb-rank r'+r+'">'+r+'</div><div><div class="lb-name">'+esc(w.nama)+'</div>'+(w.blok?('<div class="lb-blok">'+esc(w.blok)+'</div>'):'')+'</div><div class="lb-pts"><b>'+medal[r]+'</b><span>Juara '+r+'</span></div></div>';
+    }
+    if(!rows)rows='<div class="lb-empty" style="padding:14px 12px">Belum ada juara</div>';
+    return '<div class="lb-lomba">'+esc(g.lomba)+(sub?(' <span>'+esc(sub)+'</span>'):'')+'</div>'+rows;
+  }).join('');
+  scan();
 }
 
 /* ===================== GALERI ===================== */
