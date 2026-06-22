@@ -530,13 +530,6 @@ footer b{color:var(--ink2);font-weight:700}
 .lu-meta .iconify{font-size:15px;color:var(--merah);flex:none;}
 /* ===================== SAFE-AREA / NOTCH + LINTAS-DEVICE PATCH ===================== */
 
-/* Elemen mengambang: hindari home-indicator bawah */
-#toast{ bottom:calc(108px + env(safe-area-inset-bottom,0px)); }
-
-/* Polish lintas device: cegah teks auto-zoom iOS, bounce aneh di standalone, & highlight tap */
-html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-body{ overscroll-behavior-y:none; }
-*{ -webkit-tap-highlight-color:transparent; }
 /* ===================== FINAL — SAFE-AREA (notch) + BOTTOM NAV standar (gesture & tombol, semua device) ===================== */
 
 /* FAB & toast naik di atas bar + area aman */
@@ -551,9 +544,6 @@ body{ overscroll-behavior-y:none; }
 *{ -webkit-tap-highlight-color:transparent; }
 <style>
 /* ===== MERAH PUTIH v1 — START (Light-first, dark toggle) ===== */
-
-/* A) Merah seimbang utk dua mode */
-:root{ --merah:var(--merah); --merah2:var(--merah); }
 
 /* B) MODE TERANG (utama): kanvas abu muda, kartu putih, chip pink */
 :root[data-theme="light"]{
@@ -636,11 +626,6 @@ body{ overscroll-behavior-y:none; }
 /* tombol ringkas */
 .hero-btn{ padding:11px 16px!important; font-size:13px!important; border-radius:12px!important; }
 /* ===== HERO FLAT v2 — END ===== */
-/* ===== HERO DESKTOP FIX — START ===== */
-@media(min-width:1080px){
-  .hero{ margin-left:auto!important; margin-right:auto!important; }
-}
-/* ===== HERO DESKTOP FIX — END ===== */
 /* ===== MATERIAL CARDS v1 — START (flat & solid, anti-glass/AI) ===== */
 /* bayangan netral lembut ala referensi */
 :root[data-theme="light"]{

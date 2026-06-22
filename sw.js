@@ -1,4 +1,4 @@
-const CACHE = 'rt08-v29';
+const CACHE = 'rt08-v30';
 const SHELL=['./','./index.html','./lomba.html','./manifest.json','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', e=>{
