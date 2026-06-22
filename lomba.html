@@ -13,7 +13,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Lomba · RT 08 17-an · HUT RI ke-81 2026</title>
-<meta name="theme-color" content="#EE1C25">
+<meta name="theme-color" content="var(--merah)">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
@@ -25,7 +25,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root{
-  --merah:#EE1C25;--merah2:#C8101A;
+  --merah:var(--merah);--merah2:var(--merah);
   --bg0:#ECECEE;--bg1:#E6E6EA;--bg2:#FFFFFF;
   --bd:rgba(0,0,0,.07);--bd2:rgba(0,0,0,.12);
   --ink:#191919;--ink2:#5A5A62;--muted:#9A9AA2;
@@ -232,10 +232,10 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 <style id="hasilCss">
 .hasil-ctrl{margin:0 0 12px}
 .hasil-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.hf-btn{padding:8px 14px;border-radius:999px;border:1.5px solid #E53935;background:#fff;color:#E53935;font-weight:700;font-size:13px;cursor:pointer}
-.hf-btn.on{background:#E53935;color:#fff}
+.hf-btn{padding:8px 14px;border-radius:999px;border:1.5px solid var(--merah);background:#fff;color:var(--merah);font-weight:700;font-size:13px;cursor:pointer}
+.hf-btn.on{background:var(--merah);color:#fff}
 .hasil-search{width:100%;box-sizing:border-box;padding:11px 14px;border:1px solid var(--bd,#e5e7eb);border-radius:999px;font-size:14px;outline:none}
-.hasil-search:focus{border-color:#E53935}
+.hasil-search:focus{border-color:var(--merah)}
 .hasil-acc{border:1px solid var(--bd,#e5e7eb);border-radius:16px;margin-bottom:10px;overflow:hidden;background:#fff}
 .hasil-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}
 .hasil-sum::-webkit-details-marker{display:none}
@@ -999,7 +999,7 @@ function renderHasil(){
 .sp-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font-weight:700;font-size:13.5px;color:#111}
 .sp-sum::-webkit-details-marker{display:none}
 .sp-sum-t{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
-.sp-count{background:#E53935;color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px}
+.sp-count{background:var(--merah);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px}
 .sp-chev{color:#999;font-size:13px;transition:.2s}
 details[open] .sp-chev{transform:rotate(180deg)}
 .sp-body{display:flex;flex-wrap:wrap;gap:7px;padding:2px 14px 14px}

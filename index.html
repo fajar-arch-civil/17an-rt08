@@ -31,7 +31,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
   --solid:#141414;--solid2:#1a1a1a;
   --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.13);
   --ink:#ffffff;--ink2:rgba(255,255,255,.64);--muted:rgba(255,255,255,.42);
-  --merah:#FF2D2D;--merah2:#e21f1f;--merah-glow:rgba(255,45,45,.35);--merah-soft:rgba(255,45,45,.12);
+  --merah:#FF2D2D;--merah2:var(--merah);--merah-glow:rgba(255,45,45,.35);--merah-soft:rgba(255,45,45,.12);
   --ok:#32D74B;--warn:#FFB800;--danger:#FF453A;--info:#0A84FF;--gold:#FFCB45;
   --ok-soft:rgba(50,215,75,.13);--warn-soft:rgba(255,184,0,.14);--danger-soft:rgba(255,69,58,.14);
   --r-hero:28px;--r-card:24px;--r-el:18px;--r-chip:14px;--r-pill:999px;
@@ -553,7 +553,7 @@ body{ overscroll-behavior-y:none; }
 /* ===== MERAH PUTIH v1 — START (Light-first, dark toggle) ===== */
 
 /* A) Merah seimbang utk dua mode */
-:root{ --merah:#EE1C25; --merah2:#C8101A; }
+:root{ --merah:var(--merah); --merah2:var(--merah); }
 
 /* B) MODE TERANG (utama): kanvas abu muda, kartu putih, chip pink */
 :root[data-theme="light"]{
@@ -794,7 +794,7 @@ body{ overscroll-behavior-y:none; }
 .dp-lbl{font-size:9.5px;font-weight:700;color:var(--ink2);flex:0 0 56px}
 .dp-track{flex:1;height:7px;border-radius:99px;background:var(--bg0);overflow:hidden}
 .dp-bar{display:block;height:100%;width:0;border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.dp-bar.olah{background:#EE1C25}
+.dp-bar.olah{background:var(--merah)}
 .dp-bar.anak{background:#FF8A8A}
 .dp-bar.seni{background:#9A1014}
 .dp-num{font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;flex:0 0 auto;min-width:14px;text-align:right}
@@ -850,33 +850,33 @@ body{ overscroll-behavior-y:none; }
 
 /* ===== DOMINAN MERAH (isi putih) ===== */
 #pengumuman #annFeed{display:flex;flex-direction:column;gap:10px}
-#pengumuman #annFeed>*{background:#E53935!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
+#pengumuman #annFeed>*{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
 #pengumuman #annFeed>*,#pengumuman #annFeed *{color:#fff!important}
 
-#keuangan .balance{background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
+#keuangan .balance{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
 #keuangan .balance,#keuangan .balance *{color:#fff!important}
 #keuangan .balance .bal-amt{font-size:23px!important;font-weight:700!important;line-height:1.1}
 #keuangan .balance .bal-l{font-size:12px!important;font-weight:700!important}
 #keuangan .balance .bal-sub{font-size:11px!important;opacity:.9}
 
-#keuangan .chart-card{background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px 16px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
+#keuangan .chart-card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
 #keuangan .chart-card .sec-head{margin:0 0 12px!important;display:flex;align-items:flex-start;justify-content:space-between}
 #keuangan .chart-card .sec-head>div{color:#fff!important;font-size:18px!important;font-weight:700!important}
 #keuangan .chart-card .chart-wrap{background:#fff!important;border-radius:14px!important;padding:8px!important}
 #keuangan .chart-card .chart-x{color:rgba(255,255,255,.9)!important;font-size:11px!important;margin-top:6px!important}
-#keuangan #frefresh{display:inline-flex!important;align-items:center;gap:6px!important;background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important;padding:6px 12px!important;font-size:11px!important;font-weight:700!important;line-height:1!important;flex:none}
-#keuangan #frefresh .iconify{width:14px!important;height:14px!important;font-size:14px!important;color:#E53935!important;flex:none}
+#keuangan #frefresh{display:inline-flex!important;align-items:center;gap:6px!important;background:#fff!important;color:var(--merah)!important;border:none!important;border-radius:999px!important;padding:6px 12px!important;font-size:11px!important;font-weight:700!important;line-height:1!important;flex:none}
+#keuangan #frefresh .iconify{width:14px!important;height:14px!important;font-size:14px!important;color:var(--merah)!important;flex:none}
 
-#rekap .card{background:#E53935!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
+#rekap .card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
 #rekap .card .eyebrow{color:#fff!important}
 #rekap .card .cek-input{background:#fff!important;border:none!important;border-radius:999px!important;padding:12px 16px!important;color:#333!important}
-#rekap .card .cek-btn{background:#fff!important;color:#E53935!important;border:none!important;border-radius:999px!important}
-#rekap .card .cek-btn .iconify{color:#E53935!important}
+#rekap .card .cek-btn{background:#fff!important;color:var(--merah)!important;border:none!important;border-radius:999px!important}
+#rekap .card .cek-btn .iconify{color:var(--merah)!important}
 #rekap .card #cekHasil,#rekap .card .cek-empty{color:#fff!important}
 #rekap .card button:not(.cek-btn){background:transparent!important;color:#fff!important;border:1.5px solid rgba(255,255,255,.7)!important;border-radius:999px!important;font-weight:800!important;padding:10px 14px!important;opacity:1!important;box-shadow:none!important}
 #rekap .card button:not(.cek-btn) .iconify{color:#fff!important}
-#rekap .card button:not(.cek-btn).on,#rekap .card button:not(.cek-btn).active,#rekap .card button:not(.cek-btn)[aria-selected="true"]{background:#fff!important;color:#E53935!important;border-color:#fff!important}
-#rekap .card button:not(.cek-btn).on .iconify,#rekap .card button:not(.cek-btn).active .iconify,#rekap .card button:not(.cek-btn)[aria-selected="true"] .iconify{color:#E53935!important}
+#rekap .card button:not(.cek-btn).on,#rekap .card button:not(.cek-btn).active,#rekap .card button:not(.cek-btn)[aria-selected="true"]{background:#fff!important;color:var(--merah)!important;border-color:#fff!important}
+#rekap .card button:not(.cek-btn).on .iconify,#rekap .card button:not(.cek-btn).active .iconify,#rekap .card button:not(.cek-btn)[aria-selected="true"] .iconify{color:var(--merah)!important}
 
 /* ===== DOMINAN PUTIH (aksen merah) ===== */
 #keuangan .kpi-grid{gap:10px!important}
@@ -890,15 +890,15 @@ body{ overscroll-behavior-y:none; }
 #keuangan .tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px!important;font-weight:800!important;font-size:14px!important;padding:10px 16px!important}
 #keuangan .tab:not(.on){background:#ededed!important;color:#333!important;border-color:transparent!important}
 #keuangan .tab.masuk.on{background:#34c759!important;color:#fff!important;border-color:transparent!important}
-#keuangan .tab.keluar.on{background:#E53935!important;color:#fff!important;border-color:transparent!important}
-#keuangan #btnExport{display:inline-flex;align-items:center;gap:6px;background:#E53935!important;color:#fff!important;border:none!important;border-radius:999px!important;padding:7px 16px!important;font-size:12px!important;font-weight:700!important}
+#keuangan .tab.keluar.on{background:var(--merah)!important;color:#fff!important;border-color:transparent!important}
+#keuangan #btnExport{display:inline-flex;align-items:center;gap:6px;background:var(--merah)!important;color:#fff!important;border:none!important;border-radius:999px!important;padding:7px 16px!important;font-size:12px!important;font-weight:700!important}
 
 /* ============================================================ */
 /* ============================================================ */
 /* ===== KONTRAS FINAL v6 — UI auto ikut dark/light (PENGGANTI v5) ===== */
 
 /* --- STATUS PER BLOK: kartu merah aksen, baris transparan, teks putih (2 mode) --- */
-#rekap :has(> #blokBars){background:#E53935!important;border:none!important;border-radius:20px!important;padding:14px!important}
+#rekap :has(> #blokBars){background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px!important}
 #rekap :has(> #blokBars) > :not(#blokBars){color:#fff!important}
 #rekap :has(> #blokBars) > :not(#blokBars) .iconify{color:#fff!important}
 #blokBars{background:transparent!important;padding:0!important}
@@ -1002,7 +1002,7 @@ h1,h2,h3,h4,.h1,.h2,.h3{ font-family:'Plus Jakarta Sans',system-ui,sans-serif !i
 
   var ov=document.createElement('div'); ov.id='daftarGate';
   ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:'+bg+';transition:opacity .3s ease;touch-action:none;overscroll-behavior:contain';
-  ov.innerHTML='<div style="width:42px;height:42px;border-radius:50%;border:3px solid rgba(140,140,140,.25);border-top-color:#EE1C25;animation:dgS .8s linear infinite"></div>'
+  ov.innerHTML='<div style="width:42px;height:42px;border-radius:50%;border:3px solid rgba(140,140,140,.25);border-top-color:var(--merah);animation:dgS .8s linear infinite"></div>'
     +'<div style="font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:'+ink+'">Menyiapkan formulir…</div>'
     +'<style>@keyframes dgS{to{transform:rotate(360deg)}}</style>';
   ov.addEventListener('touchmove',function(e){e.preventDefault();},{passive:false});
