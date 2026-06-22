@@ -2616,5 +2616,25 @@ if('serviceWorker' in navigator){
 })();
 </script>
 <!-- ===== WIDGET STATUS LOMBA — END ===== -->
+ <style id="rbFix">
+/* ===== RESISTANCE BLUE — OVERRIDE FINAL ===== */
+:root,:root[data-theme="dark"]{
+  --merah:#5C5CFF!important;--merah2:#3D3DFF!important;
+  --merah-glow:rgba(92,92,255,.30)!important;--merah-soft:rgba(92,92,255,.16)!important;--chip:rgba(92,92,255,.16)!important;
+}
+:root[data-theme="light"]{
+  --merah:#000072!important;--merah2:#1F1F9C!important;
+  --merah-glow:rgba(0,0,114,.20)!important;--merah-soft:#E7E9FF!important;--chip:#E7E9FF!important;
+}
+/* Bagian yang warnanya di-hardcode (bukan token) → dipaksa ikut biru */
+.hero{background:linear-gradient(150deg,var(--merah2),var(--merah))!important}
+.cd-banner{background:linear-gradient(150deg,var(--merah2),var(--merah))!important}
+.btn-primary,#cekBtn,.cek-btn{background:linear-gradient(135deg,var(--merah),var(--merah2))!important}
+.hero-btn{background:#fff!important;color:var(--merah)!important}
+body::before{background:radial-gradient(120% 60% at 50% -10%,var(--merah-glow),transparent 60%)!important}
+.dp-bar.olah{background:var(--merah)!important}
+.dp-bar.anak{background:var(--merah2)!important}
+.dp-bar.seni{background:#9AA0FF!important}
+</style>
 </body>
 </html>
