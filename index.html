@@ -52,7 +52,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;scroll-padding-top:calc(56px + env(safe-area-inset-top,0px) + 14px)}
 body{margin:0;background:var(--bg0);color:var(--ink);font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5;letter-spacing:-.012em;padding-bottom:104px;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(120% 60% at 50% -10%,rgba(255,45,45,.16),transparent 60%),radial-gradient(80% 50% at 100% 0%,rgba(255,45,45,.06),transparent 55%)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(120% 60% at 50% -10%,var(--merah-glow),transparent 60%)}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .iconify{display:inline-block;vertical-align:-.15em}
 ::selection{background:var(--merah);color:#fff}
@@ -67,7 +67,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .sec-title .iconify{color:var(--merah);font-size:22px}
 .sec-act{font-size:13px;font-weight:700;color:var(--merah);display:inline-flex;align-items:center;gap:4px;cursor:pointer;border:none;background:none;font-family:inherit;white-space:nowrap}
 /* ============ HEADER ============ */
-.hd-ava{width:38px;height:38px;border-radius:var(--r-chip);background:linear-gradient(150deg,var(--merah),#9d1414);display:grid;place-items:center;color:#fff;font-size:18px;box-shadow:0 6px 16px var(--merah-glow)}
+.hd-ava{width:38px;height:38px;border-radius:var(--r-chip);background:#fff;display:grid;place-items:center;color:var(--merah);font-size:18px;box-shadow:var(--sh-sm)}
 /* ============ HERO (Independence countdown) ============ */
 .hero{position:relative;overflow:hidden;margin:16px 20px 0;border-radius:var(--r-hero);background:linear-gradient(140deg,#ff3a3a 0%,#d41a1a 55%,#7d0f0f 100%);color:#fff;box-shadow:var(--sh-glow);max-width:var(--maxw)}
 @media(min-width:1080px){.hero{margin-left:auto;margin-right:auto}}
@@ -403,7 +403,7 @@ footer b{color:var(--ink2);font-weight:700}
 /* ===================== REVISI 2 — VISUAL & TEMA ===================== */
 
 /* --- Header: logo Karang Taruna + klik ke beranda --- */
-.hd-ava{overflow:hidden;background:#fff!important;}
+.hd-ava{overflow:hidden;background:#fff!important;border:1px solid var(--bd)!important;box-shadow:var(--sh-sm)!important;}
 .hd-ava img.hd-logo{width:100%;height:100%;object-fit:contain;padding:3px;display:block;}
 
 /* --- Chip kategori lomba: flat + titik (bukan pill gradient AI) --- */
@@ -613,8 +613,8 @@ body{ overscroll-behavior-y:none; }
 .hero{
   margin:14px 16px 0!important;
   border-radius:24px!important;
-  background:linear-gradient(160deg,#F0202A 0%,#D81621 100%)!important;  /* merah RATA, tanpa glow radial */
-  box-shadow:0 12px 26px -16px rgba(216,22,33,.42)!important;            /* bayangan lembut, BUKAN glow */
+  background:linear-gradient(160deg,var(--merah2) 0%,var(--merah) 100%)!important;  /* merah RATA, tanpa glow radial */
+  box-shadow:0 12px 26px -16px var(--merah-glow)!important;            /* bayangan lembut, BUKAN glow */
   border:none!important;
 }
 .hero::after{ display:none!important; }            /* matikan sapuan kilau (kesan AI) */
@@ -710,41 +710,6 @@ body{ overscroll-behavior-y:none; }
 }
 .balance::after{ display:none!important; } /* buang gumpalan glow merah */
 
-/* ===== REDESIGN INDEX v3 — UKURAN PERSIS WIREFRAME ===== */
-/* GLOBAL */
-.wrap{padding-left:14px!important;padding-right:14px!important}
-.sec{margin-top:14px!important}
-.sec-head{margin:0 2px 8px!important}
-.sec-title{font-size:15px!important}
-.sec-title .iconify{font-size:17px!important}
-/* HERO — tinggi 130, judul+tombol sebaris, deskripsi di bawah */
-.hero{min-height:130px!important;border-radius:20px!important;margin:12px 14px 0!important}
-.hero-inner{padding:20px!important;min-height:130px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
-.hero-title{font-size:22px!important;line-height:1.15!important;margin:0!important;flex:1}
-.hero-sub{font-size:14px!important;line-height:20px!important;margin:0!important;opacity:.9}
-.hero-btn{flex:0 0 auto;width:auto!important;height:44px!important;padding:0 24px!important;border-radius:999px!important;font-size:16px!important;margin:0!important}
-
-/* COUNTDOWN — banner 140, 4 box 78x58 */
-.cd-banner{min-height:140px!important;border-radius:18px!important;padding:16px!important;color:#fff;background:linear-gradient(160deg,#F0202A 0%,#D81621 100%);box-shadow:0 12px 26px -16px rgba(216,22,33,.42);display:flex;align-items:center}
-.cd-banner .count-wrap{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;margin:0!important;width:100%}
-.cbox{height:58px!important;border-radius:12px!important;padding:0!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center}
-.cbox b{font-size:20px!important;font-weight:700!important}
-.cbox span{font-size:10px!important;margin-top:3px!important;letter-spacing:.06em!important}
-/* FOTO — landscape 2.3/1 */
-.carousel{border-radius:18px!important}
-.photo{aspect-ratio:2.3/1!important}
-/* 2 INFOGRAFIS — card 120, gap 12 */
-.duo{gap:12px!important}
-.mini{min-height:120px!important;border-radius:18px!important;padding:14px!important}
-.eyebrow{font-size:11px!important}
-.iuran-pct{font-size:24px!important}
-.iuran-cap{font-size:10px!important}
-.iuran-nom{font-size:11px!important;margin-top:8px!important}
-.prog{height:8px!important;margin-top:9px!important}
-.info-amt{font-size:22px!important;font-weight:800;letter-spacing:-.03em;margin-top:6px!important;font-variant-numeric:tabular-nums;color:var(--ink)}
-.info-sub{font-size:11px!important;color:var(--muted);font-weight:600;margin-top:6px!important}
-/* ===== REDESIGN INDEX v3 — END ===== */
-
 /* ===== SCREEN 01 HOME — UKURAN PERSIS (FINAL) ===== */
 .wrap{padding-left:14px!important;padding-right:14px!important}
 .sec{margin-top:14px!important}
@@ -759,7 +724,7 @@ body{ overscroll-behavior-y:none; }
 .hero-btn .iconify{font-size:15px!important}
 
 /* COUNTDOWN 96 / radius18 — merah, 4 box 73x45 */
-.cd-banner{min-height:96px!important;border-radius:18px!important;padding:10px 12px!important;color:#fff;background:linear-gradient(150deg,#FF3A3A 0%,#D81621 60%,#B11217 100%);box-shadow:0 12px 26px -16px rgba(216,22,33,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.cd-banner{min-height:96px!important;border-radius:18px!important;padding:10px 12px!important;color:#fff;background:linear-gradient(150deg,var(--merah2) 0%,var(--merah) 100%);box-shadow:0 12px 26px -16px var(--merah-glow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
 .cd-head{text-align:center;line-height:1.1}
 .cd-title{font-size:11px;font-weight:800}
 .cd-sub{font-size:9px;opacity:.85;font-weight:600;margin-top:2px}
@@ -794,9 +759,9 @@ body{ overscroll-behavior-y:none; }
 .dp-lbl{font-size:9.5px;font-weight:700;color:var(--ink2);flex:0 0 56px}
 .dp-track{flex:1;height:7px;border-radius:99px;background:var(--bg0);overflow:hidden}
 .dp-bar{display:block;height:100%;width:0;border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.dp-bar.olah{background:var(--merah)}
-.dp-bar.anak{background:#FF8A8A}
-.dp-bar.seni{background:#9A1014}
+.dp-bar.olah{background:#2F5BFF}
+.dp-bar.anak{background:#7A5CFF}
+.dp-bar.seni{background:#21C7E0}
 .dp-num{font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;flex:0 0 auto;min-width:14px;text-align:right}
 
 /* ===== CUACA BAR — FINAL PUTIH (match referensi) ===== */
@@ -850,16 +815,16 @@ body{ overscroll-behavior-y:none; }
 
 /* ===== DOMINAN MERAH (isi putih) ===== */
 #pengumuman #annFeed{display:flex;flex-direction:column;gap:10px}
-#pengumuman #annFeed>*{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
+#pengumuman #annFeed>*{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
 #pengumuman #annFeed>*,#pengumuman #annFeed *{color:#fff!important}
 
-#keuangan .balance{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
+#keuangan .balance{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
 #keuangan .balance,#keuangan .balance *{color:#fff!important}
 #keuangan .balance .bal-amt{font-size:23px!important;font-weight:700!important;line-height:1.1}
 #keuangan .balance .bal-l{font-size:12px!important;font-weight:700!important}
 #keuangan .balance .bal-sub{font-size:11px!important;opacity:.9}
 
-#keuangan .chart-card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px 16px!important;box-shadow:0 6px 16px rgba(229,57,53,.22)!important}
+#keuangan .chart-card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px 16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
 #keuangan .chart-card .sec-head{margin:0 0 12px!important;display:flex;align-items:flex-start;justify-content:space-between}
 #keuangan .chart-card .sec-head>div{color:#fff!important;font-size:18px!important;font-weight:700!important}
 #keuangan .chart-card .chart-wrap{background:#fff!important;border-radius:14px!important;padding:8px!important}
@@ -867,7 +832,7 @@ body{ overscroll-behavior-y:none; }
 #keuangan #frefresh{display:inline-flex!important;align-items:center;gap:6px!important;background:#fff!important;color:var(--merah)!important;border:none!important;border-radius:999px!important;padding:6px 12px!important;font-size:11px!important;font-weight:700!important;line-height:1!important;flex:none}
 #keuangan #frefresh .iconify{width:14px!important;height:14px!important;font-size:14px!important;color:var(--merah)!important;flex:none}
 
-#rekap .card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px rgba(229,57,53,.20)!important}
+#rekap .card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
 #rekap .card .eyebrow{color:#fff!important}
 #rekap .card .cek-input{background:#fff!important;border:none!important;border-radius:999px!important;padding:12px 16px!important;color:#333!important}
 #rekap .card .cek-btn{background:#fff!important;color:var(--merah)!important;border:none!important;border-radius:999px!important}
@@ -2616,25 +2581,5 @@ if('serviceWorker' in navigator){
 })();
 </script>
 <!-- ===== WIDGET STATUS LOMBA — END ===== -->
- <style id="rbFix">
-/* ===== RESISTANCE BLUE — OVERRIDE FINAL ===== */
-:root,:root[data-theme="dark"]{
-  --merah:#5C5CFF!important;--merah2:#3D3DFF!important;
-  --merah-glow:rgba(92,92,255,.30)!important;--merah-soft:rgba(92,92,255,.16)!important;--chip:rgba(92,92,255,.16)!important;
-}
-:root[data-theme="light"]{
-  --merah:#000072!important;--merah2:#1F1F9C!important;
-  --merah-glow:rgba(0,0,114,.20)!important;--merah-soft:#E7E9FF!important;--chip:#E7E9FF!important;
-}
-/* Bagian yang warnanya di-hardcode (bukan token) → dipaksa ikut biru */
-.hero{background:linear-gradient(150deg,var(--merah2),var(--merah))!important}
-.cd-banner{background:linear-gradient(150deg,var(--merah2),var(--merah))!important}
-.btn-primary,#cekBtn,.cek-btn{background:linear-gradient(135deg,var(--merah),var(--merah2))!important}
-.hero-btn{background:#fff!important;color:var(--merah)!important}
-body::before{background:radial-gradient(120% 60% at 50% -10%,var(--merah-glow),transparent 60%)!important}
-.dp-bar.olah{background:var(--merah)!important}
-.dp-bar.anak{background:var(--merah2)!important}
-.dp-bar.seni{background:#9AA0FF!important}
-</style>
 </body>
 </html>
