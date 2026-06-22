@@ -67,9 +67,9 @@ a{color:inherit}
 .tfab .iconify{font-size:21px}
 
 /* hero */
-.hero{position:relative;overflow:hidden;margin:14px 16px 0;border-radius:var(--r-xl);padding:26px 20px 22px;color:#fff;background:linear-gradient(160deg,#F0202A,#D81621);box-shadow:0 12px 26px -16px rgba(216,22,33,.5)}
+.hero{position:relative;overflow:hidden;margin:14px 16px 0;border-radius:var(--r-xl);padding:26px 20px 22px;color:#fff;background:linear-gradient(160deg,var(--merah2),var(--merah));box-shadow:0 12px 26px -16px var(--merah-glow)}
 @media(min-width:792px){.hero{max-width:760px;margin:18px auto 0}}
-.hero::before{content:"";position:absolute;right:-46px;bottom:-72px;width:340px;height:340px;background:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat center/contain;opacity:.15;mix-blend-mode:overlay;pointer-events:none}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
 .hero-in{position:relative;z-index:1}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:999px;font-size:12px;font-weight:600;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);margin-bottom:12px}
 .hero h1{font-size:clamp(24px,7vw,33px);font-weight:800;letter-spacing:-.8px;line-height:1.12}
@@ -232,25 +232,25 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 <style id="hasilCss">
 .hasil-ctrl{margin:0 0 12px}
 .hasil-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.hf-btn{padding:8px 14px;border-radius:999px;border:1.5px solid var(--merah);background:#fff;color:var(--merah);font-weight:700;font-size:13px;cursor:pointer}
+.hf-btn{padding:8px 14px;border-radius:999px;border:1.5px solid var(--merah);background:var(--bg2);color:var(--merah);font-weight:700;font-size:13px;cursor:pointer}
 .hf-btn.on{background:var(--merah);color:#fff}
 .hasil-search{width:100%;box-sizing:border-box;padding:11px 14px;border:1px solid var(--bd,#e5e7eb);border-radius:999px;font-size:14px;outline:none}
 .hasil-search:focus{border-color:var(--merah)}
-.hasil-acc{border:1px solid var(--bd,#e5e7eb);border-radius:16px;margin-bottom:10px;overflow:hidden;background:#fff}
+.hasil-acc{border:1px solid var(--bd,#e5e7eb);border-radius:16px;margin-bottom:10px;overflow:hidden;background:var(--bg2)}
 .hasil-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}
 .hasil-sum::-webkit-details-marker{display:none}
 .hs-info{flex:1;min-width:0}
-.hs-nm{font-weight:800;font-size:14.5px;color:#111}
+.hs-nm{font-weight:800;font-size:14.5px;color:var(--ink)}
 .hs-sub{font-size:11.5px;color:var(--muted,#6b7280);margin-top:2px}
 .hs-champ{font-size:12.5px;font-weight:700;color:#b8860b;white-space:nowrap;max-width:42%;overflow:hidden;text-overflow:ellipsis}
 .hs-chev{transition:.2s;color:#999;font-size:14px}
 details[open] .hs-chev{transform:rotate(180deg)}
 details[open] .hs-champ{display:none}
 .hasil-body{padding:4px 15px 14px;border-top:1px solid var(--bd,#f0f0f0)}
-.hasil-body .podium-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #f3f4f6}
+.hasil-body .podium-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--bd)}
 .hasil-body .podium-row:last-child{border-bottom:none}
 .hasil-body .podium-rank{font-size:20px;width:30px;text-align:center;flex:0 0 auto}
-.hasil-body .podium-name{font-weight:600;font-size:14px;color:#111}
+.hasil-body .podium-name{font-weight:600;font-size:14px;color:var(--ink)}
 .podium-blok{font-weight:400;font-size:11.5px;color:#888}
 .hasil-empty{text-align:center;color:var(--muted,#6b7280);font-size:13.5px;padding:26px 14px;line-height:1.5}
 </style>
@@ -942,9 +942,8 @@ function renderHasil(){
   margin:16px 20px 0;
   padding:24px 22px 26px;
   border-radius:28px;
-  background:linear-gradient(140deg,#ff3a3a 0%,#d41a1a 55%,#7d0f0f 100%);
-  box-shadow:0 16px 40px rgba(255,45,45,.16);
-}
+  background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 100%);
+box-shadow:0 16px 40px -22px var(--merah-glow);
 @media(min-width:792px){.hero{max-width:760px;margin:16px auto 0}}
 
 /* badge HUT RI dihilangkan */
@@ -959,7 +958,7 @@ function renderHasil(){
 .hero .cta-row .cta-btn.ghost{display:none}
 .hero .cta-row .cta-btn.primary{
   width:100%;justify-content:center;
-  background:#fff;color:#c11414;font-weight:800;font-size:14.5px;
+  background:#fff;color:var(--merah);font-weight:800;font-size:14.5px;
   padding:14px;border-radius:18px;border:none;box-shadow:0 8px 22px rgba(0,0,0,.25);
 }
 .hero .cta-row .cta-btn.primary:active{transform:scale(.98)}
@@ -995,8 +994,8 @@ function renderHasil(){
 <style id="spCss">
 .sp-wrap{margin:16px 0}
 .sp-h{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--ink,#111)}
-.sp-acc{border:1px solid var(--bd,#e5e7eb);border-radius:14px;background:#fff;margin-bottom:9px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.sp-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font-weight:700;font-size:13.5px;color:#111}
+.sp-acc{border:1px solid var(--bd,#e5e7eb);border-radius:14px;background:var(--bg2);margin-bottom:9px;overflow:hidden;box-shadow:var(--sh-sm)}
+.sp-sum{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font-weight:700;font-size:13.5px;color:var(--ink)}
 .sp-sum::-webkit-details-marker{display:none}
 .sp-sum-t{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
 .sp-count{background:var(--merah);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px}
@@ -1004,7 +1003,7 @@ function renderHasil(){
 details[open] .sp-chev{transform:rotate(180deg)}
 .sp-body{display:flex;flex-wrap:wrap;gap:7px;padding:2px 14px 14px}
 .sp-row{display:inline-flex;align-items:baseline;gap:6px;padding:6px 12px;background:var(--bg2,#f7f7f8);border:1px solid var(--bd,#eee);border-radius:999px;white-space:nowrap}
-.sp-nm{font-weight:700;font-size:12.5px;color:#111}
+.sp-nm{font-weight:700;font-size:12.5px;color:var(--ink)}
 .sp-jb{font-size:11px;color:var(--muted,#6b7280)}
 .sp-empty{text-align:center;color:var(--muted,#6b7280);font-size:13px;padding:20px 14px}
 </style>
