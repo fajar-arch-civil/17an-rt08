@@ -545,22 +545,6 @@ body{ overscroll-behavior-y:none; }
 <style>
 /* ===== MERAH PUTIH v1 — START (Light-first, dark toggle) ===== */
 
-/* B) MODE TERANG (utama): kanvas abu muda, kartu putih, chip pink */
-:root[data-theme="light"]{
-  --bg0:#ECECEE; --bg1:#E6E6EA; --bg2:#FFFFFF;
-  --solid:#FFFFFF; --solid2:#F2F2F5; --glass:#FFFFFF; --glass-2:#FFFFFF;
-  --bd:rgba(0,0,0,.07); --bd2:rgba(0,0,0,.12);
-  --ink:#191919; --ink2:#5A5A62; --muted:#9A9AA2;
-  --merah-glow:rgba(238,28,37,.20); --merah-soft:#FCE3E4;
-  --ok:#22C55E; --ok-soft:rgba(34,197,94,.12);
-  --chip:#FCE3E4;
-  --sh:0 16px 36px -20px rgba(40,40,60,.20);
-  --sh-sm:0 8px 18px -10px rgba(40,40,60,.14);
-  --sh-glow:0 18px 44px -22px rgba(238,28,37,.34);
-}
-/* MODE GELAP (toggle): chip netral */
-:root[data-theme="dark"]{ --chip:rgba(255,255,255,.07); --merah-soft:rgba(238,28,37,.14); --merah-glow:rgba(238,28,37,.30); }
-
 /* C) Ikon seragam: chip satu rona + glyph sesuai MAKNA saja (buang pelangi) */
 .kpi-ic,.kpi.info .kpi-ic,.kpi.warn .kpi-ic,.feed-ic,
 .lineup-card .lu-ic,.lineup-card.olah .lu-ic,.lineup-card.anak .lu-ic,.lineup-card.seni .lu-ic{
@@ -627,16 +611,7 @@ body{ overscroll-behavior-y:none; }
 .hero-btn{ padding:11px 16px!important; font-size:13px!important; border-radius:12px!important; }
 /* ===== HERO FLAT v2 — END ===== */
 /* ===== MATERIAL CARDS v1 — START (flat & solid, anti-glass/AI) ===== */
-/* bayangan netral lembut ala referensi */
-:root[data-theme="light"]{
-  --bg2:#FFFFFF;
-  --sh:0 10px 24px -14px rgba(30,32,40,.18);
-  --sh-sm:0 6px 16px -10px rgba(30,32,40,.14);
-}
-:root[data-theme="dark"]{
-  --bg2:#171717;
-  --sh:0 12px 28px -16px rgba(0,0,0,.55);
-}
+
 /* permukaan kartu: SOLID, tanpa blur kaca */
 .glass,.kpi,.mini,.card{
   background:var(--bg2)!important;
