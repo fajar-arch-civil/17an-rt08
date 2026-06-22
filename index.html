@@ -907,6 +907,23 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 /* ---- FONT: Plus Jakarta Sans ---- */
 body{ font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif !important; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
 h1,h2,h3,h4,.h1,.h2,.h3{ font-family:'Plus Jakarta Sans',system-ui,sans-serif !important; letter-spacing:-.01em; }
+
+/* ===== TIPOGRAFI v1 — START (aman & reversibel: hapus blok ini utk kembali) ===== */
+:root{
+  --fs-h2:20px; --fs-h3:16.5px;
+  --fs-body:14.5px; --fs-cap:11.5px;
+  --lh-head:1.18; --lh-body:1.6; --trk-head:-.02em;
+}
+/* 1) Konsistensi rhythm heading (tanpa !important → komponen ber-style tetap menang) */
+h1,h2,h3,h4{ line-height:var(--lh-head); letter-spacing:var(--trk-head); }
+/* 2) Render lebih rapi (progressive enhancement; browser lama mengabaikan, tidak merusak) */
+h1,h2,h3{ text-wrap:balance; }
+p{ text-wrap:pretty; }
+/* 3) Angka selalu rata di statistik & nominal (tabular figures) */
+.pes-stat .n,.pc-val,.cu-temp,.kpi-v,.bal-amt,.iuran-pct,.info-amt,.lb-pts b,.tnum{
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1;
+}
+/* ===== TIPOGRAFI v1 — END ===== */
 </style>
 <!-- ===== DESIGN SYSTEM v2 — Resistance Blue (Fase 0) — END ===== -->
 </head>
