@@ -427,7 +427,7 @@ footer b{color:var(--ink2);font-weight:700}
 .sg-item:hover{background:rgba(128,128,128,.14);}
 
 /* ===================== MODE TERANG: penyesuaian kontras ===================== */
-[data-theme="light"] .hd-ava{background:#fff!important;}
+[data-theme="light"] .hd-ava{background:#fff!important;border:1px solid rgba(0,0,0,.12)!important;box-shadow:0 2px 10px -2px rgba(0,0,114,.18)!important;}
 [data-theme="light"] .pop-panel,
 [data-theme="light"] .sg-pop,
 [data-theme="light"] .bm-sheet{background:#fff!important;border-color:rgba(0,0,0,.08)!important;}
@@ -598,15 +598,16 @@ body{ overscroll-behavior-y:none; }
 .hero::before{
   content:"";
   position:absolute;
-  inset:0;                 /* ikut ukuran hero, bukan kotak 500px yang meluber */
+  inset:0;
   z-index:0;
   pointer-events:none;
-  background-image:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg');
-  background-repeat:no-repeat;
-  background-position:right 16px center;  /* nempel kanan, center vertikal */
-  background-size:auto 200%;              /* tinggi 86% hero, lebar proporsional → peta UTUH & tidak gepeng */
-  opacity:.15;
-  mix-blend-mode:multiply;              /* emboss merah gelap, menyatu dgn gradien */
+  /* peta dilukis sebagai watermark PUTIH lewat mask → tampil di hero biru, dua mode */
+  -webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;
+          mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;
+  -webkit-mask-size:auto 170%;
+          mask-size:auto 170%;
+  background:#FFFFFF;
+  opacity:.10;
 }
 /* ===== HERO PETA INDONESIA v2 — END ===== */
 /* ===== HERO FLAT v2 — START (ringkas, rata, anti-glow) ===== */
