@@ -293,6 +293,15 @@ p{ text-wrap:pretty; }
   font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1;
 }
 /* ===== TIPOGRAFI v1 — END ===== */
+/* ===== IKON v1 — emoji → solar (selaras pack) ===== */
+.iconify.mdl{font-size:1.05em;vertical-align:-.14em}
+.mdl-1{color:#F5B301}   /* emas */
+.mdl-2{color:#A8B2BD}   /* perak */
+.mdl-3{color:#CD7F32}   /* perunggu */
+.ic-cup{color:#F5B301;vertical-align:-.14em}
+.ic-ppl{color:var(--merah2);font-size:1.05em;vertical-align:-.15em}
+.ic-dot{color:var(--merah2);font-size:.62em;vertical-align:.12em}
+.ic-flag{color:#E63946;vertical-align:-.12em}
 </style>
 <!-- ===== DESIGN SYSTEM v2 — Resistance Blue (Fase 0) — END ===== -->
 </head>
@@ -318,8 +327,7 @@ p{ text-wrap:pretty; }
     <h1>Lomba &amp; Pentas Seni RT 08</h1>
     <p class="sub">17 Agustus 2026 · Lapangan RT 08, Taman Kirana Surya</p>
     <div class="cta-row">
-      <a class="cta-btn primary" href="index.html#daftar"><span class="iconify" data-icon="solar:cup-star-bold"></span> Daftar Lomba</a>
-      <a class="cta-btn ghost" href="#peserta"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span> Lihat Peserta</a>
+      <a class="cta-btn primary" href="index.html#daftar"><span class="iconify" data-icon="solar:cursor-square-bold"></span> Daftar Lomba</a>
     </div>
   </div>
 </section>
@@ -420,7 +428,7 @@ p{ text-wrap:pretty; }
     <a class="wa-btn" id="waLink" href="#"><span class="iconify" data-icon="solar:chat-round-call-bold"></span> Hubungi Panitia via WhatsApp</a><br>
     <b>Karang Taruna RT 08 / RW 12</b> · Taman Kirana Surya<br>
     Ds. Pasanggrahan, Kec. Solear, Kab. Tangerang<br>
-    HUT RI ke-81 Tahun 2026 — Dirgahayu Indonesia! <span class="iconify" data-icon="twemoji:flag-indonesia"></span>
+    HUT RI ke-81 Tahun 2026 — Dirgahayu Indonesia! <span class="iconify ic-flag" data-icon="solar:flag-bold"></span>
   </footer>
 </main>
 
@@ -691,7 +699,7 @@ p{ text-wrap:pretty; }
 function hasil(arr){
   HASIL=arr||[];
   var box=$('hasilBox'); if(!box) return;
-  if(!HASIL.length){ var c=$('hasilCtrl'); if(c) c.remove(); box.innerHTML='<div class="hasil-empty">Belum ada hasil lomba. Hasil muncul otomatis begitu panitia mengumumkan juara. <span class="iconify" data-icon="twemoji:trophy"></span></div>'; return; }
+  if(!HASIL.length){ var c=$('hasilCtrl'); if(c) c.remove(); box.innerHTML='<div class="hasil-empty">Belum ada hasil lomba. Hasil muncul otomatis begitu panitia mengumumkan juara. <span class="iconify ic-cup" data-icon="solar:cup-star-bold"></span></div>'; return; }
   if(!$('hasilCtrl')){
     var ctrl=D.createElement('div'); ctrl.id='hasilCtrl'; ctrl.className='hasil-ctrl';
     ctrl.innerHTML='<div class="hasil-filter" id="hasilFilter">'+
@@ -711,7 +719,7 @@ function renderHasil(){
     if(!groups[key]){ groups[key]={jenis:h.jenis,lomba:h.lomba,kelompok:h.kelompok,rows:[]}; order.push(key); }
     groups[key].rows.push(h);
   });
-  var meda=['<span class="iconify" data-icon="twemoji:1st-place-medal"></span>','<span class="iconify" data-icon="twemoji:2nd-place-medal"></span>','<span class="iconify" data-icon="twemoji:3rd-place-medal"></span>'];
+  var meda=['<span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span>','<span class="iconify mdl mdl-2" data-icon="solar:medal-ribbons-star-bold"></span>','<span class="iconify mdl mdl-3" data-icon="solar:medal-ribbons-star-bold"></span>'];
   var html=order.map(function(k){return groups[k];}).filter(function(g){
     if(hF!=='Semua' && kat({jenis:g.jenis,lomba:g.lomba})!==hF) return false;
     if(hQ){ var hay=((g.lomba||'')+' '+g.rows.map(function(r){return r.nama;}).join(' ')).toLowerCase(); if(hay.indexOf(hQ)<0) return false; }
@@ -724,7 +732,7 @@ function renderHasil(){
       return '<div class="podium-row"><div class="podium-rank">'+ic+'</div><div class="podium-name">'+esc(r.nama)+(r.blok?' <span class="podium-blok">Blok '+esc(r.blok)+'</span>':'')+'</div></div>';
     }).join('');
     var sub=[g.kelompok?('Usia '+esc(g.kelompok)):'', kat({jenis:g.jenis,lomba:g.lomba})].filter(Boolean).join(' · ');
-    return '<details class="hasil-acc"><summary class="hasil-sum"><div class="hs-info"><div class="hs-nm">'+esc(g.lomba)+'</div><div class="hs-sub">'+sub+'</div></div><div class="hs-champ"><span class="iconify" data-icon="twemoji:1st-place-medal"></span> '+champ+'</div><div class="hs-chev">▾</div></summary><div class="hasil-body">'+body+'</div></details>';
+    return '<details class="hasil-acc"><summary class="hasil-sum"><div class="hs-info"><div class="hs-nm">'+esc(g.lomba)+'</div><div class="hs-sub">'+sub+'</div></div><div class="hs-champ"><span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span> '+champ+'</div><div class="hs-chev">▾</div></summary><div class="hasil-body">'+body+'</div></details>';
   }).join('');
   box.innerHTML=html||'<div class="hasil-empty">Tidak ada hasil untuk filter ini.</div>';
 }
@@ -996,21 +1004,21 @@ details[open] .sp-chev{transform:rotate(180deg)}
   }
   function render(list){
     var h=host();
-    if(!list.length){ h.innerHTML='<div class="sp-h"><span class="iconify" data-icon="twemoji:busts-in-silhouette"></span> Struktur Panitia</div><div class="sp-empty">Susunan panitia belum tersedia.</div>'; return; }
+    if(!list.length){ h.innerHTML='<div class="sp-h"><span class="iconify ic-ppl" data-icon="solar:users-group-rounded-bold"></span> Struktur Panitia</div><div class="sp-empty">Susunan panitia belum tersedia.</div>'; return; }
     var groups={}, order=[];
     list.forEach(function(p){
       var g=getF(p,'kategori','Kategori','keterangan','Keterangan')||'Panitia';
       if(!groups[g]){ groups[g]=[]; order.push(g); }
       groups[g].push(p);
     });
-    var html='<div class="sp-h"><span class="iconify" data-icon="twemoji:busts-in-silhouette"></span> Struktur Panitia</div>';
+    var html='<div class="sp-h"><span class="iconify ic-ppl" data-icon="solar:users-group-rounded-bold"></span> Struktur Panitia</div>';
     order.forEach(function(g,gi){
       var rows=groups[g].map(function(p){
         var nm=getF(p,'nama','Nama','name')||'-';
         var jb=esc(getF(p,'jabatan','Jabatan','peran','Peran','Jabatan/Peran')||'');
         return '<span class="sp-row"><span class="sp-nm">'+esc(nm)+'</span>'+(jb?'<span class="sp-jb">'+jb+'</span>':'')+'</span>';
       }).join('');
-      html+='<details class="sp-acc"'+(gi===0?' open':'')+'><summary class="sp-sum"><span class="sp-sum-t"><span class="iconify" data-icon="twemoji:small-blue-diamond"></span> '+esc(g)+'<span class="sp-count">'+groups[g].length+'</span></span><span class="sp-chev">▾</span></summary><div class="sp-body">'+rows+'</div></details>';
+      html+='<details class="sp-acc"'+(gi===0?' open':'')+'><summary class="sp-sum"><span class="sp-sum-t"><span class="iconify ic-dot" data-icon="solar:record-bold"></span> '+esc(g)+'<span class="sp-count">'+groups[g].length+'</span></span><span class="sp-chev">▾</span></summary><div class="sp-body">'+rows+'</div></details>';
     });
     h.innerHTML=html;
   }
@@ -1018,7 +1026,7 @@ details[open] .sp-chev{transform:rotate(180deg)}
     fetch(API+'?aksi=panitia&cb='+Date.now()).then(function(r){return r.json();}).then(function(d){
       var list=Array.isArray(d)?d:(d&&(d.panitia||d.data||d.items||d.rows)||[]);
       render(list||[]);
-    }).catch(function(){ host().innerHTML='<div class="sp-h"><span class="iconify" data-icon="twemoji:busts-in-silhouette"></span> Struktur Panitia</div><div class="sp-empty">Gagal memuat. Muat ulang halaman.</div>'; });
+    }).catch(function(){ host().innerHTML='<div class="sp-h"><span class="iconify ic-ppl" data-icon="solar:users-group-rounded-bold"></span> Struktur Panitia</div><div class="sp-empty">Gagal memuat. Muat ulang halaman.</div>'; });
   }
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
 })();

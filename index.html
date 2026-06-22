@@ -1327,7 +1327,7 @@ function renderLeaderboard(filter){
     if(pr>=1&&pr<=3&&!groups[key].win[pr])groups[key].win[pr]={nama:getF(h,['nama','name','peserta','tim','namaTim'])||'-',blok:getF(h,['blok','alamat','wilayah','rumah'])||''};
   });
   if(!order.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold"></span>Belum ada hasil lomba. Pantau terus, ya!</div>';return;}
-  const medal={1:'<span class="iconify" data-icon="twemoji:1st-place-medal"></span>',2:'<span class="iconify" data-icon="twemoji:2nd-place-medal"></span>',3:'<span class="iconify" data-icon="twemoji:3rd-place-medal"></span>'};
+  const medal={1:'<span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span>',2:'<span class="iconify mdl mdl-2" data-icon="solar:medal-ribbons-star-bold"></span>',3:'<span class="iconify mdl mdl-3" data-icon="solar:medal-ribbons-star-bold"></span>'};
   box.innerHTML=order.map(k=>{
     const g=groups[k];
     const sub=[g.jenis,g.kelompok?('Usia '+g.kelompok):''].filter(Boolean).join(' · ');
@@ -1338,7 +1338,7 @@ function renderLeaderboard(filter){
       rows+='<div class="lb-row glass top"><div class="lb-rank r'+r+'">'+r+'</div><div><div class="lb-name">'+esc(w.nama)+'</div>'+(w.blok?('<div class="lb-blok">'+esc(w.blok)+'</div>'):'')+'</div><div class="lb-pts"><b>'+medal[r]+'</b><span>Juara '+r+'</span></div></div>';
     }
     if(!rows)rows='<div class="lb-empty" style="padding:14px 12px">Belum ada juara</div>';
-    return '<details class="lb-acc"><summary class="lb-sum"><div class="lb-sum-info"><div class="lb-sum-nm">'+esc(g.lomba)+'</div><div class="lb-sum-sub">'+esc(sub)+'</div></div><div class="lb-sum-champ"><span class="iconify" data-icon="twemoji:1st-place-medal"></span> '+esc(champ)+'</div><span class="iconify lb-sum-chev" data-icon="solar:alt-arrow-down-linear"></span></summary><div class="lb-acc-body">'+rows+'</div></details>';
+    return '<details class="lb-acc"><summary class="lb-sum"><div class="lb-sum-info"><div class="lb-sum-nm">'+esc(g.lomba)+'</div><div class="lb-sum-sub">'+esc(sub)+'</div></div><div class="lb-sum-champ"><span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span> '+esc(champ)+'</div><span class="iconify lb-sum-chev" data-icon="solar:alt-arrow-down-linear"></span></summary><div class="lb-acc-body">'+rows+'</div></details>';
   }).join('');
   scan();
 }
@@ -2232,9 +2232,9 @@ if('serviceWorker' in navigator){
     </div>
     <div class="pn-statusbar" id="pnStatusBar"></div>
     <div class="pn-tabs">
-      <button class="pn-tab on" data-tab="hasil"><span class="iconify" data-icon="twemoji:trophy"></span> Hasil</button>
+      <button class="pn-tab on" data-tab="hasil"><span class="iconify ic-cup" data-icon="solar:cup-star-bold"></span> Hasil</button>
       <button class="pn-tab" data-tab="hadir">✅ Hadir</button>
-      <button class="pn-tab" data-tab="peserta"><span class="iconify" data-icon="twemoji:busts-in-silhouette"></span> Peserta</button>
+      <button class="pn-tab" data-tab="peserta"><span class="iconify ic-ppl" data-icon="solar:users-group-rounded-bold"></span> Peserta</button>
       <button class="pn-tab" data-tab="info">📣 Info</button>
     </div>
     <div class="pn-search" id="pnSearchWrap"><input id="pnSearch" class="pn-inp" placeholder="🔎 Cari nama peserta…"></div>
