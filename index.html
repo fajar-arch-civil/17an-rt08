@@ -752,7 +752,7 @@ body{ overscroll-behavior-y:none; }
 #keuangan .tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px!important;font-weight:800!important;font-size:14px!important;padding:10px 16px!important}
 #keuangan .tab:not(.on){background:#ededed!important;color:#333!important;border-color:transparent!important}
 #keuangan .tab.masuk.on{background:#34c759!important;color:#fff!important;border-color:transparent!important}
-#keuangan .tab.keluar.on{background:var(--merah)!important;color:#fff!important;border-color:transparent!important}
+#keuangan .tab.keluar.on{background:#F784C5!important;color:#fff!important;border-color:transparent!important;}
 #keuangan #btnExport{display:inline-flex;align-items:center;gap:6px;background:var(--merah)!important;color:#fff!important;border:none!important;border-radius:999px!important;padding:7px 16px!important;font-size:12px!important;font-weight:700!important}
 
 /* ============================================================ */
@@ -1378,6 +1378,7 @@ function exportCSV(){
 }
 function wireWA(){const a=$('waBtn');if(a)a.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.');}
 function scrollSpy(){
+
 }
 function wireMisc(){
  $('toastX').onclick=()=>$('toast').classList.remove('show');
