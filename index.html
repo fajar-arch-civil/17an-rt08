@@ -646,7 +646,8 @@ body{ overscroll-behavior-y:none; }
 .hero{position:relative;overflow:hidden;margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
-.hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start}
+.hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+@media(min-width:792px){.hero-inner{flex-direction:row;align-items:center}.hero-text{flex:1}.hero-inner>.cd-banner{flex:0 0 320px}}
 .hero-text{max-width:100%}
 .hero-title{font-size:22px;font-weight:800;line-height:1.12;letter-spacing:-.035em;margin:0 0 4px;max-width:18ch;text-shadow:0 2px 12px rgba(0,0,0,.18)}
 .hero-sub{margin:0;font-size:13.5px;font-weight:500;line-height:1.4;opacity:.9}
@@ -742,33 +743,39 @@ body{ overscroll-behavior-y:none; }
 
 /* ===== DOMINAN MERAH (isi putih) ===== */
 #pengumuman #annFeed{display:flex;flex-direction:column;gap:10px}
-#pengumuman #annFeed>*{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
-#pengumuman #annFeed>*,#pengumuman #annFeed *{color:#fff!important}
+#pengumuman #annFeed>*{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-left:3px solid var(--merah)!important;border-radius:14px!important;padding:14px 16px!important;box-shadow:var(--sh-sm)!important}
+#pengumuman #annFeed>*{color:var(--ink)!important}
+#pengumuman #annFeed .feed-ic{background:var(--chip)!important;color:var(--merah)!important}
+#pengumuman #annFeed .feed-t{color:var(--ink)!important;font-size:13.5px;font-weight:700}
+#pengumuman #annFeed .feed-d{color:var(--muted)!important}
 
-#keuangan .balance{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
-#keuangan .balance,#keuangan .balance *{color:#fff!important}
+#keuangan .balance{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-top:3px solid var(--merah)!important;border-radius:18px!important;padding:16px!important;box-shadow:var(--sh)!important}
+#keuangan .balance,#keuangan .balance *{color:var(--ink)!important}
+#keuangan .balance .bal-l{color:var(--muted)!important}
+#keuangan .balance .bal-sub{color:var(--muted)!important}
 #keuangan .balance .bal-amt{font-size:23px!important;font-weight:700!important;line-height:1.1}
 #keuangan .balance .bal-l{font-size:12px!important;font-weight:700!important}
 #keuangan .balance .bal-sub{font-size:11px!important;opacity:.9}
 
-#keuangan .chart-card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px 16px 16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
+#keuangan .chart-card{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:18px!important;padding:16px!important;box-shadow:var(--sh)!important}
 #keuangan .chart-card .sec-head{margin:0 0 12px!important;display:flex;align-items:flex-start;justify-content:space-between}
-#keuangan .chart-card .sec-head>div{color:#fff!important;font-size:22px!important;font-weight:700!important}
-#keuangan .chart-card .chart-wrap{background:#fff!important;border-radius:14px!important;padding:8px!important}
-#keuangan .chart-card .chart-x{color:rgba(255,255,255,.9)!important;font-size:11px!important;margin-top:6px!important}
+#keuangan .chart-card .sec-head>div{color:var(--ink)!important;font-size:18px!important;font-weight:800!important}
+#keuangan .chart-card .chart-wrap{background:var(--bg1)!important;border-radius:12px!important;padding:8px!important}
+#keuangan .chart-card .chart-x{color:var(--muted)!important;font-size:10.5px!important;margin-top:6px!important}
+#keuangan #frefresh{background:var(--chip)!important;color:var(--merah)!important}
 #keuangan #frefresh{display:inline-flex!important;align-items:center;gap:6px!important;background:#fff!important;color:var(--merah)!important;border:none!important;border-radius:999px!important;padding:6px 12px!important;font-size:11px!important;font-weight:700!important;line-height:1!important;flex:none}
 #keuangan #frefresh .iconify{width:14px!important;height:14px!important;font-size:14px!important;color:var(--merah)!important;flex:none}
 
-#rekap .card{background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:16px!important;box-shadow:0 6px 16px var(--merah-glow)!important}
-#rekap .card .eyebrow{color:#fff!important}
-#rekap .card .cek-input{background:#fff!important;border:none!important;border-radius:999px!important;padding:12px 16px!important;color:#333!important}
-#rekap .card .cek-btn{background:#fff!important;color:var(--merah)!important;border:none!important;border-radius:999px!important}
-#rekap .card .cek-btn .iconify{color:var(--merah)!important}
-#rekap .card #cekHasil,#rekap .card .cek-empty{color:#fff!important}
-#rekap .card button:not(.cek-btn){background:transparent!important;color:#fff!important;border:1.5px solid rgba(255,255,255,.7)!important;border-radius:999px!important;font-weight:800!important;padding:10px 14px!important;opacity:1!important;box-shadow:none!important}
-#rekap .card button:not(.cek-btn) .iconify{color:#fff!important}
-#rekap .card button:not(.cek-btn).on,#rekap .card button:not(.cek-btn).active,#rekap .card button:not(.cek-btn)[aria-selected="true"]{background:#fff!important;color:var(--merah)!important;border-color:#fff!important}
-#rekap .card button:not(.cek-btn).on .iconify,#rekap .card button:not(.cek-btn).active .iconify,#rekap .card button:not(.cek-btn)[aria-selected="true"] .iconify{color:var(--merah)!important}
+#rekap .card{background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:18px!important;padding:16px!important;box-shadow:var(--sh)!important}
+#rekap .card .eyebrow{color:var(--muted)!important}
+#rekap .card .cek-input{background:var(--bg1)!important;border:1px solid var(--bd2)!important;border-radius:999px!important;padding:12px 16px!important;color:var(--ink)!important}
+#rekap .card .cek-btn{background:var(--merah)!important;color:#fff!important;border:none!important;border-radius:999px!important}
+#rekap .card .cek-btn .iconify{color:#fff!important}
+#rekap .card #cekHasil,#rekap .card .cek-empty{color:var(--ink2)!important}
+#rekap .card button:not(.cek-btn){background:var(--bg1)!important;color:var(--ink2)!important;border:1px solid var(--bd2)!important;border-radius:999px!important;font-weight:700!important;padding:9px 14px!important;opacity:1!important;box-shadow:none!important}
+#rekap .card button:not(.cek-btn) .iconify{color:var(--ink2)!important}
+#rekap .card button:not(.cek-btn).on,#rekap .card button:not(.cek-btn).active{background:var(--merah)!important;color:#fff!important;border-color:var(--merah)!important}
+#rekap .card button:not(.cek-btn).on .iconify,#rekap .card button:not(.cek-btn).active .iconify{color:#fff!important}
 
 /* ===== DOMINAN PUTIH (aksen merah) ===== */
 #keuangan .kpi-grid{gap:10px!important}
@@ -790,19 +797,22 @@ body{ overscroll-behavior-y:none; }
 /* ===== KONTRAS FINAL v6 — UI auto ikut dark/light (PENGGANTI v5) ===== */
 
 /* --- STATUS PER BLOK: kartu merah aksen, baris transparan, teks putih (2 mode) --- */
-#rekap :has(> #blokBars){background:var(--merah)!important;border:none!important;border-radius:20px!important;padding:14px!important}
-#rekap :has(> #blokBars) > :not(#blokBars){color:#fff!important}
-#rekap :has(> #blokBars) > :not(#blokBars) .iconify{color:#fff!important}
+#rekap :has(> #blokBars){background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:18px!important;padding:14px 16px!important;box-shadow:var(--sh)!important}
+#rekap :has(> #blokBars) > :not(#blokBars){color:var(--ink)!important}
+#rekap :has(> #blokBars) > :not(#blokBars) .iconify{color:var(--merah)!important}
+#rekap :has(> #blokBars) > :not(#blokBars) .hint{color:var(--muted)!important}
 #blokBars{background:transparent!important;padding:0!important}
-#rekap .blok-row{background:rgba(255,255,255,.15)!important;border:1px solid rgba(255,255,255,.22)!important;border-radius:14px!important;box-shadow:none!important;margin-bottom:10px!important}
-#rekap .blok-row:hover{transform:none!important;background:rgba(255,255,255,.22)!important;border-color:rgba(255,255,255,.4)!important}
-#rekap .blok-row,#rekap .br-name,#rekap .br-count,#rekap .br-go{color:#fff!important}
+#rekap .blok-row{background:var(--bg1)!important;border:1px solid var(--bd)!important;border-radius:14px!important;box-shadow:none!important;margin-bottom:10px!important}
+#rekap .blok-row:hover{transform:none!important;background:var(--solid2)!important;border-color:var(--bd2)!important}
+#rekap .blok-row,#rekap .br-name,#rekap .br-count,#rekap .br-go{color:var(--ink)!important}
 #rekap .br-name{font-weight:800!important}
-#rekap .br-count{color:rgba(255,255,255,.88)!important;font-weight:700!important}
-#rekap .br-go{color:rgba(255,255,255,.9)!important}
-#rekap .br-bar{background:rgba(255,255,255,.28)!important}
-#rekap .br-bar i.ok,#rekap .br-bar i.mid,#rekap .br-bar i.bad{background:#fff!important}
-#rekap .br-dot.ok{background:#4ADE80!important}#rekap .br-dot.mid{background:#FBBF24!important}#rekap .br-dot.bad{background:#fff!important}
+#rekap .br-count{color:var(--muted)!important;font-weight:600!important}
+#rekap .br-go{color:var(--muted)!important}
+#rekap .br-bar{background:rgba(128,128,128,.18)!important}
+#rekap .br-bar i.ok{background:var(--ok)!important}
+#rekap .br-bar i.mid{background:var(--warn)!important}
+#rekap .br-bar i.bad{background:var(--danger)!important}
+#rekap .br-dot.ok{background:var(--ok)!important}#rekap .br-dot.mid{background:var(--warn)!important}#rekap .br-dot.bad{background:var(--danger)!important}
 
 /* --- RINGKASAN IURAN WARGA: kartu adaptif + warna semantik --- */
 #rekap .card:has(#iuranRing){background:var(--bg2)!important;border:1px solid var(--bd)!important;border-radius:20px!important;padding:16px!important;box-shadow:var(--sh)!important}
