@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="id" data-theme="dark">
+<html lang="id">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>(function(){try{var t=localStorage.getItem('rt08-theme');document.documentElement.setAttribute('data-theme',(t==='dark')?'dark':'light');}catch(e){}})();</script>
 <title>Panel Panitia · RT 08</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -236,8 +237,8 @@ textarea.inp{resize:vertical;min-height:66px}
     return fetch(API,{method:'POST',body:b}).then(function(r){return r.json();}).catch(function(){return {ok:true,_opt:true};});}
 
   /* theme */
-  function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('theme',t);}catch(e){}$('#themeBtn').querySelector('.iconify').setAttribute('data-icon',t==='light'?'solar:sun-bold':'solar:moon-bold');scan();}
-  (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}applyTheme(t);})();
+  function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('rt08-theme',t);}catch(e){}$('#themeBtn').querySelector('.iconify').setAttribute('data-icon',t==='light'?'solar:sun-bold':'solar:moon-bold');scan();}
+(function(){var t='light';try{var v=localStorage.getItem('rt08-theme');t=(v==='dark')?'dark':'light';}catch(e){}applyTheme(t);})();
   $('#themeBtn').addEventListener('click',function(){applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light');});
 
   /* gate — token DIMINTA setiap buka halaman (tidak disimpan) */

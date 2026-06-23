@@ -25,28 +25,28 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <style>
 /* ============ TOKENS (DARK FIRST) ============ */
 :root,:root[data-theme="dark"]{
-  --bg0:#050505;--bg1:#0a0a0a;--bg2:#111111;
+  --bg0:#0A0A14;--bg1:#101022;--bg2:#16162A;
   --glass:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
   --glass-2:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
-  --solid:#141414;--solid2:#1a1a1a;
-  --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.13);
-  --ink:#ffffff;--ink2:rgba(255,255,255,.64);--muted:rgba(255,255,255,.42);
-  --merah:#FF2D2D;--merah2:var(--merah);--merah-glow:rgba(255,45,45,.35);--merah-soft:rgba(255,45,45,.12);
-  --ok:#32D74B;--warn:#FFB800;--danger:#FF453A;--info:#0A84FF;--gold:#FFCB45;
-  --ok-soft:rgba(50,215,75,.13);--warn-soft:rgba(255,184,0,.14);--danger-soft:rgba(255,69,58,.14);
+  --solid:#16162A;--solid2:#1C1C38;
+  --bd:rgba(255,255,255,.09);--bd2:rgba(255,255,255,.15);
+  --ink:#E2E2F0;--ink2:#C4C4D6;--muted:#7A7A99;
+  --merah:#5C5CFF;--merah2:#3D3DFF;--merah-glow:rgba(92,92,255,.30);--merah-soft:rgba(92,92,255,.14);
+  --ok:#3BA559;--warn:#E6A100;--danger:#F784C5;--info:#5C5CFF;--gold:#FFCB45;
+  --ok-soft:rgba(59,165,89,.16);--warn-soft:rgba(230,161,0,.16);--danger-soft:rgba(247,132,197,.16);
   --r-hero:28px;--r-card:24px;--r-el:18px;--r-chip:14px;--r-pill:999px;
-  --sh:0 10px 34px rgba(0,0,0,.55);--sh-sm:0 4px 16px rgba(0,0,0,.4);--sh-glow:0 14px 44px rgba(255,45,45,.22);
-  --hd-h:60px;--maxw:1040px;--blur:saturate(150%) blur(20px);
+  --sh:0 16px 34px -20px rgba(0,0,0,.65);--sh-sm:0 8px 18px -10px rgba(0,0,0,.5);--sh-glow:0 18px 44px -22px rgba(92,92,255,.28);
+  --hd-h:60px;--maxw:760px;--blur:saturate(150%) blur(20px);
 }
 :root[data-theme="light"]{
-  --bg0:#f3f4f7;--bg1:#eef0f4;--bg2:#ffffff;
+  --bg0:#F8F9FA;--bg1:#EEF0F4;--bg2:#FFFFFF;
   --glass:linear-gradient(160deg,rgba(255,255,255,.9),rgba(255,255,255,.7));
   --glass-2:linear-gradient(160deg,#ffffff,#f6f7f9);
-  --solid:#ffffff;--solid2:#f4f5f8;
-  --bd:rgba(15,18,26,.09);--bd2:rgba(15,18,26,.14);
-  --ink:#0e1116;--ink2:#4a5160;--muted:#8a909c;
-  --merah-glow:rgba(255,45,45,.18);--merah-soft:rgba(255,45,45,.08);
-  --sh:0 12px 34px rgba(20,28,46,.12);--sh-sm:0 4px 14px rgba(20,28,46,.08);--sh-glow:0 16px 40px rgba(255,45,45,.16);
+  --solid:#FFFFFF;--solid2:#F2F3F7;
+  --bd:rgba(17,17,34,.09);--bd2:rgba(17,17,34,.14);
+  --ink:#111122;--ink2:#3A3A52;--muted:#6E6E8A;
+  --merah:#000072;--merah2:#1F1F9C;--merah-glow:rgba(0,0,114,.20);--merah-soft:#E7E9FF;
+  --sh:0 16px 36px -20px rgba(20,28,46,.18);--sh-sm:0 8px 18px -10px rgba(20,28,46,.12);--sh-glow:0 16px 40px rgba(0,0,114,.16);
 }
 /* ============ BASE ============ */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -2200,7 +2200,7 @@ var host=document.getElementById('liveStatus');
 if(!active.length){ if(host) host.remove(); return; }
 if(!host){
 host=document.createElement('section'); host.id='liveStatus'; host.className='ls-wrap';
-var anchor=document.querySelector('main.wrap')||document.body;
+var anchor=document.querySelector('.wrap')||document.body;
 anchor.insertBefore(host, anchor.firstChild);
 }
 host.innerHTML='<div class="ls-h"><span class="iconify" data-icon="solar:map-point-bold"></span> Status Lomba Sekarang</div>'+active.map(function(s){
