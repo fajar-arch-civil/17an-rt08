@@ -1263,21 +1263,21 @@ function setLomba(){ const j=$('selJenis').value,sel=$('selLomba'); if(!j){sel.d
 function updateStepper(){ const st=document.querySelectorAll('#stepper .step');if(!st.length)return; const s1=$('hidAlamat').value&&$('nama').value.trim();const s2=s1&&$('selJenis').value&&$('selLomba').value; st.forEach(s=>s.classList.remove('on','done')); if(s2){st[0].classList.add('done');st[1].classList.add('done');st[2].classList.add('on');} else if(s1){st[0].classList.add('done');st[1].classList.add('on');} else st[0].classList.add('on'); }
 function suksesDaftar(){$('formDaftar').style.display='none';$('okMsg').style.display='block';document.querySelectorAll('#stepper .step').forEach(s=>{s.classList.remove('on');s.classList.add('done');});scan();muatLomba();}
 function wireForm(){
-  $('selJenis').addEventListener('change',setLomba);
-  $('selLomba').addEventListener('change',()=>{ setKelompok(); updateStepper(); });
-  $('nama').addEventListener('input',updateStepper);
-  $('daftarLagi').onclick=()=>{$('okMsg').style.display='none';$('formDaftar').style.display='';$('formDaftar').reset();ddReset('ddBlok','Blok…');ddReset('ddNomor','Nomor…');$('ddNomor').classList.add('disabled');$('hidAlamat').value='';$('anakFields').classList.add('hide');fillJenis();$('selLomba').disabled=true;$('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';updateStepper();};
-  $('formDaftar').addEventListener('submit',async e=>{
+	var sj=$('selJenis');if(sj)sj.addEventListener('change',setLomba);
+	var sl=$('selLomba');if(sl)sl.addEventListener('change',()=>{ setKelompok(); updateStepper(); });
+	var nm=$('nama');if(nm)nm.addEventListener('input',updateStepper);
+	var dl=$('daftarLagi');if(dl)dl.onclick=()=>{$('okMsg').style.display='none';$('formDaftar').style.display='';$('formDaftar').reset();ddReset('ddBlok','Blok…');ddReset('ddNomor','Nomor…');$('ddNomor').classList.add('disabled');$('hidAlamat').value='';$('anakFields').classList.add('hide');fillJenis();$('selLomba').disabled=true;$('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';updateStepper();};
+	var fd=$('formDaftar');if(fd)fd.addEventListener('submit',async e=>{
     e.preventDefault();if(_sending)return;$('dupMsg').style.display='none';
     const nama=$('nama').value.trim(),blok=$('hidAlamat').value,hp=$('hp').value.trim(),jenis=$('selJenis').value,lomba=$('selLomba').value;
     if(!nama||!blok||!hp||!jenis||!lomba){toast('Lengkapi data dulu ya','warn');return;}
     setKelompok();
     _sending=true;$('btnKirim').disabled=true;$('btnKirim').innerHTML='<span class="iconify" data-icon="svg-spinners:ring-resize"></span> Mengirim…';scan();
     try{
-      const fd=new FormData();fd.append('aksi','daftar');fd.append('ts',new Date().toISOString());
-      fd.append('nama',nama);fd.append('blok',blok);fd.append('hp',hp);fd.append('jenis',jenis);fd.append('lomba',lomba);
-      fd.append('kelompok',$('hidKelompok').value||'');fd.append('wali',$('wali').value.trim());fd.append('usia',$('usia').value||'');fd.append('catatan',$('catatan').value.trim());fd.append('status','Terdaftar');
-      await fetch(API,{method:'POST',body:fd});suksesDaftar();
+      const fd2=new FormData();fd2.append('aksi','daftar');fd2.append('ts',new Date().toISOString());
+      fd2.append('nama',nama);fd2.append('blok',blok);fd2.append('hp',hp);fd2.append('jenis',jenis);fd2.append('lomba',lomba);
+      fd2.append('kelompok',$('hidKelompok').value||'');fd2.append('wali',$('wali').value.trim());fd2.append('usia',$('usia').value||'');fd2.append('catatan',$('catatan').value.trim());fd2.append('status','Terdaftar');
+      await fetch(API,{method:'POST',body:fd2});suksesDaftar();
     }catch(err){toast('Gagal mengirim, coba lagi','err');}
     _sending=false;$('btnKirim').disabled=false;$('btnKirim').innerHTML='<span class="iconify" data-icon="solar:check-circle-bold"></span> Daftarkan Sekarang';scan();
   });
@@ -1369,8 +1369,9 @@ function wirePanels(){
   document.addEventListener('click',()=>{document.querySelectorAll('.dd.open').forEach(o=>o.classList.remove('open'));});
 }
 function wireTabs(){
- $('tabMasuk').onclick=()=>{$('tabMasuk').classList.add('on');$('tabKeluar').classList.remove('on');$('paneMasuk').classList.add('on');$('paneKeluar').classList.remove('on');};
- $('tabKeluar').onclick=()=>{$('tabKeluar').classList.add('on');$('tabMasuk').classList.remove('on');$('paneKeluar').classList.add('on');$('paneMasuk').classList.remove('on');};
+	var tm=$('tabMasuk'),tk=$('tabKeluar'),pm=$('paneMasuk'),pk=$('paneKeluar');
+	if(tm)tm.onclick=()=>{if(tm)tm.classList.add('on');if(tk)tk.classList.remove('on');if(pm)pm.classList.add('on');if(pk)pk.classList.remove('on');};
+	if(tk)tk.onclick=()=>{if(tk)tk.classList.add('on');if(tm)tm.classList.remove('on');if(pk)pk.classList.add('on');if(pm)pm.classList.remove('on');};
 }
 function wireFilter(){document.querySelectorAll('#lbFilter .chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#lbFilter .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');renderLeaderboard(c.dataset.filter);});}
 function exportCSV(){
@@ -1385,14 +1386,15 @@ function scrollSpy(){
 
 }
 function wireMisc(){
- $('toastX').onclick=()=>$('toast').classList.remove('show');
- $('seeAll').onclick=()=>document.getElementById('galeri').scrollIntoView({behavior:'smooth'});
- $('frefresh').onclick=()=>{toast('Menyegarkan…','info');muatKeuangan();muatLomba();};
- $('btnExport').onclick=exportCSV;
- var _cekBtn=$('cekBtn');if(_cekBtn)_cekBtn.onclick=cekIuran;var _cekInp=$('cekInput');if(_cekInp)_cekInp.addEventListener('keydown',e=>{if(e.key==='Enter')cekIuran();});
- window.addEventListener('scroll',scrollSpy,{passive:true});scrollSpy();
+	var tx=$('toastX');if(tx)tx.onclick=()=>{var t=$('toast');if(t)t.classList.remove('show');};
+	var sa=$('seeAll');if(sa)sa.onclick=()=>{var g=document.getElementById('galeri');if(g)g.scrollIntoView({behavior:'smooth'});};
+	var fr=$('frefresh');if(fr)fr.onclick=()=>{toast('Menyegarkan…','info');muatKeuangan();muatLomba();};
+	var be=$('btnExport');if(be)be.onclick=exportCSV;
+	var _cekBtn=$('cekBtn');if(_cekBtn)_cekBtn.onclick=cekIuran;
+	var _cekInp=$('cekInput');if(_cekInp)_cekInp.addEventListener('keydown',e=>{if(e.key==='Enter')cekIuran();});
+	window.addEventListener('scroll',scrollSpy,{passive:true});
+	scrollSpy();
 }
-
 /* ===================== INIT ===================== */
 function init(){
  renderFeed();wirePanels();wireTabs();wireFilter();wireSearch();wireWA();wireForm();wireMisc();
