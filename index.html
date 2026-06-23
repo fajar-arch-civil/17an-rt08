@@ -64,6 +64,9 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .sec{margin-top:32px}
 .sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 16px}
 .sec-title{font-size:20px;font-weight:800;letter-spacing:-.03em;display:flex;align-items:center;gap:10px}
+.sec-title .iconify{position:relative}
+.sec-title .iconify::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:24px;height:3px;border-radius:99px;background:var(--merah);opacity:0;transition:opacity .3s ease}
+.sec:hover .sec-title .iconify::after{opacity:.6}
 .sec-title .iconify{color:var(--merah);font-size:22px}
 .sec-act{font-size:13px;font-weight:700;color:var(--merah);display:inline-flex;align-items:center;gap:4px;cursor:pointer;border:none;background:none;font-family:inherit;white-space:nowrap}
 /* ============ HEADER ============ */
@@ -75,7 +78,10 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .cbox span{display:block;font-size:10px;opacity:.82;margin-top:7px;text-transform:uppercase;letter-spacing:.14em;font-weight:600}
 /* ============ KPI CARDS ============ */
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.kpi{border-radius:var(--r-card);padding:17px;position:relative;overflow:hidden}
+.kpi{border-radius:var(--r-card);padding:15px;position:relative;overflow:hidden;transition:transform .2s ease}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--merah),var(--merah2));opacity:0;transition:opacity .3s ease}
+.kpi:hover::before,.kpi:active::before{opacity:1}
+@media(hover:hover){.kpi:hover{transform:translateY(-2px)}}
 .kpi-ic{width:42px;height:42px;border-radius:var(--r-chip);display:grid;place-items:center;font-size:21px;margin-bottom:13px;background:var(--merah-soft);color:var(--merah)}
 .kpi.ok .kpi-ic{background:var(--ok-soft);color:var(--ok)}
 .kpi.warn .kpi-ic{background:var(--warn-soft);color:var(--warn)}
@@ -637,7 +643,8 @@ body{ overscroll-behavior-y:none; }
 .sec{animation:secFade .5s ease both}
 @keyframes secFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 /* ===== HERO (selaras dgn Lomba & Panitia) ===== */
-.hero{position:relative;overflow:hidden;margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 100%);box-shadow:0 16px 40px -22px var(--merah-glow)}
+.hero{position:relative;overflow:hidden;margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
+@keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
 .hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start}
 .hero-text{max-width:100%}

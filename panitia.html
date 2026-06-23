@@ -38,13 +38,15 @@ body{margin:0;background:var(--bg0);color:var(--ink);font-family:var(--font);-we
 .top #themeBtn{justify-self:end}
 .top-t{font-weight:800;font-size:15px}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:14px 14px calc(92px + env(safe-area-inset-bottom,0px))}
-.hero{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 100%);box-shadow:0 16px 40px -22px var(--merah-glow)}
+.hero{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
+@keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero::before{content:"";position:absolute;top:0;right:8px;bottom:0;width:58%;background:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right center;background-size:auto 165%;filter:brightness(0) invert(1);opacity:.10;pointer-events:none}
 .hero-in{position:relative;z-index:1;padding:24px 22px 26px}
 .hero h1{margin:0;font-size:22px;line-height:1.2;font-weight:800;color:#fff;letter-spacing:-.01em}
 .hero .sub{margin:8px 0 0;font-size:13px;line-height:1.55;color:rgba(255,255,255,.92);font-weight:500;max-width:46ch}
 @media(min-width:720px){.hero-in{padding:32px 36px}.hero h1{font-size:28px}}
-.card{margin-top:14px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);padding:16px}
+.card{margin-top:14px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);padding:16px;transition:box-shadow .2s ease}
+@media(hover:hover){.card:hover{box-shadow:0 14px 36px -16px rgba(0,0,0,.3)!important}}
 .inp{width:100%;padding:12px;border:1px solid var(--bd2);border-radius:14px;background:var(--bg1);color:var(--ink);font:inherit;font-size:14px;outline:none}
 .inp:focus{border-color:var(--merah)}
 textarea.inp{resize:vertical;min-height:66px}
