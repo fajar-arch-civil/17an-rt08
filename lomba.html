@@ -24,6 +24,13 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 <script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
+  /* ===== WA CTA + FOOTER (selaras index) ===== */
+.wa-cta-card{margin-top:24px;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px}
+.wa-cta-q{margin:0;font-weight:700;font-size:15px;color:var(--ink)}
+.wa-cta-sub{margin:0;font-size:12.5px;line-height:1.5;color:var(--muted);max-width:34ch}
+.wa-cta-btn{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#0a0a0a;font-weight:800;padding:14px 26px;border-radius:14px;font-size:15px;box-shadow:0 10px 26px rgba(37,211,102,.3);text-decoration:none}
+.wa-cta-btn .iconify{font-size:21px}
+
 :root{
  --r-xl:24px;--r-lg:20px;--r-md:16px;--r-sm:12px;
 }
@@ -63,7 +70,6 @@ a{color:inherit}
 .hero .sub{margin-top:0;font-size:13.5px;opacity:.9;font-weight:500}
 .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;justify-content:flex-start}
 .cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;height:40px;padding:0 20px;background:#fff;color:var(--merah);font-weight:800;font-size:13.5px;text-decoration:none;cursor:pointer;border:none;border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.25)}
-.cta-btn .iconify{font-size:15px}
 .cta-btn .iconify{font-size:15px}
 .cta-btn.ghost{display:none}
 .cta-btn:active{transform:scale(.98)}
@@ -427,11 +433,15 @@ p{ text-wrap:pretty; }
   </section>
 
   <footer>
-    <a class="wa-btn" id="waLink" href="#"><span class="iconify" data-icon="solar:chat-round-call-bold"></span> Hubungi Panitia via WhatsApp</a><br>
-    <b>Karang Taruna RT 08 / RW 12</b> · Taman Kirana Surya<br>
-    Ds. Pasanggrahan, Kec. Solear, Kab. Tangerang<br>
-    HUT RI ke-81 Tahun 2026 — Dirgahayu Indonesia! <span class="iconify ic-flag" data-icon="solar:flag-bold"></span>
-  </footer>
+<div class="wa-cta-card">
+<p class="wa-cta-q">Ada pertanyaan seputar lomba atau pendaftaran?</p>
+<p class="wa-cta-sub">Hubungi panitia lewat WhatsApp buat info cabang lomba, jadwal, dan teknis acara.</p>
+<a class="wa-cta-btn" id="waLink" href="#"><span class="iconify" data-icon="solar:chat-round-call-bold"></span> Hubungi Panitia via WhatsApp</a>
+</div>
+<b>Karang Taruna RT 08 / RW 12</b> · Taman Kirana Surya<br>
+Ds. Pasanggrahan, Kec. Solear, Kab. Tangerang<br>
+HUT RI ke-81 Tahun 2026 — Dirgahayu Indonesia! <span class="iconify ic-flag" data-icon="solar:flag-bold"></span>
+</footer>
 </main>
 
 <button id="fab" aria-label="Ke atas"><span class="iconify" data-icon="solar:alt-arrow-up-bold"></span></button>

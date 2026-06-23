@@ -142,7 +142,6 @@ textarea.inp{resize:vertical;min-height:66px}
 <style id="navFix">
 /* Panitia ikut nav bersama */
 .top{display:none!important}     /* sembunyikan header lama (jangan dihapus, biar #themeBtn gak error) */
-#ubot{display:none!important}    /* matikan bottom-nav situs, pakai tabbar Panitia */
 /* token nav, di-scope ke elemen nav aja biar UI Panitia lain gak keganggu */
 #utop,#udrawer,#usearch{--bd:#E6E6F0;--bd2:#D6D6E6;--chip:#EDEDFB;--sh:0 8px 24px -16px rgba(0,0,40,.18)}
 [data-theme="dark"] #utop,[data-theme="dark"] #udrawer,[data-theme="dark"] #usearch{--bd:#232340;--bd2:#2E2E50;--chip:#1E1E3A;--sh:0 10px 30px -18px rgba(0,0,0,.6)}
@@ -532,20 +531,21 @@ textarea.inp{resize:vertical;min-height:66px}
    +'@media(min-width:792px){.ubot{display:none}.utop{grid-template-columns:48px 1fr 48px;padding:0 18px}}';
 
   function mount(){
-    if(D.getElementById('utop')) return;
-    var st=D.createElement('style'); st.id='navU3css'; st.textContent=css; D.head.appendChild(st);
+  if(D.getElementById('utop')) return;
+  var isPanitia=/panitia/i.test(location.pathname);
+  var st=D.createElement('style'); st.id='navU3css'; st.textContent=css; D.head.appendChild(st);
     var sp=D.createElement('div'); sp.className='utop-sp'; D.body.insertBefore(sp,D.body.firstChild);
 
     var top=D.createElement('header'); top.id='utop'; top.className='utop';
     top.innerHTML='<button class="ub" id="uMenu" aria-label="Menu">'+svg('menu')+'</button>'
       +'<a class="ulogo" href="'+(isLomba?'lomba.html':'index.html')+'" aria-label="RT 08"><img src="logo.svg" alt="RT 08" onerror="this.onerror=null;this.src=\'icon-192.png\'"></a>'
-      +'<button class="ub" id="uSearch" aria-label="Cari">'+svg('search')+'</button>';
++(isPanitia?'<span aria-hidden="true"></span>':'<button class="ub" id="uSearch" aria-label="Cari">'+svg('search')+'</button>');
     D.body.appendChild(top);
 
     var scrim=D.createElement('div'); scrim.id='uscrim'; scrim.className='uscrim'; D.body.appendChild(scrim);
 
     var dr=D.createElement('aside'); dr.id='udrawer'; dr.className='udrawer';
-    var links=NAV.map(function(n){return '<a class="ud-link'+(n.go?' go':'')+'" href="'+n.href+'"'+(n.id?' data-id="'+n.id+'"':'')+'>'+n.t+'</a>';}).join('');
+var links=NAV.map(function(n){var href=(isPanitia&&n.href.charAt(0)==='#')?'index.html'+n.href:n.href;
     dr.innerHTML='<div class="ud-head"><span class="ud-brand">RT 08 · 17 Agustusan</span><button class="ub" id="uClose" aria-label="Tutup">'+svg('close')+'</button></div>'
       +'<nav class="ud-nav">'+links+'</nav>'
       +'<div class="ud-theme"><span class="ud-tlbl">TAMPILAN</span>'
@@ -555,16 +555,18 @@ textarea.inp{resize:vertical;min-height:66px}
       +'<span class="ud-knob"></span></div></div>';
     D.body.appendChild(dr);
 
-    var sr=D.createElement('div'); sr.id='usearch'; sr.className='usearch';
-    sr.innerHTML='<div class="us-bar"><span class="us-ic">'+svg('search')+'</span>'
-      +'<input id="usInput" type="search" placeholder="Cari halaman, bagian'+(isLomba?', atau nama peserta…':'…')+'" autocomplete="off">'
-      +'<button class="ub" id="usClose" aria-label="Tutup">'+svg('close')+'</button></div>'
-      +'<div class="us-res" id="usRes"></div>';
-    D.body.appendChild(sr);
-
-    var bot=D.createElement('nav'); bot.id='ubot'; bot.className='ubot';
-    bot.innerHTML=BOT.map(function(b){var hash=b[1].charAt(0)==='#';return '<a class="ubn" href="'+b[1]+'"'+(hash?' data-id="'+b[1].slice(1)+'"':'')+'>'+svg(b[2])+'<span>'+b[0]+'</span></a>';}).join('');
-    D.body.appendChild(bot);
+    var sr=null;
+if(!isPanitia){
+sr=D.createElement('div'); sr.id='usearch'; sr.className='usearch';
+sr.innerHTML='<div class="us-bar"><span class="us-ic">'+svg('search')+'</span>'
+  +'<input id="usInput" type="search" placeholder="Cari halaman, bagian'+(isLomba?', atau nama peserta…':'…')+'" autocomplete="off">'
+  +'<button class="ub" id="usClose" aria-label="Tutup">'+svg('close')+'</button></div>'
+  +'<div class="us-res" id="usRes"></div>';
+D.body.appendChild(sr);
+var bot=D.createElement('nav'); bot.id='ubot'; bot.className='ubot';
+bot.innerHTML=BOT.map(function(b){var hash=b[1].charAt(0)==='#';return '<a class="ubn" href="'+b[1]+'"'+(hash?' data-id="'+b[1].slice(1)+'"':'')+'>'+svg(b[2])+'<span>'+b[0]+'</span></a>';}).join('');
+D.body.appendChild(bot);
+}
 
     function getT(){try{return localStorage.getItem('rt08-theme')==='dark'?'dark':'light';}catch(e){return 'light';}}
     function applyT(t){root.setAttribute('data-theme',t);var s=D.getElementById('uSwitch');if(s)s.classList.toggle('dark',t==='dark');}
@@ -613,9 +615,11 @@ textarea.inp{resize:vertical;min-height:66px}
     }
     function openS(){sr.classList.add('on');lock(true);sOn=true;var i=D.getElementById('usInput');if(i){i.value='';}renderRes('');if(i){setTimeout(function(){i.focus();},60);}}
     function closeS(){sr.classList.remove('on');lock(false);sOn=false;}
-    D.getElementById('uSearch').addEventListener('click',openS);
-    D.getElementById('usClose').addEventListener('click',closeS);
-    D.getElementById('usInput').addEventListener('input',function(e){renderRes(e.target.value);});
+    if(!isPanitia){
+D.getElementById('uSearch').addEventListener('click',openS);
+D.getElementById('usClose').addEventListener('click',closeS);
+D.getElementById('usInput').addEventListener('input',function(e){renderRes(e.target.value);});
+}
     window.addEventListener('keydown',function(e){if(e.key==='Escape'){if(sOn)closeS();else if(dr.classList.contains('on'))closeD();}});
 
     var ids=NAV.filter(function(n){return n.id;}).map(function(n){return n.id;});
