@@ -557,22 +557,6 @@ body{ overscroll-behavior-y:none; }
 .btn-primary,#cekBtn,.cek-btn{background:linear-gradient(135deg,var(--merah),var(--merah2))!important;}
 
 /* ===== MERAH PUTIH v1 — END ===== */
-/* ===== HERO PETA INDONESIA v2 — START ===== */
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  /* peta dilukis sebagai watermark PUTIH lewat mask → tampil di hero biru, dua mode */
-  -webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;
-          mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;
-  -webkit-mask-size:auto 170%;
-          mask-size:auto 170%;
-  background:#FFFFFF;
-  opacity:.10;
-}
-/* ===== HERO PETA INDONESIA v2 — END ===== */
 /* ===== MATERIAL CARDS v1 — START (flat & solid, anti-glass/AI) ===== */
 
 /* permukaan kartu: SOLID, tanpa blur kaca */
@@ -2181,8 +2165,6 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
 .ls-tx{flex:1;min-width:0}
 .ls-nm{font-weight:700;font-size:13.5px;color:var(--ink,#111)}
 .ls-sub{font-size:11.5px;color:var(--muted,#6b7280)}
-
-.hero{margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0!important}
 </style>
 <script>
 (function(){
