@@ -487,7 +487,8 @@ p{ text-wrap:pretty; }
     moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z',
     close:'M6 6l12 12M18 6 6 18'
   };
-  function svg(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]?'<path d="'+IC[n]+'"/>':'')+'</svg>';}
+  var ICN={home:'home-2',wallet:'wallet-money',list:'clipboard-list',plus:'add-circle',cup:'cup-star',dumbbell:'dumbbells',users:'users-group-rounded',medal:'medal-ribbons-star',flag:'flag',info:'info-circle',menu:'hamburger-menu',search:'magnifer',sun:'sun-2',moon:'moon',close:'close-square'};
+function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'question-circle')+'-linear"></span>';}
 
   var css=''
    +':root{--utop-h:56px}'
