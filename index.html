@@ -646,8 +646,16 @@ body{ overscroll-behavior-y:none; }
 .hero{position:relative;overflow:hidden;margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
-.hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
-@media(min-width:792px){.hero-inner{flex-direction:row;align-items:center}.hero-text{flex:1}.hero-inner>.cd-banner{flex:0 0 320px}}
+.hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.hero-text{width:100%}
+.hero-cd{width:100%}
+@media(min-width:792px){
+  .hero-inner{flex-direction:row;align-items:stretch;gap:32px}
+  .hero-text{flex:1;min-width:0}
+  .hero-cd{flex:0 0 340px;display:flex;flex-direction:column;justify-content:center}
+}
+.hero-cd .cd-head{text-align:left}
+@media(max-width:791px){.hero-cd .cd-head{text-align:center}}
 .hero-text{max-width:100%}
 .hero-title{font-size:22px;font-weight:800;line-height:1.12;letter-spacing:-.035em;margin:0 0 4px;max-width:18ch;text-shadow:0 2px 12px rgba(0,0,0,.18)}
 .hero-sub{margin:0;font-size:13.5px;font-weight:500;line-height:1.4;opacity:.9}
@@ -663,6 +671,11 @@ body{ overscroll-behavior-y:none; }
 .cd-sub{font-size:10px;opacity:.85;font-weight:600;margin-top:2px}
 .cd-banner .count-wrap{display:flex!important;justify-content:center;gap:7px!important;margin:0!important;width:auto}
 .cd-banner .cbox{flex:0 0 auto!important;width:73px!important;height:52px!important;border-radius:10px!important;padding:0!important;background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.22)!important;backdrop-filter:none!important;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-cd{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.18)!important;backdrop-filter:none!important;border-radius:18px!important;padding:14px 16px!important}
+.hero-cd .cd-title{color:#fff}
+.hero-cd .cd-sub{color:rgba(255,255,255,.8)}
+.hero-cd .cbox{background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.20)!important}
+.hero-cd .cbox b,.hero-cd .cbox span{color:#fff!important}
 .cd-banner .cbox b{font-size:22px!important;font-weight:800!important;line-height:1;transition:transform .15s ease}
 .cd-banner .cbox.pulse b{animation:cdPulse .35s ease}
 @keyframes cdPulse{0%{transform:scale(1)}45%{transform:scale(1.1)}100%{transform:scale(1)}}
@@ -730,6 +743,7 @@ body{ overscroll-behavior-y:none; }
 }
 .cu-wide .cu-meta .iconify{font-size:clamp(13px,3.6vw,16px)!important;color:var(--muted)!important;display:block!important;flex:0 0 auto!important}
 .cu-wide .cu-updated{display:none!important}
+.cu-fullwidth{border-radius:18px!important}
 
 /* ============================================================
    RHYTHM & KONTRAS — KEUANGAN + REKAP  (HAPUS blok Screen 02 & 04 lama)
@@ -962,22 +976,33 @@ p{ text-wrap:pretty; }
 })();
 </script>
 
-<!-- ============ HERO COUNTDOWN ============ -->
+<!-- ============ HERO + COUNTDOWN ============ -->
 <header class="hero" id="top">
   <div class="hero-inner">
-<div class="hero-text">
-<div class="hero-eb" style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px">RT 08 · Taman Kirana Surya</div>
-<div class="hero-title">Menuju HUT Kemerdekaan RI ke-81</div>
-    <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
+    <div class="hero-text">
+      <div class="hero-eb" style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px">RT 08 · Taman Kirana Surya</div>
+      <div class="hero-title">Menuju HUT Kemerdekaan RI ke-81</div>
+      <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
+      <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold"></span> Daftar Lomba</button>
+    </div>
+    <div class="cd-banner hero-cd">
+      <div class="cd-head">
+        <div class="cd-title">Hitung Mundur HUT RI ke-81</div>
+        <div class="cd-sub">Menuju 17 Agustus 2026</div>
+      </div>
+      <div class="count-wrap" id="countBox">
+        <div class="cbox"><b id="cD">0</b><span>Hari</span></div>
+        <div class="cbox"><b id="cH">0</b><span>Jam</span></div>
+        <div class="cbox"><b id="cM">0</b><span>Menit</span></div>
+        <div class="cbox"><b id="cS">0</b><span>Detik</span></div>
+      </div>
+    </div>
   </div>
-  <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold"></span> Daftar Lomba</button>
-</div>
 </header>
-
 <main class="wrap">
 <!-- ===== CUACA (full width) ===== -->
 <section class="sec">
-  <div class="mini glass cu-wide" id="cuacaBox">
+  <div class="mini glass cu-wide cu-fullwidth" id="cuacaBox">
     <div class="cu-top">
       <div class="cu-ic"><span class="iconify" id="cuIcon" data-icon="meteocons:clear-day-fill"></span></div>
       <div>
@@ -987,21 +1012,6 @@ p{ text-wrap:pretty; }
     </div>
     <div class="cu-meta" id="cuMeta"></div>
     <div class="cu-updated"><span class="cu-live"></span><span id="cuUpdated">—</span></div>
-  </div>
-</section>
-<!-- ===== COUNTDOWN HUT RI ===== -->
-<section class="sec">
-  <div class="cd-banner">
-    <div class="cd-head">
-      <div class="cd-title">Hitung Mundur HUT RI ke-81</div>
-      <div class="cd-sub">Menuju 17 Agustus 2026</div>
-    </div>
-    <div class="count-wrap" id="countBox">
-      <div class="cbox"><b id="cD">0</b><span>Hari</span></div>
-      <div class="cbox"><b id="cH">0</b><span>Jam</span></div>
-      <div class="cbox"><b id="cM">0</b><span>Menit</span></div>
-      <div class="cbox"><b id="cS">0</b><span>Detik</span></div>
-    </div>
   </div>
 </section>
 <!-- ===== FOTO KEGIATAN ===== -->
