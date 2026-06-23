@@ -1283,7 +1283,13 @@ function wireForm(){
   });
 }
 
-function jenisCls(j){j=norm(j||'');if(j.includes('olah')||j.includes('sport'))return 'olah';if(j.includes('anak')||j.includes('kid'))return 'anak';if(j.includes('seni')||j.includes('pentas'))return 'seni';return 'olah';}
+function jenisCls(j){
+  j=norm(j||'');
+  if(j.includes('olah')||j.includes('sport'))return 'olah';
+  if(j.includes('anak')||j.includes('kid'))return 'anak';
+  if(j.includes('seni')||j.includes('pentas'))return 'seni';
+  return 'olah';
+}
 function renderKatalog(){
  const t=$('lombaTrack');if(!t)return;const arr=_lombaList||[];
  if(!arr.length){t.innerHTML='<div class="lb-empty" style="flex:1"><span class="iconify" data-icon="solar:cup-bold"></span>Belum ada lomba.</div>';return;}
