@@ -65,7 +65,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 16px}
 .sec-title{font-size:20px;font-weight:800;letter-spacing:-.03em;display:flex;align-items:center;gap:10px}
 .sec-title .iconify{position:relative}
-.sec-title .iconify::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:24px;height:3px;border-radius:99px;background:var(--merah);opacity:0;transition:opacity .3s ease}
+.sec-title .iconify::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:14px;height:2px;border-radius:99px;background:var(--merah);opacity:.5}
 .sec:hover .sec-title .iconify::after{opacity:.6}
 .sec-title .iconify{color:var(--merah);font-size:22px}
 .sec-act{font-size:12px;font-weight:700;color:var(--merah);display:inline-flex;align-items:center;gap:5px;cursor:pointer;border:1px solid var(--bd);background:var(--glass-2);font-family:inherit;white-space:nowrap;padding:7px 13px;border-radius:999px;transition:.18s}
@@ -1280,7 +1280,7 @@ function _txnSort(arr){
 }
 function _txnPane(elId,arr,masuk,key){
   var el=$(elId);if(!el)return;
-  if(!arr||!arr.length){el.innerHTML='<div class="tbl-empty">'+(masuk?'Belum ada pemasukan.':'Belum ada pengeluaran.')+'</div>';return;}
+  if(!arr||!arr.length){el.innerHTML='<div style="text-align:center;padding:24px 12px"><span class="iconify" data-icon="solar:wallet-2-bold" style="font-size:36px;color:var(--bd2);display:block;margin:0 auto 8px"></span><div style="font-size:13px;font-weight:700;color:var(--ink2)">Belum ada '+(masuk?'pemasukan':'pengeluaran')+' tercatat</div><div style="font-size:11.5px;color:var(--muted);margin-top:3px">Transaksi akan muncul di sini setelah panitia mencatatnya.</div></div>';}
   var sorted=_txnSort(arr),LIMIT=5,exp=_txnExpand[key];
   var show=exp?sorted.slice(0,40):sorted.slice(0,LIMIT);
   var html=show.map(function(it){return txItem(it,masuk);}).join('');
@@ -1381,7 +1381,7 @@ function renderLeaderboard(filter){
     const pr=num(getF(h,['peringkat','rank','juara','posisi']));
     if(pr>=1&&pr<=3&&!groups[key].win[pr])groups[key].win[pr]={nama:getF(h,['nama','name','peserta','tim','namaTim'])||'-',blok:getF(h,['blok','alamat','wilayah','rumah'])||''};
   });
-  if(!order.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold"></span>Belum ada hasil lomba. Pantau terus, ya!</div>';return;}
+  if(!order.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold" style="font-size:42px;color:var(--bd2);display:block;margin:0 auto 10px"></span><div style="font-size:14px;font-weight:700;color:var(--ink2)">Lomba belum dimulai</div><div style="font-size:12px;font-weight:500;color:var(--muted);margin-top:4px">Papan juara muncul otomatis setelah pertandingan selesai. Pantau terus, ya!</div></div>';}
   const medal={1:'<span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span>',2:'<span class="iconify mdl mdl-2" data-icon="solar:medal-ribbons-star-bold"></span>',3:'<span class="iconify mdl mdl-3" data-icon="solar:medal-ribbons-star-bold"></span>'};
   box.innerHTML=order.map(k=>{
     const g=groups[k];
@@ -1404,7 +1404,7 @@ async function muatGaleri(){
  try{
   const d=await api('aksi=foto');let arr=getF(d,['foto','fotos','photos','galeri','files','images']);if(!Array.isArray(arr))arr=Array.isArray(d)?d:[];
   _slides=arr.map(f=>{const id=getF(f,['id','fileId','idFile'])||(typeof f==='string'?f:'');const cap=getF(f,['nama','name','caption','judul','title'])||'';const url=getF(f,['url','link','src']);return {url:url||('https://drive.google.com/thumbnail?id='+id+'&sz=w1600'),id:id,cap:cap};}).filter(s=>s.url||s.id);
-  if(!_slides.length){track.innerHTML='<div class="slide"><div class="photo" style="display:grid;place-items:center"><div class="tbl-empty">Galeri belum ada foto.</div></div></div>';setH('dots','');return;}
+  if(!_slides.length){track.innerHTML='<div style="aspect-ratio:2/1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg1)"><span class="iconify" data-icon="solar:gallery-bold" style="font-size:42px;color:var(--muted)"></span><span style="font-size:13.5px;font-weight:700;color:var(--ink2)">Foto kegiatan menyusul</span><span style="font-size:11.5px;color:var(--muted)">Pantau terus untuk dokumentasi 17-an RT 08!</span></div>';setH('dots','');return;}
   track.innerHTML=_slides.map(s=>'<div class="slide"><div class="photo"><img loading="lazy" src="'+esc(s.url)+'" onerror="this.onerror=null;this.src=\'https://lh3.googleusercontent.com/d/'+esc(s.id)+'=w1600\'">'+(s.cap?'<p class="cap">'+esc(s.cap)+'</p>':'')+'</div></div>').join('');
   setH('dots',_slides.map((s,i)=>'<b data-i="'+i+'"'+(i===0?' class="on"':'')+'></b>').join(''));initCarousel();
  }catch(e){track.innerHTML='<div class="slide"><div class="photo" style="display:grid;place-items:center"><div class="tbl-empty">Galeri gagal dimuat.</div></div></div>';}
@@ -1720,7 +1720,7 @@ function setPayNote(kind,ter){
 function renderRekap(){
  buildWarga();
  var ring=$('iuranRing'),stats=$('rekapStats'),bars=$('blokBars');
- if(!_warga.length){if(bars)bars.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:clipboard-list-bold"></span>Belum ada data iuran masuk. Pantau secara berkala, ya.</div>';if(stats)stats.innerHTML='';if(ring)ring.innerHTML='';renderInsight();syncFormAddr();return;}
+ if(!_warga.length){if(bars)bars.innerHTML='<div style="text-align:center;padding:22px 12px"><span class="iconify" data-icon="solar:hand-money-bold" style="font-size:38px;color:var(--bd2);display:block;margin:0 auto 9px"></span><div style="font-size:13.5px;font-weight:700;color:var(--ink2)">Iuran belum ada yang bayar</div><div style="font-size:11.5px;color:var(--muted);margin-top:4px">Jadi yang pertama bayar iuran Rp50.000/KK — hubungi panitia via WhatsApp!</div></div>';}
  var tot=_warga.length,lun=_warga.filter(function(w){return w.lunas;}).length,seb=_warga.filter(function(w){return !w.lunas&&num(w.terbayar)>0;}).length,blm=tot-lun-seb,pct=tot?Math.round(lun/tot*100):0;
  if(ring){var R=54,C=2*Math.PI*R,off=C*(1-pct/100);ring.innerHTML='<svg viewBox="0 0 140 140"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B8B"/><stop offset="1" stop-color="#FF2D7E"/></linearGradient></defs><circle cx="70" cy="70" r="'+R+'" fill="none" stroke="rgba(255,107,139,.15)" stroke-width="13"/><circle cx="70" cy="70" r="'+R+'" fill="none" stroke="url(#rg)" stroke-width="13" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+C.toFixed(1)+'" transform="rotate(-90 70 70)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)"/></svg><div class="ring-c"><b data-pct="'+pct+'">0%</b><span>KK Lunas</span></div>';
 setTimeout(function(){var c=ring.querySelector('circle:last-of-type');if(c)c.setAttribute('stroke-dashoffset',off.toFixed(1));var b=ring.querySelector('.ring-c b');if(b){var p=0,t=parseInt(b.dataset.pct),iv=setInterval(function(){p+=Math.ceil(t/20);if(p>=t){p=t;clearInterval(iv);}b.textContent=p+'%';},40);}},100);}
