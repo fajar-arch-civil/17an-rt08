@@ -643,10 +643,11 @@ body{ overscroll-behavior-y:none; }
 .sec{animation:secFade .5s ease both}
 @keyframes secFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 /* ===== HERO (selaras dgn Lomba & Panitia) ===== */
-.hero{position:relative;overflow:hidden;margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
+.hero{position:relative;overflow:hidden;margin:14px 14px 0;padding:22px 18px 24px;border-radius:24px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
+@media(min-width:792px){.hero{margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:34px 40px;border-radius:28px}}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
-.hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;-webkit-mask-size:auto 120%;mask-size:auto 120%;background:#FFFFFF;opacity:.08}
+.hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:stretch;gap:18px}
 .hero-text{width:100%}
 .hero-cd{width:100%}
 @media(min-width:792px){
@@ -657,25 +658,29 @@ body{ overscroll-behavior-y:none; }
 .hero-cd .cd-head{text-align:left}
 @media(max-width:791px){.hero-cd .cd-head{text-align:center}}
 .hero-text{max-width:100%}
-.hero-title{font-size:22px;font-weight:800;line-height:1.12;letter-spacing:-.035em;margin:0 0 4px;max-width:18ch;text-shadow:0 2px 12px rgba(0,0,0,.18)}
-.hero-sub{margin:0;font-size:13.5px;font-weight:500;line-height:1.4;opacity:.9}
-.hero-btn{position:static;transform:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;height:40px;margin:16px 0 0;padding:0 20px;background:#fff;color:var(--merah);font-weight:800;font-size:13.5px;border:none;border-radius:14px;cursor:pointer;font-family:inherit;box-shadow:0 8px 22px rgba(0,0,0,.25);transition:.16s}
+.hero-title{font-size:21px;font-weight:800;line-height:1.15;letter-spacing:-.035em;margin:0 0 6px;max-width:18ch;text-shadow:0 2px 12px rgba(0,0,0,.18)}
+@media(min-width:792px){.hero-title{font-size:30px}}
+.hero-sub{font-size:13px;font-weight:500;line-height:1.45;opacity:.9;margin:0}
+@media(min-width:792px){.hero-sub{font-size:15px}}
+.hero-btn{position:static;transform:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;height:42px;margin:14px 0 0;padding:0 22px;background:#fff;color:var(--merah);font-weight:800;font-size:13.5px;border:none;border-radius:14px;cursor:pointer;font-family:inherit;box-shadow:0 8px 22px rgba(0,0,0,.25);transition:.16s}
+@media(min-width:792px){.hero-btn{height:auto;padding:13px 28px;margin-top:18px}}
 .hero-btn:active{transform:scale(.97)}
 .hero-btn .iconify{font-size:15px}
 @media(min-width:792px){.hero{padding:34px 40px}.hero-title{font-size:32px}.hero-sub{font-size:15px}.hero-btn{height:auto;padding:13px 28px}}
 
 /* COUNTDOWN 96 / radius18 — merah, 4 box 73x45 */
-.cd-banner{min-height:104px!important;border-radius:18px!important;padding:10px 12px!important;color:#fff;background:linear-gradient(150deg,var(--merah2) 0%,var(--merah) 100%);box-shadow:0 12px 26px -16px var(--merah-glow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.cd-banner{border-radius:16px!important;padding:12px 14px!important;color:var(--ink);background:var(--bg2);border:1px solid var(--bd);box-shadow:var(--sh);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
 .cd-head{text-align:center;line-height:1.1}
 .cd-title{font-size:13px;font-weight:800}
 .cd-sub{font-size:10px;opacity:.85;font-weight:600;margin-top:2px}
-.cd-banner .count-wrap{display:flex!important;justify-content:center;gap:7px!important;margin:0!important;width:auto}
+.cd-banner .count-wrap{display:flex!important;justify-content:center;gap:6px!important;margin:0!important;width:100%}
 .cd-banner .cbox{flex:0 0 auto!important;width:73px!important;height:52px!important;border-radius:10px!important;padding:0!important;background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.22)!important;backdrop-filter:none!important;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero-cd{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.18)!important;backdrop-filter:none!important;border-radius:18px!important;padding:14px 16px!important}
-.hero-cd .cd-title{color:#fff}
-.hero-cd .cd-sub{color:rgba(255,255,255,.8)}
-.hero-cd .cbox{background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.20)!important}
-.hero-cd .cbox b,.hero-cd .cbox span{color:#fff!important}
+.hero-cd{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.15)!important;backdrop-filter:none!important;border-radius:16px!important;padding:14px 16px!important}
+.hero-cd .cd-title{color:#fff;font-size:12px!important}
+.hero-cd .cd-sub{color:rgba(255,255,255,.75);font-size:10px!important}
+.hero-cd .cbox{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;border-radius:10px!important;flex:1 1 0!important;width:auto!important;min-width:0!important}
+.hero-cd .cbox b{font-size:20px!important;color:#fff!important}
+.hero-cd .cbox span{font-size:8.5px!important;color:rgba(255,255,255,.85)!important}
 .cd-banner .cbox b{font-size:22px!important;font-weight:800!important;line-height:1;transition:transform .15s ease}
 .cd-banner .cbox.pulse b{animation:cdPulse .35s ease}
 @keyframes cdPulse{0%{transform:scale(1)}45%{transform:scale(1.1)}100%{transform:scale(1)}}
@@ -743,7 +748,8 @@ body{ overscroll-behavior-y:none; }
 }
 .cu-wide .cu-meta .iconify{font-size:clamp(13px,3.6vw,16px)!important;color:var(--muted)!important;display:block!important;flex:0 0 auto!important}
 .cu-wide .cu-updated{display:none!important}
-.cu-fullwidth{border-radius:18px!important}
+.cu-fullwidth{border-radius:16px!important}
+@media(max-width:791px){section>.cu-fullwidth{margin-top:14px}}
 
 /* ============================================================
    RHYTHM & KONTRAS — KEUANGAN + REKAP  (HAPUS blok Screen 02 & 04 lama)
