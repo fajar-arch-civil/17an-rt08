@@ -24,7 +24,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
   /* ===== WA CTA + FOOTER (selaras index) ===== */
-.wa-cta-card{margin-top:24px;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--glass);border:1px solid var(--bd);border-radius:22px;box-shadow:0 16px 40px -24px rgba(0,0,0,.5)}
+.wa-cta-card{margin:24px auto 0;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);max-width:460px}
 .wa-cta-q{margin:0;font-weight:700;font-size:15px;color:var(--ink)}
 .wa-cta-sub{margin:0;font-size:12.5px;line-height:1.5;color:var(--muted);max-width:34ch}
 .wa-cta-btn{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#0a0a0a;font-weight:800;padding:14px 26px;border-radius:14px;font-size:15px;box-shadow:0 10px 26px rgba(37,211,102,.3);text-decoration:none}
@@ -156,7 +156,7 @@ details.faq[open] summary::after{content:'\2212'}
 details.faq p{font-size:13px;color:var(--ink2);margin-top:9px}
 
 /* footer */
-footer{margin-top:44px;padding:22px 0 8px;border-top:1px solid var(--bd);text-align:center;color:var(--ink2);font-size:12.5px;line-height:1.7}
+footer{margin-top:44px;padding:28px 20px calc(12px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
 footer b{color:var(--merah)}
 .wa-btn{display:inline-flex;align-items:center;gap:7px;margin:4px 0 14px;padding:11px 18px;border-radius:14px;background:var(--merah);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px}
 
@@ -432,11 +432,11 @@ p{ text-wrap:pretty; }
   </section>
 
   <footer style="text-align:center;padding:28px 20px 12px;line-height:1.8;color:var(--muted);font-size:12px">
-<div class="wa-cta-card" style="margin-top:24px;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);max-width:400px;margin-left:auto;margin-right:auto">
-<div style="width:50px;height:50px;background:#25d366;box-shadow:0 8px 22px rgba(37,211,102,.3);display:grid;place-items:center;border-radius:16px"><span class="iconify" data-icon="ic:baseline-whatsapp" style="font-size:28px;color:#fff"></span></div>
-<p style="margin:0;font-weight:700;font-size:15px;color:var(--ink)">Ada pertanyaan atau mau bayar iuran?</p>
-<p style="margin:0;font-size:12.5px;line-height:1.5;color:var(--muted);max-width:34ch">Iuran Rp50.000/KK dikonfirmasi panitia lewat WhatsApp. Bayar sebagian dulu juga boleh.</p>
-<a id="waLink" href="#" style="display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#0a0a0a;font-weight:800;padding:14px 26px;border-radius:14px;font-size:15px;box-shadow:0 10px 26px rgba(37,211,102,.3);text-decoration:none"><span class="iconify" data-icon="ic:baseline-whatsapp" style="font-size:21px"></span> Hubungi Panitia</a>
+<div class="wa-cta-card">
+<div style="width:50px;height:50px;background:#25d366;border-radius:16px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(37,211,102,.3)"><span class="iconify" data-icon="ic:baseline-whatsapp" style="font-size:28px;color:#fff"></span></div>
+<p class="wa-cta-q" style="color:var(--ink)">Ada pertanyaan atau mau bayar iuran?</p>
+<p class="wa-cta-sub">Iuran Rp50.000/KK dikonfirmasi panitia lewat WhatsApp. Bayar sebagian dulu juga boleh.</p>
+<a class="wa-cta-btn" id="waLink" href="#"><span class="iconify" data-icon="ic:baseline-whatsapp"></span> Hubungi Panitia</a>
 </div>
 <div style="margin-top:20px"><b style="color:var(--ink2)">AGUSTUSAN · RT 08</b> — HUT RI ke-81 · 2026</div>
 <div>Taman Kirana Surya, Ds. Pasanggrahan, Kec. Solear, Kab. Tangerang</div>
@@ -748,7 +748,7 @@ function renderHasil(){
       stats(); apply(); hasil(Array.isArray(d)?[]:(d&&d.hasil?d.hasil:[]));
     }).catch(function(){var tb=$('pesTbody'); if(tb) tb.innerHTML='<tr><td class="empty" colspan="4">Gagal memuat data. Muat ulang halaman.</td></tr>';});
   }
-  function init(){ reveal(); wire(); load(); var wa=document.getElementById('waLink'); if(wa) wa.href='https://wa.me/6285215079010?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.'); }
+  function init(){ reveal(); wire(); load(); var wa=document.getElementById('waLink'); if(wa) wa.href='https://wa.me/6285215079010?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.'); var wa=document.getElementById('waLink'); if(wa) wa.href='https://wa.me/6285215079010?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.'); }
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
