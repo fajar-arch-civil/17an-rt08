@@ -998,10 +998,10 @@ details[open] .sp-chev{transform:rotate(180deg)}
   function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
   function getF(o){for(var i=1;i<arguments.length;i++){var k=arguments[i];if(o&&o[k]!=null&&o[k]!=='')return o[k];}return '';}
   function host(){
-    var h=D.getElementById('strukturPanitia');
-    if(!h){ h=D.createElement('section'); h.id='strukturPanitia'; h.className='sp-wrap'; var a=D.querySelector('main.wrap')||D.querySelector('.wrap')||D.body; a.appendChild(h); }
-    return h;
-  }
+var h=D.getElementById('strukturPanitia');
+if(!h){ h=D.createElement('section'); h.id='strukturPanitia'; h.className='sp-wrap'; var a=D.querySelector('main.wrap')||D.querySelector('.wrap')||D.body; var f=a.querySelector('footer'); if(f){a.insertBefore(h,f);}else{a.appendChild(h);} }
+return h;
+}
   function render(list){
     var h=host();
     if(!list.length){ h.innerHTML='<div class="sp-h"><span class="iconify ic-ppl" data-icon="solar:users-group-rounded-bold"></span> Struktur Panitia</div><div class="sp-empty">Susunan panitia belum tersedia.</div>'; return; }
