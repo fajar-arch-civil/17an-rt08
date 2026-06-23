@@ -1691,45 +1691,6 @@ setTimeout(function(){var c=ring.querySelector('circle:last-of-type');if(c)c.set
 renderInsight();syncFormAddr();scan();
 }
 
-/* ===== LINEUP LOMBA — isi section "Perlombaan" biar informatif (anti-kosong) ===== */
-(function(){
-  var L=[
-    {c:'olah',ic:'solar:basketball-bold',cat:'Olahraga Warga',t:'Voli · Futsal · Tenis Meja',
-     d:'Untuk bapak & ibu (remaja boleh isi tim). Voli jadi cabang utama.',
-     m:[['solar:calendar-bold','Mulai Juli — tiap akhir pekan'],['solar:map-point-bold','Lapangan RT 08 (belakang masjid)']]},
-    {c:'anak',ic:'solar:balloon-bold',cat:'Lomba Anak',t:'3 Kelompok Usia',
-     d:'Balita (2–5 th), Anak 6–9 th & 9–12 th. Seru, ramai, banyak hadiah!',
-     m:[['solar:cup-star-bold','Hadiah dibagikan sore hari'],['solar:gift-bold','Setiap anak dapat kesempatan']]},
-    {c:'seni',ic:'solar:microphone-bold',cat:'Pentas Seni',t:'Malam Puncak',
-     d:'Penampilan dinilai langsung, makan bersama & pengumuman juara dewasa.',
-     m:[['solar:calendar-bold','Sabtu, 22 Agustus 2026'],['solar:star-bold','Puncak HUT RI ke-81']]}
-  ];
-  function build(){
-    return '<div class="lineup-grid">'+L.map(function(x){
-      return '<div class="lineup-card '+x.c+'">'
-        +'<div class="lu-head"><span class="lu-ic"><span class="iconify" data-icon="'+x.ic+'"></span></span><span class="lu-cat">'+x.cat+'</span></div>'
-        +'<div class="lu-title">'+x.t+'</div>'
-        +'<div class="lu-desc">'+x.d+'</div>'
-        +'<div class="lu-meta">'+x.m.map(function(m){return '<span><span class="iconify" data-icon="'+m[0]+'"></span>'+m[1]+'</span>';}).join('')+'</div>'
-        +'</div>';
-    }).join('')+'</div>';
-  }
-  function paint(){
-    var t=document.getElementById('lombaTrack');if(!t)return;
-    if(t.querySelector('.lomba-card'))return;     // ada lomba asli dari sheet → biarkan
-    if(t.querySelector('.lineup-grid'))return;    // sudah terpasang → stop (anti-loop)
-    t.innerHTML=build();
-    var s=document.getElementById('seeAll');if(s)s.style.display='none';
-    if(window.Iconify&&Iconify.scan)Iconify.scan(t);
-  }
-  function start(){
-    paint();
-    var t=document.getElementById('lombaTrack');
-    if(t&&window.MutationObserver){new MutationObserver(paint).observe(t,{childList:true});}
-    [600,1500,3000].forEach(function(d){setTimeout(paint,d);});
-  }
-  if(document.readyState!=='loading')start();else document.addEventListener('DOMContentLoaded',start);
-})();
 /* ===== STEP 3 — Pengumuman otomatis dari Sheet (tab "Pengumuman") ===== */
 (function(){
   var IKON={
