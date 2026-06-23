@@ -144,7 +144,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .btn-mini:active{transform:scale(.95)}
 /* ============ GALLERY CAROUSEL ============ */
 .carousel{position:relative;border-radius:var(--r-card);overflow:hidden;border:1px solid var(--bd)}
-.track{display:flex;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.track{display:flex;transition:transform .6s cubic-bezier(.22,.85,.28,1.02)}
 .slide{flex:0 0 100%}
 .photo{position:relative;aspect-ratio:16/10;background:var(--solid2)}
 .photo img{width:100%;height:100%;object-fit:cover}
@@ -183,6 +183,8 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .feed-main{flex:1;min-width:0}
 .feed-t{font-size:14.5px;font-weight:700;line-height:1.35}
 .feed-d{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:5px;display:flex;align-items:center;gap:5px}
+.feed-item:first-child{position:relative}
+.feed-item:first-child::after{content:"BARU";position:absolute;top:10px;right:12px;font-size:9px;font-weight:800;letter-spacing:.06em;background:#fff;color:var(--merah);padding:3px 7px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
 /* ============ LEADERBOARD ============ */
 .lb-filter{display:flex;gap:8px;overflow-x:auto;padding-bottom:14px}
 .lb-filter::-webkit-scrollbar{height:0}
@@ -620,7 +622,7 @@ body{ overscroll-behavior-y:none; }
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
 .hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start}
 .hero-text{max-width:100%}
-.hero-title{font-size:22px;font-weight:800;line-height:1.12;letter-spacing:-.035em;margin:0 0 4px;max-width:18ch}
+.hero-title{font-size:22px;font-weight:800;line-height:1.12;letter-spacing:-.035em;margin:0 0 4px;max-width:18ch;text-shadow:0 2px 12px rgba(0,0,0,.18)}
 .hero-sub{margin:0;font-size:13.5px;font-weight:500;line-height:1.4;opacity:.9}
 .hero-btn{position:static;transform:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;height:40px;margin:16px 0 0;padding:0 20px;background:#fff;color:var(--merah);font-weight:800;font-size:13.5px;border:none;border-radius:14px;cursor:pointer;font-family:inherit;box-shadow:0 8px 22px rgba(0,0,0,.25);transition:.16s}
 .hero-btn:active{transform:scale(.97)}
@@ -634,7 +636,9 @@ body{ overscroll-behavior-y:none; }
 .cd-sub{font-size:10px;opacity:.85;font-weight:600;margin-top:2px}
 .cd-banner .count-wrap{display:flex!important;justify-content:center;gap:7px!important;margin:0!important;width:auto}
 .cd-banner .cbox{flex:0 0 auto!important;width:73px!important;height:52px!important;border-radius:10px!important;padding:0!important;background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.22)!important;backdrop-filter:none!important;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.cd-banner .cbox b{font-size:22px!important;font-weight:800!important;line-height:1}
+.cd-banner .cbox b{font-size:22px!important;font-weight:800!important;line-height:1;transition:transform .15s ease}
+.cd-banner .cbox.pulse b{animation:cdPulse .35s ease}
+@keyframes cdPulse{0%{transform:scale(1)}45%{transform:scale(1.1)}100%{transform:scale(1)}}
 .cd-banner .cbox span{font-size:9px!important;margin-top:3px!important;letter-spacing:.08em!important;opacity:.85}
 .cd-banner .csep{display:none!important}
 /* FOTO 365x132 (2.76:1) / radius16 */
@@ -925,8 +929,9 @@ p{ text-wrap:pretty; }
 <!-- ============ HERO COUNTDOWN ============ -->
 <header class="hero" id="top">
   <div class="hero-inner">
-  <div class="hero-text">
-    <h1 class="hero-title">Menuju HUT Kemerdekaan RI ke-81</h1>
+<div class="hero-text">
+<div class="hero-eb" style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px">RT 08 · Taman Kirana Surya</div>
+<div class="hero-title">Menuju HUT Kemerdekaan RI ke-81</div>
     <p class="hero-sub">17 Agustus 2026 · Taman Kirana Surya</p>
   </div>
   <button class="hero-btn" onclick="document.getElementById('daftar').scrollIntoView({behavior:'smooth'})"><span class="iconify" data-icon="solar:cursor-square-bold"></span> Daftar Lomba</button>
@@ -1348,7 +1353,9 @@ function renderFeed(){
 }
 
 /* ===================== COUNTDOWN + CUACA ===================== */
-function tickCount(){let diff=Math.max(0,DEADLINE-Date.now());const d=Math.floor(diff/864e5);diff-=d*864e5;const h=Math.floor(diff/36e5);diff-=h*36e5;const m=Math.floor(diff/6e4);diff-=m*6e4;const s=Math.floor(diff/1e3);set('cD',d);set('cH',pad(h));set('cM',pad(m));set('cS',pad(s));}
+function tickCount(){let diff=Math.max(0,DEADLINE-Date.now());const d=Math.floor(diff/864e5);diff-=d*864e5;const h=Math.floor(diff/36e5);diff-=h*36e5;const m=Math.floor(diff/6e4);diff-=m*6e4;const s=Math.floor(diff/1e3);
+var elS=document.querySelector('.cd-banner .cbox:last-child b');if(elS&&elS.textContent!==pad(s)){elS.closest('.cbox').classList.add('pulse');setTimeout(function(){elS.closest('.cbox').classList.remove('pulse');},350);}
+set('cD',d);set('cH',pad(h));set('cM',pad(m));set('cS',pad(s));}
 const WMAP={0:['Cerah','meteocons:clear-day-fill'],1:['Cerah Berawan','meteocons:partly-cloudy-day-fill'],2:['Berawan','meteocons:partly-cloudy-day-fill'],3:['Mendung','meteocons:overcast-fill'],45:['Berkabut','meteocons:fog-fill'],48:['Berkabut','meteocons:fog-fill'],51:['Gerimis','meteocons:drizzle-fill'],53:['Gerimis','meteocons:drizzle-fill'],55:['Gerimis','meteocons:drizzle-fill'],61:['Hujan Ringan','meteocons:rain-fill'],63:['Hujan','meteocons:rain-fill'],65:['Hujan Lebat','meteocons:rain-fill'],80:['Hujan Lokal','meteocons:rain-fill'],81:['Hujan','meteocons:rain-fill'],82:['Hujan Lebat','meteocons:rain-fill'],95:['Badai Petir','meteocons:thunderstorms-fill'],96:['Badai Petir','meteocons:thunderstorms-fill'],99:['Badai Petir','meteocons:thunderstorms-fill']};
 async function muatCuaca(){
  try{
