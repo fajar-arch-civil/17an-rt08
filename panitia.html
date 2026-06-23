@@ -139,13 +139,6 @@ textarea.inp{resize:vertical;min-height:66px}
 .toast.show{opacity:1}.toast.ok{background:var(--ok)}.toast.err{background:#b3225f}
 [hidden]{display:none!important}
 </style>
-<style id="navFix">
-/* Panitia ikut nav bersama */
-.top{display:none!important}     /* sembunyikan header lama (jangan dihapus, biar #themeBtn gak error) */
-/* token nav, di-scope ke elemen nav aja biar UI Panitia lain gak keganggu */
-#utop,#udrawer,#usearch{--bd:#E6E6F0;--bd2:#D6D6E6;--chip:#EDEDFB;--sh:0 8px 24px -16px rgba(0,0,40,.18)}
-[data-theme="dark"] #utop,[data-theme="dark"] #udrawer,[data-theme="dark"] #usearch{--bd:#232340;--bd2:#2E2E50;--chip:#1E1E3A;--sh:0 10px 30px -18px rgba(0,0,0,.6)}
-</style>
 </head>
 <body>
 <header class="top">
@@ -439,7 +432,8 @@ textarea.inp{resize:vertical;min-height:66px}
 <script>
 (function(){
   if(window.__navU3) return; window.__navU3=true;
-  var D=document, root=D.documentElement;
+if(/panitia/i.test(location.pathname)) return;
+var D=document, root=D.documentElement;
   var isLomba = location.pathname.toLowerCase().indexOf('lomba')>-1;
 
   var NAV = isLomba ? [

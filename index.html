@@ -260,9 +260,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .wa-btn .iconify{font-size:21px}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 20px 12px;line-height:1.8}
 footer b{color:var(--ink2);font-weight:700}
-/* ============ FAB + TOAST + SKELETON ============ */
-#fab{position:fixed;right:18px;bottom:100px;z-index:75;width:48px;height:48px;border-radius:50%;background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);color:var(--merah);font-size:23px;box-shadow:var(--sh);border:1px solid var(--bd2);cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;transform:translateY(14px);transition:.25s}
-#fab.show{opacity:1;pointer-events:auto;transform:none}
+/* ============ FAB + TOAST + SKELETON ============ */}
 #toast{position:fixed;left:50%;bottom:108px;transform:translateX(-50%) translateY(20px);z-index:90;display:flex;align-items:center;gap:11px;background:var(--solid);border:1px solid var(--bd2);color:var(--ink);padding:14px 18px;border-radius:var(--r-el);box-shadow:var(--sh);font-size:14px;font-weight:700;max-width:90vw;opacity:0;pointer-events:none;transition:.3s}
 #toast.show{opacity:1;transform:translateX(-50%);pointer-events:auto}
 #toast.ok .ti{color:var(--ok)}#toast.warn .ti{color:var(--warn)}#toast.info .ti{color:var(--info)}#toast.err .ti{color:var(--danger)}
@@ -1287,6 +1285,7 @@ function wireForm(){
   });
 }
 
+function jenisCls(j){j=norm(j||'');if(j.includes('olah')||j.includes('sport'))return 'olah';if(j.includes('anak')||j.includes('kid'))return 'anak';if(j.includes('seni')||j.includes('pentas'))return 'seni';return 'olah';}
 function renderKatalog(){
  const t=$('lombaTrack');if(!t)return;const arr=_lombaList||[];
  if(!arr.length){t.innerHTML='<div class="lb-empty" style="flex:1"><span class="iconify" data-icon="solar:cup-bold"></span>Belum ada lomba.</div>';return;}
@@ -1378,15 +1377,9 @@ function exportCSV(){
  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='keuangan-rt08.csv';a.click();toast('CSV diunduh','ok');
 }
 function wireWA(){const a=$('waBtn');if(a)a.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.');}
-function buildNav(){}
 function scrollSpy(){
- const secs=['#top','#keuangan','#rekap','#daftar'].map(s=>({s,el:document.querySelector(s)})).filter(o=>o.el);
- const y=window.scrollY+130;let cur='#top';secs.forEach(o=>{if(o.el.getBoundingClientRect().top+window.scrollY<=y)cur=o.s;});
- document.querySelectorAll('#bnav .bn-item').forEach(a=>a.classList.toggle('active',a.dataset.t===cur));
- const fab=$('fab');if(fab)fab.classList.toggle('show',window.scrollY>520);
 }
 function wireMisc(){
- buildNav();
  $('toastX').onclick=()=>$('toast').classList.remove('show');
  $('seeAll').onclick=()=>document.getElementById('galeri').scrollIntoView({behavior:'smooth'});
  $('frefresh').onclick=()=>{toast('Menyegarkan…','info');muatKeuangan();muatLomba();};
@@ -2132,21 +2125,6 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
     }catch(e){}
   }
   if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run);
-})();
-</script>
-<!-- ===== LINK PANEL PANITIA (ke panitia.html) ===== -->
-<script>
-(function(){
-  function inject(){
-    var nav=document.querySelector('.ud-nav');
-    if(!nav){setTimeout(inject,400);return;}
-    if(document.getElementById('navPanitia'))return;
-    var a=document.createElement('a');
-    a.id='navPanitia';a.className='ud-link go';a.href='panitia.html';
-    a.innerHTML='<span class="iconify" data-icon="solar:lock-keyhole-bold"></span> Panel Panitia';
-    nav.appendChild(a);
-  }
-  inject();
 })();
 </script>
 
