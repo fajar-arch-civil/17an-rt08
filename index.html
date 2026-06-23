@@ -602,8 +602,6 @@ body{ overscroll-behavior-y:none; }
 .duo{ gap:10px!important; }
 .mini{ padding:14px!important; }
 
-/* gutter kiri-kanan samain dgn hero */
-.wrap{ padding:0 16px!important; }
 /* ===== SPACING POLISH v1 — END ===== */
 /* ===== RUNDOWN POLISH v2 — START (flat, senada Merah-Putih) ===== */
 .rd-card{
@@ -634,11 +632,9 @@ body{ overscroll-behavior-y:none; }
 }
 .balance::after{ display:none!important; } /* buang gumpalan glow merah */
 
-/* ===== SCREEN 01 HOME — UKURAN PERSIS (FINAL) ===== */
-.wrap{padding-left:14px!important;padding-right:14px!important}
 .sec{margin-top:14px!important}
 /* ===== HERO (selaras dgn Lomba & Panitia) ===== */
-.hero{position:relative;overflow:hidden;margin:14px max(14px,calc((100% - var(--maxw))/2 + 14px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 100%);box-shadow:0 16px 40px -22px var(--merah-glow)}
+.hero{position:relative;overflow:hidden;margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:24px 22px 26px;border-radius:28px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 100%);box-shadow:0 16px 40px -22px var(--merah-glow)}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 16px center;-webkit-mask-size:auto 170%;mask-size:auto 170%;background:#FFFFFF;opacity:.10}
 .hero-inner{position:relative;z-index:2;padding:0;display:flex;flex-direction:column;align-items:flex-start}
 .hero-text{max-width:100%}
