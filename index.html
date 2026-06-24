@@ -2236,43 +2236,65 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
 .kk-btn{min-height:44px;}
 .del{min-height:44px;}
 
-/* ===== FORM SECTION LAYOUT (ganti stepper lama) ===== */
-.form-section{
-  margin-bottom:24px;
-  padding-bottom:20px;
+/* ===== FORM PENDAFTARAN FINAL — section rapi + tombol rapat ===== */
+#formDaftar{
+  display:flex;
+  flex-direction:column;
+  gap:0!important;
+}
+
+#formDaftar .form-section{
+  margin-bottom:18px;
+  padding-bottom:14px;
   border-bottom:1px solid var(--bd2);
 }
-.form-section:last-of-type{
-  border-bottom:none;
-  margin-bottom:16px;
+
+#formDaftar .form-section:last-of-type{
+  margin-bottom:0!important;
+  padding-bottom:0!important;
+  border-bottom:none!important;
 }
-.form-sec-label{
+
+#formDaftar .form-sec-label{
   font-size:15px;
   font-weight:800;
   color:var(--merah);
-  margin-bottom:14px;
-  padding-bottom:8px;
+  margin-bottom:12px;
+  padding-bottom:7px;
   border-bottom:2px solid var(--merah-soft);
   display:flex;
   align-items:center;
   gap:6px;
 }
-.form .field{margin-bottom:14px;}
-.form .field.two{
+
+#formDaftar .field{
+  margin-bottom:12px;
+}
+
+#formDaftar .field:last-child{
+  margin-bottom:0;
+}
+
+#formDaftar .field.two{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
-.form .field.two .field{margin-bottom:0;}
-.form label{
+
+#formDaftar .field.two .field{
+  margin-bottom:0;
+}
+
+#formDaftar label{
   display:block;
   margin-bottom:5px;
   font-size:13.5px;
   font-weight:700;
   color:var(--ink2);
 }
-.form .inp{
+
+#formDaftar .inp{
   width:100%;
   padding:12px 14px;
   font-size:15px;
@@ -2284,14 +2306,24 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   transition:border-color .2s,box-shadow .2s;
   box-sizing:border-box;
 }
-.form .inp:focus{
+
+#formDaftar .inp:focus{
   outline:none;
   border-color:var(--merah);
   box-shadow:0 0 0 3px var(--merah-soft);
 }
-.form .inp::placeholder{color:var(--muted);opacity:.7;}
-.form textarea.inp{resize:vertical;min-height:48px;}
-.form select.inp{
+
+#formDaftar .inp::placeholder{
+  color:var(--muted);
+  opacity:.7;
+}
+
+#formDaftar textarea.inp{
+  resize:vertical;
+  min-height:42px!important;
+}
+
+#formDaftar select.inp{
   cursor:pointer;
   appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -2299,22 +2331,31 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   background-position:right 12px center;
   padding-right:36px;
 }
-.form .btn-primary{
+
+#formDaftar #btnKirim{
   width:100%;
+  min-height:52px;
+  margin-top:8px!important;
   padding:14px;
   font-size:15px;
   font-weight:800;
-  min-height:52px;
 }
 
-/* Mobile: stack dua kolom jadi satu kolom */
 @media(max-width:480px){
-  .form .field.two{grid-template-columns:1fr;gap:0;}
-  .form .field.two .field{margin-bottom:14px;}
+  #formDaftar .field.two{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  #formDaftar .field.two .field{
+    margin-bottom:12px;
+  }
 }
 
-/* Hapus style stepper lama jika masih ada */
-.stepper,.step,.step-n,.step-l,.step-line{display:none!important;}
+/* Sembunyikan sisa stepper lama jika masih ada di CSS/HTML */
+.stepper,.step,.step-n,.step-l,.step-line{
+  display:none!important;
+}
 </style>
 <script>
 (function(){
