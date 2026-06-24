@@ -256,9 +256,44 @@ textarea.inp{resize:vertical;min-height:66px}
   /* gate — token DIMINTA setiap buka halaman (tidak disimpan) */
   function showGate(){$('#gate').hidden=false;$('#app').hidden=true;setTimeout(function(){$('#gToken').focus();},60);}
   function showApp(){$('#gate').hidden=true;$('#app').hidden=false;$('#oleh').value=localStorage.getItem('pn_oleh')||'';renderInfo();switchTab('iuran');}
-  function gateCheck(tok){var b=new URLSearchParams();b.append('aksi','cekToken');b.append('token',tok);return fetch(API,{method:'POST',body:b}).then(function(r){return r.json();}).then(function(r){return !!(r&&r.ok);}).catch(function(){return false;});}
-  function enter(){var t=$('#gToken').value.trim();if(!t)return;$('#gMsg').textContent='Mengecek…';
-    gateCheck(t).then(function(ok){if(ok){ST.token=t;$('#gMsg').textContent='';showApp();}else $('#gMsg').textContent='Kode salah, coba lagi.';}).catch(function(){$('#gMsg').textContent='Gagal terhubung.';});}
+  function gateCheck(tok){
+  var b=new URLSearchParams();
+  b.append('aksi','cekToken');
+  b.append('token',tok);
+
+  return fetch(API,{method:'POST',body:b})
+    .then(function(r){
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return r.json();
+    })
+    .then(function(r){
+      if(r&&r.ok)return true;
+      throw new Error((r&&r.error)||'Token ditolak lewat POST');
+    })
+    .catch(function(){
+      return apiGet('aksi=cekToken&token='+encodeURIComponent(tok))
+        .then(function(r){return !!(r&&r.ok);})
+        .catch(function(){return false;});
+    });
+}
+  function enter(){
+  var t=$('#gToken').value.trim();
+  if(!t)return;
+
+  $('#gMsg').textContent='Mengecek…';
+
+  gateCheck(t).then(function(ok){
+    if(ok){
+      ST.token=t;
+      $('#gMsg').textContent='';
+      showApp();
+    }else{
+      $('#gMsg').textContent='Kode tidak valid atau server belum menerima verifikasi token.';
+    }
+  }).catch(function(){
+    $('#gMsg').textContent='Gagal terhubung ke server.';
+  });
+}
   $('#gEnter').addEventListener('click',enter);
   $('#gToken').addEventListener('keydown',function(e){if(e.key==='Enter')enter();});
   $('#oleh').addEventListener('change',function(){try{localStorage.setItem('pn_oleh',$('#oleh').value.trim());}catch(e){}});

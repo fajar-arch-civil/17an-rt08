@@ -1,4 +1,4 @@
-const CACHE='rt08-v2.2.2)';
+const CACHE='rt08-v2.2.3)';
 const ASSETS=['./','./index.html','./lomba.html','./panitia.html','./logo.svg','./icon-192.png','./icon-512.png','./manifest.json'];
 
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));});
