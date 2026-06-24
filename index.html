@@ -1365,28 +1365,152 @@ function fillJenis(){ const sel=$('selJenis'); if(!sel) return; const seen=[]; (
 function setKelompok(){ const o=lombaObj($('selJenis').value,$('selLomba').value); $('hidKelompok').value=(o?(getF(o,['kelompok','kelompokUmur','umur'])||''):''); }
 function setLomba(){ const j=$('selJenis').value,sel=$('selLomba'); if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';} else{const arr=lombaFor(j);sel.disabled=false;sel.innerHTML='<option value="">Pilih cabang…</option>'+arr.map(l=>{const nm=getF(l,['nama','name','lomba'])||'';return '<option value="'+esc(nm)+'">'+esc(nm)+'</option>';}).join('');} $('anakFields').classList.toggle('hide',!isAnak(j)); $('hidKelompok').value=''; updateStepper(); }
 function updateStepper(){ const st=document.querySelectorAll('#stepper .step');if(!st.length)return; const s1=$('hidAlamat').value&&$('nama').value.trim();const s2=s1&&$('selJenis').value&&$('selLomba').value; st.forEach(s=>s.classList.remove('on','done')); if(s2){st[0].classList.add('done');st[1].classList.add('done');st[2].classList.add('on');} else if(s1){st[0].classList.add('done');st[1].classList.add('on');} else st[0].classList.add('on'); }
-function suksesDaftar(){$('formDaftar').style.display='none';$('okMsg').style.display='block';document.querySelectorAll('#stepper .step').forEach(s=>{s.classList.remove('on');s.classList.add('done');});scan();muatLomba();}
-function wireForm(){
-	var sj=$('selJenis');if(sj)sj.addEventListener('change',setLomba);
-	var sl=$('selLomba');if(sl)sl.addEventListener('change',()=>{ setKelompok(); updateStepper(); });
-	var nm=$('nama');if(nm)nm.addEventListener('input',updateStepper);
-	var dl=$('daftarLagi');if(dl)dl.onclick=()=>{$('okMsg').style.display='none';$('formDaftar').style.display='';$('formDaftar').reset();ddReset('ddBlok','Blok…');ddReset('ddNomor','Nomor…');$('ddNomor').classList.add('disabled');$('hidAlamat').value='';$('anakFields').classList.add('hide');fillJenis();$('selLomba').disabled=true;$('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';updateStepper();};
-	var fd=$('formDaftar');if(fd)fd.addEventListener('submit',async e=>{
-    e.preventDefault();if(_sending)return;if(fd2_get('company'))return;$('dupMsg').style.display='none';
-    const nama=$('nama').value.trim(),blok=$('hidAlamat').value,hp=$('hp').value.trim(),jenis=$('selJenis').value,lomba=$('selLomba').value;
-    if(!nama||!blok||!hp||!jenis||!lomba){toast('Lengkapi data dulu ya','warn');return;}
-    setKelompok();
-    _sending=true;$('btnKirim').disabled=true;$('btnKirim').innerHTML='<span class="iconify" data-icon="svg-spinners:ring-resize"></span> Mengirim…';scan();
-    try{
-      const fd2=new FormData();if(fd2.get('company'))return;fd2.append('aksi','daftar');fd2.append('ts',new Date().toISOString());
-      fd2.append('nama',nama);fd2.append('blok',blok);fd2.append('hp',hp);fd2.append('jenis',jenis);fd2.append('lomba',lomba);
-      fd2.append('kelompok',$('hidKelompok').value||'');fd2.append('wali',$('wali').value.trim());fd2.append('usia',$('usia').value||'');fd2.append('catatan',$('catatan').value.trim());fd2.append('status','Terdaftar');
-      await fetch(API,{method:'POST',body:fd2});suksesDaftar();
-    }catch(err){toast('Gagal mengirim, coba lagi','err');}
-    _sending=false;$('btnKirim').disabled=false;$('btnKirim').innerHTML='<span class="iconify" data-icon="solar:check-circle-bold"></span> Daftarkan Sekarang';scan();
-  });
+function bindDaftarLagi(){
+  var dl=$('daftarLagi');
+  if(!dl)return;
+
+  dl.onclick=function(){
+    $('okMsg').style.display='none';
+    $('formDaftar').style.display='';
+    $('formDaftar').reset();
+
+    ddReset('ddBlok','Blok…');
+    ddReset('ddNomor','Nomor…');
+    $('ddNomor').classList.add('disabled');
+    $('hidAlamat').value='';
+    $('anakFields').classList.add('hide');
+
+    fillJenis();
+    $('selLomba').disabled=true;
+    $('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';
+
+    updateStepper();
+  };
 }
 
+function suksesDaftar(data){
+  $('formDaftar').style.display='none';
+  $('okMsg').style.display='block';
+
+  var nomor=data&&data.nomorPeserta?String(data.nomorPeserta):'';
+
+  if(nomor){
+    setH('okMsg',
+      '<div class="ok-ic"><span class="iconify" data-icon="solar:check-circle-bold"></span></div>'+ 
+      '<h4>Pendaftaran Berhasil!</h4>'+ 
+      '<p>Data peserta sudah tercatat. Simpan nomor peserta berikut.</p>'+ 
+      '<div class="ticket">'+
+        '<b>Nomor Peserta</b>'+ 
+        '<strong>'+esc(nomor)+'</strong>'+ 
+        '<span>Screenshot halaman ini sebagai bukti pendaftaran.</span>'+ 
+      '</div>'+ 
+      '<button class="link-btn" id="daftarLagi">Daftar Peserta Lain</button>'
+    );
+  }else{
+    setH('okMsg',
+      '<div class="ok-ic"><span class="iconify" data-icon="solar:check-circle-bold"></span></div>'+ 
+      '<h4>Pendaftaran Berhasil!</h4>'+ 
+      '<p>Data peserta sudah tercatat. Sampai jumpa di lapangan!</p>'+ 
+      '<button class="link-btn" id="daftarLagi">Daftar Peserta Lain</button>'
+    );
+  }
+
+  document.querySelectorAll('#stepper .step').forEach(function(s){
+    s.classList.remove('on');
+    s.classList.add('done');
+  });
+
+  bindDaftarLagi();
+  scan();
+  muatLomba();
+}
+
+function wireForm(){
+  var sj=$('selJenis');
+  if(sj)sj.addEventListener('change',setLomba);
+
+  var sl=$('selLomba');
+  if(sl)sl.addEventListener('change',function(){
+    setKelompok();
+    updateStepper();
+  });
+
+  var nm=$('nama');
+  if(nm)nm.addEventListener('input',updateStepper);
+
+  bindDaftarLagi();
+
+  var fd=$('formDaftar');
+  if(fd)fd.addEventListener('submit',async function(e){
+    e.preventDefault();
+
+    if(_sending)return;
+
+    // Honeypot anti-bot. Jika field tersembunyi terisi, hentikan diam-diam.
+    var hpBot=fd.querySelector('[name="company"]');
+    if(hpBot && hpBot.value.trim())return;
+
+    $('dupMsg').style.display='none';
+
+    var nama=$('nama').value.trim();
+    var blok=$('hidAlamat').value;
+    var hp=$('hp').value.trim();
+    var jenis=$('selJenis').value;
+    var lomba=$('selLomba').value;
+
+    if(!nama||!blok||!hp||!jenis||!lomba){
+      toast('Lengkapi data dulu ya','warn');
+      return;
+    }
+
+    setKelompok();
+
+    _sending=true;
+    $('btnKirim').disabled=true;
+    $('btnKirim').innerHTML='<span class="iconify" data-icon="svg-spinners:ring-resize"></span> Mengirim…';
+    scan();
+
+    try{
+      var fd2=new FormData();
+      fd2.append('aksi','daftar');
+      fd2.append('ts',new Date().toISOString());
+      fd2.append('nama',nama);
+      fd2.append('blok',blok);
+      fd2.append('hp',hp);
+      fd2.append('jenis',jenis);
+      fd2.append('lomba',lomba);
+      fd2.append('kelompok',$('hidKelompok').value||'');
+      fd2.append('wali',$('wali').value.trim());
+      fd2.append('usia',$('usia').value||'');
+      fd2.append('catatan',$('catatan').value.trim());
+      fd2.append('status','Terdaftar');
+
+      var res=await fetch(API,{method:'POST',body:fd2});
+      var out=await res.json();
+
+      if(!out||!out.ok){
+        if(out&&out.error==='BELUM_BAYAR'){
+          toast('Pendaftaran bisa dilakukan setelah ada pembayaran iuran KK. Hubungi panitia jika sudah membayar.','warn');
+        }else if(out&&out.duplikat){
+          toast('Peserta ini sudah terdaftar di lomba tersebut.','warn');
+        }else{
+          toast((out&&out.error)||'Gagal mendaftar, coba lagi.','err');
+        }
+        return;
+      }
+
+      suksesDaftar(out);
+
+    }catch(err){
+      toast('Gagal mengirim, coba lagi','err');
+    }finally{
+      _sending=false;
+      $('btnKirim').disabled=false;
+      $('btnKirim').innerHTML='<span class="iconify" data-icon="solar:check-circle-bold"></span> Daftarkan Sekarang';
+      scan();
+    }
+  });
+}
 function jenisCls(j){
   j=norm(j||'');
   if(j.includes('olah')||j.includes('sport'))return 'olah';
@@ -2355,6 +2479,37 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
 /* Sembunyikan sisa stepper lama jika masih ada di CSS/HTML */
 .stepper,.step,.step-n,.step-l,.step-line{
   display:none!important;
+}
+
+/* ===== TIKET / NOMOR PESERTA ===== */
+.ticket{
+  margin:14px auto 4px;
+  padding:16px;
+  border-radius:18px;
+  border:1px dashed var(--merah);
+  background:var(--merah-soft);
+  max-width:260px;
+  text-align:center;
+}
+.ticket b{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.ticket strong{
+  display:block;
+  margin:4px 0 6px;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:.04em;
+  color:var(--merah);
+}
+.ticket span{
+  display:block;
+  font-size:12px;
+  line-height:1.4;
+  color:var(--ink2);
 }
 </style>
 <script>
