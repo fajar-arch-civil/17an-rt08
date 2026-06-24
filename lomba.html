@@ -753,7 +753,7 @@ function renderHasil(){
     var fb=$('filterBar');
     if(fb) fb.querySelectorAll('.filter-btn').forEach(function(b){b.addEventListener('click',function(){fb.querySelectorAll('.filter-btn').forEach(function(x){x.classList.remove('on');});b.classList.add('on');curF=(b.textContent||'').trim()||'Semua';apply();});});
     var ps=$('pesSearch'), inp=ps&&ps.tagName==='INPUT'?ps:(ps?ps.querySelector('input'):D.querySelector('.pes-search input'));
-    if(inp) inp.addEventListener('input',function(e){curQ=(e.target.value||'').toLowerCase().trim();apply();});
+    if(inp){var _lombaDeb;inp.addEventListener('input',function(e){clearTimeout(_lombaDeb);var v=(e.target.value||'').toLowerCase().trim();_lombaDeb=setTimeout(function(){curQ=v;apply();},200);});}
   }
   function load(){
     fetch(API+'?aksi=peserta').then(function(r){return r.json();}).then(function(d){
