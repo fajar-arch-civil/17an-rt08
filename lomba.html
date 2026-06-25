@@ -682,11 +682,19 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   }
   var ALL=[], curF='Semua', curQ='';
   function rows(list){
-  if(!list.length) return '<div style="text-align:center;padding:26px 12px"><span class="iconify" data-icon="solar:users-group-rounded-bold" style="font-size:38px;color:var(--bd2);display:block;margin:0 auto 9px"></span><div style="font-size:13.5px;font-weight:700;color:var(--ink2)">Belum ada pendaftar</div><div style="font-size:11.5px;color:var(--muted);margin-top:4px">Yuk jadi yang pertama mendaftar! Klik tombol Daftar di beranda.</div></div>';
+  if(!list.length) return '<tr class="empty-row"><td class="empty" colspan="4">'+
+    '<div class="pes-empty">'+
+      '<span class="iconify" data-icon="solar:users-group-rounded-bold"></span>'+
+      '<div class="pes-empty-title">Belum ada pendaftar</div>'+
+      '<div class="pes-empty-sub">Yuk jadi yang pertama mendaftar! Klik tombol Daftar di beranda.</div>'+
+    '</div>'+
+  '</td></tr>';
+
   return list.map(function(p,i){
     var nama=esc(getF(p,'nama','Nama','name')||'-');
     var blok=esc(getF(p,'blok','Blok','rumah','Rumah','no','No','alamat')||'-');
     var lomba=esc(getF(p,'lomba','Lomba','cabang','Cabang','kategori')||'-');
+
     return '<tr><td class="num">'+(i+1)+'</td><td>'+nama+'</td><td>'+blok+'</td><td>'+lomba+'</td></tr>';
   }).join('');
 }
@@ -900,7 +908,15 @@ function renderHasil(){
     grid.innerHTML=html || '<div class="cab-empty">Belum ada cabang lomba.</div>';
     grid.querySelectorAll('.cab-slider').forEach(bindSlider);
   }
-  function load(){
+  function norm(s){
+  return String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,' ');
+}
+
+function keyOf(k,n){
+  return norm(k)+'||'+norm(n);
+}
+
+function load(){
   var host=D.getElementById('cabang');
   if(!host) return;
 
@@ -915,35 +931,57 @@ function renderHasil(){
   grid.classList.add('cab-host');
   grid.innerHTML='<div class="cab-sk"><div class="s"></div><div class="s"></div><div class="s"></div></div>';
 
-  // Ambil cabang lomba dari MasterLomba via aksi=opsi.
-  fetch(API+'?aksi=opsi&cb='+Date.now())
-    .then(function(r){
-      return r.json();
-    })
-    .then(function(d){
-      var lomba=(d&&Array.isArray(d.lomba))?d.lomba:[];
+  Promise.all([
+    fetch(API+'?aksi=opsi&cb='+Date.now()).then(function(r){return r.json();}),
+    fetch(API+'?aksi=cabang&cb='+Date.now()).then(function(r){return r.json();}).catch(function(){return {cabang:[]};})
+  ])
+  .then(function(res){
+    var opsi=res[0]||{};
+    var cabangData=res[1]||{};
 
-      var rows=lomba.map(function(x){
-        return {
-          nama:x.nama||'',
-          kategori:x.jenis||'',
-          jadwal:x.jadwal||'',
-          lokasi:x.lokasi||'',
-          catatan:x.tipe?('Tipe: '+x.tipe):'',
-          gambar:x.gambar||''
-        };
-      }).filter(function(x){
-        return x.nama && x.kategori;
-      });
+    var lomba=Array.isArray(opsi.lomba)?opsi.lomba:[];
+    var cabang=Array.isArray(cabangData)?cabangData:(Array.isArray(cabangData.cabang)?cabangData.cabang:[]);
 
-      render(grid, rows);
-    })
-    .catch(function(){
-      grid.innerHTML='<div class="cab-empty">Cabang lomba belum bisa dimuat. Coba muat ulang.</div>';
+    var byFull={};
+    var byName={};
+
+    cabang.forEach(function(c){
+      var nm=getF(c,'nama','Nama')||'';
+      var kat=getF(c,'kategori','Kategori','jenis','Jenis')||'';
+
+      if(!nm) return;
+
+      byName[norm(nm)]=c;
+
+      if(kat){
+        byFull[keyOf(kat,nm)]=c;
+      }
     });
+
+    var rows=lomba.map(function(x){
+      var nama=x.nama||'';
+      var kategori=x.jenis||'';
+
+      var extra=byFull[keyOf(kategori,nama)] || byName[norm(nama)] || {};
+
+      return {
+        nama:nama,
+        kategori:kategori,
+        jadwal:x.jadwal || getF(extra,'jadwal','Jadwal') || '',
+        lokasi:x.lokasi || getF(extra,'lokasi','Lokasi') || '',
+        catatan:getF(extra,'catatan','Catatan','ket','keterangan') || (x.tipe?('Tipe: '+x.tipe):''),
+        gambar:getF(extra,'gambar','Gambar','foto','image','url') || x.gambar || ''
+      };
+    }).filter(function(x){
+      return x.nama && x.kategori;
+    });
+
+    render(grid, rows);
+  })
+  .catch(function(){
+    grid.innerHTML='<div class="cab-empty">Cabang lomba belum bisa dimuat. Coba muat ulang.</div>';
+  });
 }
-  if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
-})();
 </script>
 <!-- ===== UI BASE v2 — perbaiki notch (safe-area) + galeri tanpa nama file ===== -->
 <script>
@@ -1078,5 +1116,57 @@ return h;
 })();
 </script>
 <!-- ===== STRUKTUR PANITIA — END ===== -->
+<style id="pesEmptyFix">
+/* Empty state peserta — fix desktop */
+.pes-empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:34px 16px;
+  text-align:center;
+  color:var(--ink2);
+}
+
+.pes-empty .iconify{
+  font-size:42px;
+  color:var(--bd2);
+}
+
+.pes-empty-title{
+  font-size:14px;
+  font-weight:800;
+  color:var(--ink2);
+}
+
+.pes-empty-sub{
+  max-width:320px;
+  font-size:12.5px;
+  line-height:1.5;
+  color:var(--muted);
+}
+
+.empty-row td.empty{
+  text-align:center!important;
+  padding:0!important;
+}
+
+@media(max-width:560px){
+  .mini tr.empty-row{
+    display:block;
+    padding:0;
+  }
+
+  .mini tr.empty-row td.empty{
+    display:block!important;
+    padding:0!important;
+  }
+
+  .mini tr.empty-row td.empty::before{
+    content:''!important;
+  }
+}
+</style>
 </body>
 </html>
