@@ -1348,8 +1348,8 @@ function buildChart(){
 
 /* ===================== OPSI + DROPDOWN ===================== */
 async function muatOpsi(){
- try{const d=await api('aksi=opsi');const l=getF(d,['lomba','lombaList','daftarLomba','competitions']);_lombaList=(Array.isArray(l)&&l.length)?l:LOMBA_DEFAULT;_addrMap=normalizeAddr(getF(d,['alamat','alamatMap','blok','wilayah']));}
- catch(e){_lombaList=LOMBA_DEFAULT;_addrMap={};}
+ try{const d=await api('aksi=opsi');const l=getF(d,['lomba','lombaList','daftarLomba','competitions']);_lombaList=(Array.isArray(l)&&l.length)?l:[];_addrMap=normalizeAddr(getF(d,['alamat','alamatMap','blok','wilayah']));}
+ catch(e){_lombaList=[];_addrMap={};}
  buildBlokDD();fillJenis();renderKatalog();
 }
 function normalizeAddr(al){const map={};if(!al)return map;if(Array.isArray(al)){al.forEach(s=>{const b=splitBlok(s);(map[b]=map[b]||[]).push(String(s));});}else if(typeof al==='object'){Object.keys(al).forEach(k=>{const v=al[k];if(Array.isArray(v))map[k.toUpperCase()]=v.map(String);else if(v&&typeof v==='object')map[k.toUpperCase()]=Object.values(v).map(String);});}return map;}

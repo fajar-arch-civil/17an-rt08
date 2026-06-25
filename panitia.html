@@ -287,6 +287,20 @@ textarea.inp{resize:vertical;min-height:66px}
   function post(o){var b=new URLSearchParams();b.append('token',ST.token);Object.keys(o).forEach(function(k){b.append(k,o[k]);});
   return fetch(API,{method:'POST',body:b}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).catch(function(err){return{ok:false,error:'Gagal terhubung: '+(err.message||'jaringan')};});}
 
+  function lockBtn(btn,label){
+  if(!btn) return function(){};
+  var old=btn.innerHTML;
+  btn.disabled=true;
+  btn.dataset.busy='1';
+  if(label) btn.innerHTML=label;
+  return function(){
+    btn.disabled=false;
+    btn.dataset.busy='';
+    btn.innerHTML=old;
+  };
+}
+var _busyStatus=false;
+
   /* theme */
   function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('rt08-theme',t);}catch(e){}$('#themeBtn').querySelector('.iconify').setAttribute('data-icon',t==='light'?'solar:sun-bold':'solar:moon-bold');scan();}
 (function(){var t='light';try{var v=localStorage.getItem('rt08-theme');t=(v==='dark')?'dark':'light';}catch(e){}applyTheme(t);})();
@@ -536,65 +550,63 @@ function renderKK(){
   function selectRank(i,r){var w=ST.work[i];if(!w)return;
     if(r==='g'){w._gugur=!w._gugur;w._rank=0;}else if(r==='0'){w._rank=0;w._gugur=false;}
     else{var rr=Number(r);if(w._rank===rr){w._rank=0;}else{ST.work.forEach(function(x){if(x._rank===rr)x._rank=0;});w._rank=rr;w._gugur=false;}}renderHasil();}
-  function saveHasil(){var L=curLomba();if(!L)return;
-    if(!confirm('Kunci & kirim hasil "'+L.nama+'"? Data langsung tampil ke warga.'))return;
-    var o={aksi:'setHasil',jenis:L.jenis,lomba:L.nama,kelompok:L.kelompok||'',nama1:'',blok1:'',nama2:'',blok2:'',nama3:'',blok3:'',gugur:'[]'};
-    if(isRegu()){for(var r=1;r<=3;r++){o['nama'+r]=($('#pnrn'+r).value||'').trim();o['blok'+r]=($('#pnrb'+r).value||'').trim();}}
-    else{var gugur=[];ST.work.forEach(function(w){if(w._rank>=1&&w._rank<=3){o['nama'+w._rank]=w.nama;o['blok'+w._rank]=w.blok;}if(w._gugur)gugur.push({nama:w.nama,blok:w.blok});});o.gugur=JSON.stringify(gugur);}
-    post(o).then(function(r){
-  if(r&&r.ok){
-    toast('✓ Hasil tersimpan & dikunci','ok');
-    loadLomba();
-  }else{
-    toast((r&&r.error)||'Gagal menyimpan hasil','err');
-  }
-});}
-  function saveHadir(){var L=curLomba();if(!L)return;
-    var arr=ST.work.filter(function(w){return w._hadir;}).map(function(w){return {nama:w.nama,blok:w.blok,hadir:w._hadir};});
-    post({
-  aksi:'setKehadiran',
-  jenis:L.jenis,
-  lomba:L.nama,
-  kehadiran:JSON.stringify(arr)
-}).then(function(r){
-  if(r&&r.ok){
-    toast('✓ Kehadiran tersimpan','ok');
-    loadLomba();
-  }else{
-    toast((r&&r.error)||'Gagal menyimpan kehadiran','err');
-  }
-});}
+  function saveHasil(){
+  var L=curLomba();if(!L)return;
+  var btn=$('#pnSaveHasil');
+  if(btn&&btn.dataset.busy) return;
+  if(!confirm('Kunci & kirim hasil "'+L.nama+'"? Data langsung tampil ke warga.'))return;
+
+  var o={aksi:'setHasil',jenis:L.jenis,lomba:L.nama,kelompok:L.kelompok||'',nama1:'',blok1:'',nama2:'',blok2:'',nama3:'',blok3:'',gugur:'[]'};
+  if(isRegu()){for(var r=1;r<=3;r++){o['nama'+r]=($('#pnrn'+r).value||'').trim();o['blok'+r]=($('#pnrb'+r).value||'').trim();}}
+  else{var gugur=[];ST.work.forEach(function(w){if(w._rank>=1&&w._rank<=3){o['nama'+w._rank]=w.nama;o['blok'+w._rank]=w.blok;}if(w._gugur)gugur.push({nama:w.nama,blok:w.blok});});o.gugur=JSON.stringify(gugur);}
+
+  var unlock=lockBtn(btn,'Menyimpan…');
+  post(o).then(function(r){
+    unlock();
+    if(r&&r.ok){toast('✓ Hasil tersimpan & dikunci','ok');loadLomba();}
+    else{toast((r&&r.error)||'Gagal menyimpan hasil','err');}
+  });
+}
+  function saveHadir(){
+  var L=curLomba();if(!L)return;
+  var btn=$('#pnSaveHadir');
+  if(btn&&btn.dataset.busy) return;
+
+  var arr=ST.work.filter(function(w){return w._hadir;}).map(function(w){return {nama:w.nama,blok:w.blok,hadir:w._hadir};});
+
+  var unlock=lockBtn(btn,'Menyimpan…');
+  post({aksi:'setKehadiran',jenis:L.jenis,lomba:L.nama,kehadiran:JSON.stringify(arr)}).then(function(r){
+    unlock();
+    if(r&&r.ok){toast('✓ Kehadiran tersimpan','ok');loadLomba();}
+    else{toast((r&&r.error)||'Gagal menyimpan kehadiran','err');}
+  });
+}
   function setStatus(s){
+  if(_busyStatus) return;
   var L=curLomba();
   if(!L)return;
 
+  _busyStatus=true;
   post({
     aksi:'setStatus',
     jenis:L.jenis,
     lomba:L.nama,
     status:s
   }).then(function(r){
+    _busyStatus=false;
     if(!(r&&r.ok)){
       toast((r&&r.error)||'Gagal mengubah status','err');
       return;
     }
-
     var arr=(ST.data&&ST.data.statusLomba)||[];
     var f=arr.filter(function(x){
       return norm(x.jenis)===norm(L.jenis)&&norm(x.lomba)===norm(L.nama);
     })[0];
-
-    if(f){
-      f.status=s;
-    }else{
+    if(f){f.status=s;}
+    else{
       if(!ST.data.statusLomba)ST.data.statusLomba=[];
-      ST.data.statusLomba.push({
-        jenis:L.jenis,
-        lomba:L.nama,
-        status:s
-      });
+      ST.data.statusLomba.push({jenis:L.jenis,lomba:L.nama,status:s});
     }
-
     renderStatus();
     toast('Status: '+s,'ok');
   });
@@ -602,15 +614,14 @@ function renderKK(){
   function addPeserta(){
   var L=curLomba();
   if(!L)return;
+  var btn=$('#pnAddBtn');
+  if(btn&&btn.dataset.busy) return;
 
   var nama=($('#pnAddNama').value||'').trim();
   var blok=($('#pnAddBlok').value||'').trim();
+  if(!nama||!blok){toast('Nama & blok wajib diisi','err');return;}
 
-  if(!nama||!blok){
-    toast('Nama & blok wajib diisi','err');
-    return;
-  }
-
+  var unlock=lockBtn(btn,'Menambahkan…');
   post({
     aksi:'tambahPeserta',
     nama:nama,
@@ -620,33 +631,40 @@ function renderKK(){
     lomba:L.nama,
     kelompok:L.kelompok||''
   }).then(function(r){
+    unlock();
+    if(r&&r.ok){toast('✓ Peserta ditambahkan','ok');loadLomba();}
+    else if(r&&r.duplikat){toast('Sudah terdaftar di lomba ini','err');}
+    else{toast((r&&r.error)||'Gagal menambahkan peserta','err');}
+  });
+}
+  function kirimInfo(){
+  var btn=$('#pnInBtn');
+  if(btn&&btn.dataset.busy) return;
+
+  var judul=($('#pnInJudul').value||'').trim();
+  var isi=($('#pnInIsi').value||'').trim();
+
+  if(!judul&&!isi){toast('Isi pengumuman dulu','err');return;}
+
+  var unlock=lockBtn(btn,'Mengirim…');
+
+  post({
+    aksi:'tambahPengumuman',
+    judul:judul,
+    isi:isi,
+    pin:($('#pnInPin').checked?'ya':'')
+  }).then(function(r){
+    unlock();
     if(r&&r.ok){
-      toast('✓ Peserta ditambahkan','ok');
-      loadLomba();
-    }else if(r&&r.duplikat){
-      toast('Sudah terdaftar di lomba ini','err');
+      toast('✓ Pengumuman terkirim','ok');
+      $('#pnInJudul').value='';
+      $('#pnInIsi').value='';
+      $('#pnInPin').checked=false;
     }else{
-      toast((r&&r.error)||'Gagal menambahkan peserta','err');
+      toast((r&&r.error)||'Gagal mengirim pengumuman','err');
     }
   });
 }
-  function kirimInfo(){var judul=($('#pnInJudul').value||'').trim(),isi=($('#pnInIsi').value||'').trim();
-    if(!judul&&!isi){toast('Isi pengumuman dulu','err');return;}
-    post({
-  aksi:'tambahPengumuman',
-  judul:judul,
-  isi:isi,
-  pin:($('#pnInPin').checked?'ya':'')
-}).then(function(r){
-  if(r&&r.ok){
-    toast('✓ Pengumuman terkirim','ok');
-    $('#pnInJudul').value='';
-    $('#pnInIsi').value='';
-    $('#pnInPin').checked=false;
-  }else{
-    toast((r&&r.error)||'Gagal mengirim pengumuman','err');
-  }
-});}
 
   /* init — SELALU minta token saat halaman dibuka (keamanan) */
   showGate();
