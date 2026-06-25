@@ -433,14 +433,16 @@ p{ text-wrap:pretty; }
       <div><h2>Info &amp; Ketentuan</h2><small>Baca dulu sebelum bertanding</small></div></div>
     <div class="card info-list">
       <p>Seluruh peserta wajib mendaftar lebih dulu melalui formulir di halaman Beranda.</p>
-      <p>Lomba olahraga digelar tiap akhir pekan di bulan Juli (pagi–sore) di Lapangan RT 08 (belakang masjid). Cabang utama <b>voli</b>; futsal &amp; tenis meja sebagai alternatif. Khusus bapak &amp; ibu — remaja boleh mengisi kekosongan tim.</p>
-      <p>Lomba anak dilaksanakan Senin, 17 Agustus 2026 (pagi–sore) dan <b>hadiah anak dibagikan sore</b> hari itu juga. Usia 10 tahun ke atas diarahkan ikut lomba olahraga fisik.</p>
-      <p>Pentas seni digelar pada malam puncak, Sabtu 22 Agustus 2026 — makan bersama &amp; dinilai langsung oleh juri. Hadiah pemenang dewasa dibagikan malam itu.</p>
-      <p>Peserta diharap hadir 15 menit sebelum jadwal. Keputusan panitia bersifat final. Mari bertanding dengan sportif!</p>
+
+<p>Cabang lomba mengikuti data terbaru dari panitia. Jadwal, lokasi, dan teknis lomba dapat disesuaikan menjelang hari pelaksanaan.</p>
+
+<p>Peserta diharap hadir 15 menit sebelum lomba dimulai. Untuk lomba regu, panitia dapat membantu menyesuaikan peserta jika diperlukan.</p>
+
+<p>Keputusan panitia bersifat final. Mari bertanding dengan sportif, tertib, dan tetap menjaga kebersamaan warga RT 08.</p>
     </div>
-    <details class="card faq"><summary>Siapa yang boleh ikut?</summary><p>Seluruh warga RT 08 yang sudah membayar iuran Rp50.000/KK. Setiap peserta boleh ikut lebih dari satu lomba selama jadwalnya tidak bentrok.</p></details>
+    <details class="card faq"><summary>Siapa yang boleh ikut?</summary><p>Seluruh warga RT 08 yang sudah memiliki pembayaran iuran KK tercatat. Pendaftaran tetap bisa dilakukan meskipun iuran belum lunas. Setiap peserta boleh ikut lebih dari satu lomba selama jadwalnya tidak bentrok.</p></details>
     <details class="card faq"><summary>Bagaimana cara daftar?</summary><p>Isi formulir di halaman Beranda — pilih blok, nomor rumah, dan kategori lomba, lalu kirim. Nama kamu otomatis muncul di daftar peserta halaman ini.</p></details>
-    <details class="card faq"><summary>Apakah ada biaya pendaftaran?</summary><p>Gratis! Pendaftaran lomba tidak dipungut biaya tambahan — cukup pastikan iuran KK sudah dibayarkan.</p></details>
+    <details class="card faq"><summary>Apakah ada biaya pendaftaran?</summary><p>Gratis! Pendaftaran lomba tidak dipungut biaya tambahan. Pastikan sudah ada pembayaran iuran KK yang tercatat di panitia.</p></details>
     <details class="card faq"><summary>Apa saja hadiahnya?</summary><p>Piala + uang tunai untuk juara 1, 2, 3 tiap kategori. Hadiah anak dibagikan sore, hadiah dewasa di malam puncak. Detail nominal menyusul dari panitia.</p></details>
   </section>
 
@@ -899,16 +901,47 @@ function renderHasil(){
     grid.querySelectorAll('.cab-slider').forEach(bindSlider);
   }
   function load(){
-    var host=D.getElementById('cabang'); if(!host) return;
-    var grid=host.querySelector('.cat-grid');
-    if(!grid){grid=D.createElement('div');grid.className='cat-grid';host.appendChild(grid);}
-    grid.classList.add('cab-host');
-    grid.innerHTML='<div class="cab-sk"><div class="s"></div><div class="s"></div><div class="s"></div></div>';
-    fetch(API+'?aksi=cabang').then(function(r){return r.json();}).then(function(d){
-      var rows=Array.isArray(d)?d:(d&&d.cabang?d.cabang:[]);
-      render(grid, rows);
-    }).catch(function(){ grid.innerHTML='<div class="cab-empty">Cabang lomba belum bisa dimuat. Coba muat ulang.</div>'; });
+  var host=D.getElementById('cabang');
+  if(!host) return;
+
+  var grid=host.querySelector('.cat-grid');
+
+  if(!grid){
+    grid=D.createElement('div');
+    grid.className='cat-grid';
+    host.appendChild(grid);
   }
+
+  grid.classList.add('cab-host');
+  grid.innerHTML='<div class="cab-sk"><div class="s"></div><div class="s"></div><div class="s"></div></div>';
+
+  // Ambil cabang lomba dari MasterLomba via aksi=opsi.
+  fetch(API+'?aksi=opsi&cb='+Date.now())
+    .then(function(r){
+      return r.json();
+    })
+    .then(function(d){
+      var lomba=(d&&Array.isArray(d.lomba))?d.lomba:[];
+
+      var rows=lomba.map(function(x){
+        return {
+          nama:x.nama||'',
+          kategori:x.jenis||'',
+          jadwal:x.jadwal||'',
+          lokasi:x.lokasi||'',
+          catatan:x.tipe?('Tipe: '+x.tipe):'',
+          gambar:x.gambar||''
+        };
+      }).filter(function(x){
+        return x.nama && x.kategori;
+      });
+
+      render(grid, rows);
+    })
+    .catch(function(){
+      grid.innerHTML='<div class="cab-empty">Cabang lomba belum bisa dimuat. Coba muat ulang.</div>';
+    });
+}
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
 })();
 </script>
