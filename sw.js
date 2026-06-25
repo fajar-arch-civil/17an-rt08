@@ -1,4 +1,4 @@
-const CACHE = 'rt08-v2.3.0';
+const CACHE = 'rt08-v2.3.1';
 
 const ASSETS = [
   './',
@@ -56,7 +56,6 @@ self.addEventListener('fetch', event => {
   }
 
   // Jangan cache API / Google data.
-  // Ini penting supaya data iuran, peserta, lomba, pengumuman, dan gambar Google Drive tidak stale.
   if(isApiRequest(request)){
     event.respondWith(
       fetch(request, { cache: 'no-store' })
@@ -64,8 +63,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // HTML/navigation selalu network-first.
-  // Kalau offline, baru fallback ke cache.
+  // HTML/navigation: network-first.
   if(request.mode === 'navigate'){
     event.respondWith(
       fetch(request)
@@ -79,7 +77,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Asset lokal: cache-first, lalu update dari network.
+  // Asset lokal: cache-first.
   event.respondWith(
     caches.match(request).then(cached => {
       if(cached) return cached;

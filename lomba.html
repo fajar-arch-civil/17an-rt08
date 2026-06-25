@@ -355,38 +355,24 @@ p{ text-wrap:pretty; }
 <main class="wrap">
 
   <section class="sec reveal" id="cabang">
-    <div class="sec-h"><div class="ic"><span class="iconify" data-icon="solar:cup-star-bold"></span></div>
-      <div><h2>Cabang Lomba</h2><small>Olahraga, anak, & pentas seni — untuk semua usia</small></div></div>
-    <div class="cat-grid">
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:dumbbell-large-bold"></span></div>
-        <span class="cat-label olah">Olahraga</span><h3>Voli (Cabang Utama)</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:users-group-rounded-bold"></span> Bapak &amp; Ibu</span><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Akhir pekan Juli</span><span><span class="iconify" data-icon="solar:map-point-bold"></span> Lapangan RT 08</span></div></div>
-
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:dumbbell-large-bold"></span></div>
-        <span class="cat-label olah">Olahraga</span><h3>Futsal</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:star-bold"></span> Alternatif</span><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Akhir pekan Juli</span><span><span class="iconify" data-icon="solar:map-point-bold"></span> Lapangan RT 08</span></div></div>
-
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:dumbbell-large-bold"></span></div>
-        <span class="cat-label olah">Olahraga</span><h3>Tenis Meja</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:star-bold"></span> Alternatif</span><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Akhir pekan Juli</span><span><span class="iconify" data-icon="solar:map-point-bold"></span> Lapangan RT 08</span></div></div>
-
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:balloon-bold"></span></div>
-        <span class="cat-label anak">Anak</span><h3>Lomba Balita (2–5 th)</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Senin, 17 Agustus</span><span><span class="iconify" data-icon="solar:heart-bold"></span> Didampingi orang tua</span><span><span class="iconify" data-icon="solar:gift-bold"></span> Hadiah dibagi sore</span></div></div>
-
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:balloon-bold"></span></div>
-        <span class="cat-label anak">Anak</span><h3>Anak 6–9 th</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Senin, 17 Agustus</span><span><span class="iconify" data-icon="solar:notebook-bold"></span> SD kelas rendah</span><span><span class="iconify" data-icon="solar:gift-bold"></span> Hadiah dibagi sore</span></div></div>
-
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:balloon-bold"></span></div>
-        <span class="cat-label anak">Anak</span><h3>Anak 9–12 th</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Senin, 17 Agustus</span><span><span class="iconify" data-icon="solar:notebook-bold"></span> SD kelas tinggi</span><span><span class="iconify" data-icon="solar:running-2-bold"></span> 10+ diarahkan ke fisik</span></div></div>
-
-      <div class="cat-card"><div class="cat-icon"><span class="iconify" data-icon="solar:microphone-bold"></span></div>
-        <span class="cat-label seni">Pentas Seni</span><h3>Pentas Seni</h3>
-        <div class="cat-meta"><span><span class="iconify" data-icon="solar:users-group-rounded-bold"></span> Semua warga</span><span><span class="iconify" data-icon="solar:calendar-mark-bold"></span> Sabtu, 22 Agustus (malam)</span><span><span class="iconify" data-icon="solar:star-shine-bold"></span> Dinilai langsung</span></div></div>
+  <div class="sec-h">
+    <div class="ic">
+      <span class="iconify" data-icon="solar:cup-star-bold"></span>
     </div>
-  </section>
+    <div>
+      <h2>Cabang Lomba</h2>
+      <small>Data terbaru dari panitia</small>
+    </div>
+  </div>
+
+  <div class="cat-grid" id="cabGrid">
+    <div class="cab-sk">
+      <div class="s"></div>
+      <div class="s"></div>
+      <div class="s"></div>
+    </div>
+  </div>
+</section>
 
   <section class="sec reveal" id="peserta">
     <div class="sec-h"><div class="ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></div>
@@ -982,6 +968,9 @@ function load(){
     grid.innerHTML='<div class="cab-empty">Cabang lomba belum bisa dimuat. Coba muat ulang.</div>';
   });
 }
+
+if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else load();
+})();
 </script>
 <!-- ===== UI BASE v2 — perbaiki notch (safe-area) + galeri tanpa nama file ===== -->
 <script>
