@@ -150,6 +150,45 @@ textarea.inp{resize:vertical;min-height:66px}
 .toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;background:#111;color:#fff;font-weight:700;font-size:13px;padding:11px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;max-width:84%;text-align:center}
 .toast.show{opacity:1}.toast.ok{background:var(--ok)}.toast.err{background:#b3225f}
 [hidden]{display:none!important}
+
+.pay-history{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid var(--bd2);
+  border-radius:14px;
+  background:var(--glass-2);
+}
+
+.pay-history>b{
+  display:block;
+  margin-bottom:8px;
+  font-size:13px;
+  font-weight:800;
+}
+
+.pay-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:4px 8px;
+  padding:8px 0;
+  border-top:1px solid var(--bd2);
+  font-size:12.5px;
+}
+
+.pay-row:first-of-type{
+  border-top:none;
+}
+
+.pay-row small{
+  grid-column:1/-1;
+  color:var(--muted);
+  line-height:1.35;
+}
+
+.pay-history.empty{
+  color:var(--muted);
+  font-size:12.5px;
+}
 </style>
 </head>
 <body>
@@ -267,13 +306,10 @@ textarea.inp{resize:vertical;min-height:66px}
       return r.json();
     })
     .then(function(r){
-      if(r&&r.ok)return true;
-      throw new Error((r&&r.error)||'Token ditolak lewat POST');
+      return !!(r&&r.ok);
     })
     .catch(function(){
-      return apiGet('aksi=cekToken&token='+encodeURIComponent(tok))
-        .then(function(r){return !!(r&&r.ok);})
-        .catch(function(){return false;});
+      return false;
     });
 }
   function enter(){
@@ -352,14 +388,62 @@ function renderKK(){
 }
   $('#kkList').addEventListener('click',function(e){var btn=e.target.closest('.kk-btn');if(btn)openModal(Number(btn.dataset.i));});
   function openModal(i){
-    var w=ST.daftar[i];if(!w)return;ST.cur=w;
-    var ter=terOf(w),sisa=Math.max(0,ST.target-ter);
-    $('#mKK').innerHTML='<b>'+esc(w.nama||'(tanpa nama)')+'</b><span>'+esc(w.blok||'')+' · sudah '+rp(ter)+' · sisa '+rp(sisa)+'</span>';
-    $('#mNom').value='';$('#mKet').value='';$('#mMetode').value='Tunai';
-    var html=[10000,25000,50000].map(function(v){return '<button data-v="'+v+'">+'+rp(v)+'</button>';}).join('');
-    if(sisa>0)html+='<button class="q-full" data-v="'+sisa+'">Lunaskan ('+rp(sisa)+')</button>';
-    $('#mQuick').innerHTML=html;$('#scrim').hidden=false;$('#modal').hidden=false;setTimeout(function(){$('#mNom').focus();},60);scan();
+  var w=ST.daftar[i];
+  if(!w)return;
+
+  ST.cur=w;
+
+  var ter=terOf(w);
+  var sisa=Math.max(0,ST.target-ter);
+  var hist=Array.isArray(w.riwayat)?w.riwayat:[];
+
+  var histHtml='';
+
+  if(hist.length){
+    histHtml='<div class="pay-history"><b>Riwayat Pembayaran</b>'+
+      hist.slice().reverse().slice(0,5).map(function(h){
+        return '<div class="pay-row">'+
+          '<span>'+esc(h.tanggal||'-')+'</span>'+
+          '<b>'+rp(h.jumlah||0)+'</b>'+
+          '<small>'+[
+            h.metode||'',
+            h.oleh?('oleh '+h.oleh):'',
+            h.keterangan||''
+          ].filter(function(x){return String(x||'').trim();}).map(esc).join(' · ')+'</small>'+
+        '</div>';
+      }).join('')+
+    '</div>';
+  }else{
+    histHtml='<div class="pay-history empty">Belum ada riwayat pembayaran.</div>';
   }
+
+  $('#mKK').innerHTML=
+    '<b>'+esc(w.nama||'(tanpa nama)')+'</b>'+
+    '<span>'+esc(w.blok||'')+' · sudah '+rp(ter)+' · sisa '+rp(sisa)+'</span>'+
+    histHtml;
+
+  $('#mNom').value='';
+  $('#mKet').value='';
+  $('#mMetode').value='Tunai';
+
+  var html=[10000,25000,50000].map(function(v){
+    return '<button data-v="'+v+'">+'+rp(v)+'</button>';
+  }).join('');
+
+  if(sisa>0){
+    html+='<button class="q-full" data-v="'+sisa+'">Lunaskan ('+rp(sisa)+')</button>';
+  }
+
+  $('#mQuick').innerHTML=html;
+  $('#scrim').hidden=false;
+  $('#modal').hidden=false;
+
+  setTimeout(function(){
+    $('#mNom').focus();
+  },60);
+
+  scan();
+}
   function closeModal(){$('#scrim').hidden=true;$('#modal').hidden=true;ST.cur=null;}
   $('#mClose').addEventListener('click',closeModal);
   $('#scrim').addEventListener('click',closeModal);
@@ -457,26 +541,112 @@ function renderKK(){
     var o={aksi:'setHasil',jenis:L.jenis,lomba:L.nama,kelompok:L.kelompok||'',nama1:'',blok1:'',nama2:'',blok2:'',nama3:'',blok3:'',gugur:'[]'};
     if(isRegu()){for(var r=1;r<=3;r++){o['nama'+r]=($('#pnrn'+r).value||'').trim();o['blok'+r]=($('#pnrb'+r).value||'').trim();}}
     else{var gugur=[];ST.work.forEach(function(w){if(w._rank>=1&&w._rank<=3){o['nama'+w._rank]=w.nama;o['blok'+w._rank]=w.blok;}if(w._gugur)gugur.push({nama:w.nama,blok:w.blok});});o.gugur=JSON.stringify(gugur);}
-    post(o).then(function(){toast('✓ Hasil tersimpan & dikunci','ok');loadLomba();});}
+    post(o).then(function(r){
+  if(r&&r.ok){
+    toast('✓ Hasil tersimpan & dikunci','ok');
+    loadLomba();
+  }else{
+    toast((r&&r.error)||'Gagal menyimpan hasil','err');
+  }
+});}
   function saveHadir(){var L=curLomba();if(!L)return;
     var arr=ST.work.filter(function(w){return w._hadir;}).map(function(w){return {nama:w.nama,blok:w.blok,hadir:w._hadir};});
-    post({aksi:'setKehadiran',jenis:L.jenis,lomba:L.nama,kehadiran:JSON.stringify(arr)}).then(function(){toast('✓ Kehadiran tersimpan','ok');loadLomba();});}
-  function setStatus(s){var L=curLomba();if(!L)return;
-    post({aksi:'setStatus',jenis:L.jenis,lomba:L.nama,status:s}).then(function(){
-      var arr=(ST.data&&ST.data.statusLomba)||[];var f=arr.filter(function(x){return norm(x.jenis)===norm(L.jenis)&&norm(x.lomba)===norm(L.nama);})[0];
-      if(f)f.status=s;else{if(!ST.data.statusLomba)ST.data.statusLomba=[];ST.data.statusLomba.push({jenis:L.jenis,lomba:L.nama,status:s});}
-      renderStatus();toast('Status: '+s,'ok');});}
-  function addPeserta(){var L=curLomba();if(!L)return;
-    var nama=($('#pnAddNama').value||'').trim(),blok=($('#pnAddBlok').value||'').trim();
-    if(!nama||!blok){toast('Nama & blok wajib diisi','err');return;}
-    post({aksi:'tambahPeserta',nama:nama,blok:blok,hp:($('#pnAddHp').value||'').trim(),jenis:L.jenis,lomba:L.nama,kelompok:L.kelompok||''}).then(function(r){
-      if(r&&r.duplikat){toast('Sudah terdaftar di lomba ini','err');return;}toast('✓ Peserta ditambahkan','ok');loadLomba();});}
-  function batalPeserta(nama,blok){var L=curLomba();if(!L)return;
-    if(!confirm('Batalkan '+nama+' (Blok '+blok+') dari "'+L.nama+'"?'))return;
-    post({aksi:'batalPeserta',nama:nama,blok:blok,lomba:L.nama}).then(function(){toast('Peserta dibatalkan','ok');loadLomba();});}
+    post({
+  aksi:'setKehadiran',
+  jenis:L.jenis,
+  lomba:L.nama,
+  kehadiran:JSON.stringify(arr)
+}).then(function(r){
+  if(r&&r.ok){
+    toast('✓ Kehadiran tersimpan','ok');
+    loadLomba();
+  }else{
+    toast((r&&r.error)||'Gagal menyimpan kehadiran','err');
+  }
+});}
+  function setStatus(s){
+  var L=curLomba();
+  if(!L)return;
+
+  post({
+    aksi:'setStatus',
+    jenis:L.jenis,
+    lomba:L.nama,
+    status:s
+  }).then(function(r){
+    if(!(r&&r.ok)){
+      toast((r&&r.error)||'Gagal mengubah status','err');
+      return;
+    }
+
+    var arr=(ST.data&&ST.data.statusLomba)||[];
+    var f=arr.filter(function(x){
+      return norm(x.jenis)===norm(L.jenis)&&norm(x.lomba)===norm(L.nama);
+    })[0];
+
+    if(f){
+      f.status=s;
+    }else{
+      if(!ST.data.statusLomba)ST.data.statusLomba=[];
+      ST.data.statusLomba.push({
+        jenis:L.jenis,
+        lomba:L.nama,
+        status:s
+      });
+    }
+
+    renderStatus();
+    toast('Status: '+s,'ok');
+  });
+}
+  function addPeserta(){
+  var L=curLomba();
+  if(!L)return;
+
+  var nama=($('#pnAddNama').value||'').trim();
+  var blok=($('#pnAddBlok').value||'').trim();
+
+  if(!nama||!blok){
+    toast('Nama & blok wajib diisi','err');
+    return;
+  }
+
+  post({
+    aksi:'tambahPeserta',
+    nama:nama,
+    blok:blok,
+    hp:($('#pnAddHp').value||'').trim(),
+    jenis:L.jenis,
+    lomba:L.nama,
+    kelompok:L.kelompok||''
+  }).then(function(r){
+    if(r&&r.ok){
+      toast('✓ Peserta ditambahkan','ok');
+      loadLomba();
+    }else if(r&&r.duplikat){
+      toast('Sudah terdaftar di lomba ini','err');
+    }else{
+      toast((r&&r.error)||'Gagal menambahkan peserta','err');
+    }
+  });
+}
   function kirimInfo(){var judul=($('#pnInJudul').value||'').trim(),isi=($('#pnInIsi').value||'').trim();
     if(!judul&&!isi){toast('Isi pengumuman dulu','err');return;}
-    post({aksi:'tambahPengumuman',judul:judul,isi:isi,pin:($('#pnInPin').checked?'ya':'')}).then(function(){toast('✓ Pengumuman terkirim','ok');$('#pnInJudul').value='';$('#pnInIsi').value='';$('#pnInPin').checked=false;});}
+    post({
+  aksi:'tambahPengumuman',
+  judul:judul,
+  isi:isi,
+  pin:($('#pnInPin').checked?'ya':'')
+}).then(function(r){
+  if(r&&r.ok){
+    toast('✓ Pengumuman terkirim','ok');
+    $('#pnInJudul').value='';
+    $('#pnInIsi').value='';
+    $('#pnInPin').checked=false;
+  }else{
+    toast((r&&r.error)||'Gagal mengirim pengumuman','err');
+  }
+});}
 
   /* init — SELALU minta token saat halaman dibuka (keamanan) */
   showGate();
