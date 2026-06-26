@@ -120,7 +120,7 @@ textarea.inp{resize:vertical;min-height:66px}
 .seg{display:flex;gap:4px;flex:0 0 auto}
 .seg button{width:32px;height:32px;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink);border-radius:9px;font:inherit;font-weight:800;font-size:13px;cursor:pointer;padding:0}
 .seg button.on{background:var(--merah);border-color:var(--merah);color:#fff}
-.seg button.on.g{background:#777;border-color:#777}
+.seg button.on.g{background:#b3225f;border-color:#b3225f;color:#fff}.seg button.gugur{width:auto;padding:0 12px;display:inline-flex;align-items:center;gap:5px;color:var(--danger)}.seg button.gugur .iconify{font-size:15px}.seg button{transition:transform .1s ease,background .15s ease}.seg button:active{transform:scale(.92)}
 .two{display:flex;gap:6px;flex:0 0 auto}
 .two button{padding:8px 12px;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink);border-radius:9px;font:inherit;font-weight:700;font-size:12px;cursor:pointer}
 .two button.on-h{background:#1f9d55;border-color:#1f9d55;color:#fff}
@@ -537,13 +537,13 @@ function renderStatus(){var cur=curStatus();
     var podName=function(r){var w=ST.work.filter(function(x){return x._rank===r;})[0];return w?w.nama:'';};
     var POD=[[1,'Juara 1','g1'],[2,'Juara 2','g2'],[3,'Juara 3','g3']];
     var podium='<div class="podium">'+POD.map(function(p){var nm=podName(p[0]);return '<div class="pod '+p[2]+(nm?'':' empty-pod')+'"><span class="iconify" data-icon="solar:cup-star-bold"></span><small>'+p[1]+'</small><b>'+(nm?esc(nm):'—')+'</b></div>';}).join('')+'</div>';
-    var legend='<div class="note" style="margin-bottom:10px">Ketuk <b>1·2·3</b> untuk juara · <b>G</b> = gugur · <b>–</b> = hapus pilihan</div>';
+    var legend='<div class="note" style="margin-bottom:10px">Ketuk angka untuk pilih juara · ketuk lagi untuk batal · <b>Gugur</b> = diskualifikasi</div>';
     el.innerHTML='<div class="card">'+head+podium+legend+(rows.length?rows.map(function(w){var i=ST.work.indexOf(w);var ranked=(w._rank>=1&&w._rank<=3);
       return '<div class="pn-row'+(ranked?' ranked':'')+'"><div class="kk-info"><div class="kk-top"><b>'+esc(w.nama)+'</b></div><span class="kk-blok">Blok '+esc(w.blok)+'</span></div>'+
         '<div class="seg" data-i="'+i+'">'+['1','2','3'].map(function(r){return '<button data-r="'+r+'"'+(String(w._rank)===r?' class="on"':'')+'>'+r+'</button>';}).join('')+
         '<button data-r="g"'+(w._gugur?' class="on g"':'')+'>G</button><button data-r="0">–</button></div></div>';
-    }).join(''):'<div class="empty">Belum ada peserta.</div>')+
-    '<button class="btn btn-go" id="pnSaveHasil"><span class="iconify" data-icon="solar:lock-keyhole-bold"></span>Kunci & Kirim Hasil</button></div>';
+    }).join(''):'<div class="seg" data-i="'+i+'">'+['1','2','3'].map(function(r){return '<button data-r="'+r+'"'+(String(w._rank)===r?' class="on"':'')+'>'+r+'</button>';}).join('')+
+'<button class="gugur'+(w._gugur?' on g':'')+'" data-r="g"><span class="iconify" data-icon="solar:close-circle-bold"></span>Gugur</button></div></div>';
   }scan();}
   function renderHadir(){var L=curLomba(),el=$('#paneHadir');if(!L){el.innerHTML='';return;}
   var rows=visWork();
@@ -576,7 +576,7 @@ function renderStatus(){var cur=curStatus();
   $('#pnLomba').addEventListener('change',function(){ST.lomba=this.value;buildWork();renderAll();});
   $('#pnSearch').addEventListener('input',function(){ST.qLomba=norm(this.value);renderHasil();renderHadir();renderPeserta();});
   $('#pnStatusBar').addEventListener('click',function(e){var b=e.target.closest('[data-st]');if(b)setStatus(b.dataset.st);});
-  $('#paneHasil').addEventListener('click',function(e){var seg=e.target.closest('.seg');if(seg&&e.target.dataset.r!=null){selectRank(Number(seg.dataset.i),e.target.dataset.r);return;}if(e.target.closest('#pnSaveHasil'))saveHasil();});
+  $('#paneHasil').addEventListener('click',function(e){var seg=e.target.closest('.seg'),rb=e.target.closest('button[data-r]');if(seg&&rb){selectRank(Number(seg.dataset.i),rb.dataset.r);return;}if(e.target.closest('#pnSaveHasil'))saveHasil();});
   $('#paneHadir').addEventListener('click',function(e){
   if(e.target.closest('#pnAllHadir')){ST.work.forEach(function(w){w._hadir='hadir';});ST.dirty=true;renderHadir();renderCtxMeta();return;}
   if(e.target.closest('#pnResetHadir')){ST.work.forEach(function(w){w._hadir='';});ST.dirty=true;renderHadir();renderCtxMeta();return;}
