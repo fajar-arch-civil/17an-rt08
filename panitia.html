@@ -283,7 +283,9 @@ textarea.inp{resize:vertical;min-height:66px}
   var ST={token:'',daftar:[],target:50000,qIuran:'',cur:null,
           data:null,jenis:'',lomba:'',tab:'iuran',qLomba:'',work:[]};
 
-  function apiGet(q){var u=API+(q?('?'+q+'&cb='+Date.now()):('?cb='+Date.now()));return fetch(u).then(function(r){return r.json();});}
+  function apiGet(q,_sisa){var u=API+(q?('?'+q+'&cb='+Date.now()):('?cb='+Date.now()));var max=(_sisa==null?2:_sisa);
+  return fetch(u).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .catch(function(err){if(max>0){return new Promise(function(res){setTimeout(res,1200);}).then(function(){return apiGet(q,max-1);});}throw err;});}
   function post(o){var b=new URLSearchParams();b.append('token',ST.token);Object.keys(o).forEach(function(k){b.append(k,o[k]);});
   return fetch(API,{method:'POST',body:b}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).catch(function(err){return{ok:false,error:'Gagal terhubung: '+(err.message||'jaringan')};});}
 
@@ -581,33 +583,31 @@ function renderKK(){
     else{toast((r&&r.error)||'Gagal menyimpan kehadiran','err');}
   });
 }
-  function setStatus(s){
+  function applyStatusLocal_(L,s){
+  if(!ST.data)return;
+  if(!ST.data.statusLomba)ST.data.statusLomba=[];
+  var f=ST.data.statusLomba.filter(function(x){return norm(x.jenis)===norm(L.jenis)&&norm(x.lomba)===norm(L.nama);})[0];
+  if(f){f.status=s;}else{ST.data.statusLomba.push({jenis:L.jenis,lomba:L.nama,status:s});}
+}
+function setStatus(s){
   if(_busyStatus) return;
   var L=curLomba();
   if(!L)return;
+  if(!navigator.onLine){toast('Tidak ada koneksi','err');return;}
+
+  var prev=curStatus();        // simpan status lama untuk rollback
+  applyStatusLocal_(L,s);      // 1) ubah lokal
+  renderStatus();              // 2) tampilkan SEKARANG (instan, tanpa lag)
 
   _busyStatus=true;
-  post({
-    aksi:'setStatus',
-    jenis:L.jenis,
-    lomba:L.nama,
-    status:s
-  }).then(function(r){
+  post({aksi:'setStatus',jenis:L.jenis,lomba:L.nama,status:s}).then(function(r){
     _busyStatus=false;
     if(!(r&&r.ok)){
-      toast((r&&r.error)||'Gagal mengubah status','err');
+      applyStatusLocal_(L,prev);   // 3) gagal → kembalikan
+      renderStatus();
+      toast((r&&r.error)||'Gagal — status dikembalikan','err');
       return;
     }
-    var arr=(ST.data&&ST.data.statusLomba)||[];
-    var f=arr.filter(function(x){
-      return norm(x.jenis)===norm(L.jenis)&&norm(x.lomba)===norm(L.nama);
-    })[0];
-    if(f){f.status=s;}
-    else{
-      if(!ST.data.statusLomba)ST.data.statusLomba=[];
-      ST.data.statusLomba.push({jenis:L.jenis,lomba:L.nama,status:s});
-    }
-    renderStatus();
     toast('Status: '+s,'ok');
   });
 }
@@ -666,8 +666,24 @@ function renderKK(){
   });
 }
 
-  /* init — SELALU minta token saat halaman dibuka (keamanan) */
-  showGate();
+  /* indikator koneksi */
+var _netEl=null;
+function netBanner(){
+  if(!_netEl){
+    _netEl=document.createElement('div');
+    _netEl.id='netOff';
+    _netEl.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:95;background:#b3225f;color:#fff;font-weight:700;font-size:12.5px;padding:9px 16px;border-radius:999px;box-shadow:0 8px 24px -10px rgba(0,0,0,.6);transition:.2s;opacity:0;pointer-events:none';
+    _netEl.textContent='⚠ Tidak ada koneksi internet';
+    document.body.appendChild(_netEl);
+  }
+  _netEl.style.opacity=navigator.onLine?'0':'1';
+}
+window.addEventListener('online',function(){netBanner();toast('✓ Koneksi kembali','ok');});
+window.addEventListener('offline',netBanner);
+
+/* init — SELALU minta token saat halaman dibuka (keamanan) */ 
+showGate();
+netBanner();
 })();
 </script>
 <script>
