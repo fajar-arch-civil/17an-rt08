@@ -361,8 +361,8 @@ var _busyStatus=false;
   $('#tabbar').addEventListener('click',function(e){var b=e.target.closest('.tab');if(b)switchTab(b.dataset.tab);});
 
   /* ===================== IURAN ===================== */
-  function loadIuran(){$('#kkList').innerHTML='<div class="empty">Memuat data iuran…</div>';
-    apiGet('').then(function(d){
+  function loadIuran(){$('#kkList').innerHTML=' Memuat data iuran… ';
+    apiGet('aksi=panel').then(function(d){
       var rk=(d&&(d.rekapIuran||d.rekap))||{};
       ST.daftar=Array.isArray(rk.daftar)?rk.daftar:[];
       var cfg=(d&&d.config)||{};var t=num(cfg.targetIuran||cfg.target||cfg.iuran);if(t>0)ST.target=t;
