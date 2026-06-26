@@ -108,7 +108,7 @@ textarea.inp{resize:vertical;min-height:66px}
 .bar i.ok{background:var(--ok)}.bar i.mid{background:var(--warn)}.bar i.no{background:var(--danger)}
 .kk-amt{font-size:12px;color:var(--ink2);font-weight:600;display:block;margin-top:8px}
 .kk-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:12px;background:var(--merah);color:#fff;font:inherit;font-weight:700;font-size:12.5px;padding:10px 13px;cursor:pointer}
-.empty{text-align:center;color:var(--muted);font-size:13px;padding:26px 10px}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:26px 10px}@keyframes shmr{0%{background-position:200% 0}100%{background-position:-200% 0}}.skel{border-radius:12px;background:linear-gradient(90deg,var(--bg1) 25%,var(--bd2) 37%,var(--bg1) 63%);background-size:200% 100%;animation:shmr 1.3s ease-in-out infinite}.skel-row{height:64px;margin-bottom:11px}.pane{animation:fadeIn .18s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1}}@media(prefers-reduced-motion:reduce){.skel{animation:none}.pane{animation:none}}
 /* lomba ctx */
 .sel-row{display:flex;gap:10px}.sel-row .field{flex:1}.ctx-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}.ctx-head .iconify{font-size:20px;color:var(--merah)}.ctx-head b{font-size:15px}.ctx-meta{display:flex;gap:8px;margin:2px 0 14px}.meta-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;background:var(--bg1);border:1px solid var(--bd);border-radius:12px;padding:9px 6px;font-size:10.5px;color:var(--muted);font-weight:600}.meta-item .iconify{font-size:17px;color:var(--ink2);margin-bottom:1px}.meta-item b{font-size:15px;color:var(--ink);line-height:1.1}.ctx-lbl{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:7px}
 .statusbar{display:flex;flex-wrap:wrap;gap:6px}
@@ -279,6 +279,7 @@ textarea.inp{resize:vertical;min-height:66px}
   var num=function(v){if(v==null)return 0;if(typeof v==='number')return isNaN(v)?0:v;var s=String(v).trim().replace(/[^\d]/g,'');var n=parseInt(s,10);return isNaN(n)?0:n;};
   var rp=function(v){return 'Rp'+Math.round(num(v)).toLocaleString('id-ID');};
   var cap=function(s){return s.charAt(0).toUpperCase()+s.slice(1);};
+  var skelList=function(n){var s='';for(var i=0;i<(n||5);i++)s+='<div class="skel skel-row"></div>';return s;};
   var scan=function(){try{if(window.Iconify)Iconify.scan();}catch(e){}};
   var _tt;function toast(m,t){var el=$('#toast');el.textContent=m;el.className='toast show '+(t||'');clearTimeout(_tt);_tt=setTimeout(function(){el.className='toast';},2600);}
 
@@ -372,7 +373,7 @@ var _busyStatus=false;
   $('#tabbar').addEventListener('click',function(e){var b=e.target.closest('.tab');if(b)switchTab(b.dataset.tab);});
 
   /* ===================== IURAN ===================== */
-     function loadIuran(silent){if(!silent)$('#kkList').innerHTML=' Memuat data iuran… ';
+     function loadIuran(silent){if(!silent)$('#kkList').innerHTML=skelList(5);
       apiGet('aksi=panel').then(function(d){ 
       var rk=(d&&(d.rekapIuran||d.rekap))||{};
       ST.daftar=Array.isArray(rk.daftar)?rk.daftar:[];
@@ -487,7 +488,7 @@ function renderKK(){
   });
 
   /* ===================== LOMBA ===================== */
-     function loadLomba(silent){if(!silent)$('#paneHasil').innerHTML=' Memuat… ';
+     function loadLomba(silent){if(!silent)$('#paneHasil').innerHTML='<div class="card">'+skelList(4)+'</div>';
 apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(){if(!silent)$('#paneHasil').innerHTML=' Gagal memuat data. ';}); }
   function lombas(){return (ST.data&&ST.data.lomba)||[];}
   function jenisList(){var s=[],seen={};lombas().forEach(function(l){var j=l.jenis||'';if(j&&!seen[norm(j)]){seen[norm(j)]=1;s.push(j);}});return s;}
