@@ -541,9 +541,9 @@ function renderStatus(){var cur=curStatus();
     el.innerHTML='<div class="card">'+head+podium+legend+(rows.length?rows.map(function(w){var i=ST.work.indexOf(w);var ranked=(w._rank>=1&&w._rank<=3);
       return '<div class="pn-row'+(ranked?' ranked':'')+'"><div class="kk-info"><div class="kk-top"><b>'+esc(w.nama)+'</b></div><span class="kk-blok">Blok '+esc(w.blok)+'</span></div>'+
         '<div class="seg" data-i="'+i+'">'+['1','2','3'].map(function(r){return '<button data-r="'+r+'"'+(String(w._rank)===r?' class="on"':'')+'>'+r+'</button>';}).join('')+
-        '<button data-r="g"'+(w._gugur?' class="on g"':'')+'>G</button><button data-r="0">–</button></div></div>';
-    }).join(''):'<div class="seg" data-i="'+i+'">'+['1','2','3'].map(function(r){return '<button data-r="'+r+'"'+(String(w._rank)===r?' class="on"':'')+'>'+r+'</button>';}).join('')+
-'<button class="gugur'+(w._gugur?' on g':'')+'" data-r="g"><span class="iconify" data-icon="solar:close-circle-bold"></span>Gugur</button></div></div>';
+        '<button class="gugur'+(w._gugur?' on g':'')+'" data-r="g"><span class="iconify" data-icon="solar:close-circle-bold"></span>Gugur</button></div></div>';
+    }).join(''):'<div class="empty">Belum ada peserta.</div>')+
+    '<button class="btn btn-go" id="pnSaveHasil"><span class="iconify" data-icon="solar:lock-keyhole-bold"></span>Kunci & Kirim Hasil</button></div>';
   }scan();}
   function renderHadir(){var L=curLomba(),el=$('#paneHadir');if(!L){el.innerHTML='';return;}
   var rows=visWork();
