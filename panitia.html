@@ -134,7 +134,7 @@ textarea.inp{resize:vertical;min-height:66px}
 .rank-in .inp{margin-bottom:6px}
 .medal{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;margin-bottom:8px}
 .medal .iconify{font-size:16px}
-.medal.m1{color:#F5B301}.medal.m2{color:#A8B2BD}.medal.m3{color:#CD7F32}
+.medal.m1{color:#F5B301}.medal.m2{color:#A8B2BD}.medal.m3{color:#CD7F32}.podium{display:flex;gap:8px;margin-bottom:12px}.pod{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--bg1);border:1px solid var(--bd);border-radius:14px;padding:10px 6px;text-align:center}.pod .iconify{font-size:22px}.pod small{font-size:10px;color:var(--muted);font-weight:700}.pod b{font-size:12px;color:var(--ink);line-height:1.2;word-break:break-word}.pod.g1 .iconify{color:#F5B301}.pod.g2 .iconify{color:#A8B2BD}.pod.g3 .iconify{color:#CD7F32}.pod.empty-pod b{color:var(--muted);font-weight:600}.seg button.on[data-r="1"]{background:#F5B301;border-color:#F5B301;color:#1a1a1a}.seg button.on[data-r="2"]{background:#A8B2BD;border-color:#A8B2BD;color:#1a1a1a}.seg button.on[data-r="3"]{background:#CD7F32;border-color:#CD7F32;color:#fff}.pn-row.ranked{border-color:var(--merah);background:var(--chip)}
 .check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);font-weight:600;margin:4px 0 12px}
 .quick{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 12px}
 .quick button{border:1px solid var(--bd2);background:var(--bg1);color:var(--ink2);border-radius:999px;font:inherit;font-weight:700;font-size:12px;padding:7px 11px;cursor:pointer}
@@ -522,23 +522,29 @@ function renderStatus(){var cur=curStatus();
   var ICON={'Belum':'solar:clock-circle-linear','Bersiap':'solar:hourglass-bold','Sedang main':'solar:play-circle-bold','Selesai':'solar:check-circle-bold'};
   $('#pnStatusBar').innerHTML=STATUSES.map(function(s){return '<button class="pill'+(norm(s)===norm(cur)?' on':'')+'" data-st="'+esc(s)+'"><span class="iconify" data-icon="'+(ICON[s]||'solar:clock-circle-linear')+'"></span>'+esc(s)+'</button>';}).join('');scan();}
   function renderHasil(){var L=curLomba(),el=$('#paneHasil');
-    if(!L){el.innerHTML='<div class="card"><div class="empty">Pilih lomba dulu.</div></div>';return;}
-    if(isRegu()){
-      var H=((ST.data&&ST.data.hasil)||[]).filter(function(h){return norm(h.jenis)===norm(L.jenis)&&norm(h.lomba)===norm(L.nama);});
-      var g=function(r){return H.filter(function(h){return h.peringkat===r;})[0]||{nama:'',blok:''};};
-      el.innerHTML='<div class="card"><div class="note">Lomba regu — isi nama tim juara:</div>'+
-        [1,2,3].map(function(r){var v=g(r);return '<div class="rank-in"><div class="medal m'+r+'"><span class="iconify" data-icon="solar:medal-ribbons-star-bold"></span>Juara '+r+'</div>'+
-          '<input class="inp" id="pnrn'+r+'" placeholder="Nama tim" value="'+esc(v.nama)+'"><input class="inp" id="pnrb'+r+'" placeholder="Blok" value="'+esc(v.blok)+'"></div>';}).join('')+
-        '<button class="btn btn-go" id="pnSaveHasil"><span class="iconify" data-icon="solar:lock-keyhole-bold"></span>Kunci & Kirim Hasil</button></div>';
-    } else {
-      var rows=visWork();
-      el.innerHTML='<div class="card">'+(rows.length?rows.map(function(w){var i=ST.work.indexOf(w);
-        return '<div class="pn-row"><div class="kk-info"><div class="kk-top"><b>'+esc(w.nama)+'</b></div><span class="kk-blok">Blok '+esc(w.blok)+'</span></div>'+
-          '<div class="seg" data-i="'+i+'">'+['1','2','3'].map(function(r){return '<button data-r="'+r+'"'+(String(w._rank)===r?' class="on"':'')+'>'+r+'</button>';}).join('')+
-          '<button data-r="g"'+(w._gugur?' class="on g"':'')+'>G</button><button data-r="0">–</button></div></div>';
-      }).join(''):'<div class="empty">Belum ada peserta.</div>')+
+  if(!L){el.innerHTML='<div class="card"><div class="empty">Pilih lomba dulu.</div></div>';return;}
+  var head='<div class="pane-head"><span class="ph-ic" style="background:rgba(245,179,1,.16);color:#F5B301"><span class="iconify" data-icon="solar:cup-star-bold"></span></span>'+
+    '<div class="ph-t"><b>Tentukan Juara</b><span>'+(isRegu()?'Isi nama tim pemenang':'Pilih peringkat tiap peserta')+'</span></div></div>';
+  if(isRegu()){
+    var H=((ST.data&&ST.data.hasil)||[]).filter(function(h){return norm(h.jenis)===norm(L.jenis)&&norm(h.lomba)===norm(L.nama);});
+    var g=function(r){return H.filter(function(h){return h.peringkat===r;})[0]||{nama:'',blok:''};};
+    el.innerHTML='<div class="card">'+head+
+      [1,2,3].map(function(r){var v=g(r);return '<div class="rank-in"><div class="medal m'+r+'"><span class="iconify" data-icon="solar:medal-ribbons-star-bold"></span>Juara '+r+'</div>'+
+        '<input class="inp" id="pnrn'+r+'" placeholder="Nama tim" value="'+esc(v.nama)+'"><input class="inp" id="pnrb'+r+'" placeholder="Blok" value="'+esc(v.blok)+'"></div>';}).join('')+
       '<button class="btn btn-go" id="pnSaveHasil"><span class="iconify" data-icon="solar:lock-keyhole-bold"></span>Kunci & Kirim Hasil</button></div>';
-    }scan();}
+  } else {
+    var rows=visWork();
+    var podName=function(r){var w=ST.work.filter(function(x){return x._rank===r;})[0];return w?w.nama:'';};
+    var POD=[[1,'Juara 1','g1'],[2,'Juara 2','g2'],[3,'Juara 3','g3']];
+    var podium='<div class="podium">'+POD.map(function(p){var nm=podName(p[0]);return '<div class="pod '+p[2]+(nm?'':' empty-pod')+'"><span class="iconify" data-icon="solar:cup-star-bold"></span><small>'+p[1]+'</small><b>'+(nm?esc(nm):'—')+'</b></div>';}).join('')+'</div>';
+    var legend='<div class="note" style="margin-bottom:10px">Ketuk <b>1·2·3</b> untuk juara · <b>G</b> = gugur · <b>–</b> = hapus pilihan</div>';
+    el.innerHTML='<div class="card">'+head+podium+legend+(rows.length?rows.map(function(w){var i=ST.work.indexOf(w);var ranked=(w._rank>=1&&w._rank<=3);
+      return '<div class="pn-row'+(ranked?' ranked':'')+'"><div class="kk-info"><div class="kk-top"><b>'+esc(w.nama)+'</b></div><span class="kk-blok">Blok '+esc(w.blok)+'</span></div>'+
+        '<div class="seg" data-i="'+i+'">'+['1','2','3'].map(function(r){return '<button data-r="'+r+'"'+(String(w._rank)===r?' class="on"':'')+'>'+r+'</button>';}).join('')+
+        '<button data-r="g"'+(w._gugur?' class="on g"':'')+'>G</button><button data-r="0">–</button></div></div>';
+    }).join(''):'<div class="empty">Belum ada peserta.</div>')+
+    '<button class="btn btn-go" id="pnSaveHasil"><span class="iconify" data-icon="solar:lock-keyhole-bold"></span>Kunci & Kirim Hasil</button></div>';
+  }scan();}
   function renderHadir(){var L=curLomba(),el=$('#paneHadir');if(!L){el.innerHTML='';return;}
   var rows=visWork();
   var total=ST.work.length,hadir=ST.work.filter(function(w){return w._hadir==='hadir';}).length;
