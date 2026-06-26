@@ -125,7 +125,7 @@ textarea.inp{resize:vertical;min-height:66px}
 .two button{padding:8px 12px;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink);border-radius:9px;font:inherit;font-weight:700;font-size:12px;cursor:pointer}
 .two button.on-h{background:#1f9d55;border-color:#1f9d55;color:#fff}
 .two button.on-t{background:#b3225f;border-color:#b3225f;color:#fff}.two button .iconify{font-size:15px}.two.big button{padding:11px 14px;font-size:13px;display:inline-flex;align-items:center;gap:5px}.pane-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}.ph-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--chip);color:var(--merah);font-size:20px;flex:0 0 auto}.ph-t{flex:1;min-width:0}.ph-t b{font-size:15px;display:block}.ph-t span{font-size:11.5px;color:var(--muted);font-weight:600}.ph-meta{flex:0 0 auto;font-size:15px;font-weight:800;color:var(--ink)}
-.del{flex:0 0 auto;background:transparent;border:1px solid var(--bd2);color:var(--danger);border-radius:9px;padding:7px 11px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer}
+.del{flex:0 0 auto;background:transparent;border:1px solid var(--bd2);color:var(--danger);border-radius:9px;padding:7px 11px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer}.del{display:inline-flex;align-items:center;gap:5px}.del .iconify{font-size:14px}.addtog{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--merah);background:transparent;color:var(--merah);border-radius:12px;font:inherit;font-weight:700;font-size:12.5px;padding:8px 12px;cursor:pointer}.addtog .iconify{font-size:16px}
 .mini{border:1px dashed var(--bd2);border-radius:14px;padding:12px;margin-top:10px}
 .mini-h{font-size:12.5px;font-weight:800;color:var(--ink2);margin-bottom:10px}
 .mini .inp{margin-bottom:8px}
@@ -559,14 +559,19 @@ function renderStatus(){var cur=curStatus();
       '<div class="two big" data-i="'+i+'"><button data-h="hadir"'+(w._hadir==='hadir'?' class="on-h"':'')+'><span class="iconify" data-icon="solar:check-circle-bold"></span>Hadir</button><button data-h="tidak"'+(w._hadir==='tidak'?' class="on-t"':'')+'><span class="iconify" data-icon="solar:close-circle-bold"></span>Tidak</button></div></div>';
   }).join(''):'<div class="empty">Belum ada peserta.</div>')+
   '<button class="btn btn-go" id="pnSaveHadir"><span class="iconify" data-icon="solar:diskette-bold"></span>Simpan Kehadiran</button></div>';scan();}
-  function renderPeserta(){var L=curLomba(),el=$('#panePeserta');if(!L){el.innerHTML='';return;}var rows=visWork();
-    el.innerHTML='<div class="card">'+(rows.length?rows.map(function(w){
-      var b=w._gugur?'<span class="chip no">Gugur</span>':(w._hadir==='hadir'?'<span class="chip ok">Hadir</span>':(w._hadir==='tidak'?'<span class="chip no">Tdk hadir</span>':''));
-      return '<div class="pn-row"><div class="kk-info"><div class="kk-top"><b>'+esc(w.nama)+'</b>'+b+'</div><span class="kk-blok">Blok '+esc(w.blok)+'</span></div>'+
-        '<button class="del" data-batal="'+esc(w.nama)+'|||'+esc(w.blok)+'">Batalkan</button></div>';
-    }).join(''):'<div class="empty">Belum ada peserta.</div>')+
-    '<div class="mini"><div class="mini-h">Tambah peserta dadakan</div><input class="inp" id="pnAddNama" placeholder="Nama"><input class="inp" id="pnAddBlok" placeholder="Blok (mis. H 35 - 6)"><input class="inp" id="pnAddHp" placeholder="No. HP (opsional)">'+
-    '<button class="btn btn-go" id="pnAddBtn"><span class="iconify" data-icon="solar:add-circle-bold"></span>Tambah ke lomba ini</button></div></div>';scan();}
+  function renderPeserta(){var L=curLomba(),el=$('#panePeserta');if(!L){el.innerHTML='';return;}
+  var rows=visWork();
+  var head='<div class="pane-head"><span class="ph-ic"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span></span>'+
+    '<div class="ph-t"><b>Daftar Peserta</b><span>'+ST.work.length+' peserta terdaftar</span></div>'+
+    '<button class="addtog" id="pnAddTog"><span class="iconify" data-icon="solar:add-circle-bold"></span>Tambah</button></div>';
+  var form='<div class="mini" id="pnAddForm" hidden><div class="mini-h">Tambah peserta dadakan</div><input class="inp" id="pnAddNama" placeholder="Nama"><input class="inp" id="pnAddBlok" placeholder="Blok (mis. H 35 - 6)"><input class="inp" id="pnAddHp" placeholder="No. HP (opsional)">'+
+    '<button class="btn btn-go" id="pnAddBtn"><span class="iconify" data-icon="solar:add-circle-bold"></span>Tambah ke lomba ini</button></div>';
+  el.innerHTML='<div class="card">'+head+form+(rows.length?rows.map(function(w){
+    var b=w._gugur?'<span class="chip no">Gugur</span>':(w._hadir==='hadir'?'<span class="chip ok">Hadir</span>':(w._hadir==='tidak'?'<span class="chip no">Tdk hadir</span>':''));
+    return '<div class="pn-row"><div class="kk-info"><div class="kk-top"><b>'+esc(w.nama)+'</b>'+b+'</div><span class="kk-blok">Blok '+esc(w.blok)+'</span></div>'+
+      '<button class="del" data-batal="'+esc(w.nama)+'|||'+esc(w.blok)+'"><span class="iconify" data-icon="solar:trash-bin-trash-linear"></span>Batalkan</button></div>';
+  }).join(''):'<div class="empty">Belum ada peserta di lomba ini.</div>')+
+  '</div>';scan();}
   function renderInfo(){$('#paneInfo').innerHTML='<div class="card"><div class="mini-h">Kirim pengumuman ke warga</div>'+
     '<input class="inp" id="pnInJudul" placeholder="Judul (opsional)" style="margin-bottom:8px"><textarea class="inp" id="pnInIsi" placeholder="Isi pengumuman…"></textarea>'+
     '<label class="check" style="margin-top:12px"><input type="checkbox" id="pnInPin"> Sematkan di atas</label>'+
@@ -586,7 +591,11 @@ function renderStatus(){var cur=curStatus();
 });
   $('#paneHasil').addEventListener('input',function(){ST.dirty=true;});
   $('#panePeserta').addEventListener('input',function(){ST.dirty=true;});
-  $('#panePeserta').addEventListener('click',function(e){var d=e.target.closest('[data-batal]');if(d){var pr=d.dataset.batal.split('|||');batalPeserta(pr[0],pr[1]);return;}if(e.target.closest('#pnAddBtn'))addPeserta();});
+  $('#panePeserta').addEventListener('click',function(e){
+  if(e.target.closest('#pnAddTog')){var f=$('#pnAddForm');if(f){f.hidden=!f.hidden;if(!f.hidden){var n=$('#pnAddNama');if(n)setTimeout(function(){n.focus();},30);}}return;}
+  var d=e.target.closest('[data-batal]');if(d){var pr=d.dataset.batal.split('|||');batalPeserta(pr[0],pr[1]);return;}
+  if(e.target.closest('#pnAddBtn'))addPeserta();
+});
   $('#paneInfo').addEventListener('click',function(e){if(e.target.closest('#pnInBtn'))kirimInfo();});
 
   function selectRank(i,r){var w=ST.work[i];if(!w)return;
