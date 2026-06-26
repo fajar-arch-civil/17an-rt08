@@ -281,7 +281,7 @@ textarea.inp{resize:vertical;min-height:66px}
 
   var STATUSES=['Belum','Bersiap','Sedang main','Selesai'];
   var ST={token:'',daftar:[],target:50000,qIuran:'',cur:null,
-          data:null,jenis:'',lomba:'',tab:'iuran',qLomba:'',work:[]};
+ data:null,jenis:'',lomba:'',tab:'iuran',qLomba:'',work:[],dirty:false};
 
   function apiGet(q,_sisa){var u=API+(q?('?'+q+'&cb='+Date.now()):('?cb='+Date.now()));var max=(_sisa==null?2:_sisa);
   return fetch(u).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
@@ -310,7 +310,7 @@ var _busyStatus=false;
 
   /* gate — token DIMINTA setiap buka halaman (tidak disimpan) */
   function showGate(){$('#gate').hidden=false;$('#app').hidden=true;setTimeout(function(){$('#gToken').focus();},60);}
-  function showApp(){$('#gate').hidden=true;$('#app').hidden=false;$('#oleh').value=localStorage.getItem('pn_oleh')||'';renderInfo();switchTab('iuran');}
+  function showApp(){$('#gate').hidden=true;$('#app').hidden=false;$('#oleh').value=localStorage.getItem('pn_oleh')||'';renderInfo();switchTab('iuran');startLive();}
   function gateCheck(tok){
   var b=new URLSearchParams();
   b.append('aksi','cekToken');
@@ -363,14 +363,14 @@ var _busyStatus=false;
   $('#tabbar').addEventListener('click',function(e){var b=e.target.closest('.tab');if(b)switchTab(b.dataset.tab);});
 
   /* ===================== IURAN ===================== */
-  function loadIuran(){$('#kkList').innerHTML=' Memuat data iuran… ';
-    apiGet('aksi=panel').then(function(d){
+     function loadIuran(silent){if(!silent)$('#kkList').innerHTML=' Memuat data iuran… ';
+      apiGet('aksi=panel').then(function(d){ 
       var rk=(d&&(d.rekapIuran||d.rekap))||{};
       ST.daftar=Array.isArray(rk.daftar)?rk.daftar:[];
       var cfg=(d&&d.config)||{};var t=num(cfg.targetIuran||cfg.target||cfg.iuran);if(t>0)ST.target=t;
       $('#targetLbl').textContent='Target '+rp(ST.target)+' / KK';
       renderSummary(rk.ringkasan||{});renderKK();
-    }).catch(function(){$('#kkList').innerHTML='<div class="empty">Gagal memuat. Coba refresh.</div>';});
+    }).catch(function(){if(!silent)$('#kkList').innerHTML=' Gagal memuat. Coba refresh. ';});
   }
   $('#refreshBtn').addEventListener('click',loadIuran);
   var _searchDeb;
@@ -478,9 +478,8 @@ function renderKK(){
   });
 
   /* ===================== LOMBA ===================== */
-  function loadLomba(){$('#paneHasil').innerHTML='<div class="card"><div class="empty">Memuat…</div></div>';
-    apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(){$('#paneHasil').innerHTML='<div class="card"><div class="empty">Gagal memuat data.</div></div>';});
-  }
+     function loadLomba(silent){if(!silent)$('#paneHasil').innerHTML=' Memuat… ';
+apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(){if(!silent)$('#paneHasil').innerHTML=' Gagal memuat data. ';}); }
   function lombas(){return (ST.data&&ST.data.lomba)||[];}
   function jenisList(){var s=[],seen={};lombas().forEach(function(l){var j=l.jenis||'';if(j&&!seen[norm(j)]){seen[norm(j)]=1;s.push(j);}});return s;}
   function curLomba(){return lombas().filter(function(l){return norm(l.jenis)===norm(ST.jenis)&&norm(l.nama)===norm(ST.lomba);})[0]||null;}
@@ -491,7 +490,7 @@ function renderKK(){
     var sel=$('#pnLomba');sel.innerHTML=arr.map(function(l){return '<option>'+esc(l.nama)+'</option>';}).join('');
     if(!arr.length){ST.lomba='';}else if(norm(ST.lomba)&&arr.map(function(l){return norm(l.nama);}).indexOf(norm(ST.lomba))>=0){sel.value=ST.lomba;}else{ST.lomba=arr[0].nama;sel.value=ST.lomba;}
     buildWork();renderAll();}
-  function buildWork(){var L=curLomba();ST.work=[];if(!L)return;
+  function buildWork(){var L=curLomba();ST.work=[];ST.dirty=false;if(!L)return;
     var hasil=((ST.data&&ST.data.hasil)||[]).filter(function(h){return norm(h.jenis)===norm(L.jenis)&&norm(h.lomba)===norm(L.nama);});
     (L.peserta||[]).forEach(function(p){
       var w={nama:p.nama,blok:p.blok,kelompok:p.kelompok,usia:p.usia,status:p.status,kehadiran:p.kehadiran,_rank:0,_gugur:(norm(p.status)==='gugur'),_hadir:(p.kehadiran||'')};
@@ -545,13 +544,15 @@ function renderKK(){
   $('#pnSearch').addEventListener('input',function(){ST.qLomba=norm(this.value);renderHasil();renderHadir();renderPeserta();});
   $('#pnStatusBar').addEventListener('click',function(e){var b=e.target.closest('[data-st]');if(b)setStatus(b.dataset.st);});
   $('#paneHasil').addEventListener('click',function(e){var seg=e.target.closest('.seg');if(seg&&e.target.dataset.r!=null){selectRank(Number(seg.dataset.i),e.target.dataset.r);return;}if(e.target.closest('#pnSaveHasil'))saveHasil();});
-  $('#paneHadir').addEventListener('click',function(e){var tw=e.target.closest('.two');if(tw&&e.target.dataset.h){var i=Number(tw.dataset.i);ST.work[i]._hadir=(ST.work[i]._hadir===e.target.dataset.h?'':e.target.dataset.h);renderHadir();return;}if(e.target.closest('#pnSaveHadir'))saveHadir();});
+  $('#paneHadir').addEventListener('click',function(e){var tw=e.target.closest('.two');if(tw&&e.target.dataset.h){var i=Number(tw.dataset.i);ST.work[i]._hadir=(ST.work[i]._hadir===e.target.dataset.h?'':e.target.dataset.h);ST.dirty=true;renderHadir();return;}if(e.target.closest('#pnSaveHadir'))saveHadir();});
+  $('#paneHasil').addEventListener('input',function(){ST.dirty=true;});
+  $('#panePeserta').addEventListener('input',function(){ST.dirty=true;});
   $('#panePeserta').addEventListener('click',function(e){var d=e.target.closest('[data-batal]');if(d){var pr=d.dataset.batal.split('|||');batalPeserta(pr[0],pr[1]);return;}if(e.target.closest('#pnAddBtn'))addPeserta();});
   $('#paneInfo').addEventListener('click',function(e){if(e.target.closest('#pnInBtn'))kirimInfo();});
 
   function selectRank(i,r){var w=ST.work[i];if(!w)return;
     if(r==='g'){w._gugur=!w._gugur;w._rank=0;}else if(r==='0'){w._rank=0;w._gugur=false;}
-    else{var rr=Number(r);if(w._rank===rr){w._rank=0;}else{ST.work.forEach(function(x){if(x._rank===rr)x._rank=0;});w._rank=rr;w._gugur=false;}}renderHasil();}
+    else{var rr=Number(r);if(w._rank===rr){w._rank=0;}else{ST.work.forEach(function(x){if(x._rank===rr)x._rank=0;});w._rank=rr;w._gugur=false;}}ST.dirty=true;renderHasil();}
   function saveHasil(){
   var L=curLomba();if(!L)return;
   var btn=$('#pnSaveHasil');
@@ -680,6 +681,26 @@ function netBanner(){
 }
 window.addEventListener('online',function(){netBanner();toast('✓ Koneksi kembali','ok');});
 window.addEventListener('offline',netBanner);
+
+/* ===== AUTO-REFRESH LIVE ===== */
+var _live=null;
+function liveTick(){
+  if(document.hidden||!navigator.onLine)return;
+  if(_busyStatus)return;
+  var ae=document.activeElement;
+  var typing=ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT');
+  if(ST.tab==='iuran'){
+    if(!$('#modal').hidden)return;   // jangan ganggu saat modal Catat terbuka
+    if(typing)return;
+    loadIuran(true);
+  }else if(ST.tab==='hasil'||ST.tab==='hadir'||ST.tab==='peserta'){
+    if(ST.dirty||typing)return;      // ada isian belum disimpan → tunda
+    loadLomba(true);
+  }
+}
+function startLive(){stopLive();_live=setInterval(liveTick,30000);}
+function stopLive(){if(_live){clearInterval(_live);_live=null;}}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)liveTick();});
 
 /* init — SELALU minta token saat halaman dibuka (keamanan) */ 
 showGate();
