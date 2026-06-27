@@ -104,13 +104,15 @@ a{color:inherit}
 .pc-val{flex:0 0 auto;min-width:22px;text-align:right;font-size:12.5px;font-weight:800;color:var(--ink)}
 
 /* cari + filter */
-.pes-search{display:flex;align-items:center;gap:8px;padding:11px 14px;border-radius:14px;background:var(--bg2);border:1px solid var(--bd2);box-shadow:var(--sh);margin-bottom:12px}
-@media(max-width:400px){.pes-search{padding:10px 12px;margin-bottom:10px}.filter-bar{gap:6px}.filter-btn{padding:7px 12px;font-size:12px}}
+.pes-search{display:flex;align-items:center;gap:8px;padding:10px 13px;border-radius:14px;background:var(--bg2);border:1px solid var(--bd2);box-shadow:var(--sh);margin-bottom:10px;transition:border-color .2s}
+.pes-search:focus-within{border-color:var(--merah)}
+@media(max-width:400px){.filter-bar{gap:6px}}
 .pes-search .iconify{font-size:18px;color:var(--muted);flex:0 0 auto}
 .pes-search input{flex:1;min-width:0;border:none;background:none;outline:none;font:inherit;font-size:14px;color:var(--ink)}
 .pes-search input::placeholder{color:var(--muted)}
-.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.filter-btn{padding:8px 15px;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink2);transition:.2s}
+.filter-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:12px;padding-bottom:2px}
+.filter-bar::-webkit-scrollbar{display:none}
+.filter-btn{flex:0 0 auto;padding:7px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink2);transition:.2s}
 .filter-btn.on,.filter-btn:hover{background:var(--merah);border-color:var(--merah);color:#fff}
 
 /* table */
@@ -997,15 +999,6 @@ if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else l
    Lapisan tampilan saja. TIDAK mengubah ID, teks tombol, atau logika JS.
    Tempel TEPAT sebelum </body>. SATU blok saja — kalau revisi, GANTI isi ini.
    ============================================================ */
-
-/* ---------- PESERTA — padat, rapi, tidak kaku ---------- */
-.pes-search{padding:10px 13px;margin-bottom:10px;transition:border-color .2s}
-.pes-search:focus-within{border-color:var(--merah)}
-
-/* filter satu baris yang bisa digeser (tidak turun & menumpuk) */
-.filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:12px;padding-bottom:2px}
-.filter-bar::-webkit-scrollbar{display:none}
-.filter-btn{flex:0 0 auto;padding:7px 14px;font-size:12.5px}
 
 /* daftar peserta padat: 2 baris (nama + "Blok X · Lomba") */
 @media(max-width:560px){
