@@ -1848,14 +1848,15 @@ async function muatLomba(){
  renderKatalog();
  try{var d=await api('aksi=peserta&v='+Date.now());var pes=getF(d,['peserta','pesertaList','participants'])||[];_peserta=Array.isArray(pes)?pes:[];_hasil=getF(d,['hasil','leaderboard','ranking','juara'])||[];set('kPeserta',_peserta.length);}
  catch(e){set('kPeserta','0');}
- set('kLombaAktif',(_lombaList||[]).length);renderLeaderboard('all');
-}
+   set('kLombaAktif',(_lombaList||[]).length);renderLeaderboard('all'); 
+  if(window.__distPaint)try{window.__distPaint(_peserta);}catch(e){} 
+} 
 
 /* 8) Kunci submit: gating iuran + cegah nama ganda di cabang sama */
 (function(){var f=$('formDaftar');if(f)f.addEventListener('submit',function(e){
  if(_pickedAddr&&!_addrPaid){e.preventDefault();e.stopImmediatePropagation();showBayarModal(_pickedAddr);return;}
  var nm=norm($('nama').value),lb=$('selLomba').value,al=norm($('hidAlamat').value); 
-if(nm&&lb&&al&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name','namaPeserta'])||'')===nm&&norm(getF(p,['lomba','cabang','lombaNama','namaLomba','nama_lomba','cabangLomba'])||'')===norm(lb)&&norm(getF(p,['blok','alamat','wilayah','rumah','noRumah','nomor','no'])||'')===al;})){ 
+if(nm&&lb&&al&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name','namaPeserta'])||'')===nm&&norm(getF(p,['lomba','cabang','lombaNama','namaLomba','nama_lomba','cabangLomba'])||'')===norm(lb)&&norm(getF(p,['blok','alamat','wilayah','rumah','noRumah','nomor','no'])||'')===al;})){
   e.preventDefault();e.stopImmediatePropagation();
   showDupModal($('nama').value.trim(),lb);
  }
@@ -2316,24 +2317,31 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
     if(/olah|voli|futsal|tenis/.test(v))return 'olah';
     return '';
   }
-  function paint(c){
-    var max=Math.max(c.olah,c.anak,c.seni,1);
-    var put=function(numId,barId,val){var n=document.getElementById(numId),b=document.getElementById(barId);if(n)n.textContent=val;if(b)b.style.width=Math.round(val/max*100)+'%';};
-    put('dpOlah','dpbOlah',c.olah);put('dpAnak','dpbAnak',c.anak);put('dpSeni','dpbSeni',c.seni);
-  }
-  function run(){
-    try{
-      fetch(API+'?aksi=peserta',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-        var rows=Array.isArray(d)?d:((d&&(d.data||d.peserta||d.rows||d.result||d.list))||[]);
-        if(!Array.isArray(rows))return;
-        var c={olah:0,anak:0,seni:0};
-        rows.forEach(function(r){if(r&&typeof r==='object'){var k=catOf(r);if(k)c[k]++;}});
-        paint(c);
-      }).catch(function(){});
-    }catch(e){}
-  }
-  if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run);
-})();
+  (function(){ 
+  function catOf(r){ 
+    var v='';for(var k in r){if(/jenis|kategori|lomba|cabang|cat/i.test(k)&&r[k]!=null){v+=' '+r[k];}} 
+    v=(''+v).toLowerCase(); 
+    if(/anak|balita/.test(v))return 'anak'; 
+    if(/seni|pentas/.test(v))return 'seni'; 
+    if(/olah|voli|futsal|tenis/.test(v))return 'olah'; 
+    return ''; 
+  } 
+  function paint(c){ 
+    var max=Math.max(c.olah,c.anak,c.seni,1); 
+    var put=function(numId,barId,val){var n=document.getElementById(numId),b=document.getElementById(barId);if(n)n.textContent=val;if(b)b.style.width=Math.round(val/max*100)+'%';}; 
+    put('dpOlah','dpbOlah',c.olah);put('dpAnak','dpbAnak',c.anak);put('dpSeni','dpbSeni',c.seni); 
+  } 
+  function run(rows){ 
+    try{ 
+      rows=Array.isArray(rows)?rows:(Array.isArray(window._peserta)?window._peserta:[]); 
+      var c={olah:0,anak:0,seni:0}; 
+      rows.forEach(function(r){if(r&&typeof r==='object'){var k=catOf(r);if(k)c[k]++;}}); 
+      paint(c); 
+    }catch(e){} 
+  } 
+  window.__distPaint=run; 
+  if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run); 
+})(); 
 </script>
 
  <!-- ===== WIDGET STATUS LOMBA — START ===== -->
