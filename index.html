@@ -287,11 +287,9 @@ footer b{color:var(--ink2);font-weight:700}
 #toast.show{opacity:1;visibility:visible!important;transform:translateX(-50%);pointer-events:auto;transition:opacity .3s,transform .3s,visibility 0s linear 0s}
 #toast.ok .ti{color:var(--ok)}#toast.warn .ti{color:var(--warn)}#toast.info .ti{color:var(--info)}#toast.err .ti{color:var(--danger)}
 #toast .ti{font-size:20px}#toastX{cursor:pointer;opacity:.6;margin-left:4px}
-.skel{background:linear-gradient(100deg,var(--solid2) 30%,rgba(255,255,255,.06) 50%,var(--solid2) 70%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:10px}
 /* ============ KEYFRAMES ============ */
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(50,215,75,.5)}70%{box-shadow:0 0 0 8px rgba(50,215,75,0)}100%{box-shadow:0 0 0 0 rgba(50,215,75,0)}}
-@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 @keyframes drawLine{to{stroke-dashoffset:0}}
 @keyframes fadeIn{to{opacity:1}}
 .reveal{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
