@@ -181,7 +181,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .lc-photo img{width:100%;height:100%;object-fit:cover}
 .lc-slot{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);background:rgba(0,0,0,.5);color:#fff;backdrop-filter:blur(6px)}
 .lc-body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}
-.lc-cat{align-self:flex-start;font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);text-transform:uppercase;letter-spacing:.04em}
+.lc-cat{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:var(--solid2);color:var(--ink2);border:1px solid var(--bd);box-shadow:none;font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em}
 .lc-name{font-size:16px;font-weight:800;letter-spacing:-.02em}
 .lc-meta{font-size:12px;color:var(--muted);font-weight:500;display:flex;flex-direction:column;gap:5px}
 .lc-meta span{display:flex;align-items:center;gap:6px}.lc-meta .iconify{font-size:14px;color:var(--merah)}
@@ -413,9 +413,6 @@ footer b{color:var(--ink2);font-weight:700}
 .hd-ava{overflow:hidden;background:#fff!important;border:1px solid var(--bd)!important;box-shadow:var(--sh-sm)!important;}
 .hd-ava img.hd-logo{width:100%;height:100%;object-fit:contain;padding:3px;display:block;}
 
-/* --- Chip kategori lomba: flat + titik (bukan pill gradient AI) --- */
-.lc-cat{display:inline-flex;align-items:center;gap:6px;background:var(--glass,rgba(128,128,128,.1))!important;border:1px solid var(--bd,rgba(128,128,128,.18))!important;color:var(--muted,#8b9099)!important;box-shadow:none!important;text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:999px;}
-
 /* --- Shadow lembut + sudut bulat (anti kotak kasar) --- */
 .card,.chart-card,.wa-card,.feed-item,.lb-row,.cek-card,.kpi,.mini{box-shadow:0 16px 40px -24px rgba(0,0,0,.5)!important;}
 .lomba-card,.hcard{border-radius:22px!important;overflow:hidden;}
@@ -559,11 +556,9 @@ body{ overscroll-behavior-y:none; }
 .kpi::after,.kpi.ok::after,.kpi.warn::after,.kpi.info::after{display:none!important;}
 
 /* D) Badge & chip kategori: netral, beda lewat ikon/teks (buang biru/emas/ungu) */
-.cat-badge.konsumsi,.cat-badge.hadiah,.cat-badge.perlengkapan,.cat-badge.lain,
-.lc-cat,.lc-cat.olah,.lc-cat.anak,.lc-cat.seni{
+.cat-badge.konsumsi,.cat-badge.hadiah,.cat-badge.perlengkapan,.cat-badge.lain{
   background:var(--solid2)!important; color:var(--ink2)!important; border:1px solid var(--bd)!important;
 }
-.lc-cat::before{display:none!important;}
 .lineup-card::before{display:none!important;}
 
 /* E) Tombol & cek pakai merah utama */
