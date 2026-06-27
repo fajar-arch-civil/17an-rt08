@@ -489,8 +489,8 @@ footer b{color:var(--ink2);font-weight:700}
 
 #payNote{margin-top:8px;font-size:12.5px;font-weight:600;}
 
-#bayarModal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
-#bayarModal.open{display:flex;}
+#bayarModal,#dupModal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+#bayarModal.open,#dupModal.open{display:flex;}
 .bayar-card{width:100%;max-width:380px;background:var(--solid,#141414);border:1px solid var(--bd);border-radius:24px;padding:28px 24px;text-align:center;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);}
 .bayar-ic{width:64px;height:64px;margin:0 auto 16px;border-radius:20px;display:grid;place-items:center;background:rgba(255,184,0,.14);color:#FFB800;font-size:32px;}
 .bayar-h{margin:0 0 8px;font-size:20px;font-weight:800;color:var(--ink);}
@@ -1492,7 +1492,7 @@ function wireForm(){
         if(out&&out.error==='BELUM_BAYAR'){
           toast('Pendaftaran bisa dilakukan setelah ada pembayaran iuran KK. Hubungi panitia jika sudah membayar.','warn');
         }else if(out&&out.duplikat){
-          toast('Peserta ini sudah terdaftar di lomba tersebut.','warn');
+          showDupModal(nama,lomba);
         }else{
           toast((out&&out.error)||'Gagal mendaftar, coba lagi.','err');
         }
@@ -1612,18 +1612,14 @@ function exportCSV(){
  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='keuangan-rt08.csv';a.click();toast('CSV diunduh','ok');
 }
 function wireWA(){const a=$('waBtn');if(a)a.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.');}
-function scrollSpy(){
 
-}
 function wireMisc(){
 	var tx=$('toastX');if(tx)tx.onclick=()=>{var t=$('toast');if(t)t.classList.remove('show');};
-	var sa=$('seeAll');if(sa)sa.onclick=()=>{var g=document.getElementById('galeri');if(g)g.scrollIntoView({behavior:'smooth'});};
+	var sa=$('seeAll');if(sa)sa.onclick=()=>{window.open('https://drive.google.com/drive/folders/1k9kzrjE114gGrjyWp-sH-b7L4SgE1dLb','_blank','noopener');};
 	var fr=$('frefresh');if(fr)fr.onclick=()=>{toast('Menyegarkan…','info');muatKeuangan();muatLomba();};
 	var be=$('btnExport');if(be)be.onclick=exportCSV;
 	var _cekBtn=$('cekBtn');if(_cekBtn)_cekBtn.onclick=cekIuran;
 	var _cekInp=$('cekInput');if(_cekInp)_cekInp.addEventListener('keydown',e=>{if(e.key==='Enter')cekIuran();});
-	window.addEventListener('scroll',scrollSpy,{passive:true});
-	scrollSpy();
 }
 /* ===================== INIT ===================== */
 function init(){
@@ -1804,6 +1800,23 @@ function ensureBayarModal(){
 function showBayarModal(alamat){ensureBayarModal();var t=document.getElementById('bayarTxt');if(t)t.innerHTML='Alamat <b>'+esc(alamat||'ini')+'</b> belum tercatat melakukan pembayaran iuran sama sekali.';var wa=document.getElementById('bayarWa');if(wa)wa.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Halo panitia RT 08, saya ingin membayar iuran HUT RI ke-81 untuk alamat '+(alamat||'')+' agar bisa mendaftar lomba.');document.getElementById('bayarModal').classList.add('open');document.body.style.overflow='hidden';}
 function hideBayarModal(){var m=document.getElementById('bayarModal');if(m)m.classList.remove('open');document.body.style.overflow='';}
 
+/* Modal: nama sudah terdaftar di cabang yang sama (pakai ulang gaya .bayar-*) */
+function ensureDupModal(){
+ if(document.getElementById('dupModal'))return;
+ var d=document.createElement('div');d.id='dupModal';
+ d.innerHTML='<div class="bayar-card"><div class="bayar-ic"><span class="iconify" data-icon="solar:user-cross-bold"></span></div>'
+ +'<h3 class="bayar-h">Nama Sudah Terdaftar</h3>'
+ +'<p class="bayar-t" id="dupTxt"></p>'
+ +'<p class="bayar-sub">Satu nama hanya bisa ikut sekali di tiap cabang lomba. Silakan pakai nama lain atau pilih cabang yang berbeda.</p>'
+ +'<div class="bayar-act"><button type="button" id="dupClose" class="btn-close-modal">Mengerti</button></div></div>';
+ document.body.appendChild(d);
+ d.addEventListener('click',function(e){if(e.target===d)hideDupModal();});
+ document.getElementById('dupClose').onclick=hideDupModal;
+ if(window.Iconify)window.Iconify.scan();
+}
+function showDupModal(nama,lomba){ensureDupModal();var t=document.getElementById('dupTxt');if(t)t.innerHTML='Nama <b>'+esc(nama||'ini')+'</b> sudah terdaftar di cabang <b>'+esc(lomba||'-')+'</b>.';document.getElementById('dupModal').classList.add('open');document.body.style.overflow='hidden';}
+function hideDupModal(){var m=document.getElementById('dupModal');if(m)m.classList.remove('open');document.body.style.overflow='';}
+
 /* 5) Dropdown Blok / No. Rumah + gating (boleh jika terbayar>0 atau lunas) */
 function syncFormAddr(){
  if(!$('ddBlok'))return;if(!_warga||!_warga.length)return;
@@ -1846,10 +1859,9 @@ async function muatLomba(){
 (function(){var f=$('formDaftar');if(f)f.addEventListener('submit',function(e){
  if(_pickedAddr&&!_addrPaid){e.preventDefault();e.stopImmediatePropagation();showBayarModal(_pickedAddr);return;}
  var nm=norm($('nama').value),lb=$('selLomba').value;
- if(nm&&lb&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name'])||'')===nm&&norm(getF(p,['lomba','cabang','lombaNama'])||'')===norm(lb);})){
+ if(nm&&lb&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name','namaPeserta'])||'')===nm&&norm(getF(p,['lomba','cabang','lombaNama','namaLomba','nama_lomba','cabangLomba'])||'')===norm(lb);})){
   e.preventDefault();e.stopImmediatePropagation();
-  var dm=$('dupMsg');if(dm){dm.style.display='';dm.textContent='Nama "'+$('nama').value.trim()+'" sudah terdaftar di cabang '+lb+'.';}
-  toast('Nama ini sudah terdaftar di cabang tersebut','warn');
+  showDupModal($('nama').value.trim(),lb);
  }
 },true);})();
 
