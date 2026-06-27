@@ -84,18 +84,18 @@ a{color:inherit}
 .sec-h small{display:block;font-size:12.5px;font-weight:500;color:var(--ink2);margin-top:2px}
 
 /* peserta stats */
-.pes-stat{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.pes-stat{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
 @media(max-width:400px){.pes-stat{grid-template-columns:1fr;gap:8px}}
 @media(min-width:560px){.pes-stat{grid-template-columns:repeat(4,1fr)}}
-.pes-stat .box{padding:14px;border-radius:var(--r-md);background:var(--bg2);border:1px solid var(--bd);box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .2s ease}
+.pes-stat .box{padding:11px 12px;border-radius:14px;background:var(--bg2);border:1px solid var(--bd);box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .2s ease}
 .pes-stat .box::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--merah);opacity:.3}
 .pes-stat .box:active{transform:scale(.95)}
-.pes-stat .n{font-size:24px;font-weight:800;color:var(--merah);line-height:1}
-.pes-stat .l{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink2);margin-top:5px}
+.pes-stat .n{font-size:21px;font-weight:800;color:var(--merah);line-height:1}
+.pes-stat .l{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--ink2);margin-top:3px}
 
 /* infografik bar */
-.pes-chart{padding:16px 18px;margin-bottom:16px}
-.pc-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:14px}
+.pes-chart{padding:14px 15px;margin-bottom:12px}
+.pc-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:11px}
 .pc-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .pc-row:last-child{margin-bottom:0}
 .pc-lbl{flex:0 0 88px;font-size:12px;font-weight:600;color:var(--ink2)}
@@ -999,13 +999,6 @@ if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else l
    ============================================================ */
 
 /* ---------- PESERTA — padat, rapi, tidak kaku ---------- */
-.pes-stat{gap:8px;margin-bottom:12px}
-.pes-stat .box{padding:11px 12px;border-radius:14px}
-.pes-stat .n{font-size:21px}
-.pes-stat .l{font-size:9.5px;letter-spacing:.3px;margin-top:3px}
-
-.pes-chart{padding:14px 15px;margin-bottom:12px}
-.pc-title{margin-bottom:11px}
 .pes-search{padding:10px 13px;margin-bottom:10px;transition:border-color .2s}
 .pes-search:focus-within{border-color:var(--merah)}
 
