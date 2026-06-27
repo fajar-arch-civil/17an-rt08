@@ -1854,8 +1854,8 @@ async function muatLomba(){
 /* 8) Kunci submit: gating iuran + cegah nama ganda di cabang sama */
 (function(){var f=$('formDaftar');if(f)f.addEventListener('submit',function(e){
  if(_pickedAddr&&!_addrPaid){e.preventDefault();e.stopImmediatePropagation();showBayarModal(_pickedAddr);return;}
- var nm=norm($('nama').value),lb=$('selLomba').value;
- if(nm&&lb&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name','namaPeserta'])||'')===nm&&norm(getF(p,['lomba','cabang','lombaNama','namaLomba','nama_lomba','cabangLomba'])||'')===norm(lb);})){
+ var nm=norm($('nama').value),lb=$('selLomba').value,al=norm($('hidAlamat').value); 
+if(nm&&lb&&al&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name','namaPeserta'])||'')===nm&&norm(getF(p,['lomba','cabang','lombaNama','namaLomba','nama_lomba','cabangLomba'])||'')===norm(lb)&&norm(getF(p,['blok','alamat','wilayah','rumah','noRumah','nomor','no'])||'')===al;})){ 
   e.preventDefault();e.stopImmediatePropagation();
   showDupModal($('nama').value.trim(),lb);
  }
