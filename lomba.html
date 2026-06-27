@@ -86,25 +86,6 @@ a{color:inherit}
 .sec-h h2{font-size:19px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
 .sec-h small{display:block;font-size:12.5px;font-weight:500;color:var(--ink2);margin-top:2px}
 
-/* cabang */
-.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:400px){.cat-grid{grid-template-columns:1fr;gap:10px}}
-@media(min-width:560px){.cat-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}}
-.cat-card{padding:16px 15px;border-radius:var(--r-lg);background:var(--bg2);border:1px solid var(--bd);box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
-.cat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--merah),var(--merah2));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
-.cat-card:active{transform:scale(.98)}
-@media(hover:hover){.cat-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(0,0,0,.4)!important}.cat-card:hover::before{transform:scaleX(1)}}
-.cat-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--chip);color:var(--merah);margin-bottom:10px}
-.cat-icon .iconify{font-size:24px}
-.cat-label{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:700;margin-bottom:8px}
-.cat-label.olah{background:var(--chip);color:var(--merah)}
-.cat-label.anak{background:var(--bg1);color:var(--ink2)}
-.cat-label.seni{background:transparent;color:var(--merah);border:1px solid var(--merah)}
-.cat-card h3{font-size:14.5px;font-weight:700;margin-bottom:8px}
-.cat-meta{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink2)}
-.cat-meta span{display:flex;align-items:center;gap:6px}
-.cat-meta .iconify{font-size:14px;color:var(--merah);flex:0 0 auto}
-
 /* peserta stats */
 .pes-stat{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
 @media(max-width:400px){.pes-stat{grid-template-columns:1fr;gap:8px}}
