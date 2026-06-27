@@ -123,7 +123,7 @@ a{color:inherit}
 .mini tr:last-child td{border-bottom:none}
 .mini td.empty{text-align:center;color:var(--ink2);padding:22px}
 .mini td.num,.mini th:first-child{color:var(--muted);width:26px}
-.pes-info{font-size:12px;color:var(--muted);margin-top:10px;padding:0 4px}
+.pes-info{font-size:11.5px;color:var(--muted);margin-top:8px;padding:0 4px}
 
 /* hasil */
 .hasil-card{padding:16px 18px;margin-bottom:14px}
@@ -193,13 +193,14 @@ footer b{color:var(--merah)}
   .tbl-card{overflow:visible;background:transparent;border:0;box-shadow:none;padding:0}
   .mini,.mini tbody,.mini tr,.mini td{display:block;width:100%}
   .mini thead{display:none}
-  .mini tr{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);padding:12px 14px;margin-bottom:9px}
+  .mini tr{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);padding:10px 13px;margin-bottom:8px}
+ .mini tr:active{background:var(--bg1)}
   .mini td{border:none!important;padding:1px 0}
   .mini td.num{display:none}
-  .mini td:nth-child(2){font-size:16px;font-weight:800;color:var(--ink);margin-bottom:3px}
-  .mini td:nth-child(3),.mini td:nth-child(4){font-size:13px;color:var(--ink2)}
-  .mini td:nth-child(3)::before{content:'Blok ';color:var(--muted);font-weight:700}
-  .mini td:nth-child(4)::before{content:'Lomba · ';color:var(--muted);font-weight:700}
+  .mini td:nth-child(2){font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
+  .mini td:nth-child(3),.mini td:nth-child(4){display:inline;font-size:12.5px;color:var(--ink2)}
+  .mini td:nth-child(3)::before{content:'Blok ';color:var(--muted);font-weight:600}
+  .mini td:nth-child(4)::before{content:' · ';color:var(--muted);font-weight:600}
   .mini td.empty{text-align:center;color:var(--ink2);padding:22px 12px}
 }
 /* ===== RESPONSIVE & SCROLL FINAL — sehat di semua perangkat (v7) ===== */
@@ -994,22 +995,6 @@ if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',load); else l
 })();
 </script>
 <style id="appLombaV1">
-/* ============================================================
-   APP-STYLE LOMBA — TAHAP 1 (Hero + Peserta)
-   Lapisan tampilan saja. TIDAK mengubah ID, teks tombol, atau logika JS.
-   Tempel TEPAT sebelum </body>. SATU blok saja — kalau revisi, GANTI isi ini.
-   ============================================================ */
-
-/* daftar peserta padat: 2 baris (nama + "Blok X · Lomba") */
-@media(max-width:560px){
-  .mini tr{padding:10px 13px;margin-bottom:8px}
-  .mini td:nth-child(2){font-size:14.5px;font-weight:700;margin-bottom:2px}
-  .mini td:nth-child(3),.mini td:nth-child(4){display:inline;font-size:12.5px;color:var(--ink2)}
-  .mini td:nth-child(3)::before{content:'Blok ';color:var(--muted);font-weight:600}
-  .mini td:nth-child(4)::before{content:' · ';color:var(--muted);font-weight:600}
-  .mini tr:active{background:var(--bg1)}
-}
-.pes-info{margin-top:8px;font-size:11.5px}
 </style>
 <!-- ===== STRUKTUR PANITIA — START ===== -->
 <style id="spCss">
