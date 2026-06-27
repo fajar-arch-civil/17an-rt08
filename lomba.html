@@ -61,18 +61,15 @@ a{color:inherit}
 
 /* hero (bersih — 1 blok) */
 .hero{position:relative;overflow:hidden;margin:14px 14px 0;padding:22px 18px 24px;border-radius:24px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
-@media(min-width:792px){.hero{max-width:760px;margin:16px auto 0;padding:34px 40px;border-radius:28px}}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-@media(min-width:792px){.hero{max-width:760px;margin:16px auto 0;padding:34px 40px}.hero h1{font-size:32px}.hero .sub{font-size:15px}.cta-btn{padding:13px 28px;height:auto}}
+@media(min-width:792px){.hero{max-width:760px;margin:16px auto 0;padding:34px 40px;border-radius:28px}.hero h1{font-size:32px}.hero .sub{font-size:15px}.cta-btn{padding:13px 28px;height:auto}}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;-webkit-mask-size:auto 120%;mask-size:auto 120%;background:#FFFFFF;opacity:.08}
 .hero-in{position:relative;z-index:1}
 .badge{display:none}
 .hero h1{font-size:21px;font-weight:800;line-height:1.15;letter-spacing:-.035em;margin:0 0 4px;max-width:15ch}
 .hero .sub{margin-top:0;font-size:13px;opacity:.9;font-weight:500;line-height:1.45}
-@media(min-width:792px){.hero h1{font-size:32px}.hero .sub{font-size:15px}}
 .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;justify-content:flex-start}
 .cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;height:42px;padding:0 22px;background:#fff;color:var(--merah);font-weight:800;font-size:13.5px;text-decoration:none;cursor:pointer;border:none;border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.25)}
-@media(min-width:792px){.cta-btn{height:auto;padding:13px 28px}}
 .cta-btn .iconify{font-size:15px}
 .cta-btn.ghost{display:none}
 .cta-btn:active{transform:scale(.98)}
