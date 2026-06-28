@@ -600,7 +600,7 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
     bot.innerHTML=BOT.map(function(b){var hash=b[1].charAt(0)==='#';return '<a class="ubn" href="'+b[1]+'"'+(hash?' data-id="'+b[1].slice(1)+'"':'')+'>'+svg(b[2])+'<span>'+b[0]+'</span></a>';}).join('');
     D.body.appendChild(bot);
 
-    function getT(){try{return localStorage.getItem('rt08-theme')==='dark'?'dark':'light';}catch(e){return 'light';}}
+    function getT(){try{var t=localStorage.getItem('rt08-theme');if(t==='dark'||t==='light')return t;return (window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}catch(e){return 'light';}}
     function applyT(t){root.setAttribute('data-theme',t);var s=D.getElementById('uSwitch');if(s)s.classList.toggle('dark',t==='dark');}
     function setT(t){try{localStorage.setItem('rt08-theme',t);}catch(e){}applyT(t);}
     applyT(getT());
