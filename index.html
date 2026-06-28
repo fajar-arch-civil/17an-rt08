@@ -869,7 +869,11 @@ p{ text-wrap:pretty; }
 </style>
 <!-- ===== DESIGN SYSTEM v2 — Resistance Blue (Fase 0) — END ===== -->
 </head>
-<body>
+<body <div id="splash">
+  <img class="splash-logo" src="logo.svg" alt="RT 08" onerror="this.onerror=null;this.src='icon-192.png'">
+  <div class="splash-txt"><b>Karang Taruna RT08</b><span>Web App</span></div>
+  <div class="splash-bar"><i></i></div>
+</div>
  <!-- ===== DAFTAR GATE v3.1 — ukur tinggi bar asli (ikut notch) + identik navbar ===== -->
 <script>
 (function(){
@@ -2248,7 +2252,6 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
 <!-- ===== INFOGRAFIS SALDO — cermin nilai Saldo Kas ke kartu atas (display saja) ===== -->
 <script>
 (function(){
-  var API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
   function catOf(r){
     var v='';for(var k in r){if(/jenis|kategori|lomba|cabang|cat/i.test(k)&&r[k]!=null){v+=' '+r[k];}}
     v=(''+v).toLowerCase();
@@ -2257,31 +2260,22 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
     if(/olah|voli|futsal|tenis/.test(v))return 'olah';
     return '';
   }
-  (function(){ 
-  function catOf(r){ 
-    var v='';for(var k in r){if(/jenis|kategori|lomba|cabang|cat/i.test(k)&&r[k]!=null){v+=' '+r[k];}} 
-    v=(''+v).toLowerCase(); 
-    if(/anak|balita/.test(v))return 'anak'; 
-    if(/seni|pentas/.test(v))return 'seni'; 
-    if(/olah|voli|futsal|tenis/.test(v))return 'olah'; 
-    return ''; 
-  } 
-  function paint(c){ 
-    var max=Math.max(c.olah,c.anak,c.seni,1); 
-    var put=function(numId,barId,val){var n=document.getElementById(numId),b=document.getElementById(barId);if(n)n.textContent=val;if(b)b.style.width=Math.round(val/max*100)+'%';}; 
-    put('dpOlah','dpbOlah',c.olah);put('dpAnak','dpbAnak',c.anak);put('dpSeni','dpbSeni',c.seni); 
-  } 
-  function run(rows){ 
-    try{ 
-      rows=Array.isArray(rows)?rows:(Array.isArray(window._peserta)?window._peserta:[]); 
-      var c={olah:0,anak:0,seni:0}; 
-      rows.forEach(function(r){if(r&&typeof r==='object'){var k=catOf(r);if(k)c[k]++;}}); 
-      paint(c); 
-    }catch(e){} 
-  } 
-  window.__distPaint=run; 
-  if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run); 
-})(); 
+  function paint(c){
+    var max=Math.max(c.olah,c.anak,c.seni,1);
+    var put=function(numId,barId,val){var n=document.getElementById(numId),b=document.getElementById(barId);if(n)n.textContent=val;if(b)b.style.width=Math.round(val/max*100)+'%';};
+    put('dpOlah','dpbOlah',c.olah);put('dpAnak','dpbAnak',c.anak);put('dpSeni','dpbSeni',c.seni);
+  }
+  function run(rows){
+    try{
+      rows=Array.isArray(rows)?rows:(Array.isArray(window._peserta)?window._peserta:[]);
+      var c={olah:0,anak:0,seni:0};
+      rows.forEach(function(r){if(r&&typeof r==='object'){var k=catOf(r);if(k)c[k]++;}});
+      paint(c);
+    }catch(e){}
+  }
+  window.__distPaint=run;
+  if(document.readyState!=='loading')run();else document.addEventListener('DOMContentLoaded',run);
+})();
 </script>
 
  <!-- ===== WIDGET STATUS LOMBA — START ===== -->
@@ -2467,6 +2461,20 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   line-height:1.4;
   color:var(--ink2);
 }
+
+/* ===== SPLASH SCREEN ===== */
+#splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg0);opacity:1;transition:opacity .45s ease}
+#splash.hide{opacity:0;pointer-events:none}
+#splash .splash-logo{height:84px;width:auto;max-width:70vw;object-fit:contain;animation:splashLogo .9s cubic-bezier(.2,.8,.2,1) both}
+#splash .splash-txt{text-align:center;line-height:1.25;animation:splashFade .6s ease .25s both}
+#splash .splash-txt b{display:block;font-size:14px;font-weight:800;color:var(--ink);letter-spacing:.01em}
+#splash .splash-txt span{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-top:2px}
+#splash .splash-bar{width:120px;height:4px;border-radius:999px;background:var(--bd2);overflow:hidden}
+#splash .splash-bar i{display:block;width:38%;height:100%;border-radius:999px;background:var(--merah);animation:splashBar 1.1s ease-in-out infinite}
+@keyframes splashLogo{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+@keyframes splashFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes splashBar{0%{transform:translateX(-130%)}100%{transform:translateX(330%)}}
+@media(prefers-reduced-motion:reduce){#splash .splash-logo,#splash .splash-txt{animation:none}#splash .splash-bar i{animation:none;width:100%}}
 </style>
 <script>
 (function(){
@@ -2530,6 +2538,25 @@ load(); setInterval(load, 60000);
     if(++n>60){clearInterval(iv);fallback();}
   },120);
   document.addEventListener('DOMContentLoaded',add);
+})();
+</script>
+
+<script>
+(function(){
+  var s=document.getElementById('splash');
+  if(!s)return;
+  var t0=Date.now();
+  function hide(){
+    if(s.classList.contains('hide'))return;
+    var wait=Math.max(0,700-(Date.now()-t0)); /* tampil minimal 0,7 dtk */
+    setTimeout(function(){
+      s.classList.add('hide');
+      setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s);},500);
+    },wait);
+  }
+  if(document.readyState==='complete')hide();
+  else window.addEventListener('load',hide);
+  setTimeout(hide,4000); /* pengaman maksimal */
 })();
 </script>
 </body>
