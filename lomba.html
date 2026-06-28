@@ -23,6 +23,11 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 <script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
+  /* Logo bar atas (#utop .ulogo): ikut warna tema */
+.utop .ulogo{position:relative}
+.utop .ulogo img{visibility:hidden}
+.utop .ulogo::before{content:"";position:absolute;inset:0;background-color:var(--merah);-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat}
+
   /* ===== WA CTA + FOOTER (selaras index) ===== */
 .wa-cta-card{margin:24px auto 0;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);max-width:460px}
 .wa-cta-q{margin:0;font-weight:700;font-size:15px;color:var(--ink)}
@@ -300,7 +305,56 @@ p{ text-wrap:pretty; }
 <!-- ===== DESIGN SYSTEM v2 — Resistance Blue (Fase 0) — END ===== -->
 </head>
 <body>
-
+<!-- ===== SPLASH SCREEN (konsisten dgn index) ===== -->
+<div id="splash" role="status" aria-label="Memuat aplikasi">
+  <div class="splash-logo" role="img" aria-label="RT 08"></div>
+  <div class="splash-name">Karang Taruna RT08</div>
+  <div class="splash-sub">Web App</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+<style>
+#splash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F8F9FA;transition:opacity .5s ease}
+@media(prefers-color-scheme:dark){#splash{background:#0A0A14}}
+[data-theme="light"] #splash{background:#F8F9FA}
+[data-theme="dark"]  #splash{background:#0A0A14}
+#splash.splash-out{opacity:0;visibility:hidden;pointer-events:none}
+/* Logo: 1 file logo.svg di-recolor pakai mask (ikut tema, tidak putih) */
+.splash-logo{width:92px;height:92px;background-color:#000072;-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat;animation:splashPop .7s cubic-bezier(.2,.8,.2,1) both}
+@media(prefers-color-scheme:dark){.splash-logo{background-color:#5C5CFF}}
+[data-theme="light"] .splash-logo{background-color:#000072}
+[data-theme="dark"]  .splash-logo{background-color:#5C5CFF}
+.splash-name{font-size:18px;font-weight:800;letter-spacing:.02em;color:#000072;animation:splashFade .6s ease .15s both}
+@media(prefers-color-scheme:dark){.splash-name{color:#E8E8F0}}
+[data-theme="light"] .splash-name{color:#000072}
+[data-theme="dark"]  .splash-name{color:#E8E8F0}
+.splash-sub{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9aa0a6;margin-top:-6px;animation:splashFade .6s ease .25s both}
+.splash-bar{width:128px;height:4px;border-radius:99px;background:rgba(128,128,128,.22);overflow:hidden;margin-top:6px}
+.splash-fill{width:0;height:100%;border-radius:99px;background:#000072;animation:splashBar 1.1s ease .1s forwards}
+@media(prefers-color-scheme:dark){.splash-fill{background:#5C5CFF}}
+[data-theme="light"] .splash-fill{background:#000072}
+[data-theme="dark"]  .splash-fill{background:#5C5CFF}
+@keyframes splashPop{0%{opacity:0;transform:scale(.7)}60%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes splashFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes splashBar{from{width:0}to{width:100%}}
+</style>
+<script>
+(function(){
+  var s=document.getElementById('splash');
+  if(!s) return;
+  var START=Date.now(), MIN=1200, CAP=5000, done=false;
+  function hide(){
+    if(done||s.dataset.out) return;
+    done=true; s.dataset.out='1';
+    s.classList.add('splash-out');
+    setTimeout(function(){ if(s.parentNode) s.parentNode.removeChild(s); }, 520);
+  }
+  function ready(){ setTimeout(hide, Math.max(0, MIN-(Date.now()-START))); }
+  if(document.readyState==='complete') ready();
+  else window.addEventListener('load', ready);
+  setTimeout(hide, CAP); // jaring pengaman: paksa tutup maks 5 detik
+})();
+</script>
+<!-- ===== /SPLASH SCREEN ===== -->
 <header class="topnav">
   <div class="in">
     <span class="brand">RT 08 · <b>17 Agustusan</b></span>
