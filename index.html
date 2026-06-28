@@ -383,6 +383,10 @@ footer b{color:var(--ink2);font-weight:700}
 /* --- Header: logo Karang Taruna + klik ke beranda --- */
 .hd-ava{overflow:hidden;background:#fff!important;border:1px solid var(--bd)!important;box-shadow:var(--sh-sm)!important;}
 .hd-ava img.hd-logo{width:100%;height:100%;object-fit:contain;padding:3px;display:block;}
+/* --- Header logo: ikut warna tema (mask), bukan lingkaran putih --- */
+.hd-ava:has(img.hd-logo){background:transparent!important;border:none!important;box-shadow:none!important;position:relative;overflow:visible}
+.hd-ava:has(img.hd-logo) img.hd-logo{visibility:hidden}
+.hd-ava:has(img.hd-logo)::before{content:"";position:absolute;inset:3px;background-color:var(--merah);-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat}
 
 /* --- Shadow lembut + sudut bulat (anti kotak kasar) --- */
 .card,.chart-card,.wa-card,.feed-item,.lb-row,.cek-card,.kpi,.mini{box-shadow:0 16px 40px -24px rgba(0,0,0,.5)!important;}
@@ -872,7 +876,7 @@ p{ text-wrap:pretty; }
 <body> <style>
 #splash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg0,#fff);transition:opacity .45s ease}
 #splash.splash-out{opacity:0;pointer-events:none}
-#splash .splash-logo{height:84px;width:auto;max-width:200px;object-fit:contain;animation:splashPop .9s cubic-bezier(.2,.8,.2,1) both}
+#splash .splash-logo{height:84px;width:200px;max-width:60vw;background-color:var(--merah);-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat;animation:splashPop .9s cubic-bezier(.2,.8,.2,1) both}
 #splash .splash-txt{text-align:center;line-height:1.25;animation:splashFade .6s ease .2s both}
 #splash .splash-txt b{display:block;font-size:14px;font-weight:800;color:var(--ink,#111)}
 #splash .splash-txt span{display:block;font-size:11px;font-weight:600;color:var(--muted,#777);margin-top:2px}
@@ -884,7 +888,7 @@ p{ text-wrap:pretty; }
 @media(prefers-reduced-motion:reduce){#splash .splash-logo,#splash .splash-txt,#splash .splash-bar i{animation:none}}
 </style>
 <div id="splash">
-  <img class="splash-logo" src="logo.svg" alt="RT 08" onerror="this.onerror=null;this.src='icon-192.png'">
+  <div class="splash-logo" role="img" aria-label="RT 08"></div>
   <div class="splash-txt"><b>Karang Taruna RT08</b><span>Web App</span></div>
   <div class="splash-bar"><i></i></div>
 </div>
@@ -895,7 +899,7 @@ p{ text-wrap:pretty; }
   var t0=Date.now();
   function hide(){
     if(s.dataset.out)return; s.dataset.out='1';
-    var wait=Math.max(0,700-(Date.now()-t0));
+    var wait=Math.max(0,1200-(Date.now()-t0));
     setTimeout(function(){
       s.classList.add('splash-out');
       setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s);},500);
@@ -903,7 +907,7 @@ p{ text-wrap:pretty; }
   }
   if(document.readyState==='complete')hide();
   else window.addEventListener('load',hide);
-  setTimeout(hide,4000);
+  setTimeout(hide,5000);
 })();
 </script>
  <!-- ===== DAFTAR GATE v3.1 — ukur tinggi bar asli (ikut notch) + identik navbar ===== -->
