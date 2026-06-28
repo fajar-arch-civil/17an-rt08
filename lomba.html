@@ -21,7 +21,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
-<script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
   /* ===== WA CTA + FOOTER (selaras index) ===== */
 .wa-cta-card{margin:24px auto 0;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);max-width:460px}
@@ -550,6 +550,7 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
     function applyT(t){root.setAttribute('data-theme',t);var s=D.getElementById('uSwitch');if(s)s.classList.toggle('dark',t==='dark');}
     function setT(t){try{localStorage.setItem('rt08-theme',t);}catch(e){}applyT(t);}
     applyT(getT());
+    try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){try{if(localStorage.getItem('rt08-theme'))return;}catch(_){}applyT(e.matches?'dark':'light');});}catch(e){}
     var sw=D.getElementById('uSwitch');
     function tog(){setT(getT()==='dark'?'light':'dark');}
     sw.addEventListener('click',tog);
