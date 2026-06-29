@@ -370,9 +370,9 @@ var _busyStatus=false;
 
   /* theme */
   function applyTheme(t,persist){document.documentElement.setAttribute('data-theme',t);if(persist){try{localStorage.setItem('rt08-theme',t);}catch(e){}}$('#themeBtn').querySelector('.iconify').setAttribute('data-icon',t==='light'?'solar:sun-bold':'solar:moon-bold');scan();}
-(function(){var t='light';try{var v=localStorage.getItem('rt08-theme');t=(v==='dark'||v==='light')?v:((window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');}catch(e){}applyTheme(t);})();
+(function(){var t;try{var v=localStorage.getItem('rt08-theme');t=(v==='dark'||v==='light')?v:((window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');}catch(e){t='light';}applyTheme(t,false);})();
   $('#themeBtn').addEventListener('click',function(){applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light',true);});
-  try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){try{if(localStorage.getItem('rt08-theme'))return;}catch(_){}applyTheme(e.matches?'dark':'light');});}catch(e){}
+  try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){try{if(localStorage.getItem('rt08-theme'))return;}catch(_){}applyTheme(e.matches?'dark':'light',false);});}catch(e){}
   /* gate — token DIMINTA setiap buka halaman (tidak disimpan) */
   function showGate(){$('#gate').hidden=false;$('#app').hidden=true;setTimeout(function(){$('#gToken').focus();},60);}
   function showApp(){$('#gate').hidden=true;$('#app').hidden=false;$('#oleh').value=localStorage.getItem('pn_oleh')||'';renderInfo();switchTab('iuran');startLive();}
