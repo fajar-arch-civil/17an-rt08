@@ -245,7 +245,7 @@ textarea.inp{resize:vertical;min-height:66px}
 <header class="top">
   <a class="back" href="index.html"><span class="iconify" data-icon="solar:alt-arrow-left-linear"></span> Beranda</a>
   <div class="top-t">Panel Panitia</div>
-  <button class="back icon-btn" id="themeBtn" aria-label="Tema"><span class="iconify" data-icon="solar:moon-bold"></span></button>
+  <button class="icon-btn" id="themeBtn" aria-label="Tema"><span class="iconify" data-icon="solar:moon-bold"></span></button>
 </header>
 
 <main class="wrap">
@@ -544,7 +544,7 @@ function renderKK(){
 
   /* ===================== LOMBA ===================== */
      function loadLomba(silent){if(!silent)$('#paneHasil').innerHTML='<div class="card">'+skelList(4)+'</div>';
-apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(){if(!silent)$('#paneHasil').innerHTML=' Gagal memuat data. ';}); }
+apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(){if(!silent)$('#paneHasil').innerHTML='<div class="card"><div class="empty">Gagal memuat data. Periksa koneksi lalu coba lagi.</div></div>';}); }
   function lombas(){return (ST.data&&ST.data.lomba)||[];}
   function jenisList(){var s=[],seen={};lombas().forEach(function(l){var j=l.jenis||'';if(j&&!seen[norm(j)]){seen[norm(j)]=1;s.push(j);}});return s;}
   function curLomba(){return lombas().filter(function(l){return norm(l.jenis)===norm(ST.jenis)&&norm(l.nama)===norm(ST.lomba);})[0]||null;}
@@ -575,7 +575,7 @@ apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(
     '<div class="meta-item"><span class="iconify" data-icon="solar:clipboard-check-bold"></span><b>'+hadir+'</b>hadir</div>'+
     '<div class="meta-item"><span class="iconify" data-icon="solar:cup-star-bold"></span><b>'+juara+'/3</b>juara</div>';scan();}
 function renderStatus(){var cur=curStatus();
-  var ICON={'Belum':'solar:clock-circle-linear','Bersiap':'solar:hourglass-bold','Sedang main':'solar:play-circle-bold','Selesai':'solar:check-circle-bold'};
+  var ICON={'Belum':'solar:clock-circle-bold','Bersiap':'solar:hourglass-bold','Sedang main':'solar:play-circle-bold','Selesai':'solar:check-circle-bold'};
   $('#pnStatusBar').innerHTML=STATUSES.map(function(s){return '<button class="pill'+(norm(s)===norm(cur)?' on':'')+'" data-st="'+esc(s)+'"><span class="iconify" data-icon="'+(ICON[s]||'solar:clock-circle-linear')+'"></span>'+esc(s)+'</button>';}).join('');scan();}
   function renderHasil(){var L=curLomba(),el=$('#paneHasil');
   if(!L){el.innerHTML='<div class="card"><div class="empty">Pilih lomba dulu.</div></div>';return;}
