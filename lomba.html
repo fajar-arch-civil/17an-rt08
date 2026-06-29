@@ -460,7 +460,7 @@ p{ text-wrap:pretty; }
   <footer style="text-align:center;padding:28px 0 12px;line-height:1.8;color:var(--muted);font-size:12px">
 <div class="wa-cta-card">
 <div class="wa-cta-ic"><span class="iconify" data-icon="ic:baseline-whatsapp"></span></div>
-<p class="wa-cta-q" style="color:var(--ink)">Ada pertanyaan atau mau bayar iuran?</p>
+<p class="wa-cta-q">Ada pertanyaan atau mau bayar iuran?</p>
 <p class="wa-cta-sub">Iuran Rp50.000/KK dikonfirmasi panitia lewat WhatsApp. Bayar sebagian dulu juga boleh.</p>
 <a class="wa-cta-btn" id="waLink" href="#"><span class="iconify" data-icon="ic:baseline-whatsapp"></span> Hubungi Panitia</a>
 </div>
@@ -778,7 +778,7 @@ function renderHasil(){
     if(inp){var _lombaDeb;inp.addEventListener('input',function(e){clearTimeout(_lombaDeb);var v=(e.target.value||'').toLowerCase().trim();_lombaDeb=setTimeout(function(){curQ=v;apply();},200);});}
   }
   function load(){
-    fetch(API+'?aksi=peserta').then(function(r){return r.json();}).then(function(d){
+    fetch(API+'?aksi=peserta&cb='+Date.now()).then(function(r){return r.json();}).then(function(d){
       ALL=Array.isArray(d)?d:(d&&d.peserta?d.peserta:[]); ALL=ALL||[];
       stats(); apply(); hasil(Array.isArray(d)?[]:(d&&d.hasil?d.hasil:[]));
     }).catch(function(){var tb=$('pesTbody'); if(tb) tb.innerHTML='<tr><td class="empty" colspan="4">Gagal memuat data. Muat ulang halaman.</td></tr>';});
