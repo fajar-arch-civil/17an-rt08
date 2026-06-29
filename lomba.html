@@ -29,7 +29,7 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 .utop .ulogo::before{content:"";position:absolute;inset:0;background-color:var(--merah);-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat}
 
   /* ===== WA CTA + FOOTER (selaras index) ===== */
-.wa-cta-card{margin:24px auto 0;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh);max-width:460px}
+.wa-cta-card{margin-top:24px;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh)}
 .wa-cta-ic{position:relative;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(37,211,102,.14);color:#25d366;font-size:27px}
 .wa-cta-ic::before{content:"";position:absolute;inset:-4px;border-radius:18px;background:rgba(37,211,102,.2);animation:waPulse 2.5s ease-in-out infinite}
 @keyframes waPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.08);opacity:.15}}
@@ -457,7 +457,7 @@ p{ text-wrap:pretty; }
     <details class="card faq"><summary>Apa saja hadiahnya?</summary><p>Piala + uang tunai untuk juara 1, 2, 3 tiap kategori. Hadiah anak dibagikan sore, hadiah dewasa di malam puncak. Detail nominal menyusul dari panitia.</p></details>
   </section>
 
-  <footer style="text-align:center;padding:28px 20px 12px;line-height:1.8;color:var(--muted);font-size:12px">
+  <footer style="text-align:center;padding:28px 0 12px;line-height:1.8;color:var(--muted);font-size:12px">
 <div class="wa-cta-card">
 <div class="wa-cta-ic"><span class="iconify" data-icon="ic:baseline-whatsapp"></span></div>
 <p class="wa-cta-q" style="color:var(--ink)">Ada pertanyaan atau mau bayar iuran?</p>
