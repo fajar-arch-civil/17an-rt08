@@ -1157,7 +1157,7 @@ p{ text-wrap:pretty; }
     </div>
     <div class="field">
       <label>Nomor WhatsApp</label>
-      <input class="inp" id="hp" type="tel" inputmode="numeric" placeholder="08xxxxxxxxxx">
+      <input class="inp" id="hp" type="tel" inputmode="numeric" maxlength="16" autocomplete="tel" placeholder="08xxxxxxxxxx">
     </div>
     <div class="field">
       <label>Catatan (opsional)</label>
@@ -1425,17 +1425,27 @@ function wireForm(){
 
 
     var nama=$('nama').value.trim();
-    var blok=$('hidAlamat').value;
-    var hp=$('hp').value.trim();
-    var jenis=$('selJenis').value;
-    var lomba=$('selLomba').value;
+var blok=$('hidAlamat').value;
+var hp=$('hp').value.trim();
+var jenis=$('selJenis').value;
+var lomba=$('selLomba').value;
 
-    if(!nama||!blok||!hp||!jenis||!lomba){
-      toast('Lengkapi data dulu ya','warn');
-      return;
-    }
+if(!nama||!blok||!hp||!jenis||!lomba){
+  toast('Lengkapi data dulu ya','warn');
+  return;
+}
 
-    setKelompok();
+// Validasi & rapikan nomor WhatsApp (toleran spasi, tanda hubung, +62)
+var hpDigits=hp.replace(/\D/g,'');                 // buang selain angka
+if(/^62/.test(hpDigits)) hpDigits='0'+hpDigits.slice(2); // +62 / 62 → 0
+if(!/^08\d{8,11}$/.test(hpDigits)){                // 08 + 8–11 digit (total 10–13)
+  toast('Nomor WhatsApp tidak valid. Contoh: 081234567890','warn');
+  $('hp').focus();
+  return;
+}
+hp=hpDigits;                                       // kirim versi yang sudah rapi
+
+setKelompok();
 
     _sending=true;
     $('btnKirim').disabled=true;
