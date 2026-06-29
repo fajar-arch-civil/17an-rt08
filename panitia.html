@@ -682,7 +682,7 @@ if(!confirm('Kunci & kirim hasil "'+L.nama+'"? Data langsung tampil ke warga.'))
   var btn=$('#pnSaveHadir');
   if(btn&&btn.dataset.busy) return;
 
-  var arr=ST.work.filter(function(w){return w._hadir;}).map(function(w){return {nama:w.nama,blok:w.blok,hadir:w._hadir};});
+  var arr=ST.work.map(function(w){return {nama:w.nama,blok:w.blok,hadir:w._hadir||''};});
 
   var unlock=lockBtn(btn,'Menyimpan…');
   post({aksi:'setKehadiran',jenis:L.jenis,lomba:L.nama,kehadiran:JSON.stringify(arr)}).then(function(r){
