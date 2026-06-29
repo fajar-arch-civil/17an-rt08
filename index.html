@@ -240,6 +240,15 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .ok-msg h4{margin:10px 0 4px;font-size:19px;font-weight:800}
 .ok-msg p{margin:0;color:var(--muted);font-size:14px}
 .link-btn{margin-top:16px;border:1px solid var(--bd2);background:var(--glass-2);color:var(--ink);font-weight:700;padding:12px 18px;border-radius:var(--r-el);cursor:pointer;font-size:14px;font-family:inherit}
+/* Sukses pendaftaran: centang beranimasi + aksi tiket */
+.ok-msg .ok-ic{animation:okPop .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes okPop{0%{opacity:0;transform:scale(.4)}55%{transform:scale(1.14)}100%{opacity:1;transform:scale(1)}}
+.ok-acts{display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:16px}
+.ok-acts .link-btn{margin-top:0}
+.btn-salin{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:var(--merah);color:#fff;font-weight:800;padding:13px 22px;border-radius:var(--r-el);cursor:pointer;font-size:14.5px;font-family:inherit;box-shadow:0 8px 20px var(--merah-glow);transition:transform .15s ease}
+.btn-salin:active{transform:scale(.96)}
+.btn-salin .iconify{font-size:18px}
+@media(prefers-reduced-motion:reduce){.ok-msg .ok-ic{animation:none}}
 /* ============ WA + FOOTER ============ */
 .wa-card{margin-top:24px;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px}
 @media(max-width:520px){.wa-card{padding:20px 16px;gap:10px}.wa-ic{width:46px;height:46px;font-size:23px}.wa-q{font-size:14px}.wa-sub{font-size:12px}.wa-btn{padding:12px 22px;font-size:14px}}
@@ -1339,26 +1348,56 @@ function setKelompok(){ const o=lombaObj($('selJenis').value,$('selLomba').value
 function setLomba(){ const j=$('selJenis').value,sel=$('selLomba'); if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';} else{const arr=lombaFor(j);sel.disabled=false;sel.innerHTML='<option value="">Pilih cabang…</option>'+arr.map(l=>{const nm=getF(l,['nama','name','lomba'])||'';return '<option value="'+esc(nm)+'">'+esc(nm)+'</option>';}).join('');} $('anakFields').classList.toggle('hide',!isAnak(j)); $('hidKelompok').value=''; updateStepper(); }
 function updateStepper(){ const st=document.querySelectorAll('#stepper .step');if(!st.length)return; const s1=$('hidAlamat').value&&$('nama').value.trim();const s2=s1&&$('selJenis').value&&$('selLomba').value; st.forEach(s=>s.classList.remove('on','done')); if(s2){st[0].classList.add('done');st[1].classList.add('done');st[2].classList.add('on');} else if(s1){st[0].classList.add('done');st[1].classList.add('on');} else st[0].classList.add('on'); }
 function bindDaftarLagi(){
-  var dl=$('daftarLagi');
-  if(!dl)return;
+var dl=$('daftarLagi');
+if(!dl)return;
+dl.onclick=function(){
+$('okMsg').style.display='none';
+$('formDaftar').style.display='';
 
-  dl.onclick=function(){
-    $('okMsg').style.display='none';
-    $('formDaftar').style.display='';
-    $('formDaftar').reset();
+// 1 KK sering daftarkan >1 peserta → pertahankan alamat jika sudah dipilih
+var bv=$('ddBlok').querySelector('.dd-val');
+var prevAlamat=$('hidAlamat').value;
+var keepAddr=bv && !bv.classList.contains('ph') && !!prevAlamat;
 
-    ddReset('ddBlok','Blok…');
-    ddReset('ddNomor','Nomor…');
-    $('ddNomor').classList.add('disabled');
-    $('hidAlamat').value='';
-    $('anakFields').classList.add('hide');
+$('formDaftar').reset(); // reset() ikut mengosongkan hidAlamat
 
-    fillJenis();
-    $('selLomba').disabled=true;
-    $('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';
+$('anakFields').classList.add('hide');
+fillJenis();
+$('selLomba').disabled=true;
+$('selLomba').innerHTML='<option value="">Pilih jenis dulu…</option>';
 
-    updateStepper();
-  };
+if(keepAddr){
+// Pertahankan Blok + No. Rumah peserta sebelumnya, langsung fokus ke Nama
+$('hidAlamat').value=prevAlamat; // pulihkan (reset() menghapusnya)
+$('ddNomor').classList.remove('disabled');
+setTimeout(function(){var n=$('nama');if(n)n.focus();},60);
+}else{
+ddReset('ddBlok','Blok…');
+ddReset('ddNomor','Nomor…');
+$('ddNomor').classList.add('disabled');
+$('hidAlamat').value='';
+}
+
+updateStepper();
+};
+}
+
+function salinNomor(no){
+no=String(no||'');if(!no)return;
+function ok(){toast('Nomor peserta '+no+' disalin','ok');}
+try{
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(no).then(ok).catch(function(){salinFallback(no,ok);});
+}else{salinFallback(no,ok);}
+}catch(e){salinFallback(no,ok);}
+}
+function salinFallback(txt,cb){
+try{
+var ta=document.createElement('textarea');ta.value=txt;ta.setAttribute('readonly','');
+ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);
+ta.select();document.execCommand('copy');document.body.removeChild(ta);
+if(cb)cb();
+}catch(e){toast('Tidak bisa menyalin otomatis — catat manual ya','warn');}
 }
 
 function suksesDaftar(data){
@@ -1373,11 +1412,14 @@ function suksesDaftar(data){
       '<h4>Pendaftaran Berhasil!</h4>'+ 
       '<p>Data peserta sudah tercatat. Simpan nomor peserta berikut.</p>'+ 
       '<div class="ticket">'+
-        '<b>Nomor Peserta</b>'+ 
-        '<strong>'+esc(nomor)+'</strong>'+ 
-        '<span>Screenshot halaman ini sebagai bukti pendaftaran.</span>'+ 
-      '</div>'+ 
-      '<button class="link-btn" id="daftarLagi">Daftar Peserta Lain</button>'
+'<b>Nomor Peserta</b>'+
+'<strong>'+esc(nomor)+'</strong>'+
+'<span>Simpan atau tunjukkan nomor ini ke panitia sebagai bukti pendaftaran.</span>'+
+'</div>'+
+'<div class="ok-acts">'+
+'<button class="btn-salin" id="btnSalin"><span class="iconify" data-icon="solar:copy-bold"></span> Salin Nomor Peserta</button>'+
+'<button class="link-btn" id="daftarLagi">Daftar Peserta Lain</button>'+
+'</div>'
     );
   }else{
     setH('okMsg',
@@ -1394,9 +1436,9 @@ function suksesDaftar(data){
   });
 
   bindDaftarLagi();
-  scan();
-  muatLomba();
-}
+var bs=$('btnSalin');if(bs)bs.onclick=function(){salinNomor(nomor);};
+scan();
+muatLomba();
 
 function wireForm(){
   var sj=$('selJenis');
