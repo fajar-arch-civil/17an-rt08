@@ -660,8 +660,11 @@ function renderStatus(){var cur=curStatus();
   function saveHasil(){
   var L=curLomba();if(!L)return;
   var btn=$('#pnSaveHasil');
-  if(btn&&btn.dataset.busy) return;
-  if(!confirm('Kunci & kirim hasil "'+L.nama+'"? Data langsung tampil ke warga.'))return;
+if(btn&&btn.dataset.busy) return;
+// Cegah publish hasil kosong: minimal Juara 1 wajib terisi
+var adaJuara1=isRegu()?(($('#pnrn1').value||'').trim()!==''):ST.work.some(function(w){return w._rank===1;});
+if(!adaJuara1){toast('Tentukan minimal Juara 1 dulu sebelum mengunci hasil','err');return;}
+if(!confirm('Kunci & kirim hasil "'+L.nama+'"? Data langsung tampil ke warga.'))return;
 
   var o={aksi:'setHasil',jenis:L.jenis,lomba:L.nama,kelompok:L.kelompok||'',nama1:'',blok1:'',nama2:'',blok2:'',nama3:'',blok3:'',gugur:'[]'};
   if(isRegu()){for(var r=1;r<=3;r++){o['nama'+r]=($('#pnrn'+r).value||'').trim();o['blok'+r]=($('#pnrb'+r).value||'').trim();}}
