@@ -191,16 +191,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 
 #cekHasil{margin-top:15px}
 
-/* ============ FORM (stepper + inputs + dropdown) ============ */
-.stepper{display:flex;align-items:center;gap:6px;margin-bottom:20px}
-.step{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative}
-.step-n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--solid2);color:var(--muted);border:1px solid var(--bd);transition:.2s}
-.step.on .step-n{background:var(--merah);color:#fff;border-color:transparent;box-shadow:0 6px 16px var(--merah-glow)}
-.step.done .step-n{background:var(--ok-soft);color:var(--ok);border-color:transparent}
-.step-l{font-size:10.5px;font-weight:700;color:var(--muted)}
-.step.on .step-l{color:var(--ink)}
-.step-line{position:absolute;top:16px;left:60%;right:-40%;height:2px;background:var(--bd)}
-.step:last-child .step-line{display:none}
+/* ====== FORM (inputs + dropdown) ====== */
 .form{display:flex;flex-direction:column;gap:16px}
 .field{display:flex;flex-direction:column;gap:8px}
 .field.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -274,22 +265,13 @@ footer b{color:var(--ink2);font-weight:700}
 .pill.ok{color:var(--ok,#32d74b);background:rgba(50,215,75,.08);border-color:rgba(50,215,75,.2);}
 .pill.no{color:var(--danger,#ff453a);background:rgba(255,69,58,.08);border-color:rgba(255,69,58,.2);}
 
-/* --- G2: form & stepper lebih lega --- */
+/* --- G2: form lebih lega --- */.
 .card.pad{padding:24px;}
 .form{display:flex;flex-direction:column;gap:20px;}
 .field{display:flex;flex-direction:column;gap:9px;}
 .field.two{flex-direction:row;gap:16px;}
 .field.two>.field{flex:1;}
 .inp,select.inp,.dd-btn{padding:15px 16px;}
-.stepper{display:flex;align-items:flex-start;gap:0;margin:2px 0 28px;}
-.step{flex:1;text-align:center;position:relative;}
-.step-n{position:relative;z-index:2;width:34px;height:34px;margin:0 auto;display:grid;place-items:center;border-radius:50%;background:var(--solid2,#1a1a1a);border:1px solid var(--bd2,rgba(255,255,255,.12));font-weight:800;}
-.step-l{margin-top:11px;font-size:12px;}
-.step-line{position:absolute;top:17px;left:50%;width:100%;height:2px;background:var(--bd2,rgba(255,255,255,.12));z-index:0;}
-.step:last-child .step-line{display:none;}
-.step.done .step-line{background:var(--merah,#ff2d2d);transition:background .4s ease .2s}
-.step.on .step-n{animation:stepPulse 1.8s ease-in-out infinite}
-@keyframes stepPulse{0%,100%{box-shadow:0 6px 16px var(--merah-glow)}50%{box-shadow:0 6px 24px var(--merah-glow),0 0 0 4px var(--merah-soft)}}
 
 /* --- G3: keuangan rapatkan + insight chips --- */
 #keuangan .balance{margin-bottom:14px;}
@@ -1325,8 +1307,7 @@ function lombaFor(jenis){ return (_lombaList||[]).filter(l=>norm(getF(l,['jenis'
 function lombaObj(jenis,nama){ return (_lombaList||[]).find(l=>norm(getF(l,['jenis','kategori'])||'')===norm(jenis) && norm(getF(l,['nama','name','lomba'])||'')===norm(nama)); }
 function fillJenis(){ const sel=$('selJenis'); if(!sel) return; const seen=[]; (_lombaList||[]).forEach(l=>{const j=(getF(l,['jenis','kategori'])||'').toString().trim(); if(j&&seen.indexOf(j)<0) seen.push(j);}); seen.sort((a,b)=>a.localeCompare(b,'id',{numeric:true})); sel.innerHTML='<option value="">Pilih jenis…</option>'+seen.map(j=>'<option value="'+esc(j)+'">'+esc(j)+'</option>').join(''); }
 function setKelompok(){ const o=lombaObj($('selJenis').value,$('selLomba').value); $('hidKelompok').value=(o?(getF(o,['kelompok','kelompokUmur','umur'])||''):''); }
-function setLomba(){ const j=$('selJenis').value,sel=$('selLomba'); if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';} else{const arr=lombaFor(j);sel.disabled=false;sel.innerHTML='<option value="">Pilih cabang…</option>'+arr.map(l=>{const nm=getF(l,['nama','name','lomba'])||'';return '<option value="'+esc(nm)+'">'+esc(nm)+'</option>';}).join('');} $('anakFields').classList.toggle('hide',!isAnak(j)); $('hidKelompok').value=''; updateStepper(); }
-function updateStepper(){ const st=document.querySelectorAll('#stepper .step');if(!st.length)return; const s1=$('hidAlamat').value&&$('nama').value.trim();const s2=s1&&$('selJenis').value&&$('selLomba').value; st.forEach(s=>s.classList.remove('on','done')); if(s2){st[0].classList.add('done');st[1].classList.add('done');st[2].classList.add('on');} else if(s1){st[0].classList.add('done');st[1].classList.add('on');} else st[0].classList.add('on'); }
+function setLomba(){ const j=$('selJenis').value,sel=$('selLomba'); if(!j){sel.disabled=true;sel.innerHTML='<option value="">Pilih jenis dulu…</option>';} else{const arr=lombaFor(j);sel.disabled=false;sel.innerHTML='<option value="">Pilih cabang…</option>'+arr.map(l=>{const nm=getF(l,['nama','name','lomba'])||'';return '<option value="'+esc(nm)+'">'+esc(nm)+'</option>';}).join('');} $('anakFields').classList.toggle('hide',!isAnak(j)); $('hidKelompok').value=''; }
 function bindDaftarLagi(){
 var dl=$('daftarLagi');
 if(!dl)return;
@@ -1358,7 +1339,6 @@ $('ddNomor').classList.add('disabled');
 $('hidAlamat').value='';
 }
 
-updateStepper();
 };
 }
 
@@ -1410,10 +1390,6 @@ function suksesDaftar(data){
     );
   }
 
-  document.querySelectorAll('#stepper .step').forEach(function(s){
-    s.classList.remove('on');
-    s.classList.add('done');
-  });
 
   bindDaftarLagi();
 var bs=$('btnSalin');if(bs)bs.onclick=function(){salinNomor(nomor);};
@@ -1428,11 +1404,8 @@ function wireForm(){
   var sl=$('selLomba');
   if(sl)sl.addEventListener('change',function(){
     setKelompok();
-    updateStepper();
   });
 
-  var nm=$('nama');
-  if(nm)nm.addEventListener('input',updateStepper);
 
   bindDaftarLagi();
 
@@ -1598,7 +1571,7 @@ function wireMisc(){
 /* ===================== INIT ===================== */
 function init(){
  renderFeed();wirePanels();wireTabs();wireSearch();wireWA();wireForm();wireMisc();
- ddInit('ddBlok');ddInit('ddNomor');updateStepper();
+ ddInit('ddBlok');ddInit('ddNomor');
  tickCount();setInterval(tickCount,1000);
  muatKeuangan();muatOpsi();muatGaleri();muatLomba();
  muatCuaca();setInterval(muatCuaca,300000);
@@ -1814,9 +1787,7 @@ function syncFormAddr(){
    var paid=rec.lunas||num(rec.terbayar)>0;
    if(paid){_addrPaid=true;$('hidAlamat').value=rec.alamat;setPayNote(rec.lunas?'lunas':'sebagian',num(rec.terbayar));}
    else{_addrPaid=false;$('hidAlamat').value='';setPayNote('belum');showBayarModal(_pickedAddr);}
-   updateStepper();
   });
-  updateStepper();
  });
 }
 function buildBlokDD(){syncFormAddr();}
@@ -2457,10 +2428,6 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   }
 }
 
-/* Sembunyikan sisa stepper lama jika masih ada di CSS/HTML */
-.stepper,.step,.step-n,.step-l,.step-line{
-  display:none!important;
-}
 
 /* ===== TIKET / NOMOR PESERTA ===== */
 .ticket{
