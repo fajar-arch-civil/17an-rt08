@@ -188,35 +188,8 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .feed-d{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:5px;display:flex;align-items:center;gap:5px}
 .feed-item:first-child{position:relative}
 .feed-item:first-child::after{content:"BARU";position:absolute;top:10px;right:12px;font-size:9px;font-weight:800;letter-spacing:.06em;background:#fff;color:var(--merah);padding:3px 7px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
-/* ============ LEADERBOARD ============ */
-.lb-filter{display:flex;gap:8px;overflow-x:auto;padding-bottom:14px}
-.lb-filter::-webkit-scrollbar{height:0}
-.chip{flex-shrink:0;border:1px solid var(--bd2);background:var(--glass-2);color:var(--ink2);font-weight:700;font-size:12.5px;padding:9px 16px;border-radius:var(--r-pill);cursor:pointer;transition:.16s;font-family:inherit}
-.chip.on{background:var(--merah);color:#fff;border-color:transparent;box-shadow:0 6px 18px var(--merah-glow)}
-.lb-row{display:flex;align-items:center;gap:13px;padding:13px;border-radius:var(--r-el);margin-bottom:10px}
-.lb-row.top{border:1px solid var(--bd2)}
-.lb-rank{width:34px;height:34px;border-radius:var(--r-chip);display:grid;place-items:center;font-weight:800;font-size:15px;flex-shrink:0;color:#0a0a0a}
-.lb-rank.r1{background:linear-gradient(145deg,#FFD75A,#E0A11C);box-shadow:0 6px 16px rgba(255,203,69,.35)}
-.lb-rank.r2{background:linear-gradient(145deg,#E2E8F0,#A0AAB8)}
-.lb-rank.r3{background:linear-gradient(145deg,#E8A06E,#B26836)}
-.lb-rank.rn{background:var(--solid2);color:var(--ink2)}
-.lb-name{font-weight:700;font-size:14.5px}.lb-blok{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
-.lb-pts{margin-left:auto;text-align:right}
-.lb-pts b{font-size:16px;font-weight:800;color:var(--merah);font-variant-numeric:tabular-nums}
-.lb-pts span{display:block;font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.lb-empty{text-align:center;color:var(--muted);font-size:13.5px;padding:30px 12px}
-.lb-empty .iconify{font-size:38px;color:var(--bd2);display:block;margin:0 auto 10px}
+
 #cekHasil{margin-top:15px}
-.lb-acc{border:1px solid var(--bd2);background:var(--glass-2);border-radius:var(--r-el);margin-bottom:10px;overflow:hidden}
-.lb-sum{list-style:none;display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
-.lb-sum::-webkit-details-marker{display:none}
-.lb-sum-info{min-width:0}
-.lb-sum-nm{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-sum-sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px}
-.lb-sum-champ{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
-.lb-sum-chev{color:var(--muted);font-size:18px;transition:.2s;flex-shrink:0}
-.lb-acc[open] .lb-sum-chev{transform:rotate(180deg)}
-.lb-acc-body{padding:0 12px 12px}
 
 /* ============ FORM (stepper + inputs + dropdown) ============ */
 .stepper{display:flex;align-items:center;gap:6px;margin-bottom:20px}
@@ -1081,18 +1054,6 @@ p{ text-wrap:pretty; }
     <div id="annFeed"></div>
   </section>
 
-  <!-- ===== LIVE LEADERBOARD (preview) ===== -->
-  <section class="sec">
-    <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:medal-ribbon-star-bold"></span> Papan Juara</div><a class="sec-act" href="lomba.html">Lihat Semua <span class="iconify" data-icon="solar:arrow-right-linear"></span></a></div>
-    <div class="lb-filter" id="lbFilter">
-      <button class="chip on" data-filter="all">Semua</button>
-      <button class="chip" data-filter="Lomba Olahraga">Olahraga</button>
-      <button class="chip" data-filter="Lomba Anak">Anak</button>
-      <button class="chip" data-filter="Pentas Seni">Pentas Seni</button>
-    </div>
-    <div id="lbScroll"></div>
-  </section>
-
   <!-- ============ KEUANGAN ============ -->
   <section class="sec" id="keuangan">
     <div class="sec-head"><div class="sec-title"><span class="iconify" data-icon="solar:wallet-money-bold"></span> Keuangan</div>
@@ -1225,7 +1186,7 @@ p{ text-wrap:pretty; }
 <script>
 /* ===================== KONSTANTA (JANGAN UBAH) ===================== */
 const API='https://script.google.com/macros/s/AKfycbyEqxjavZ9ncF2iMZuWGstf7coiNGWAB5eHyw-nkOxOQ0ZyLwB93WP08jRBHkJPrI9S8g/exec';
-let WA='6285215079010';
+let WA='6285771201217';
 let TARGET=50000;
 let DEADLINE=new Date('2026-08-17T07:00:00+07:00').getTime();
 const BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
@@ -1567,36 +1528,6 @@ function renderKatalog(){
  if(!arr.length){t.innerHTML='<div class="lb-empty" style="flex:1"><span class="iconify" data-icon="solar:cup-bold"></span>Belum ada lomba.</div>';return;}
  t.innerHTML=arr.slice(0,8).map(l=>{const nm=getF(l,['nama','name','lomba'])||'';const j=getF(l,['jenis','kategori','tipe'])||'';const info=getF(l,['info','keterangan','jadwal','lokasi'])||'';const ter=num(getF(l,['terdaftar','peserta','count']));return '<div class="hcard"><div class="lomba-card glass"><div class="lc-body"><span class="lc-cat '+jenisCls(j)+'">'+esc(j||'Lomba')+'</span><div class="lc-name">'+esc(nm)+'</div><div class="lc-meta">'+(info?'<span><span class="iconify" data-icon="solar:info-circle-linear"></span>'+esc(info)+'</span>':'')+'</div><div class="lc-foot"><span class="lc-reg"><span class="iconify" data-icon="solar:users-group-rounded-bold"></span> Terdaftar <b>'+ter+'</b></span></div></div></div></div>';}).join('');scan();
 }
-function renderLeaderboard(filter){
-  const box=$('lbScroll');if(!box)return;
-  let arr=_hasil||[];
-  if(filter&&filter!=='all')arr=arr.filter(h=>norm(getF(h,['jenis','kategori'])||'').includes(filter==='Pentas Seni'?'seni':norm(filter).replace('lomba ','')));
-  const groups={},order=[];
-  (arr||[]).forEach(h=>{
-    const lomba=getF(h,['lomba','cabang','namaLomba','nama_lomba'])||'';
-    const jenis=getF(h,['jenis','kategori'])||'';
-    if(!lomba)return;
-    const key=norm(jenis)+'||'+norm(lomba);
-    if(!groups[key]){groups[key]={lomba:lomba,jenis:jenis,kelompok:getF(h,['kelompok','kelompokUmur','umur'])||'',win:{}};order.push(key);}
-    const pr=num(getF(h,['peringkat','rank','juara','posisi']));
-    if(pr>=1&&pr<=3&&!groups[key].win[pr])groups[key].win[pr]={nama:getF(h,['nama','name','peserta','tim','namaTim'])||'-',blok:getF(h,['blok','alamat','wilayah','rumah'])||''};
-  });
-  if(!order.length){box.innerHTML='<div class="lb-empty"><span class="iconify" data-icon="solar:ranking-bold" style="font-size:42px;color:var(--bd2);display:block;margin:0 auto 10px"></span><div style="font-size:14px;font-weight:700;color:var(--ink2)">Lomba belum dimulai</div><div style="font-size:12px;font-weight:500;color:var(--muted);margin-top:4px">Papan juara muncul otomatis setelah pertandingan selesai. Pantau terus, ya!</div></div>';}
-  const medal={1:'<span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span>',2:'<span class="iconify mdl mdl-2" data-icon="solar:medal-ribbons-star-bold"></span>',3:'<span class="iconify mdl mdl-3" data-icon="solar:medal-ribbons-star-bold"></span>'};
-  box.innerHTML=order.map(k=>{
-    const g=groups[k];
-    const sub=[g.jenis,g.kelompok?('Usia '+g.kelompok):''].filter(Boolean).join(' · ');
-    const champ=g.win[1]?g.win[1].nama:'—';
-    let rows='';
-    for(var r=1;r<=3;r++){
-      const w=g.win[r];if(!w)continue;
-      rows+='<div class="lb-row glass top"><div class="lb-rank r'+r+'">'+r+'</div><div><div class="lb-name">'+esc(w.nama)+'</div>'+(w.blok?('<div class="lb-blok">'+esc(w.blok)+'</div>'):'')+'</div><div class="lb-pts"><b>'+medal[r]+'</b><span>Juara '+r+'</span></div></div>';
-    }
-    if(!rows)rows='<div class="lb-empty" style="padding:14px 12px">Belum ada juara</div>';
-    return '<details class="lb-acc"><summary class="lb-sum"><div class="lb-sum-info"><div class="lb-sum-nm">'+esc(g.lomba)+'</div><div class="lb-sum-sub">'+esc(sub)+'</div></div><div class="lb-sum-champ"><span class="iconify mdl mdl-1" data-icon="solar:medal-ribbons-star-bold"></span> '+esc(champ)+'</div><span class="iconify lb-sum-chev" data-icon="solar:alt-arrow-down-linear"></span></summary><div class="lb-acc-body">'+rows+'</div></details>';
-  }).join('');
-  scan();
-}
 
 /* ===================== GALERI ===================== */
 async function muatGaleri(){
@@ -1647,7 +1578,6 @@ function wireTabs(){
 	if(tm)tm.onclick=()=>{if(tm)tm.classList.add('on');if(tk)tk.classList.remove('on');if(pm)pm.classList.add('on');if(pk)pk.classList.remove('on');};
 	if(tk)tk.onclick=()=>{if(tk)tk.classList.add('on');if(tm)tm.classList.remove('on');if(pk)pk.classList.add('on');if(pm)pm.classList.remove('on');};
 }
-function wireFilter(){document.querySelectorAll('#lbFilter .chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#lbFilter .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');renderLeaderboard(c.dataset.filter);});}
 function exportCSV(){
  const rows=[['Tipe','Tanggal','Keterangan','Kategori','Jumlah']];
  _pem.forEach(it=>rows.push(['Masuk',fmtTgl(getF(it,['tanggal','tgl','date'])),getF(it,['keterangan','deskripsi','uraian','label'])||'',getF(it,['kategori','jenis'])||'',num(getF(it,['jumlah','nominal','amount']))]));
@@ -1667,7 +1597,7 @@ function wireMisc(){
 }
 /* ===================== INIT ===================== */
 function init(){
- renderFeed();wirePanels();wireTabs();wireFilter();wireSearch();wireWA();wireForm();wireMisc();
+ renderFeed();wirePanels();wireTabs();wireSearch();wireWA();wireForm();wireMisc();
  ddInit('ddBlok');ddInit('ddNomor');updateStepper();
  tickCount();setInterval(tickCount,1000);
  muatKeuangan();muatOpsi();muatGaleri();muatLomba();
@@ -1894,9 +1824,9 @@ function buildBlokDD(){syncFormAddr();}
 /* 7) Simpan peserta utk cegah pendaftaran ganda */
 async function muatLomba(){
  renderKatalog();
- try{var d=await api('aksi=peserta&v='+Date.now());var pes=getF(d,['peserta','pesertaList','participants'])||[];_peserta=Array.isArray(pes)?pes:[];_hasil=getF(d,['hasil','leaderboard','ranking','juara'])||[];set('kPeserta',_peserta.length);}
+ try{var d=await api('aksi=peserta&v='+Date.now());var pes=getF(d,['peserta','pesertaList','participants'])||[];_peserta=Array.isArray(pes)?pes:[];set('kPeserta',_peserta.length);}
  catch(e){set('kPeserta','0');}
-   set('kLombaAktif',(_lombaList||[]).length);renderLeaderboard('all'); 
+   set('kLombaAktif',(_lombaList||[]).length); 
   if(window.__distPaint)try{window.__distPaint(_peserta);}catch(e){} 
 } 
 
@@ -1913,9 +1843,6 @@ if(nm&&lb&&al&&(_peserta||[]).some(function(p){return norm(getF(p,['nama','name'
 </script>
 <script>
 /* ===== REVISI INDEX FINAL — leaderboard pindah, ikon flat, polish ===== */
-
-/* 1) Live Leaderboard pindah ke halaman Lomba → sembunyikan dari index */
-(function(){var lb=document.getElementById('lbScroll');if(lb){var sec=lb.closest('.sec');if(sec){sec.style.display='none';}else{lb.style.display='none';var f=document.getElementById('lbFilter');if(f)f.style.display='none';}}})();
 
 /* 2) setPayNote: ikon flat (ganti emoji ✓/✗) */
 function setPayNote(kind,ter){
@@ -2311,7 +2238,6 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   function skel(){
     var t=D.getElementById('track'); if(t&&!t.children.length) t.innerHTML='<div class="sk" style="aspect-ratio:16/10;border-radius:18px"></div>';
     var lt=D.getElementById('lombaTrack'); if(lt&&!lt.children.length){var c='<div class="sk" style="flex:0 0 76%;max-width:300px;aspect-ratio:4/5;border-radius:18px"></div>';lt.innerHTML=c+c+c;}
-    var lb=D.getElementById('lbScroll'); if(lb&&!lb.children.length){var r='<div class="sk-row"><div class="sk" style="width:34px;height:34px;border-radius:10px"></div><div class="sk" style="flex:1;height:16px"></div><div class="sk" style="width:44px;height:16px"></div></div>';lb.innerHTML=r+r+r+r;}
   }
 
   // 2) Reveal halus tiap section saat di-scroll (aman: ada fallback paksa tampil)
