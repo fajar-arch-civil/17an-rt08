@@ -2327,17 +2327,8 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   padding-bottom:14px;
   border-bottom:1px solid var(--bd2);
 }
-#formDaftar .form-section:last-of-type{
-  margin-bottom:0;
-  padding-bottom:0;
-  border-bottom:none;
-}
-
-#formDaftar .form-section:last-of-type{
-  margin-bottom:0!important;
-  padding-bottom:0!important;
-  border-bottom:none!important;
-}
+#formDaftar .form-section{display:flex;flex-direction:column;gap:16px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--bd2)}
+#formDaftar .form-section:last-of-type{margin-bottom:0;padding-bottom:0;border-bottom:none}
 
 #formDaftar .alert-dup:empty{display:none}
 
