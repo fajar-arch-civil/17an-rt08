@@ -11,13 +11,35 @@ body{touch-action:manipulation;overscroll-behavior:none} /* matikan double-tap z
 }
 </style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#050505">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F8F9FA">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A0A14">
+<meta name="description" content="Info acara, iuran, lomba & galeri HUT RI ke-81 RT 08. Pantau countdown, keuangan transparan, daftar lomba, dan papan juara.">
 <title>RT 08 17-an · HUT RI ke-81 2026</title>
+
+<!-- Preview link (WhatsApp / sosial) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RT 08 17-an">
+<meta property="og:title" content="RT 08 17-an · HUT RI ke-81 2026">
+<meta property="og:description" content="Info acara, iuran, lomba & galeri HUT RI ke-81 RT 08. Pantau countdown, keuangan transparan, daftar lomba, dan papan juara.">
+<meta property="og:url" content="https://17an-rt08.vercel.app/">
+<meta property="og:image" content="https://17an-rt08.vercel.app/icon-512.png">
+<meta property="og:locale" content="id_ID">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RT 08 17-an · HUT RI ke-81 2026">
+<meta name="twitter:description" content="Info acara, iuran, lomba & galeri HUT RI ke-81 RT 08.">
+<meta name="twitter:image" content="https://17an-rt08.vercel.app/icon-512.png">
+
+<!-- iOS PWA -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="17an RT 08">
 <script>(function(){try{var t=localStorage.getItem('rt08-theme');if(t!=='dark'&&t!=='light')t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -820,9 +842,6 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 .usearch{overscroll-behavior:contain}
 </style>
 <!-- ===== DESIGN SYSTEM v2 — Resistance Blue (Fase 0) — START ===== -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style id="dsV2">
 /* ---- PALET: LIGHT (Resistance Blue) ---- */
 :root[data-theme="light"]{
