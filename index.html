@@ -2320,9 +2320,17 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
 }
 
 #formDaftar .form-section{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
   margin-bottom:18px;
   padding-bottom:14px;
   border-bottom:1px solid var(--bd2);
+}
+#formDaftar .form-section:last-of-type{
+  margin-bottom:0;
+  padding-bottom:0;
+  border-bottom:none;
 }
 
 #formDaftar .form-section:last-of-type{
@@ -2331,8 +2339,7 @@ function svg(n){return '<span class="iconify" data-icon="solar:'+(ICN[n]||'quest
   border-bottom:none!important;
 }
 
-.form-section{display:flex;flex-direction:column;gap:16px}
-.form-section+.form-section{margin-top:6px}
+#formDaftar .alert-dup:empty{display:none}
 
 #formDaftar .form-sec-label{
   font-size:15px;
