@@ -2,12 +2,16 @@
   "name": "HUT RI ke-81 — RT 08",
   "short_name": "17an RT 08",
   "description": "Info acara, iuran, lomba & galeri HUT RI ke-81 RT 08.",
+  "id": "./?src=pwa",
+  "lang": "id",
+  "dir": "ltr",
   "start_url": "./?src=pwa",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0A0A14",
   "theme_color": "#000072",
+  "categories": ["events", "lifestyle"],
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }

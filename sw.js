@@ -1,4 +1,4 @@
-const CACHE = 'rt08-v2.8.5';
+const CACHE = 'rt08-v2.8.6';
 
 const ASSETS = [
   './',
@@ -72,7 +72,7 @@ self.addEventListener('fetch', event => {
           caches.open(CACHE).then(cache => cache.put(request, copy));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request).then(cached => cached || caches.match('./index.html')))
     );
     return;
   }
