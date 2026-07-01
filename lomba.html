@@ -64,7 +64,7 @@ a{color:inherit}
 @media(max-width:791px){.topnav{display:none}}
 
 /* hero (bersih — 1 blok) */
-.hero{position:relative;overflow:hidden;margin:14px 14px 0;padding:22px 18px 24px;border-radius:24px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
+.hero{position:relative;overflow:hidden;margin:14px 14px 0;padding:22px 18px 24px;border-radius:24px;color:#fff;background:linear-gradient(120deg,#6598FE 0%,#2661DD 30%,#0C3795 60%,#092167 82%,#020B31 100%);background-size:180% 180%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @media(min-width:792px){.hero{max-width:760px;margin:16px auto 0;padding:34px 40px;border-radius:28px}.hero h1{font-size:32px}.hero .sub{font-size:15px}.cta-btn{padding:13px 28px;height:auto}}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;-webkit-mask-size:auto 120%;mask-size:auto 120%;background:#FFFFFF;opacity:.08}
@@ -245,29 +245,29 @@ details[open] .hs-champ{display:none}
 <style id="dsV2">
 /* ---- PALET: LIGHT (Resistance Blue) ---- */
 :root[data-theme="light"]{
-  --bg0:#F3F6FD; --bg1:#E4E9F7; --bg2:#FFFFFF;
-  --solid:#FFFFFF; --solid2:#F0F3FB; --glass:#FFFFFF; --glass-2:#FFFFFF;
-  --bd:rgba(9,33,103,.10); --bd2:rgba(9,33,103,.15);
-  --ink:#000C33; --ink2:#364B82; --muted:#6B77A6;
-  --merah:#0C3795; --merah2:#092167; --merah-glow:rgba(12,55,149,.22); --merah-soft:#E4E9F7;
-  --chip:#E4E9F7; --secondary:#2661DD; --info:#2661DD;
-  --ok:#1B602F; --ok-soft:rgba(27,96,47,.12);
-  --warn:#E6A100; --warn-soft:rgba(230,161,0,.14);
-  --danger:#F784C5; --danger-soft:rgba(247,132,197,.18);
-  --sh:0 16px 36px -20px rgba(20,28,46,.18); --sh-sm:0 8px 18px -10px rgba(20,28,46,.12); --sh-glow:0 18px 44px -22px rgba(0,0,114,.30);
+ --bg0:#F3F6FD; --bg1:#E4E9F7; --bg2:#FFFFFF;
+ --solid:#FFFFFF; --solid2:#EEF2FB; --glass:#FFFFFF; --glass-2:#FFFFFF;
+ --bd:rgba(9,33,103,.10); --bd2:rgba(9,33,103,.15);
+ --ink:#000C33; --ink2:#364B82; --muted:#6B77A6;
+ --merah:#0C3795; --merah2:#092167; --merah-glow:rgba(12,55,149,.20); --merah-soft:#E4E9F7;
+ --chip:#E4E9F7; --secondary:#2661DD; --info:#2661DD;
+ --ok:#1B602F; --ok-soft:rgba(27,96,47,.12);
+ --warn:#E6A100; --warn-soft:rgba(230,161,0,.14);
+ --danger:#F784C5; --danger-soft:rgba(247,132,197,.18);
+ --sh:0 16px 36px -20px rgba(20,28,46,.18); --sh-sm:0 8px 18px -10px rgba(20,28,46,.12); --sh-glow:0 18px 44px -22px rgba(12,55,149,.30);
 }
 /* ---- PALET: DARK (Resistance Blue) — juga jadi default ---- */
 :root, :root[data-theme="dark"]{
-  --bg0:#020B31; --bg1:#06153F; --bg2:#092167;
-  --solid:#092167; --solid2:#0C2A72; --glass:#092167; --glass-2:#092167;
-  --bd:rgba(228,233,247,.10); --bd2:rgba(228,233,247,.16);
-  --ink:#E4E9F7; --ink2:#B9C4E6; --muted:#7C88B4;
-  --merah:#2661DD; --merah2:#0C3795; --merah-glow:rgba(38,97,221,.32); --merah-soft:rgba(38,97,221,.16);
-  --chip:rgba(38,97,221,.20); --secondary:#6598FE; --info:#6598FE;
-  --ok:#3BA559; --ok-soft:rgba(59,165,89,.16);
-  --warn:#E6A100; --warn-soft:rgba(230,161,0,.16);
-  --danger:#F784C5; --danger-soft:rgba(247,132,197,.16);
-  --sh:0 16px 34px -20px rgba(0,0,0,.65); --sh-sm:0 8px 18px -10px rgba(0,0,0,.5); --sh-glow:0 18px 44px -22px rgba(92,92,255,.28);
+ --bg0:#020B31; --bg1:#06153F; --bg2:#092167;
+ --solid:#092167; --solid2:#0C2A72; --glass:#092167; --glass-2:#092167;
+ --bd:rgba(228,233,247,.10); --bd2:rgba(228,233,247,.16);
+ --ink:#E4E9F7; --ink2:#B9C4E6; --muted:#7C88B4;
+ --merah:#2661DD; --merah2:#0C3795; --merah-glow:rgba(38,97,221,.32); --merah-soft:rgba(38,97,221,.14);
+ --chip:rgba(38,97,221,.20); --secondary:#6598FE; --info:#6598FE;
+ --ok:#3BA559; --ok-soft:rgba(59,165,89,.16);
+ --warn:#E6A100; --warn-soft:rgba(230,161,0,.16);
+ --danger:#F784C5; --danger-soft:rgba(247,132,197,.16);
+ --sh:0 16px 34px -20px rgba(0,0,0,.65); --sh-sm:0 8px 18px -10px rgba(0,0,0,.5); --sh-glow:0 18px 44px -22px rgba(38,97,221,.28);
 }
 :root[data-theme="light"]{ color-scheme:light; }
 :root[data-theme="dark"]{ color-scheme:dark; }
@@ -312,26 +312,26 @@ p{ text-wrap:pretty; }
   <div class="splash-bar"><div class="splash-fill"></div></div>
 </div>
 <style>
-#splash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F8F9FA;transition:opacity .5s ease}
-@media(prefers-color-scheme:dark){#splash{background:#0A0A14}}
-[data-theme="light"] #splash{background:#F8F9FA}
-[data-theme="dark"]  #splash{background:#0A0A14}
+#splash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F3F6FD;transition:opacity .5s ease}
+@media(prefers-color-scheme:dark){#splash{background:#020B31}}
+[data-theme="light"] #splash{background:#F3F6FD}
+[data-theme="dark"]  #splash{background:#020B31}
 #splash.splash-out{opacity:0;visibility:hidden;pointer-events:none}
 /* Logo: 1 file logo.svg di-recolor pakai mask (ikut tema, tidak putih) */
-.splash-logo{width:92px;height:92px;background-color:#000072;-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat;animation:splashPop .7s cubic-bezier(.2,.8,.2,1) both}
-@media(prefers-color-scheme:dark){.splash-logo{background-color:#5C5CFF}}
-[data-theme="light"] .splash-logo{background-color:#000072}
-[data-theme="dark"]  .splash-logo{background-color:#5C5CFF}
-.splash-name{font-size:18px;font-weight:800;letter-spacing:.02em;color:#000072;animation:splashFade .6s ease .15s both}
+.splash-logo{width:92px;height:92px;background-color:#0C3795;-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat;animation:splashPop .7s cubic-bezier(.2,.8,.2,1) both}
+@media(prefers-color-scheme:dark){.splash-logo{background-color:#2661DD}}
+[data-theme="light"] .splash-logo{background-color:#0C3795}
+[data-theme="dark"]  .splash-logo{background-color:#2661DD}
+.splash-name{font-size:18px;font-weight:800;letter-spacing:.02em;color:#0C3795;animation:splashFade .6s ease .15s both}
 @media(prefers-color-scheme:dark){.splash-name{color:#E8E8F0}}
-[data-theme="light"] .splash-name{color:#000072}
+[data-theme="light"] .splash-name{color:#0C3795}
 [data-theme="dark"]  .splash-name{color:#E8E8F0}
 .splash-sub{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9aa0a6;margin-top:-6px;animation:splashFade .6s ease .25s both}
 .splash-bar{width:128px;height:4px;border-radius:99px;background:rgba(128,128,128,.22);overflow:hidden;margin-top:6px}
-.splash-fill{width:0;height:100%;border-radius:99px;background:#000072;animation:splashBar 1.1s ease .1s forwards}
-@media(prefers-color-scheme:dark){.splash-fill{background:#5C5CFF}}
-[data-theme="light"] .splash-fill{background:#000072}
-[data-theme="dark"]  .splash-fill{background:#5C5CFF}
+.splash-fill{width:0;height:100%;border-radius:99px;background:#0C3795;animation:splashBar 1.1s ease .1s forwards}
+@media(prefers-color-scheme:dark){.splash-fill{background:#2661DD}}
+[data-theme="light"] .splash-fill{background:#0C3795}
+[data-theme="dark"]  .splash-fill{background:#2661DD}
 @keyframes splashPop{0%{opacity:0;transform:scale(.7)}60%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
 @keyframes splashFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes splashBar{from{width:0}to{width:100%}}

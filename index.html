@@ -269,7 +269,7 @@ footer b{color:var(--ink2);font-weight:700}
 </style>
 <style>
 
-#navPanitia{display:none}
+#navPanitia{}
 
 /* --- G6: pill statistik lebih kalem --- */
 .pill{background:rgba(255,255,255,.05);border:1px solid var(--bd,rgba(255,255,255,.08));color:var(--muted,#9aa0a6);box-shadow:none;font-weight:700;border-radius:12px;}
@@ -293,7 +293,7 @@ footer b{color:var(--ink2);font-weight:700}
 .hint{font-size:11px;color:var(--muted,#9aa0a6);font-weight:600;}
 .cek-mode{display:flex;gap:8px;margin-bottom:14px;}
 .cek-mode .cm{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:14px;border:1px solid var(--bd,rgba(255,255,255,.08));background:rgba(255,255,255,.03);color:var(--muted,#9aa0a6);font-weight:700;font-size:13px;cursor:pointer;transition:.18s;}
-.cek-mode .cm.on{background:rgba(255,45,45,.12);border-color:rgba(255,45,45,.4);color:#ff6a6a;}
+.cek-mode .cm.on{background:var(--merah-soft);border-color:var(--merah);color:var(--merah);}
 #cekWrap{position:relative;}
 .sg-pop{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:30;background:var(--solid,#141414);border:1px solid var(--bd2,rgba(255,255,255,.12));border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.55);padding:6px;display:none;max-height:300px;overflow:auto;}
 .sg-pop.show{display:block;animation:rise .2s ease both;}
@@ -572,7 +572,7 @@ body{ overscroll-behavior-y:none; }
 .sec{animation:secFade .5s ease both}
 @keyframes secFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 /* ===== HERO (selaras dgn Lomba & Panitia) ===== */
-.hero{position:relative;overflow:hidden;margin:14px 14px 0;padding:22px 18px 24px;border-radius:24px;color:#fff;background:linear-gradient(140deg,var(--merah2) 0%,var(--merah) 50%,var(--merah2) 100%);background-size:200% 200%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
+.hero{position:relative;overflow:hidden;margin:14px 14px 0;padding:22px 18px 24px;border-radius:24px;color:#fff;background:linear-gradient(120deg,#6598FE 0%,#2661DD 30%,#0C3795 60%,#092167 82%,#020B31 100%);background-size:180% 180%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite}
 @media(min-width:792px){.hero{margin:16px max(20px,calc((100% - var(--maxw))/2 + 20px)) 0;padding:34px 40px;border-radius:28px}}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;-webkit-mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;mask:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right 18px center;-webkit-mask-size:auto 120%;mask-size:auto 120%;background:#FFFFFF;opacity:.08}
@@ -803,32 +803,32 @@ img,svg,video,canvas,iframe,table{max-width:100%}
 <style id="dsV2">
 /* ---- PALET: LIGHT (Resistance Blue) ---- */
 :root[data-theme="light"]{
-  --bg0:#F3F6FD; --bg1:#E4E9F7; --bg2:#FFFFFF;
-  --solid:#FFFFFF; --solid2:#F0F3FB; --glass:#FFFFFF; --glass-2:#FFFFFF;
-  --bd:rgba(9,33,103,.10); --bd2:rgba(9,33,103,.15);
-  --ink:#000C33; --ink2:#364B82; --muted:#6B77A6;
-  --merah:#0C3795; --merah2:#092167; --merah-glow:rgba(12,55,149,.22); --merah-soft:#E4E9F7;
-  --chip:#E4E9F7; --secondary:#2661DD; --info:#2661DD;
-  --ok:#1B602F; --ok-soft:rgba(27,96,47,.12);
-  --warn:#E6A100; --warn-soft:rgba(230,161,0,.14);
-  --danger:#F784C5; --danger-soft:rgba(247,132,197,.18);
-  --sh:0 16px 36px -20px rgba(20,28,46,.18); --sh-sm:0 8px 18px -10px rgba(20,28,46,.12); --sh-glow:0 18px 44px -22px rgba(12,55,149,.30);
+ --bg0:#F3F6FD; --bg1:#E4E9F7; --bg2:#FFFFFF;
+ --solid:#FFFFFF; --solid2:#EEF2FB; --glass:#FFFFFF; --glass-2:#FFFFFF;
+ --bd:rgba(9,33,103,.10); --bd2:rgba(9,33,103,.15);
+ --ink:#000C33; --ink2:#364B82; --muted:#6B77A6;
+ --merah:#0C3795; --merah2:#092167; --merah-glow:rgba(12,55,149,.20); --merah-soft:#E4E9F7;
+ --chip:#E4E9F7; --secondary:#2661DD; --info:#2661DD;
+ --ok:#1B602F; --ok-soft:rgba(27,96,47,.12);
+ --warn:#E6A100; --warn-soft:rgba(230,161,0,.14);
+ --danger:#F784C5; --danger-soft:rgba(247,132,197,.18);
+ --sh:0 16px 36px -20px rgba(20,28,46,.18); --sh-sm:0 8px 18px -10px rgba(20,28,46,.12); --sh-glow:0 18px 44px -22px rgba(12,55,149,.30);
 }
 /* ---- PALET: DARK (Resistance Blue) — juga jadi default ---- */
 :root, :root[data-theme="dark"]{
-  /* token bentuk & layout (dipindah dari blok atas) */
-  --r-hero:28px;--r-card:24px;--r-el:18px;--r-chip:14px;--r-pill:999px;
-  --hd-h:60px;--maxw:760px;--blur:saturate(150%) blur(20px);--gold:#FFCB45;
-  --bg0:#020B31; --bg1:#06153F; --bg2:#092167;
-  --solid:#092167; --solid2:#0C2A72; --glass:#092167; --glass-2:#092167;
-  --bd:rgba(228,233,247,.10); --bd2:rgba(228,233,247,.16);
-  --ink:#E4E9F7; --ink2:#B9C4E6; --muted:#7C88B4;
-  --merah:#2661DD; --merah2:#0C3795; --merah-glow:rgba(38,97,221,.32); --merah-soft:rgba(38,97,221,.16);
-  --chip:rgba(38,97,221,.20); --secondary:#6598FE; --info:#6598FE;
-  --ok:#3BA559; --ok-soft:rgba(59,165,89,.16);
-  --warn:#E6A100; --warn-soft:rgba(230,161,0,.16);
-  --danger:#F784C5; --danger-soft:rgba(247,132,197,.16);
-  --sh:0 16px 34px -20px rgba(0,0,0,.65); --sh-sm:0 8px 18px -10px rgba(0,0,0,.5); --sh-glow:0 18px 44px -22px rgba(38,97,221,.30);
+ /* token bentuk & layout (dipindah dari blok atas) */
+ --r-hero:28px;--r-card:24px;--r-el:18px;--r-chip:14px;--r-pill:999px;
+ --hd-h:60px;--maxw:760px;--blur:saturate(150%) blur(20px);--gold:#FFCB45;
+ --bg0:#020B31; --bg1:#06153F; --bg2:#092167;
+ --solid:#092167; --solid2:#0C2A72; --glass:#092167; --glass-2:#092167;
+ --bd:rgba(228,233,247,.10); --bd2:rgba(228,233,247,.16);
+ --ink:#E4E9F7; --ink2:#B9C4E6; --muted:#7C88B4;
+ --merah:#2661DD; --merah2:#0C3795; --merah-glow:rgba(38,97,221,.32); --merah-soft:rgba(38,97,221,.16);
+ --chip:rgba(38,97,221,.20); --secondary:#6598FE; --info:#6598FE;
+ --ok:#3BA559; --ok-soft:rgba(59,165,89,.16);
+ --warn:#E6A100; --warn-soft:rgba(230,161,0,.16);
+ --danger:#F784C5; --danger-soft:rgba(247,132,197,.16);
+ --sh:0 16px 34px -20px rgba(0,0,0,.65); --sh-sm:0 8px 18px -10px rgba(0,0,0,.5); --sh-glow:0 18px 44px -22px rgba(38,97,221,.30);
 }
 :root[data-theme="light"]{ color-scheme:light; }
 :root[data-theme="dark"]{ color-scheme:dark; }
