@@ -12,7 +12,7 @@
 <style>
 :root{
  --merah:#2661DD;--merah2:#0C3795;
- --bg0:#020B31;--bg1:#06153F;--bg2:#092167;
+ --bg0:#03071A;--bg1:#060D20;--bg2:#0A1428;
  --bd:rgba(228,233,247,.10);--bd2:rgba(228,233,247,.16);
  --ink:#E4E9F7;--ink2:#B9C4E6;--muted:#7C88B4;
  --chip:rgba(38,97,221,.20);--merah-glow:rgba(38,97,221,.32);
@@ -21,7 +21,7 @@
  --maxw:760px;--font:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 }
 [data-theme="light"]{
- --merah:#0C3795;--merah2:#092167;
+ --merah:#0C3795;--merah2:#0A1428;
  --bg0:#F3F6FD;--bg1:#E4E9F7;--bg2:#FFFFFF;
  --bd:rgba(9,33,103,.09);--bd2:rgba(9,33,103,.16);
  --ink:#000C33;--ink2:#364B82;--muted:#6B77A6;
@@ -38,7 +38,7 @@ body{margin:0;background:var(--bg0);color:var(--ink);font-family:var(--font);-we
 .top #themeBtn{justify-self:end}
 .top-t{font-weight:800;font-size:15px}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:12px 14px calc(80px + env(safe-area-inset-bottom,0px))}
-.hero{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(120deg,#6598FE 0%,#2661DD 30%,#0C3795 60%,#092167 82%,#020B31 100%);background-size:180% 180%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite;margin:14px 14px 0}
+.hero{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(120deg,#6598FE 0%,#2661DD 30%,#0C3795 60%,#0A1428 82%,#03071A 100%);background-size:180% 180%;box-shadow:0 16px 40px -22px var(--merah-glow);animation:heroGrad 8s ease-in-out infinite;margin:14px 14px 0}
 @media(min-width:720px){.hero{margin:0;border-radius:28px}}
 @keyframes heroGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero::before{content:"";position:absolute;top:0;right:10px;bottom:0;width:52%;background:url('https://cdn.jsdelivr.net/gh/djaiss/mapsicon@master/all/id/vector.svg') no-repeat right center;background-size:auto 120%;filter:brightness(0) invert(1);opacity:.08;pointer-events:none}
@@ -201,9 +201,9 @@ textarea.inp{resize:vertical;min-height:66px}
 </div>
 <style>
 #splash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F3F6FD;transition:opacity .5s ease}
-@media(prefers-color-scheme:dark){#splash{background:#020B31}}
+@media(prefers-color-scheme:dark){#splash{background:#03071A}}
 [data-theme="light"] #splash{background:#F3F6FD}
-[data-theme="dark"]  #splash{background:#020B31}
+[data-theme="dark"]  #splash{background:#03071A}
 #splash.splash-out{opacity:0;visibility:hidden;pointer-events:none}
 /* Logo: 1 file logo.svg di-recolor pakai mask (ikut tema, tidak putih) */
 .splash-logo{width:92px;height:92px;background-color:#0C3795;-webkit-mask:url(logo.svg) center/contain no-repeat;mask:url(logo.svg) center/contain no-repeat;animation:splashPop .7s cubic-bezier(.2,.8,.2,1) both}
