@@ -1217,24 +1217,37 @@ function scan(){try{if(window.Iconify)window.Iconify.scan();}catch(e){}}
 function splitBlok(addr){const s=String(addr||'').trim();const m=s.match(/([A-Za-z]+)/);return m?m[1].toUpperCase():(s?s[0].toUpperCase():'?');}
 function maskName(n){return String(n||'').trim().split(/\s+/).map(p=>{if(p.length<=2)return p[0]+'•';return p[0]+'•'.repeat(Math.min(6,p.length-2))+p.slice(-1);}).join(' ');}
 async function api(params){const r=await fetch(API+(params?('?'+params):''));return unwrap(await r.json());}
-
+/* ===== CACHE: tampil instan dari data terakhir, lalu perbarui di belakang ===== */
+async function apiCached(params, apply){
+  const key = 'rt08:' + (params || 'root');
+  let had = false, prev = null;
+  try{
+    prev = localStorage.getItem(key);
+    if(prev){ apply(JSON.parse(prev), true); had = true; }
+  }catch(e){}
+  let d;
+  try{ d = await api(params); }
+  catch(e){ if(had) return null; throw e; }
+  const fresh = JSON.stringify(d);
+  try{ localStorage.setItem(key, fresh); }catch(e){}
+  if(!had || fresh !== prev) apply(d, false);
+  return d;
+}
 
 /* ===================== KEUANGAN ===================== */
-async function muatKeuangan(){
- try{
-  const d=await api('');
+function applyKeuangan(d){
   const masuk=num(getF(d,['totalPemasukan','pemasukanTotal','totalMasuk']));
   const keluar=num(getF(d,['totalPengeluaran','pengeluaranTotal','totalKeluar']));
-  let saldo=getF(d,['saldo','saldoKas','sisaKas','balance']);saldo=(saldo==null||saldo==='')?(masuk-keluar):num(saldo);
+  let saldo=getF(d,['saldo','saldoKas','sisaKas','balance']);
+  saldo=(saldo==null||saldo==='')?(masuk-keluar):num(saldo);
   set('kMasuk',rp(masuk));set('kKeluar',rp(keluar));set('kSaldo',rp(saldo));
-set('kMasukSub','Total iuran + donasi');
-set('kKeluarSub','Total kegiatan');
+  set('kMasukSub','Total iuran + donasi');set('kKeluarSub','Total kegiatan');
   const kk=num(getF(d,['jumlahKKBayar','kkBayar','jumlahKK','kk']));set('kKK',kk+' KK');
   _rekap=getF(d,['rekapIuran','rekap','iuran']);
   let lunas=0,totalKK=0;
   if(_rekap){const ring=getF(_rekap,['ringkasan','summary'])||{};lunas=num(getF(ring,['lunas','sudahBayar','paid']));totalKK=num(getF(ring,['totalKK','total','jumlahKK']));}
   if(!totalKK)totalKK=kk||_warga.length||0;
-if(!totalKK){set('iuranPct','—%');setH('iuranNom','<span class="t">Data belum tersedia</span>');return;}
+  if(!totalKK){set('iuranPct','—%');setH('iuranNom','<span class="t">Data belum tersedia</span>');return;}
   const pct=totalKK?Math.round(lunas/totalKK*100):0;
   set('iuranPct',pct+'%');
   const bar=$('iuranBar');if(bar)bar.style.width=Math.min(100,pct)+'%';
@@ -1245,7 +1258,10 @@ if(!totalKK){set('iuranPct','—%');setH('iuranNom','<span class="t">Data belum 
   if(!Array.isArray(_pem))_pem=[];if(!Array.isArray(_pen))_pen=[];
   renderTxn();renderRekap();buildChart();
   setH('fstatus','<span class="dot on"></span> Tersinkron');
- }catch(e){setH('fstatus','<span class="dot err"></span> Gagal memuat');set('kSaldoSub','Gagal memuat data. Coba Refresh.');}
+}
+async function muatKeuangan(){
+  try{ await apiCached('', applyKeuangan); }
+  catch(e){ setH('fstatus','<span class="dot err"></span> Gagal memuat'); set('kSaldoSub','Gagal memuat data. Coba Refresh.'); }
 }
 function txItem(it,masuk){
  const v=num(getF(it,['jumlah','nominal','amount','nilai','total','value','jml']));
@@ -1302,9 +1318,16 @@ function buildChart(){
 
 /* ===================== OPSI + DROPDOWN ===================== */
 async function muatOpsi(){
- try{const d=await api('aksi=opsi');const l=getF(d,['lomba','lombaList','daftarLomba','competitions']);_lombaList=(Array.isArray(l)&&l.length)?l:[];_addrMap=normalizeAddr(getF(d,['alamat','alamatMap','blok','wilayah']));}
- catch(e){_lombaList=[];_addrMap={};}
- buildBlokDD();fillJenis();renderKatalog();
+  try{
+    await apiCached('aksi=opsi', function(d){
+      const l=getF(d,['lomba','lombaList','daftarLomba','competitions']);
+      _lombaList=(Array.isArray(l)&&l.length)?l:[];
+      _addrMap=normalizeAddr(getF(d,['alamat','alamatMap','blok','wilayah']));
+      buildBlokDD();fillJenis();renderKatalog();
+    });
+  }catch(e){
+    _lombaList=[];_addrMap={};buildBlokDD();fillJenis();renderKatalog();
+  }
 }
 function normalizeAddr(al){const map={};if(!al)return map;if(Array.isArray(al)){al.forEach(s=>{const b=splitBlok(s);(map[b]=map[b]||[]).push(String(s));});}else if(typeof al==='object'){Object.keys(al).forEach(k=>{const v=al[k];if(Array.isArray(v))map[k.toUpperCase()]=v.map(String);else if(v&&typeof v==='object')map[k.toUpperCase()]=Object.values(v).map(String);});}return map;}
 function ddInit(id){const dd=$(id);if(!dd)return;dd.querySelector('.dd-btn').addEventListener('click',e=>{e.stopPropagation();if(dd.classList.contains('disabled'))return;document.querySelectorAll('.dd.open').forEach(o=>{if(o!==dd)o.classList.remove('open');});dd.classList.toggle('open');});}
