@@ -245,12 +245,12 @@ details[open] .hs-champ{display:none}
 <style id="dsV2">
 /* ---- PALET: LIGHT (Resistance Blue) ---- */
 :root[data-theme="light"]{
-  --bg0:#F8F9FA; --bg1:#EEF0F4; --bg2:#FFFFFF;
-  --solid:#FFFFFF; --solid2:#F2F3F7; --glass:#FFFFFF; --glass-2:#FFFFFF;
-  --bd:rgba(17,17,34,.09); --bd2:rgba(17,17,34,.14);
-  --ink:#111122; --ink2:#3A3A52; --muted:#6E6E8A;
-  --merah:#000072; --merah2:#1F1F9C; --merah-glow:rgba(0,0,114,.20); --merah-soft:#E7E9FF;
-  --chip:#E7E9FF; --secondary:#4A69FF; --info:#4A69FF;
+  --bg0:#F3F6FD; --bg1:#E4E9F7; --bg2:#FFFFFF;
+  --solid:#FFFFFF; --solid2:#F0F3FB; --glass:#FFFFFF; --glass-2:#FFFFFF;
+  --bd:rgba(9,33,103,.10); --bd2:rgba(9,33,103,.15);
+  --ink:#000C33; --ink2:#364B82; --muted:#6B77A6;
+  --merah:#0C3795; --merah2:#092167; --merah-glow:rgba(12,55,149,.22); --merah-soft:#E4E9F7;
+  --chip:#E4E9F7; --secondary:#2661DD; --info:#2661DD;
   --ok:#1B602F; --ok-soft:rgba(27,96,47,.12);
   --warn:#E6A100; --warn-soft:rgba(230,161,0,.14);
   --danger:#F784C5; --danger-soft:rgba(247,132,197,.18);
@@ -258,12 +258,12 @@ details[open] .hs-champ{display:none}
 }
 /* ---- PALET: DARK (Resistance Blue) — juga jadi default ---- */
 :root, :root[data-theme="dark"]{
-  --bg0:#0A0A14; --bg1:#101022; --bg2:#16162A;
-  --solid:#16162A; --solid2:#1C1C38; --glass:#16162A; --glass-2:#16162A;
-  --bd:rgba(255,255,255,.09); --bd2:rgba(255,255,255,.15);
-  --ink:#E2E2F0; --ink2:#C4C4D6; --muted:#7A7A99;
-  --merah:#5C5CFF; --merah2:#3D3DFF; --merah-glow:rgba(92,92,255,.30); --merah-soft:rgba(92,92,255,.14);
-  --chip:rgba(92,92,255,.16); --secondary:#5C5CFF; --info:#5C5CFF;
+  --bg0:#020B31; --bg1:#06153F; --bg2:#092167;
+  --solid:#092167; --solid2:#0C2A72; --glass:#092167; --glass-2:#092167;
+  --bd:rgba(228,233,247,.10); --bd2:rgba(228,233,247,.16);
+  --ink:#E4E9F7; --ink2:#B9C4E6; --muted:#7C88B4;
+  --merah:#2661DD; --merah2:#0C3795; --merah-glow:rgba(38,97,221,.32); --merah-soft:rgba(38,97,221,.16);
+  --chip:rgba(38,97,221,.20); --secondary:#6598FE; --info:#6598FE;
   --ok:#3BA559; --ok-soft:rgba(59,165,89,.16);
   --warn:#E6A100; --warn-soft:rgba(230,161,0,.16);
   --danger:#F784C5; --danger-soft:rgba(247,132,197,.16);
@@ -783,7 +783,7 @@ function renderHasil(){
       stats(); apply(); hasil(Array.isArray(d)?[]:(d&&d.hasil?d.hasil:[]));
     }).catch(function(){var tb=$('pesTbody'); if(tb) tb.innerHTML='<tr><td class="empty" colspan="4">Gagal memuat data. Muat ulang halaman.</td></tr>';});
   }
-  function init(){ reveal(); wire(); load(); var wa=document.getElementById('waLink'); if(wa) wa.href='https://wa.me/6285215079010?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.'); }
+  function init(){ reveal(); wire(); load(); var wa=document.getElementById('waLink'); if(wa) wa.href='https://wa.me/6285771201217?text='+encodeURIComponent('Halo panitia RT 08, saya mau tanya / bayar iuran HUT RI ke-81.'); }
   if(D.readyState==='loading') D.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>

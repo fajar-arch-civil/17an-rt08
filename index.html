@@ -243,7 +243,7 @@ select.inp{appearance:none;cursor:pointer;background-image:url("data:image/svg+x
 .btn-salin{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:var(--merah);color:#fff;font-weight:800;padding:13px 22px;border-radius:var(--r-el);cursor:pointer;font-size:14.5px;font-family:inherit;box-shadow:0 8px 20px var(--merah-glow);transition:transform .15s ease}
 .btn-salin:active{transform:scale(.96)}
 .btn-salin .iconify{font-size:18px}
-@media(prefers-reduced-motion:reduce){.ok-msg .ok-ic{animation:none}}
+@media(prefers-reduced-motion:reduce){.ok-msg .ok-ic,.hero,.wa-ic::before,.cu-live,.cd-banner .cbox.pulse b,.sec{animation:none!important}.rv{opacity:1!important;transform:none!important}}
 /* ============ WA + FOOTER ============ */
 .wa-card{margin-top:24px;display:flex;flex-direction:column;gap:13px;align-items:center;text-align:center;padding:26px}
 @media(max-width:520px){.wa-card{padding:20px 16px;gap:10px}.wa-ic{width:46px;height:46px;font-size:23px}.wa-q{font-size:14px}.wa-sub{font-size:12px}.wa-btn{padding:12px 22px;font-size:14px}}
@@ -1282,7 +1282,7 @@ function _txnSort(arr){
 }
 function _txnPane(elId,arr,masuk,key){
   var el=$(elId);if(!el)return;
-  if(!arr||!arr.length){el.innerHTML='<div style="text-align:center;padding:24px 12px"><span class="iconify" data-icon="solar:wallet-2-bold" style="font-size:36px;color:var(--bd2);display:block;margin:0 auto 8px"></span><div style="font-size:13px;font-weight:700;color:var(--ink2)">Belum ada '+(masuk?'pemasukan':'pengeluaran')+' tercatat</div><div style="font-size:11.5px;color:var(--muted);margin-top:3px">Transaksi akan muncul di sini setelah panitia mencatatnya.</div></div>';}
+  if(!arr||!arr.length){el.innerHTML='<div style="text-align:center;padding:24px 12px"><span class="iconify" data-icon="solar:wallet-2-bold" style="font-size:36px;color:var(--bd2);display:block;margin:0 auto 8px"></span><div style="font-size:13px;font-weight:700;color:var(--ink2)">Belum ada '+(masuk?'pemasukan':'pengeluaran')+' tercatat</div><div style="font-size:11.5px;color:var(--muted);margin-top:3px">Transaksi akan muncul di sini setelah panitia mencatatnya.</div></div>';return;}
   var sorted=_txnSort(arr),LIMIT=5,exp=_txnExpand[key];
   var show=exp?sorted.slice(0,40):sorted.slice(0,LIMIT);
   var html=show.map(function(it){return txItem(it,masuk);}).join('');
