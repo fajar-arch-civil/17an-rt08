@@ -440,13 +440,12 @@ var _busyStatus=false;
   $('#refreshBtn').addEventListener('click',loadIuran);
   /* ===== EXPORT CSV (panitia) ===== */
   function unduhCsv(jenis){
-    if(!ST.token){toast('Masuk dulu untuk mengunduh','err');return;}
-    var url=API+'?aksi=export&jenis='+encodeURIComponent(jenis)+'&token='+encodeURIComponent(ST.token)+'&cb='+Date.now();
-    var f=document.createElement('iframe');f.style.display='none';f.src=url;
-    document.body.appendChild(f);
-    setTimeout(function(){if(f.parentNode)f.parentNode.removeChild(f);},60000);
-    toast('Menyiapkan unduhan CSV…','ok');
-  }
+  if(!ST.token){toast('Masuk dulu untuk mengunduh','err');return;}
+  var url=API+'?aksi=export&jenis='+encodeURIComponent(jenis)+'&token='+encodeURIComponent(ST.token)+'&cb='+Date.now();
+  var w=window.open(url,'_blank');
+  if(!w){window.location.href=url;}
+  toast('Menyiapkan unduhan CSV…','ok');
+}
   var _expI=$('#expIuranBtn');if(_expI)_expI.addEventListener('click',function(){unduhCsv('iuran');});
   var _expP=$('#expPesertaBtn');if(_expP)_expP.addEventListener('click',function(){unduhCsv('peserta');});
   var _searchDeb;
