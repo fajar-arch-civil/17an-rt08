@@ -448,6 +448,130 @@ var _busyStatus=false;
 }
   var _expI=$('#expIuranBtn');if(_expI)_expI.addEventListener('click',function(){unduhCsv('iuran');});
   var _expP=$('#expPesertaBtn');if(_expP)_expP.addEventListener('click',function(){unduhCsv('peserta');});
+
+/* ===== TAHAP 2A: PAPAN LAPANGAN (papan lomba live) ===== */
+(function(){
+  var css=''
+    +'#pnBoard{display:flex;flex-direction:column;gap:10px;margin-top:14px}'
+    +'.lb-card{border:1px solid var(--bd);background:var(--bg1);border-radius:16px;padding:12px 13px;cursor:pointer;transition:border-color .15s ease}'
+    +'.lb-card.active{border-color:var(--merah);box-shadow:inset 0 0 0 1px var(--merah)}'
+    +'.lb-card.live{border-color:#1f9d55}'
+    +'.lb-top{display:flex;align-items:center;gap:10px}'
+    +'.lb-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}'
+    +'.lb-tt{min-width:0}'
+    +'.lb-tt b{display:block;font-size:14.5px;line-height:1.25}'
+    +'.lb-tt span{font-size:11.5px;color:var(--muted);font-weight:600}'
+    +'.lb-seg{display:flex;gap:8px;margin:12px 0 10px}'
+    +'.lb-seg button{flex:1;min-height:44px;border:1px solid var(--bd2);background:var(--bg2);color:var(--ink);border-radius:12px;font:inherit;font-weight:700;font-size:12.5px;cursor:pointer;padding:0 4px;transition:transform .1s ease}'
+    +'.lb-seg button:active{transform:scale(.96)}'
+    +'.lb-seg button.on[data-st="Bersiap"]{background:#d99411;border-color:#d99411;color:#1a1a1a}'
+    +'.lb-seg button.on[data-st="Sedang main"]{background:#1f9d55;border-color:#1f9d55;color:#fff}'
+    +'.lb-seg button.on[data-st="Selesai"]{background:#3457d5;border-color:#3457d5;color:#fff}'
+    +'.lb-manage{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:44px;border:1px solid var(--merah);background:transparent;color:var(--merah);border-radius:12px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}'
+    +'.lb-manage .iconify{font-size:16px}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+})();
+
+function allStatusOf(L){
+  var arr=(ST.data&&ST.data.statusLomba)||[];
+  var f=arr.filter(function(s){return norm(s.jenis)===norm(L.jenis)&&norm(s.lomba)===norm(L.nama);})[0];
+  return (f&&f.status)||'Belum';
+}
+function ensureBoard(){
+  var host=$('#lombaCtx');if(!host)return null;
+  var b=$('#pnBoard');
+  if(!b){
+    var sr=host.querySelector('.sel-row');if(sr)sr.style.display='none';
+    var meta=$('#pnMeta');if(meta)meta.style.display='none';
+    var sb=$('#pnStatusBar');if(sb)sb.style.display='none';
+    var lbl=host.querySelector('.ctx-lbl');if(lbl)lbl.style.display='none';
+    var psi=$('#pnSearch');if(psi)psi.placeholder='Cari peserta di lomba terpilih…';
+    b=document.createElement('div');b.id='pnBoard';
+    var sw=$('#pnSearchWrap');
+    if(sw&&sw.parentNode){sw.parentNode.insertBefore(b,sw);}else{host.appendChild(b);}
+  }
+  return b;
+}
+function renderBoard(){
+  var b=ensureBoard();if(!b)return;
+  var arr=lombas().slice();
+  if(!arr.length){b.innerHTML='<div class="empty">Belum ada lomba.</div>';return;}
+  var rank={'Sedang main':0,'Bersiap':1,'Belum':2,'Selesai':3};
+  arr.sort(function(a,c){
+    var ra=rank[allStatusOf(a)];if(ra==null)ra=2;
+    var rc=rank[allStatusOf(c)];if(rc==null)rc=2;
+    if(ra!==rc)return ra-rc;
+    return String(a.nama).localeCompare(String(c.nama),'id');
+  });
+  var hasil=(ST.data&&ST.data.hasil)||[];
+  b.innerHTML=arr.map(function(L){
+    var st=allStatusOf(L);
+    var ps=L.peserta||[];
+    var total=ps.length;
+    var hadir=ps.filter(function(p){return norm(p.kehadiran)==='hadir';}).length;
+    var juara=hasil.filter(function(h){return norm(h.jenis)===norm(L.jenis)&&norm(h.lomba)===norm(L.nama)&&h.peringkat>=1&&h.peringkat<=3;}).length;
+    var active=(norm(L.jenis)===norm(ST.jenis)&&norm(L.nama)===norm(ST.lomba));
+    var key=esc(L.jenis)+'|||'+esc(L.nama);
+    var dot=st==='Sedang main'?'#1f9d55':(st==='Bersiap'?'#d99411':(st==='Selesai'?'#3457d5':'#7C88B4'));
+    return '<div class="lb-card'+(active?' active':'')+(st==='Sedang main'?' live':'')+'" data-k="'+key+'">'
+      +'<div class="lb-top"><span class="lb-dot" style="background:'+dot+'"></span>'
+      +'<div class="lb-tt"><b>'+esc(L.nama)+'</b><span>'+esc(L.jenis||'-')+' · '+total+' peserta · '+hadir+' hadir · '+juara+'/3 juara</span></div></div>'
+      +'<div class="lb-seg" data-k="'+key+'">'
+      +['Bersiap','Sedang main','Selesai'].map(function(x){return '<button data-st="'+esc(x)+'"'+(norm(x)===norm(st)?' class="on"':'')+'>'+esc(x)+'</button>';}).join('')
+      +'</div>'
+      +'<button class="lb-manage" data-k="'+key+'"><span class="iconify" data-icon="solar:pen-2-linear"></span>Pilih &amp; kelola lomba ini</button>'
+      +'</div>';
+  }).join('');
+  scan();
+}
+function boardFind(key){
+  var parts=String(key||'').split('|||');
+  var j=parts[0],n=parts[1];
+  return lombas().filter(function(L){return norm(L.jenis)===norm(j)&&norm(L.nama)===norm(n);})[0]||null;
+}
+function selectLomba(L){
+  if(!L)return;
+  ST.jenis=L.jenis;ST.lomba=L.nama;
+  buildWork();renderAll();renderBoard();
+  var pane=$('#pane'+cap(ST.tab));
+  if(pane&&pane.scrollIntoView)pane.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function setStatusFor(L,s){
+  if(_busyStatus)return;
+  if(!L)return;
+  if(!navigator.onLine){toast('Tidak ada koneksi','err');return;}
+  var prev=allStatusOf(L);
+  if(norm(prev)===norm(s))return;
+  applyStatusLocal_(L,s);
+  renderBoard();
+  _busyStatus=true;
+  post({aksi:'setStatus',jenis:L.jenis,lomba:L.nama,status:s}).then(function(r){
+    _busyStatus=false;
+    if(!(r&&r.ok)){applyStatusLocal_(L,prev);renderBoard();toast((r&&r.error)||'Gagal — status dikembalikan','err');return;}
+    toast(L.nama+': '+s,'ok');
+  });
+}
+function boardInit(){
+  var arr=lombas();
+  if(arr.length){
+    if(!curLomba()){
+      var live=arr.filter(function(L){return allStatusOf(L)==='Sedang main';})[0];
+      var pick=live||arr[0];
+      ST.jenis=pick.jenis;ST.lomba=pick.nama;
+    }
+    buildWork();
+  }else{ST.jenis='';ST.lomba='';ST.work=[];}
+  renderBoard();
+  renderAll();
+}
+$('#lombaCtx').addEventListener('click',function(e){
+  var segBtn=e.target.closest('.lb-seg button[data-st]');
+  if(segBtn){var seg=segBtn.parentNode;var L=boardFind(seg.getAttribute('data-k'));if(L)setStatusFor(L,segBtn.getAttribute('data-st'));return;}
+  var mg=e.target.closest('.lb-manage');
+  if(mg){selectLomba(boardFind(mg.getAttribute('data-k')));return;}
+  var card=e.target.closest('.lb-card');
+  if(card){selectLomba(boardFind(card.getAttribute('data-k')));}
+});
   var _searchDeb;
 $('#search').addEventListener('input',function(){clearTimeout(_searchDeb);var v=this.value;_searchDeb=setTimeout(function(){ST.qIuran=norm(v);renderKK();},200);});
   function renderSummary(r){
@@ -554,7 +678,7 @@ function renderKK(){
 
   /* ===================== LOMBA ===================== */
      function loadLomba(silent){if(!silent)$('#paneHasil').innerHTML='<div class="card">'+skelList(4)+'</div>';
-apiGet('aksi=peserta').then(function(d){ST.data=d;fillJenis();}).catch(function(){if(!silent)$('#paneHasil').innerHTML='<div class="card"><div class="empty">Gagal memuat data. Periksa koneksi lalu coba lagi.</div></div>';}); }
+apiGet('aksi=peserta').then(function(d){ST.data=d;boardInit();}).catch(function(){if(!silent)$('#paneHasil').innerHTML='<div class="card"><div class="empty">Gagal memuat data. Periksa koneksi lalu coba lagi.</div></div>';}); }
   function lombas(){return (ST.data&&ST.data.lomba)||[];}
   function jenisList(){var s=[],seen={};lombas().forEach(function(l){var j=l.jenis||'';if(j&&!seen[norm(j)]){seen[norm(j)]=1;s.push(j);}});return s;}
   function curLomba(){return lombas().filter(function(l){return norm(l.jenis)===norm(ST.jenis)&&norm(l.nama)===norm(ST.lomba);})[0]||null;}
