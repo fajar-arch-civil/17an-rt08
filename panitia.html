@@ -268,7 +268,7 @@ textarea.inp{resize:vertical;min-height:66px}
     <div class="pane" id="paneIuran">
       <div class="card">
         <div class="tool-h"><div><b>Iuran Warga</b><span class="tool-sub" id="targetLbl"></span></div>
-          <button class="icon-btn" id="refreshBtn"><span class="iconify" data-icon="solar:refresh-bold"></span></button></div>
+          <div style="display:flex;gap:8px"><button class="icon-btn" id="expIuranBtn" aria-label="Unduh rekap iuran CSV"><span class="iconify" data-icon="solar:download-minimalistic-bold"></span></button><button class="icon-btn" id="refreshBtn"><span class="iconify" data-icon="solar:refresh-bold"></span></button></div></div>
         <div id="summary" class="summary"></div>
       </div>
       <div class="card">
@@ -288,7 +288,7 @@ textarea.inp{resize:vertical;min-height:66px}
   <div class="ctx-meta" id="pnMeta"></div>
   <span class="ctx-lbl">Status lomba</span>
   <div class="statusbar" id="pnStatusBar"></div>
-  <div class="search" id="pnSearchWrap" style="margin-top:14px;margin-bottom:0"><span class="iconify" data-icon="solar:magnifer-linear"></span><input id="pnSearch" placeholder="Cari nama / blok…"></div>
+  <div class="search" id="pnSearchWrap" style="margin-top:14px;margin-bottom:0"><span class="iconify" data-icon="solar:magnifer-linear"></span><input id="pnSearch" placeholder="Cari nama / blok…"></div><button class="btn" id="expPesertaBtn" style="margin-top:12px"><span class="iconify" data-icon="solar:download-minimalistic-bold"></span>Unduh Daftar Peserta (CSV)</button></div>
 </div>
 
     <div class="pane" id="paneHasil" hidden></div>
@@ -438,6 +438,17 @@ var _busyStatus=false;
     }).catch(function(){if(!silent)$('#kkList').innerHTML=' Gagal memuat. Coba refresh. ';});
   }
   $('#refreshBtn').addEventListener('click',loadIuran);
+  /* ===== EXPORT CSV (panitia) ===== */
+  function unduhCsv(jenis){
+    if(!ST.token){toast('Masuk dulu untuk mengunduh','err');return;}
+    var url=API+'?aksi=export&jenis='+encodeURIComponent(jenis)+'&token='+encodeURIComponent(ST.token)+'&cb='+Date.now();
+    var f=document.createElement('iframe');f.style.display='none';f.src=url;
+    document.body.appendChild(f);
+    setTimeout(function(){if(f.parentNode)f.parentNode.removeChild(f);},60000);
+    toast('Menyiapkan unduhan CSV…','ok');
+  }
+  var _expI=$('#expIuranBtn');if(_expI)_expI.addEventListener('click',function(){unduhCsv('iuran');});
+  var _expP=$('#expPesertaBtn');if(_expP)_expP.addEventListener('click',function(){unduhCsv('peserta');});
   var _searchDeb;
 $('#search').addEventListener('input',function(){clearTimeout(_searchDeb);var v=this.value;_searchDeb=setTimeout(function(){ST.qIuran=norm(v);renderKK();},200);});
   function renderSummary(r){

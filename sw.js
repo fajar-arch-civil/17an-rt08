@@ -1,4 +1,4 @@
-const CACHE = 'rt08-v2.12.3';
+const CACHE = 'rt08-v2.12.4';
 
 const ASSETS = [
   './',
